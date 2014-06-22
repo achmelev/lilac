@@ -1,0 +1,13 @@
+<ivy-module version="2.0">
+    <info organisation="jasm" module="jasm"/>
+    <configurations defaultconfmapping="dev->master,compile,runtime,sources;build->master,compile,runtime">
+   		<conf name="dev" />
+   		<conf name="build" />
+	</configurations>
+    <dependencies>
+        <dependency org="commons-cli" name="commons-cli" rev="1.2"/>
+        <dependency org="org.slf4j" name="jcl-over-slf4j" rev="1.6.6"/>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.6"/>
+		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.6"/>
+    </dependencies>
+</ivy-module>

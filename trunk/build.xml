@@ -1,0 +1,95 @@
+<project name="jasm" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+    <!-- some variables used -->
+    <property name="lib.dir" value="lib" />
+    <property name="build.dir" value="classes" />
+    <property name="src.dir" value="src" />
+	<property name="report.dir" value="report" />
+	<property name="target.dir" value="target" />
+	<property name="dest.dir.relative" value="target/dist" />
+	<property name="dest.dir" location="${dest.dir.relative}" />
+	<property name="jasm.version" value="0.1-SNAPSHOT" />
+    
+    <!-- paths used for compilation  -->
+    <path id="lib.path.id">
+        <fileset dir="${dest.dir}/lib" />
+	</path>
+    
+    
+	<target name="clean-libs-devs"  description="deletes dependencies for development">
+    	<mkdir dir="${lib.dir}" />
+    	<mkdir dir="${report.dir}" />
+        <ivy:retrieve conf="build"/>
+    	<ivy:report todir="${report.dir}" />
+    </target>
+	
+    <target name="retrieve-dev"  description="retrieves dependencies for development">
+    	<mkdir dir="${lib.dir}" />
+    	<mkdir dir="${report.dir}" />
+        <ivy:retrieve pattern="${lib.dir}/[artifact]-[type].[ext]" conf="dev"/>
+    	<ivy:report todir="${report.dir}" />
+    </target> 
+	
+	<target name="retrieve"  description="retrieves dependencies for development">
+	    <mkdir dir="${dest.dir}/lib" />
+	    <ivy:retrieve pattern="${dest.dir}/lib/[artifact].[ext]" conf="build"/>
+	</target> 
+
+    
+    <target name="build" depends="retrieve" description="build the project">
+    	<!-- create dirs -->
+        <mkdir dir="${build.dir}" />
+    	<mkdir dir="${dest.dir}" />
+    	<!-- Compile -->
+        <javac srcdir="${src.dir}" debug="on" debuglevel="lines,source" destdir="${build.dir}" classpathref="lib.path.id" includeAntRuntime="false"/>
+    	<!--Build Jar -->
+    	<pathconvert property="jar.class.path" dirsep="/" pathsep=" " refid="lib.path.id">
+    	    
+    		<map from="${dest.dir}/lib" to="lib" />
+    	</pathconvert>
+    	
+    	<jar destfile="${dest.dir}/jasm.jar"
+    	     basedir="${build.dir}">
+    		<manifest>
+    			<attribute name="Main-Class"  value="org.jasm.main.Main"/>
+    			<attribute name="Class-Path" value="${jar.class.path}" />
+    		</manifest>
+    	</jar>
+    	
+    	<!-- Copy the rest -->
+    	<copy todir="${dest.dir}">
+    	    <fileset dir="scripts"/>
+    	</copy>
+		<mkdir dir="${dest.dir}/docs" />
+    	<copy todir="${dest.dir}/docs">
+    	    <fileset dir="docs"/>
+    	</copy>
+    	
+    	
+    	<!-- Create zip-File for Win -->
+    	<zip destfile="${target.dir}/jasm-${jasm.version}.zip">
+    		<zipfileset dir="${dest.dir}" prefix="jasm"/>
+    	</zip>
+    	
+    	<!-- Create tar-File for Unix/Linux -->
+    	<tar destfile="${target.dir}/jasm-${jasm.version}.tar.gz" compression="gzip">
+    	  <tarfileset dir="${dest.dir}" prefix="jasm" dirmode="755" filemode="644">
+    	  	 <exclude name="**/jasm.sh"/> 
+    	  </tarfileset>
+    	  <tarfileset dir="${dest.dir}" prefix="jasm" dirmode="755" filemode="755">
+	    	  	<include name="**/jasm.sh"/> 
+	      </tarfileset>
+    	</tar>
+    	
+    </target>
+
+  
+    <target name="clean" description="clean the project">
+    	<delete dir="${build.dir}"/>
+    	<delete dir="${target.dir}"/>
+    </target>
+	
+    
+	<target name="clean-cache" description="clean the ivy cache">
+		<ivy:cleancache />
+	</target>
+</project>
