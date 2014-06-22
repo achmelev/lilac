@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/commons-cli-jar.jar" sourcepath="lib/commons-cli-source.jar"/>
+	<classpathentry kind="lib" path="lib/jcl-over-slf4j-jar.jar" sourcepath="lib/jcl-over-slf4j-source.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-bundle.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-jar.jar" sourcepath="lib/slf4j-api-source.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-log4j12-jar.jar" sourcepath="lib/slf4j-log4j12-source.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
