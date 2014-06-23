@@ -20,8 +20,8 @@
     
 	<path id="test.lib.path.id">
 	        <fileset dir="${dest.dir}/lib" />
-			<pathelement location="${build.dir}"/>
-			<pathelement location="${test.build.dir}"/>
+			<pathelement path="${build.dir}"/>
+			<pathelement path="${test.build.dir}"/>
 	</path>
     
 	<target name="clean-libs-devs"  description="deletes dependencies for development">
@@ -54,12 +54,14 @@
     	<!-- Compile -->
         <javac srcdir="${src.dir}" debug="on" debuglevel="lines,source" destdir="${build.dir}" classpathref="lib.path.id" includeAntRuntime="false"/>
     	<!-- Compile tests -->
-    	<javac srcdir="${test.src.dir}" debug="on" debuglevel="lines,source" destdir="${test.build.dir}" classpathref="lib.path.id" includeAntRuntime="false"/>
+    	<javac srcdir="${test.src.dir}" debug="on" debuglevel="lines,source" destdir="${test.build.dir}" classpathref="test.lib.path.id" includeAntRuntime="false"/>
     	
     	<!-- Junit tests -->
     	<junit printsummary="yes" haltonfailure="true">
 
-    		<classpath refid="test.lib.path.id"/>
+    		<classpath id="classpath" refid="test.lib.path.id"/>
+    		
+    		
     		
     		<formatter type="plain"/>
     		<formatter type="xml"/>
