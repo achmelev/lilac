@@ -1,9 +1,13 @@
 <project name="jasm" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
     <!-- some variables used -->
     <property name="lib.dir" value="lib" />
+	<property name="test.lib.dir" value="lib-test" />
     <property name="build.dir" value="classes" />
+	<property name="test.build.dir" value="classes-test" />
     <property name="src.dir" value="src" />
+	<property name="test.src.dir" value="src-test" />
 	<property name="report.dir" value="report" />
+	<property name="test.report.dir" value="report-test" />
 	<property name="target.dir" value="target" />
 	<property name="dest.dir.relative" value="target/dist" />
 	<property name="dest.dir" location="${dest.dir.relative}" />
@@ -14,6 +18,11 @@
         <fileset dir="${dest.dir}/lib" />
 	</path>
     
+	<path id="test.lib.path.id">
+	        <fileset dir="${dest.dir}/lib" />
+			<pathelement location="${build.dir}"/>
+			<pathelement location="${test.build.dir}"/>
+	</path>
     
 	<target name="clean-libs-devs"  description="deletes dependencies for development">
     	<mkdir dir="${lib.dir}" />
@@ -38,14 +47,38 @@
     <target name="build" depends="retrieve" description="build the project">
     	<!-- create dirs -->
         <mkdir dir="${build.dir}" />
+    	<mkdir dir="${test.build.dir}" />
     	<mkdir dir="${dest.dir}" />
+    	<mkdir dir="${report.dir}" />
+    	<mkdir dir="${test.report.dir}" />
     	<!-- Compile -->
         <javac srcdir="${src.dir}" debug="on" debuglevel="lines,source" destdir="${build.dir}" classpathref="lib.path.id" includeAntRuntime="false"/>
+    	<!-- Compile tests -->
+    	<javac srcdir="${test.src.dir}" debug="on" debuglevel="lines,source" destdir="${test.build.dir}" classpathref="lib.path.id" includeAntRuntime="false"/>
+    	
+    	<!-- Junit tests -->
+    	<junit printsummary="yes" haltonfailure="true">
+
+    		<classpath refid="test.lib.path.id"/>
+    		
+    		<formatter type="plain"/>
+    		<formatter type="xml"/>
+    		
+    		<batchtest fork="false" todir="${test.report.dir}">
+    		    <fileset dir="${test.src.dir}">
+    		      <include name="**/*Test*.java"/>
+  
+    		    </fileset>
+    		 </batchtest>
+    	</junit>
+    	
     	<!--Build Jar -->
     	<pathconvert property="jar.class.path" dirsep="/" pathsep=" " refid="lib.path.id">
     	    
     		<map from="${dest.dir}/lib" to="lib" />
     	</pathconvert>
+    	
+    	
     	
     	<jar destfile="${dest.dir}/jasm.jar"
     	     basedir="${build.dir}">
@@ -85,6 +118,9 @@
   
     <target name="clean" description="clean the project">
     	<delete dir="${build.dir}"/>
+    	<delete dir="${test.build.dir}"/>
+    	<delete dir="${report.dir}"/>
+    	<delete dir="${test.report.dir}"/>
     	<delete dir="${target.dir}"/>
     </target>
 	
