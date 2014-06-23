@@ -9,5 +9,6 @@
         <dependency org="org.slf4j" name="jcl-over-slf4j" rev="1.6.6"/>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.6"/>
 		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.6"/>
+		<dependency org="junit" name="junit" rev="4.11"/>
     </dependencies>
 </ivy-module>
