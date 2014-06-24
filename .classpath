@@ -10,5 +10,11 @@
 	<classpathentry kind="lib" path="lib/slf4j-log4j12-jar.jar" sourcepath="lib/slf4j-log4j12-source.jar"/>
 	<classpathentry kind="lib" path="lib/junit-jar.jar"/>
 	<classpathentry kind="lib" path="lib/hamcrest-core-jar.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-jar.jar"/>
+	<classpathentry kind="lib" path="lib/guava-jar.jar"/>
+	<classpathentry kind="lib" path="lib/javassist-jar.jar"/>
+	<classpathentry kind="lib" path="lib/jsr305-jar.jar"/>
+	<classpathentry kind="lib" path="lib/reflections-jar.jar" sourcepath="lib/reflections-source.jar"/>
+	<classpathentry kind="lib" path="lib/xml-apis-jar.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
