@@ -17,7 +17,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> implemen
 		size = source.readUnsignedShort(currentOffset);
 		currentOffset+=2;
 		for (int i=0;i<size; i++) {
-			T item = createEmptyItem();
+			T item = createEmptyItem(source, currentOffset);
 			item.read(source, currentOffset);
 			items.add(item);
 			currentOffset+=item.getLength();
@@ -46,7 +46,33 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> implemen
 		return result;
 	}
 	
-	protected abstract T createEmptyItem();
+	
+	
+	public int getSize() {
+		return size;
+	}
+	
+	public T get(int index) {
+		return items.get(index);
+	}
+	
+	public void add(T item) {
+		items.add(item);
+		size++;
+	}
+	
+	public void add(int index, T item) {
+		items.add(index, item);
+		size++;
+	}
+	
+	public void remove( T item) {
+		if (items.remove(item)) {
+			size--;
+		}
+	}
+
+	protected abstract T createEmptyItem(IByteBuffer source, int offset);
 	
 	
 	
