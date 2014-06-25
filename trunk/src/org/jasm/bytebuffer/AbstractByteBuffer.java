@@ -146,12 +146,16 @@ public abstract class AbstractByteBuffer implements IByteBuffer {
 
 
 	@Override
-	public String readUTF8(long offset) {
+	public Utf8String readUTF8(long offset) {
 		int length = readUnsignedShort(offset);
 		byte [] data = readByteArray(offset, length+2);
 		DataInputStream di = new DataInputStream(new ByteArrayInputStream(data));
 		try {
-			return di.readUTF();
+			String value =  di.readUTF();
+			Utf8String result = new Utf8String();
+			result.setLength(length+2);
+			result.setValue(value);
+			return result;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

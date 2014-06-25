@@ -13,8 +13,8 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> implemen
 	@Override
 	public void read(IByteBuffer source, long offset) {
 		items.clear();
-		int currentOffset = 0;
-		size = source.readUnsignedShort(currentOffset);
+		long currentOffset = offset;
+		size = source.readUnsignedShort(currentOffset)-getSizeDiff();
 		currentOffset+=2;
 		for (int i=0;i<size; i++) {
 			T item = createEmptyItem(source, currentOffset);
@@ -28,7 +28,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> implemen
 	@Override
 	public void write(IByteBuffer target, long offset) {
 		int currentOffset = 0;
-		target.writeUnsignedShort(offset, size);
+		target.writeUnsignedShort(offset, size+getSizeDiff());
 		currentOffset+=2;
 		for (IBytecodeItem item: items) {
 			item.write(target, currentOffset);
@@ -79,11 +79,17 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> implemen
 			size--;
 		}
 	}
+	
+	public int indexOf(T item) {
+		return items.indexOf(item);
+	}
 
-	protected abstract T createEmptyItem(IByteBuffer source, int offset);
+	protected abstract T createEmptyItem(IByteBuffer source, long offset);
 	
 	
-	
+	protected int getSizeDiff() {
+		return 0;
+	}
 	
 
 }

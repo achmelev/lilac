@@ -7,11 +7,11 @@ public abstract class AbstractTaggedBytecodeItem implements ITaggedBytecodeItem 
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
-		short tagValue = source.readShort(offset);
+		short tagValue = source.readUnsignedByte(offset);
 		if (tagValue != getTag()) {
 			throw new IllegalArgumentException("Expected "+getTag()+" but got "+tagValue);
 		}
-		read(source, offset+1);
+		readBody(source, offset+1);
 	}
 
 	@Override
