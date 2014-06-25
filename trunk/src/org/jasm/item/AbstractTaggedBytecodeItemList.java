@@ -7,12 +7,12 @@ import java.util.Set;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.reflections.Reflections;
 
-public class TaggedBytecodeItemList<T extends ITaggedBytecodeItem> extends AbstractBytecodeItemList<T> {
+public abstract class AbstractTaggedBytecodeItemList<T extends ITaggedBytecodeItem> extends AbstractBytecodeItemList<T> {
 	
 	private static Map<Short, Class> registry = null;
 	
 	
-	public TaggedBytecodeItemList(Class<T> clazz, String packageName) {
+	public AbstractTaggedBytecodeItemList(Class<T> clazz, String packageName) {
 		if (registry == null) {
 			Reflections rf = new Reflections(packageName);
 			Set<Class<? extends T>> classes = rf.getSubTypesOf(clazz);
@@ -54,6 +54,9 @@ public class TaggedBytecodeItemList<T extends ITaggedBytecodeItem> extends Abstr
 			throw new RuntimeException("No class registered for tag "+tag);
 		}
 	}
+
+
+
 	
 
 }
