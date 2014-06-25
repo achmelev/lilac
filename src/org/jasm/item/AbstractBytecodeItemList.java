@@ -48,6 +48,14 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> implemen
 	
 	
 	
+	@Override
+	public void resolve() {
+		for (IBytecodeItem item: items) {
+			item.resolve();
+		}
+		
+	}
+
 	public int getSize() {
 		return size;
 	}
