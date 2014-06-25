@@ -30,5 +30,8 @@ public interface IByteBuffer {
 	
 	public double   readDouble(long offset);
 	public void     writeDouble(long offset,  double value);
+	
+	public String readUTF8(long offset);
+	public void   writeUTF8(long offset, String value);
 
 }

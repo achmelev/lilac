@@ -8,7 +8,7 @@ public class ByteArrayBufferTest {
 	
 	@Test
 	public void test() {
-		byte[] data = new byte[16];
+		byte[] data = new byte[200];
 		ByteArrayByteBuffer b = new ByteArrayByteBuffer(data);
 		
 		//Byte
@@ -135,6 +135,12 @@ public class ByteArrayBufferTest {
 		d = -5.5;
 		b.writeDouble(5, d);
 		assertEquals(d, b.readDouble(5),0.0);
+		
+		//String 
+		String st = "Hello World mit Ümläten";
+		b.writeUTF8(5, st);
+		assertEquals(st, b.readUTF8(5));
+		
 		
 	}
 	
