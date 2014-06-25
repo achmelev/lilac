@@ -1,5 +1,11 @@
 package org.jasm.bytebuffer;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 
 public abstract class AbstractByteBuffer implements IByteBuffer {
 
@@ -134,6 +140,37 @@ public abstract class AbstractByteBuffer implements IByteBuffer {
 	@Override
 	public void writeDouble(long offset, double value) {
 		writeLong(offset, Double.doubleToLongBits(value));
+	}
+	
+	
+
+
+	@Override
+	public String readUTF8(long offset) {
+		int length = readUnsignedShort(offset);
+		byte [] data = readByteArray(offset, length+2);
+		DataInputStream di = new DataInputStream(new ByteArrayInputStream(data));
+		try {
+			return di.readUTF();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+
+	@Override
+	public void writeUTF8(long offset, String value) {
+		ByteArrayOutputStream bo = new ByteArrayOutputStream();
+		DataOutputStream dos = new DataOutputStream(bo);
+		
+		try {
+			dos.writeUTF(value);
+			dos.flush();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		byte[] data = bo.toByteArray();
+		writeByteArray(offset, data);
 	}
 
 
