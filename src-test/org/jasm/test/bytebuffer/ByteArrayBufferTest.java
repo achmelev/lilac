@@ -139,7 +139,8 @@ public class ByteArrayBufferTest {
 		//String 
 		String st = "Hello World mit Ümläten";
 		b.writeUTF8(5, st);
-		assertEquals(st, b.readUTF8(5));
+		assertEquals(st, b.readUTF8(5).getValue());
+		assertEquals(25, b.readUTF8(5).getLength());
 		
 		
 	}
