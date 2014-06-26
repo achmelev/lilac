@@ -39,7 +39,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> implemen
 	
 	@Override
 	public int getLength() {
-		int result = 0;
+		int result = 2;
 		for (IBytecodeItem item: items) {
 			result+=item.getLength();
 		}
