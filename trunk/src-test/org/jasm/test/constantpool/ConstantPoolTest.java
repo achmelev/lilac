@@ -22,7 +22,7 @@ public class ConstantPoolTest {
 	@Test
 	public void test() {
 		ClassLoader cl = this.getClass().getClassLoader();
-		InputStream stream = cl.getResourceAsStream("org/jasm/test/testclass/TestClass.class");
+		InputStream stream = cl.getResourceAsStream("org/jasm/test/testclass/Class1.class");
 		ByteArrayOutputStream bo = new ByteArrayOutputStream();
 		byte [] buf = new byte[1024];
 		try {
