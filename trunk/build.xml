@@ -53,9 +53,20 @@
     	<mkdir dir="${test.report.dir}" />
     	<!-- Compile -->
         <javac srcdir="${src.dir}" debug="on" debuglevel="lines,source" destdir="${build.dir}" classpathref="lib.path.id" includeAntRuntime="false"/>
+    	<copy todir="${build.dir}">
+    	    <fileset dir="${src.dir}">
+    	    	<include name="**/*.properties"/>
+    	    	<include name="**/*.xml"/>
+    	    </fileset>
+    	</copy>
     	<!-- Compile tests -->
     	<javac srcdir="${test.src.dir}" debug="on" debuglevel="lines,source" destdir="${test.build.dir}" classpathref="test.lib.path.id" includeAntRuntime="false"/>
-    	
+    	<copy todir="${test.build.dir}">
+    	    <fileset dir="${test.src.dir}">
+    	    	<include name="**/*.properties"/>
+    	    	<include name="**/*.xml"/>
+    	    </fileset>
+    	</copy>
     	<!-- Junit tests -->
     	<junit printsummary="yes" haltonfailure="true">
 
