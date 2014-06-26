@@ -1,10 +1,12 @@
-package org.jasm.test.bytebuffer;
+package org.jasm.test.constantpool;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
+import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.constantpool.ConstantPool;
 import org.junit.Test;
 
@@ -34,6 +36,13 @@ public class ConstantPoolTest {
 		ConstantPool pool = new ConstantPool();
 		ByteArrayByteBuffer bbuf = new ByteArrayByteBuffer(data);
 		pool.read(bbuf, 8);
+		
+		pool.resolve();
+		
+		PrintWriter writer = new PrintWriter(System.out);
+		PrettyPrinter printer = new PrettyPrinter(writer);
+		printer.printItem(pool);
+		writer.close();
 	}
 
 }

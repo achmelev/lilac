@@ -83,6 +83,12 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> implemen
 	public int indexOf(T item) {
 		return items.indexOf(item);
 	}
+	
+	
+
+	protected List<T> getItems() {
+		return items;
+	}
 
 	protected abstract T createEmptyItem(IByteBuffer source, long offset);
 	

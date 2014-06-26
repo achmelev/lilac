@@ -49,6 +49,19 @@ public class LongInfo extends AbstractConstantPoolEntry {
 		this.value = value;
 	}
 	
-	
+	@Override
+	public String getPrintName() {
+		return "longinfo";
+	}
+
+	@Override
+	public String getPrintArgs() {
+		return null;
+	}
+
+	@Override
+	public String getPrintComment() {
+		return null;
+	}
 
 }

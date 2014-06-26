@@ -49,6 +49,19 @@ public class IntegerInfo extends AbstractConstantPoolEntry {
 		this.value = value;
 	}
 	
-	
+	@Override
+	public String getPrintName() {
+		return "integerinfo";
+	}
+
+	@Override
+	public String getPrintArgs() {
+		return null;
+	}
+
+	@Override
+	public String getPrintComment() {
+		return null;
+	}
 
 }

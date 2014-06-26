@@ -21,7 +21,7 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry {
 	}
 	
 	public ClassInfo getClassReference() {
-		return (ClassInfo)getReference()[1];
+		return (ClassInfo)getReference()[0];
 	}
 	
 	public String getClassName() {
@@ -39,5 +39,14 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry {
 	public String getDescriptor() {
 		return getNameAndTypeReference().getDescriptor();
 	}
+
+	
+
+	@Override
+	public String getPrintComment() {
+		return getClassName()+"."+getName()+" "+getDescriptor();
+	}
+	
+	
 
 }

@@ -26,6 +26,18 @@ public class ClassInfo extends AbstractReferenceEntry {
 	public String getClassName() {
 		return getClassNameReference().getValue();
 	}
+
+	@Override
+	public String getPrintName() {
+		return "classinfo";
+	}
+
+	@Override
+	public String getPrintComment() {
+		return getClassName();
+	}
+	
+	
 	
 
 }

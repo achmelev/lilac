@@ -28,4 +28,14 @@ public class MethodTypeInfo extends AbstractReferenceEntry {
 		return getDescriptorReference().getValue();
 	}
 
+	@Override
+	public String getPrintName() {
+		return "methodtypeinfo";
+	}
+
+	@Override
+	public String getPrintComment() {
+		return getDescriptor();
+	}
+
 }

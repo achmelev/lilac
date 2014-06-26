@@ -28,4 +28,14 @@ public class StringInfo extends AbstractReferenceEntry {
 		return getUtf8Reference().getValue();
 	}
 
+	@Override
+	public String getPrintName() {
+		return "stringinfo";
+	}
+
+	@Override
+	public String getPrintComment() {
+		return null;
+	}
+
 }

@@ -7,4 +7,11 @@ public class InterfaceMethodrefInfo extends AbstractRefInfo {
 		return 11;
 	}
 
+	@Override
+	public String getPrintName() {
+		return "interfacemethodref";
+	}
+	
+	
+
 }
