@@ -4,14 +4,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.constantpool.ConstantPool;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.Assert.*;
 
 public class ConstantPoolTest {
+	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Test
 	public void test() {
@@ -40,10 +46,12 @@ public class ConstantPoolTest {
 		
 		pool.resolve();
 		
-		PrintWriter writer = new PrintWriter(System.out);
+		StringWriter sw = new StringWriter();
+		PrintWriter writer = new PrintWriter(sw);
 		PrettyPrinter printer = new PrettyPrinter(writer);
 		printer.printItem(pool);
 		writer.close();
+		log.debug("code: \n"+sw.toString());
 		
 		byte [] data1 = new byte[pool.getLength()];
 		byte [] data2 = new byte[pool.getLength()];
