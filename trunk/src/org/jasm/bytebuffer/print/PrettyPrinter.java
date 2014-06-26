@@ -54,12 +54,11 @@ public class PrettyPrinter {
 			removeIndent();
 			printLine("}");
 		} else {
-			buf.append(item.getPrintName());
 			if (item.getPrintArgs() != null) {
 				buf.append(" "+item.getPrintArgs());
 			}
 			if (item.getPrintComment() != null) {
-				buf.append(" //"+item.getPrintComment());
+				buf.append(" // "+item.getPrintComment());
 			}
 			printLine(buf.toString());
 		}
