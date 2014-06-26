@@ -9,6 +9,7 @@ import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.constantpool.ConstantPool;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class ConstantPoolTest {
 	
@@ -43,6 +44,16 @@ public class ConstantPoolTest {
 		PrettyPrinter printer = new PrettyPrinter(writer);
 		printer.printItem(pool);
 		writer.close();
+		
+		byte [] data1 = new byte[pool.getLength()];
+		byte [] data2 = new byte[pool.getLength()];
+		ByteArrayByteBuffer bbuf2 = new ByteArrayByteBuffer(data2);
+		System.arraycopy(data, 8, data1, 0, data1.length);
+		pool.write(bbuf2, 0);
+		
+		assertArrayEquals(data1, data2);
 	}
+	
+	
 
 }
