@@ -48,6 +48,22 @@ public class DoubleInfo extends AbstractConstantPoolEntry {
 	public void setValue(Double value) {
 		this.value = value;
 	}
+
+	@Override
+	public String getPrintName() {
+		return "doubleinfo";
+	}
+
+	@Override
+	public String getPrintArgs() {
+		return null;
+	}
+
+	@Override
+	public String getPrintComment() {
+		return null;
+	}
+	
 	
 	
 

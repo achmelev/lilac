@@ -103,6 +103,23 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry {
 
 
 
+	@Override
+	public String getPrintName() {
+		return "methodhandleinfo";
+	}
+
+	@Override
+	public String getPrintArgs() {
+		return kind+", #"+reference.getPrintLabel();
+	}
+
+	@Override
+	public String getPrintComment() {
+		return reference.getPrintComment();
+	}
+
+
+	
 
 	
 

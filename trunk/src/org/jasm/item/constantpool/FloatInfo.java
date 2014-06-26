@@ -48,6 +48,21 @@ public class FloatInfo extends AbstractConstantPoolEntry {
 	public void setValue(Float value) {
 		this.value = value;
 	}
+
+	@Override
+	public String getPrintName() {
+		return "floatinfo";
+	}
+
+	@Override
+	public String getPrintArgs() {
+		return null;
+	}
+
+	@Override
+	public String getPrintComment() {
+		return null;
+	}
 	
 	
 

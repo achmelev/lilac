@@ -1,10 +1,9 @@
 package org.jasm.item.constantpool;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 
 import org.jasm.bytebuffer.IByteBuffer;
+import org.jasm.bytebuffer.print.PrettyPrinter;
 
 
 public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry {
@@ -46,7 +45,7 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry {
 	protected void doResolve() {
 		reference = new AbstractConstantPoolEntry[getNumberOfReferences()];
 		for (int i=0; i<index.length; i++) {
-			reference[i] = getParent().get(i-1);
+			reference[i] = getParent().get(index[i]-1);
 		}
 	}
 
@@ -78,6 +77,25 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry {
 		
 	}
 	
+	
+	
+
+	@Override
+	public String getPrintArgs() {
+		StringBuffer buf = new StringBuffer();
+		for (int i=0; i<reference.length; i++) {
+			if (i>0) {
+				buf.append(", ");
+			}
+			buf.append("#"+reference[i].getPrintLabel());
+		}
+		
+		return buf.toString();
+	}
+
 	protected abstract int getNumberOfReferences();
+	
+	
+	
 
 }

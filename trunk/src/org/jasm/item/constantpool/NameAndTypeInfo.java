@@ -36,4 +36,14 @@ public class NameAndTypeInfo extends AbstractReferenceEntry {
 		return  getDescriptorReference().getValue();
 	}
 
+	@Override
+	public String getPrintName() {
+		return "nameandtypeinfo";
+	}
+
+	@Override
+	public String getPrintComment() {
+		return getName()+" "+getDescriptor();
+	}
+
 }

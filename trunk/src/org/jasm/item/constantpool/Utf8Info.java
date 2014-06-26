@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.Utf8String;
+import org.jasm.bytebuffer.print.PrettyPrinter;
 
 public class Utf8Info extends AbstractConstantPoolEntry {
 	
@@ -78,6 +79,22 @@ public class Utf8Info extends AbstractConstantPoolEntry {
 	public String toString() {
 		return super.toString()+"("+value+")";
 	}
+
+	@Override
+	public String getPrintName() {
+		return "utf8info";
+	}
+
+	@Override
+	public String getPrintArgs() {
+		return PrettyPrinter.getJavaStyleString(getValue());
+	}
+
+	@Override
+	public String getPrintComment() {
+		return null;
+	}
+	
 	
 	
 
