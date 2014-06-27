@@ -42,7 +42,7 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry {
 
 	@Override
 	protected void doResolve() {
-		reference = getParent().get(index-1);
+		reference = (AbstractConstantPoolEntry)getParent().get(index-1);
 	}
 
 	

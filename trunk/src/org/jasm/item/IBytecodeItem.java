@@ -20,5 +20,10 @@ public interface IBytecodeItem {
 	public String  getPrintArgs();
 	public String  getPrintComment();
 	
+	//Tree
+	public boolean isRoot();
+	public IContainerBytecodeItem  getParent();
+	public void setParent(IContainerBytecodeItem  parent);
+	
 
 }
