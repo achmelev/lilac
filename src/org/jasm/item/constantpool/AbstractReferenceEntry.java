@@ -45,7 +45,7 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry {
 	protected void doResolve() {
 		reference = new AbstractConstantPoolEntry[getNumberOfReferences()];
 		for (int i=0; i<index.length; i++) {
-			reference[i] = getParent().get(index[i]-1);
+			reference[i] = (AbstractConstantPoolEntry)getParent().get(index[i]-1);
 		}
 	}
 

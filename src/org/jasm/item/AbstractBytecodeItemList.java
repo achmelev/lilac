@@ -7,7 +7,7 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> implements IBytecodeItem {
+public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends AbstractByteCodeItem implements IContainerBytecodeItem<T> {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
@@ -66,8 +66,9 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> implemen
 	
 	
 	@Override
-	public void resolve() {
+	protected void doResolve() {
 		for (IBytecodeItem item: items) {
+			item.setParent(this);
 			item.resolve();
 		}
 		

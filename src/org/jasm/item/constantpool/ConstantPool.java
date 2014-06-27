@@ -1,13 +1,17 @@
 package org.jasm.item.constantpool;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jasm.item.AbstractTaggedBytecodeItemList;
 import org.jasm.item.IBytecodeItem;
+import org.jasm.item.IContainerBytecodeItem;
 
 public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstantPoolEntry> {
 
+	
 	public ConstantPool() {
 		super(AbstractConstantPoolEntry.class, "org.jasm.item.constantpool");
 	}
@@ -24,14 +28,10 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		super.add(index, item);
 	}
 	
-	
-
 	@Override
-	public void resolve() {
-		for (IBytecodeItem item: getItems()) {
-			((AbstractConstantPoolEntry)item).setParent(this);
-		}
-		super.resolve();
+	public void remove(AbstractConstantPoolEntry item) {
+		item.setParent(null);
+		super.remove(item);
 	}
 
 	@Override
@@ -72,11 +72,12 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		return null;
 	}
 
-	
-
-	
-	
-	
+	@Override
+	public IContainerBytecodeItem getParent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+		
 	
 
 }

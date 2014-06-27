@@ -9,6 +9,7 @@ import java.io.StringWriter;
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.constantpool.ConstantPool;
+import org.jasm.test.item.DummyRoot;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,7 @@ public class ConstantPoolTest {
 		ByteArrayByteBuffer bbuf = new ByteArrayByteBuffer(data);
 		pool.read(bbuf, 8);
 		
+		pool.setParent(new DummyRoot());
 		pool.resolve();
 		
 		StringWriter sw = new StringWriter();

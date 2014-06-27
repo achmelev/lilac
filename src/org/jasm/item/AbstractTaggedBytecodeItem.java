@@ -2,7 +2,7 @@ package org.jasm.item;
 
 import org.jasm.bytebuffer.IByteBuffer;
 
-public abstract class AbstractTaggedBytecodeItem implements ITaggedBytecodeItem {
+public abstract class AbstractTaggedBytecodeItem extends AbstractByteCodeItem implements ITaggedBytecodeItem {
 
 
 	@Override
@@ -24,6 +24,6 @@ public abstract class AbstractTaggedBytecodeItem implements ITaggedBytecodeItem 
 	public abstract void readBody(IByteBuffer source, long offset);
 	public abstract void writeBody(IByteBuffer target, long offset);
 
-		
+	protected abstract void doResolve();
 
 }
