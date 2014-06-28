@@ -1,6 +1,6 @@
 package org.jasm.item.constantpool;
 
-public class StringInfo extends AbstractReferenceEntry {
+public class StringInfo extends AbstractReferenceEntry implements ITextReferencingEntry {
 	
 	public StringInfo() {
 		
@@ -37,5 +37,7 @@ public class StringInfo extends AbstractReferenceEntry {
 	public String getPrintComment() {
 		return null;
 	}
+	
+	
 
 }

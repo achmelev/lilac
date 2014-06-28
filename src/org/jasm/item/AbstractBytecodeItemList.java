@@ -23,14 +23,22 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 		long currentOffset = offset;
 		size = source.readUnsignedShort(currentOffset)-getSizeDiff();
 		currentOffset+=2;
-		for (int i=0;i<size; i++) {
+		int i = 0;
+		while (i<size) {
 			T item = createEmptyItem(source, currentOffset);
 			
 			item.read(source, currentOffset);
 			if (log.isDebugEnabled()) {
-				log.debug("read item: "+item+";currentOffset="+currentOffset+"; item.length="+item.getLength());
+				log.debug("read item +"+i+"/"+size+": "+item+";currentOffset="+currentOffset+"; item.length="+item.getLength());
 			}
 			items.add(item);
+			i++;
+			if (getItemSizeInList(item)>1) {
+				for (int j=0;j<getItemSizeInList(item)-1; j++) {
+					i++;
+					items.add(null);
+				}
+			}
 			currentOffset+=item.getLength();
 		}
 		
@@ -45,11 +53,13 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 		target.writeUnsignedShort(offset, size+getSizeDiff());
 		currentOffset+=2;
 		for (IBytecodeItem item: items) {
-			item.write(target, currentOffset);
-			if (log.isDebugEnabled()) {
-				log.debug("wrote item: "+item+";currentOffset="+currentOffset+"; item.length="+item.getLength());
+			if (item != null) {
+				item.write(target, currentOffset);
+				if (log.isDebugEnabled()) {
+					log.debug("wrote item: "+item+";currentOffset="+currentOffset+"; item.length="+item.getLength());
+				}
+				currentOffset+=item.getLength();
 			}
-			currentOffset+=item.getLength();
 		}
 		
 	}
@@ -58,7 +68,9 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	public int getLength() {
 		int result = 2;
 		for (IBytecodeItem item: items) {
-			result+=item.getLength();
+			if (item != null) {
+				result+=item.getLength();
+			}
 		}
 		return result;
 	}
@@ -68,8 +80,10 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	@Override
 	protected void doResolve() {
 		for (IBytecodeItem item: items) {
-			item.setParent(this);
-			item.resolve();
+			if (item != null) {
+				item.setParent(this);
+				item.resolve();
+			}
 		}
 		
 	}
@@ -79,22 +93,51 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	}
 	
 	public T get(int index) {
-		return items.get(index);
+		T result = items.get(index);
+		if (result == null) {
+			throw new IllegalArgumentException("Illegal index!");
+		}
+		return result;
 	}
 	
 	public void add(T item) {
 		items.add(item);
 		size++;
+		if (getItemSizeInList(item)>1) {
+			for (int j=0;j<getItemSizeInList(item)-1; j++) {
+				size++;
+				items.add(null);
+			}
+		}
 	}
 	
 	public void add(int index, T item) {
 		items.add(index, item);
 		size++;
+		if (getItemSizeInList(item)>1) {
+			for (int j=0;j<getItemSizeInList(item)-1; j++) {
+				size++;
+				items.add(index+1,null);
+			}
+		}
 	}
 	
 	public void remove( T item) {
-		if (items.remove(item)) {
+		int index = items.indexOf(item);
+		if (index >=0) {
+			items.remove(index);
+			item.setParent(null);
 			size--;
+			if (getItemSizeInList(item)>1) {
+				for (int j=0;j<getItemSizeInList(item)-1; j++) {
+					size--;
+					if (items.get(index) != null) {
+						throw new IllegalStateException("NonNull found at index: "+index);
+					} else {
+						items.remove(index);
+					}
+				}
+			}
 		}
 	}
 	
@@ -113,6 +156,10 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	
 	protected int getSizeDiff() {
 		return 0;
+	}
+	
+	protected int getItemSizeInList(IBytecodeItem item) {
+		return 1;
 	}
 	
 

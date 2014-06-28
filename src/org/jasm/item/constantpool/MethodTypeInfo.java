@@ -1,6 +1,6 @@
 package org.jasm.item.constantpool;
 
-public class MethodTypeInfo extends AbstractReferenceEntry {
+public class MethodTypeInfo extends AbstractReferenceEntry implements ISignatureReferencingEntry {
 	
 	public MethodTypeInfo() {
 		
@@ -36,6 +36,11 @@ public class MethodTypeInfo extends AbstractReferenceEntry {
 	@Override
 	public String getPrintComment() {
 		return getDescriptor();
+	}
+
+	@Override
+	public String[] getReferencedSignatures() {
+		return new String[]{getDescriptor()};
 	}
 
 }
