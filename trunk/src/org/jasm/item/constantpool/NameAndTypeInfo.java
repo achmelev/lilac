@@ -1,6 +1,6 @@
 package org.jasm.item.constantpool;
 
-public class NameAndTypeInfo extends AbstractReferenceEntry {
+public class NameAndTypeInfo extends AbstractReferenceEntry implements INameReferencingEntry, ISignatureReferencingEntry {
 	
 	public NameAndTypeInfo() {
 		
@@ -45,5 +45,17 @@ public class NameAndTypeInfo extends AbstractReferenceEntry {
 	public String getPrintComment() {
 		return getName()+" "+getDescriptor();
 	}
+
+	@Override
+	public String[] getReferencedSignatures() {
+		return new String[]{getDescriptor()};
+	}
+
+	@Override
+	public String[] getReferencedNames() {
+		return new String[]{getName()};
+	}
+	
+	
 
 }

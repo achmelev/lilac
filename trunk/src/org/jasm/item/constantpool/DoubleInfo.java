@@ -2,7 +2,7 @@ package org.jasm.item.constantpool;
 
 import org.jasm.bytebuffer.IByteBuffer;
 
-public class DoubleInfo extends AbstractConstantPoolEntry {
+public class DoubleInfo extends AbstractConstantPoolEntry implements IPrimitiveValueReferencingEntry {
 	
 	private Double value = null;
 	
@@ -56,7 +56,7 @@ public class DoubleInfo extends AbstractConstantPoolEntry {
 
 	@Override
 	public String getPrintArgs() {
-		return null;
+		return value.toString();
 	}
 
 	@Override

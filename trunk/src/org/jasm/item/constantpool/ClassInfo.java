@@ -1,6 +1,6 @@
 package org.jasm.item.constantpool;
 
-public class ClassInfo extends AbstractReferenceEntry {
+public class ClassInfo extends AbstractReferenceEntry implements INameReferencingEntry {
 	
 	public ClassInfo() {
 	}
@@ -35,6 +35,11 @@ public class ClassInfo extends AbstractReferenceEntry {
 	@Override
 	public String getPrintComment() {
 		return getClassName();
+	}
+
+	@Override
+	public String[] getReferencedNames() {
+		return new String[]{getClassName()};
 	}
 	
 	

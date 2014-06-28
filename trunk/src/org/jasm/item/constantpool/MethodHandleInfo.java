@@ -2,7 +2,7 @@ package org.jasm.item.constantpool;
 
 import org.jasm.bytebuffer.IByteBuffer;
 
-public class MethodHandleInfo extends AbstractConstantPoolEntry {
+public class MethodHandleInfo extends AbstractConstantPoolEntry implements INameReferencingEntry, ISignatureReferencingEntry {
 	
 	private MethodHandleReferenceKind kind;
 	private int index = -1;
@@ -116,6 +116,16 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry {
 	@Override
 	public String getPrintComment() {
 		return reference.getPrintComment();
+	}
+
+	@Override
+	public String[] getReferencedSignatures() {
+		return ((AbstractRefInfo)reference).getReferencedNames();
+	}
+
+	@Override
+	public String[] getReferencedNames() {
+		return ((AbstractRefInfo)reference).getReferencedSignatures();
 	}
 
 

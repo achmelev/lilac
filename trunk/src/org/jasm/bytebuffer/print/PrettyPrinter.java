@@ -49,7 +49,10 @@ public class PrettyPrinter {
 			printLine(buf.toString());
 			addIndent();
 			for (IBytecodeItem item1: item.getStructureParts()) {
-				printItem(item1);
+				if (item1 !=null) {
+					printItem(item1);
+				}
+			
 			}
 			removeIndent();
 			printLine("}");

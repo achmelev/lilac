@@ -2,7 +2,7 @@ package org.jasm.item.constantpool;
 
 import org.jasm.bytebuffer.IByteBuffer;
 
-public class FloatInfo extends AbstractConstantPoolEntry {
+public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveValueReferencingEntry {
 	
 	private Float value = null;
 	
@@ -56,7 +56,7 @@ public class FloatInfo extends AbstractConstantPoolEntry {
 
 	@Override
 	public String getPrintArgs() {
-		return null;
+		return value.toString();
 	}
 
 	@Override
