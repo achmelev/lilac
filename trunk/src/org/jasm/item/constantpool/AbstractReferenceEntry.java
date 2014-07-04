@@ -71,7 +71,7 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry {
 			if (reference[i].getParent() == null) {
 				throw new RuntimeException("the referenced  entry is an orphan");
 			}
-			index[i] = reference[i].getParent().indexOf(reference[i])+1;
+			index[i] = getIndexInPool();
 		}
 		
 		
