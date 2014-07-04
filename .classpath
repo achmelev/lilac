@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="lib/jsr305-jar.jar"/>
 	<classpathentry kind="lib" path="lib/reflections-jar.jar" sourcepath="lib/reflections-source.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis-jar.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-jar.jar" sourcepath="lib/commons-codec-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
