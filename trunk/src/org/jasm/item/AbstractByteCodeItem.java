@@ -1,8 +1,11 @@
 package org.jasm.item;
 
+import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.item.constantpool.ConstantPool;
 
 
-public abstract class AbstractByteCodeItem implements IBytecodeItem {
+
+public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable {
 
 	private IContainerBytecodeItem parent = null;
 	
@@ -39,5 +42,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem {
 		return resolved;
 	}
 	
-	
+	public ConstantPool getConstantPool() {
+		return getParent().getConstantPool();
+	}
 }

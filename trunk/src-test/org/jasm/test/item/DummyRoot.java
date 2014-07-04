@@ -3,6 +3,7 @@ package org.jasm.test.item;
 import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
+import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
@@ -34,7 +35,7 @@ public class DummyRoot extends AbstractByteCodeItem implements IContainerBytecod
 	}
 
 	@Override
-	public List<IBytecodeItem> getStructureParts() {
+	public List<IPrintable> getStructureParts() {
 		// TODO Auto-generated method stub
 		return null;
 	}

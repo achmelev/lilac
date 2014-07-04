@@ -2,6 +2,7 @@ package org.jasm.item.constantpool;
 
 import java.util.List;
 
+import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractTaggedBytecodeItem;
 import org.jasm.item.IBytecodeItem;
 
@@ -15,7 +16,7 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 	}
 
 	@Override
-	public List<IBytecodeItem> getStructureParts() {
+	public List<IPrintable> getStructureParts() {
 		return null;
 	}
 
