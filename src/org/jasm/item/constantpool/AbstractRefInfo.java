@@ -47,11 +47,7 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 		return getClassName()+"."+getName()+" "+getSignature();
 	}
 
-	@Override
-	public short getTag() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 
 	@Override
 	public String getPrintName() {

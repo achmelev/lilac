@@ -23,5 +23,9 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 	public String getPrintLabel() {
 		return "cp"+getParent().indexOf(this);
 	}	
+	
+	public int getIndexInPool() {
+		return getParent().indexOf(this)+1;
+	}
 
 }
