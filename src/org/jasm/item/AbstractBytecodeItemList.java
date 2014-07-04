@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
+import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.item.constantpool.ConstantPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -162,5 +164,39 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 		return 1;
 	}
 	
+	@Override
+	public boolean isStructure() {
+		return true;
+	}
 
+	@Override
+	public List<IPrintable> getStructureParts() {
+		List<IPrintable> result = new ArrayList<>();
+		List<T> items = getItems();
+		for (T item : getItems()) {
+			if (item instanceof IPrintable) {
+				result.add((IPrintable)item);
+			}
+		}
+		
+		
+		return result;
+	}
+	
+	@Override
+	public String getPrintLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String getPrintArgs() {
+		return null;
+	}
+
+	@Override
+	public String getPrintComment() {
+		return null;
+	}
+	
 }

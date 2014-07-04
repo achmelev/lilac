@@ -12,14 +12,6 @@ public interface IBytecodeItem {
 	public int getLength();
 	
 	
-	//PrintMethods
-	public boolean isStructure();
-	public List<IBytecodeItem> getStructureParts();
-	public String  getPrintLabel();
-	public String  getPrintName();
-	public String  getPrintArgs();
-	public String  getPrintComment();
-	
 	//Tree
 	public boolean isRoot();
 	public IContainerBytecodeItem  getParent();

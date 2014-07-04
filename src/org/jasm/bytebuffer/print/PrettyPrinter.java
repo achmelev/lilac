@@ -34,7 +34,7 @@ public class PrettyPrinter {
 		}
 	}
 	
-	public void printItem(IBytecodeItem item) {
+	public void printItem(IPrintable item) {
 		
 		StringBuffer buf = new StringBuffer();
 		if (item.getPrintLabel() != null) {
@@ -48,7 +48,7 @@ public class PrettyPrinter {
 			}
 			printLine(buf.toString());
 			addIndent();
-			for (IBytecodeItem item1: item.getStructureParts()) {
+			for (IPrintable item1: item.getStructureParts()) {
 				if (item1 !=null) {
 					printItem(item1);
 				}
