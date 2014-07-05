@@ -51,7 +51,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 		if (log.isDebugEnabled()) {
 			log.debug("Writing items");
 		}
-		int currentOffset = 0;
+		long currentOffset = offset;
 		target.writeUnsignedShort(offset, size+getSizeDiff());
 		currentOffset+=2;
 		for (IBytecodeItem item: items) {
