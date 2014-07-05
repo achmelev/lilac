@@ -60,6 +60,13 @@ public class Interface1Test {
 		assertEquals(clazz.getSuperClass().getClassName(),"java/lang/Object");
 		assertEquals(clazz.getInterfaces().size(), 0);
 		assertEquals(clazz.getAttributes().getSize(), 1);
+		assertTrue(clazz.getModifier().isPublic());
+		assertTrue(clazz.getModifier().isAbstract());
+		assertFalse(clazz.getModifier().isAnnotation());
+		assertFalse(clazz.getModifier().isEnum());
+		assertFalse(clazz.getModifier().isFinal());
+		assertTrue(clazz.getModifier().isInterface());
+		assertFalse(clazz.getModifier().isSuper());
 		
 		byte [] data2 = new byte[clazz.getLength()];
 		ByteArrayByteBuffer bbuf2 = new ByteArrayByteBuffer(data2);
