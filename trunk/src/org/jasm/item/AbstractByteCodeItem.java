@@ -25,7 +25,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 			throw new RuntimeException("Resolve can be called only once on the same instance");
 		}
 		if ((this.parent == null) && !isRoot()) {
-			throw new RuntimeException("Cannot resolve orphan constant pool entry");
+			throw new RuntimeException("Cannot resolve orphan item!");
 		}
 		doResolve();
 		this.resolved = true;
