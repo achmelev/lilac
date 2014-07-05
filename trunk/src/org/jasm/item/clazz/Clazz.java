@@ -14,6 +14,7 @@ import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.attribute.Attributes;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
+import org.jasm.item.modifier.ClassModifier;
 
 
 public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeItem<IBytecodeItem> {
@@ -22,7 +23,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	private int majorVersion = -1;
 	private int minorVersion = -1;
 	private ConstantPool pool = null;
-	private int accessFlags = 0;
+	private ClassModifier modifier = null;
 	private ClassInfo thisClass; 
 	private int thisClassIndex = -1;
 	private ClassInfo superClass;
@@ -38,9 +39,10 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		initChildren();
 	}
 	
-	public Clazz(int minorVersion, int majorVersion) {
+	public Clazz(int minorVersion, int majorVersion, ClassModifier modifier) {
 		this.majorVersion = majorVersion;
 		this.minorVersion = minorVersion;
+		this.modifier = modifier;
 		initChildren();
 	}
 	
@@ -66,7 +68,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		currentOffset+=4;
 		pool.read(source, currentOffset);
 		currentOffset+=pool.getLength();
-		accessFlags = source.readUnsignedShort(currentOffset);
+		modifier = new ClassModifier(source.readUnsignedShort(currentOffset));
 		currentOffset+=2;
 		thisClassIndex = source.readUnsignedShort(currentOffset);
 		currentOffset+=2;
@@ -101,7 +103,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		currentOffset+=8;
 		pool.write(target, currentOffset);
 		currentOffset+=pool.getLength();
-		target.writeUnsignedShort(currentOffset, accessFlags);
+		target.writeUnsignedShort(currentOffset, modifier.getValue());
 		currentOffset+=2;
 		target.writeUnsignedShort(currentOffset, pool.indexOf(thisClass)+1);
 		currentOffset+=2;
@@ -155,7 +157,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			result.add(new SimplePrintable(null, "implements", args, comment));
 			
 		}
-		result.add(new SimplePrintable(null, "access", new String[]{"TODO"}, (String)null));
+		result.add(new SimplePrintable(null, "modifier", new String[]{modifier.toString()}, (String)null));
 		result.add(pool);
 		result.add(attributes);
 		
@@ -251,5 +253,15 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	public List<ClassInfo> getInterfaces() {
 		return interfaces;
 	}
+
+	public ClassModifier getModifier() {
+		return modifier;
+	}
+
+	public void setModifier(ClassModifier modifier) {
+		this.modifier = modifier;
+	}
+	
+	
 
 }
