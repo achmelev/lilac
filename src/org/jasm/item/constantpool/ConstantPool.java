@@ -93,9 +93,9 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 				entriesByName.addToList(ref1, entry);
 			}
 		}
-		if (entry instanceof ISignatureReferencingEntry) {
-			ISignatureReferencingEntry ref = (ISignatureReferencingEntry)entry;
-			for (String ref1: ref.getReferencedSignatures()) {
+		if (entry instanceof IDescriptorReferencingEntry) {
+			IDescriptorReferencingEntry ref = (IDescriptorReferencingEntry)entry;
+			for (String ref1: ref.getReferencedDescriptors()) {
 				entriesBySignature.addToList(ref1, entry);
 			}
 		}
@@ -139,9 +139,9 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 				entriesByName.removeFromList(ref1, entry);
 			}
 		}
-		if (entry instanceof ISignatureReferencingEntry) {
-			ISignatureReferencingEntry ref = (ISignatureReferencingEntry)entry;
-			for (String ref1: ref.getReferencedSignatures()) {
+		if (entry instanceof IDescriptorReferencingEntry) {
+			IDescriptorReferencingEntry ref = (IDescriptorReferencingEntry)entry;
+			for (String ref1: ref.getReferencedDescriptors()) {
 				entriesBySignature.removeFromList(ref1, entry);
 			}
 		}
