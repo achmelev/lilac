@@ -77,11 +77,11 @@ public class ConstantPoolTest {
 		assertSame(pool.getMethodRef("java/lang/Object", "<init>", "()V").getNameAndTypeReference(),pool.getNameAndTypeInfo("<init>", "()V"));
 		assertSame(pool.getMethodRef("java/lang/Object", "<init>", "()V").getClassReference(),pool.getClassInfo("java/lang/Object"));
 		
-		assertNotNull(pool.getFieldRef("org/jasm/test/testclass/Class1", "STRING_CONSTANT", "Ljava/lang/String"));
+		assertNotNull(pool.getFieldRef("org/jasm/test/testclass/Class1", "STRING_CONSTANT", "Ljava/lang/String;"));
 		assertNotNull(pool.getClassInfo("org/jasm/test/testclass/Class1"));
-		assertNotNull(pool.getNameAndTypeInfo("STRING_CONSTANT", "Ljava/lang/String"));
-		assertSame(pool.getFieldRef("org/jasm/test/testclass/Class1", "STRING_CONSTANT", "Ljava/lang/String").getNameAndTypeReference(),pool.getNameAndTypeInfo("STRING_CONSTANT", "Ljava/lang/String"));
-		assertSame(pool.getFieldRef("org/jasm/test/testclass/Class1", "STRING_CONSTANT", "Ljava/lang/String").getClassReference(),pool.getClassInfo("org/jasm/test/testclass/Class1"));
+		assertNotNull(pool.getNameAndTypeInfo("STRING_CONSTANT", "Ljava/lang/String;"));
+		assertSame(pool.getFieldRef("org/jasm/test/testclass/Class1", "STRING_CONSTANT", "Ljava/lang/String;").getNameAndTypeReference(),pool.getNameAndTypeInfo("STRING_CONSTANT", "Ljava/lang/String;"));
+		assertSame(pool.getFieldRef("org/jasm/test/testclass/Class1", "STRING_CONSTANT", "Ljava/lang/String;").getClassReference(),pool.getClassInfo("org/jasm/test/testclass/Class1"));
 		
 		assertNotNull(pool.getLongEntry(10000));
 		assertNotNull(pool.getFloatEntry(10.1f));

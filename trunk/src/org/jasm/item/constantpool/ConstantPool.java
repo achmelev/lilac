@@ -8,14 +8,15 @@ import java.util.Map;
 import org.jasm.item.AbstractTaggedBytecodeItemList;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.map.KeyToListMap;
 
 public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstantPoolEntry> {
 	
 	//TODO - InvokeDynamic
 	
-	private Map<String, List<AbstractConstantPoolEntry>> entriesByName = new HashMap<>();
-	private Map<String, List<AbstractConstantPoolEntry>> entriesBySignature = new HashMap<>();
-	private Map<AbstractConstantPoolEntry, List<AbstractConstantPoolEntry>> entriesByReference = new HashMap<>();
+	private KeyToListMap<String,AbstractConstantPoolEntry> entriesByName = new KeyToListMap<>();
+	private KeyToListMap<String,AbstractConstantPoolEntry> entriesBySignature = new KeyToListMap<String,AbstractConstantPoolEntry>();
+	private KeyToListMap<AbstractConstantPoolEntry, AbstractConstantPoolEntry> entriesByReference = new KeyToListMap<>();
 	private Map<String, AbstractConstantPoolEntry> entriesByText = new HashMap<>();
 	private Map<Object, AbstractConstantPoolEntry> entriesByPrimitive = new HashMap<>();
 	private Map<String, Utf8Info> utf8ByContent = new HashMap<>();
@@ -83,19 +84,19 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		if (entry instanceof AbstractReferenceEntry) {
 			AbstractReferenceEntry ref = (AbstractReferenceEntry)entry;
 			for (AbstractConstantPoolEntry ref1: ref.getReference()) {
-				addToListIndex(entriesByReference, ref1, entry);
+				entriesByReference.addToList(ref1, entry);
 			}
 		}
 		if (entry instanceof INameReferencingEntry) {
 			INameReferencingEntry ref = (INameReferencingEntry)entry;
 			for (String ref1: ref.getReferencedNames()) {
-				addToListIndex(entriesByName, ref1, entry);
+				entriesByName.addToList(ref1, entry);
 			}
 		}
 		if (entry instanceof ISignatureReferencingEntry) {
 			ISignatureReferencingEntry ref = (ISignatureReferencingEntry)entry;
 			for (String ref1: ref.getReferencedSignatures()) {
-				addToListIndex(entriesBySignature, ref1, entry);
+				entriesBySignature.addToList(ref1, entry);
 			}
 		}
 		if (entry instanceof ITextReferencingEntry) {
@@ -129,19 +130,19 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		if (entry instanceof AbstractReferenceEntry) {
 			AbstractReferenceEntry ref = (AbstractReferenceEntry)entry;
 			for (AbstractConstantPoolEntry ref1: ref.getReference()) {
-				removeFromListIndex(entriesByReference, ref1, entry);
+				entriesByReference.removeFromList(ref1, entry);
 			}
 		}
 		if (entry instanceof INameReferencingEntry) {
 			INameReferencingEntry ref = (INameReferencingEntry)entry;
 			for (String ref1: ref.getReferencedNames()) {
-				removeFromListIndex(entriesByName, ref1, entry);
+				entriesByName.removeFromList(ref1, entry);
 			}
 		}
 		if (entry instanceof ISignatureReferencingEntry) {
 			ISignatureReferencingEntry ref = (ISignatureReferencingEntry)entry;
 			for (String ref1: ref.getReferencedSignatures()) {
-				removeFromListIndex(entriesBySignature, ref1, entry);
+				entriesBySignature.removeFromList(ref1, entry);
 			}
 		}
 		if (entry instanceof ITextReferencingEntry) {
@@ -165,21 +166,6 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		
 	}
 	
-	private <T> void addToListIndex(Map<T, List<AbstractConstantPoolEntry>> index, T key, AbstractConstantPoolEntry value) {
-		List<AbstractConstantPoolEntry> values = index.get(key);
-		if (values == null) {
-			values = new ArrayList<>();
-			index.put(key, values);
-		}
-		values.add(value);
-	}
-	
-	private <T> void removeFromListIndex(Map<T, List<AbstractConstantPoolEntry>> index, T key, AbstractConstantPoolEntry value) {
-		List<AbstractConstantPoolEntry> values = index.get(key);
-		if (values != null) {
-			values.remove(value);
-		}
-	}
 	
 	//Access Methods
 	
