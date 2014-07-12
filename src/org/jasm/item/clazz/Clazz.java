@@ -16,6 +16,8 @@ import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.modifier.ClassModifier;
 
+import sun.net.NetHooks;
+
 
 public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeItem<IBytecodeItem> {
 	
@@ -30,6 +32,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	private int superClassIndex = -1;
 	private List<ClassInfo> interfaces;
 	private List<Integer> interfacesIndexes = null;
+	private Fields fields = null;
+	private Methods methods = null;
 	private Attributes attributes = null;
 	
 	private List<IBytecodeItem> children = new ArrayList<>();
@@ -50,9 +54,16 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		pool = new ConstantPool();
 		pool.setParent(this);
 		children.add(pool);
+		fields = new Fields();
+		fields.setParent(this);
+		children.add(fields);
+		methods = new Methods();
+		methods.setParent(this);
+		children.add(methods);
 		attributes = new Attributes();
 		attributes.setParent(this);
 		children.add(attributes);
+		
 	}
 
 	@Override
@@ -81,16 +92,10 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			interfacesIndexes.add(source.readUnsignedShort(currentOffset));
 		}
 		currentOffset+=2;
-		int fieldsCount = source.readUnsignedShort(currentOffset);
-		if (fieldsCount !=0) {
-			throw new IllegalArgumentException("fieldsCount="+fieldsCount);
-		}
-		currentOffset+=2;
-		int methodsCount = source.readUnsignedShort(currentOffset);
-		if (methodsCount !=0) {
-			throw new IllegalArgumentException("methodsCount="+fieldsCount);
-		}
-		currentOffset+=2;
+		fields.read(source, currentOffset);
+		currentOffset+=fields.getLength();
+		methods.read(source, currentOffset);
+		currentOffset+=methods.getLength();
 		attributes.read(source, currentOffset);
 	}
 
@@ -115,10 +120,10 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			target.writeUnsignedShort(currentOffset, pool.indexOf(cl)+1);
 		}
 		currentOffset+=2;
-		target.writeUnsignedShort(currentOffset, 0);
-		currentOffset+=2;
-		target.writeUnsignedShort(currentOffset, 0);
-		currentOffset+=2;
+		fields.write(target, currentOffset);
+		currentOffset+=fields.getLength();
+		methods.write(target, currentOffset);
+		currentOffset+=methods.getLength();
 		attributes.write(target, currentOffset);
 	}
 
@@ -129,7 +134,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		result+=6;
 		result+=2;
 		result+=interfaces.size()*2;
-		result+=4;
+		result+=fields.getLength();
+		result+=methods.getLength();
 		result+=attributes.getLength();
 		return result;
 	}
@@ -144,13 +150,13 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		List<IPrintable> result = new ArrayList<IPrintable>();
 		
 		result.add(new SimplePrintable(null, "version", new String[]{majorVersion+"."+minorVersion}, (String)null));
-		result.add(new SimplePrintable(null, "name", new String[]{"#"+thisClass.getPrintLabel()}, thisClass.getClassName()));
-		result.add(new SimplePrintable(null, "extends", new String[]{"#"+superClass.getPrintLabel()}, superClass.getClassName()));
+		result.add(new SimplePrintable(null, "name", new String[]{thisClass.getPrintLabel()}, thisClass.getClassName()));
+		result.add(new SimplePrintable(null, "extends", new String[]{superClass.getPrintLabel()}, superClass.getClassName()));
 		if (interfaces != null && interfaces.size()>0) {
 			String [] comment = new String[interfaces.size()];
 			String[] args = new String[interfaces.size()];
 			for (int i=0;i<interfaces.size(); i++) {
-				args[i] = "#"+interfaces.get(i).getIndexInPool();
+				args[i] = interfaces.get(i).getPrintLabel();
 				comment[i] = interfaces.get(i).getClassName();
 		
 			}
@@ -160,6 +166,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		result.add(new SimplePrintable(null, "modifier", new String[]{modifier.toString()}, (String)null));
 		result.add(pool);
 		result.add(attributes);
+		result.add(fields);
+		result.add(methods);
 		
 		return result;
 	}
@@ -193,6 +201,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		for (int i=0;i<interfaces.size(); i++) {
 			interfaces.add((ClassInfo)pool.get(interfacesIndexes.get(i)-1));
 		}
+		fields.resolve();
+		methods.resolve();
 		attributes.resolve();
 	}
 
@@ -261,6 +271,16 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	public void setModifier(ClassModifier modifier) {
 		this.modifier = modifier;
 	}
+
+	public Fields getFields() {
+		return fields;
+	}
+
+	public Methods getMethods() {
+		return methods;
+	}
+	
+	
 	
 	
 
