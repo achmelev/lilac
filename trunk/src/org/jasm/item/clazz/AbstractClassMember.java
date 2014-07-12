@@ -90,6 +90,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	protected void doResolve() {
 		this.name = (Utf8Info)getConstantPool().get(this.nameIndex-1);
 		this.descriptor = (Utf8Info)getConstantPool().get(this.descriptorIndex-1);
+		attributes.resolve();
 	}
 	
 	public Attributes getAttributes() {
