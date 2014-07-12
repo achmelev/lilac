@@ -13,5 +13,9 @@ public class Fields extends AbstractClassMemberList<Field> {
 	protected Field createEmptyItem(IByteBuffer source, long offset) {
 		return new Field();
 	}
+	
+	public Field getField(String name, String descriptor) {
+		return getMember(name, descriptor);
+	}
 
 }

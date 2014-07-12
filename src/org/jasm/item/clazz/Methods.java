@@ -13,5 +13,9 @@ public class Methods extends AbstractClassMemberList<Method> {
 	protected Method createEmptyItem(IByteBuffer source, long offset) {
 		return new Method();
 	}
+	
+	public Method getMethod(String name, String descriptor) {
+		return getMember(name, descriptor);
+	}
 
 }
