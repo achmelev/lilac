@@ -1,6 +1,6 @@
 package org.jasm.item.constantpool;
 
-public abstract class AbstractRefInfo extends AbstractReferenceEntry implements INameReferencingEntry, ISignatureReferencingEntry {
+public abstract class AbstractRefInfo extends AbstractReferenceEntry implements INameReferencingEntry, IDescriptorReferencingEntry {
 	
 	public AbstractRefInfo() {
 		
@@ -56,7 +56,7 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 	}
 
 	@Override
-	public String[] getReferencedSignatures() {
+	public String[] getReferencedDescriptors() {
 		return new String[]{getSignature()};
 	}
 
