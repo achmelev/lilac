@@ -110,7 +110,7 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 
 	@Override
 	public String getPrintArgs() {
-		return kind+", #"+reference.getPrintLabel();
+		return kind+", "+reference.getPrintLabel();
 	}
 
 	@Override

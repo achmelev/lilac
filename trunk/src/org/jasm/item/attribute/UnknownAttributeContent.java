@@ -60,7 +60,7 @@ public class UnknownAttributeContent extends AbstractAttributeContent {
 	@Override
 	public String getPrintArgs() {
 		StringBuffer buf = new StringBuffer();
-		buf.append("#"+((Attribute)getParent()).getName().getPrintLabel());
+		buf.append(((Attribute)getParent()).getName().getPrintLabel());
 		buf.append(", ");
 		buf.append("0x"+new String(Hex.encodeHex(data)));
 		return buf.toString();
