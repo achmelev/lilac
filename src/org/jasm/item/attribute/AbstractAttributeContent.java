@@ -14,10 +14,6 @@ public abstract class AbstractAttributeContent extends AbstractByteCodeItem {
 		return lengthToRead;
 	}
 	
-	@Override
-	public String getPrintName() {
-		return "attribute";
-	}
 
 
 }

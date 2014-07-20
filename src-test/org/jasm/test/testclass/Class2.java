@@ -8,6 +8,8 @@ public abstract class Class2  {
 	
 	protected transient Boolean transientField = false;
 	
+	public static final int constInt = 1;
+	
 	
 	
 	private void privateMethod(int a) {
