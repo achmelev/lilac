@@ -5,7 +5,6 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
-import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.Utf8Info;
 
@@ -61,7 +60,12 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 	}
 	
 	private AbstractAttributeContent selectContent() {
-		return new UnknownAttributeContent();
+		if (name.getValue().equals("ConstantValue")) {
+			return new ConstantValueAttributeContent();
+		} else {
+			return new UnknownAttributeContent();
+		}
+		
 	}
 
 	@Override
