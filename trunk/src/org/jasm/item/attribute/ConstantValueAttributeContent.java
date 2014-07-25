@@ -82,6 +82,13 @@ public class ConstantValueAttributeContent extends AbstractAttributeContent {
 	protected void doResolve() {
 		this.valueEntry = (IPrimitiveValueReferencingEntry)getConstantPool().get(this.valueIndex-1);
 	}
-	 
+
+	public AbstractConstantPoolEntry getConstantPoolEntry() {
+		return (AbstractConstantPoolEntry)valueEntry;
+	}
+	
+	public Object getValue() {
+		return valueEntry.getValue();
+	}
 
 }
