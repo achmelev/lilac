@@ -10,6 +10,8 @@ import java.io.StringWriter;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
+import org.jasm.item.attribute.ConstantValueAttributeContent;
+import org.jasm.item.attribute.ExceptionsAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.test.item.DummyRoot;
@@ -78,6 +80,21 @@ public class Class2Test {
 		assertTrue(clazz.getFields().getField(name, descriptor).getModifier().isStatic());
 		assertFalse(clazz.getFields().getField(name, descriptor).getModifier().isSyntetic());
 		assertFalse(clazz.getFields().getField(name, descriptor).getModifier().isTransient());
+		
+		name = "finalIntField"; 
+		descriptor = "I";
+		assertEquals(((ConstantValueAttributeContent)clazz.getFields().getField(name, descriptor).getAttributes().get(0).getContent()).getValue(), new Integer(0));
+		
+		name = "constInt"; 
+		descriptor = "I";
+		assertEquals(((ConstantValueAttributeContent)clazz.getFields().getField(name, descriptor).getAttributes().get(0).getContent()).getValue(), new Integer(1));
+		
+		name = "methodMitException"; 
+		descriptor = "()V";
+		assertEquals(((ExceptionsAttributeContent)clazz.getMethods().getMethod(name, descriptor).getAttributes().get(0).getContent()).getExceptionClassNames().size(),1);
+		assertEquals(((ExceptionsAttributeContent)clazz.getMethods().getMethod(name, descriptor).getAttributes().get(0).getContent()).getExceptionClassNames().get(0),"java/lang/IllegalArgumentException");
+		
+		
 		
 		byte [] data2 = new byte[clazz.getLength()];
 		ByteArrayByteBuffer bbuf2 = new ByteArrayByteBuffer(data2);

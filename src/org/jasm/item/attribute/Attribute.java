@@ -62,6 +62,8 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 	private AbstractAttributeContent selectContent() {
 		if (name.getValue().equals("ConstantValue")) {
 			return new ConstantValueAttributeContent();
+		} else if (name.getValue().equals("Exceptions")) {
+		    return new ExceptionsAttributeContent();
 		} else {
 			return new UnknownAttributeContent();
 		}
@@ -145,6 +147,10 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 
 	public Utf8Info getName() {
 		return name;
+	}
+
+	public AbstractAttributeContent getContent() {
+		return content;
 	}
 	
 	

@@ -21,5 +21,9 @@ public abstract class Class2  {
 		
 	}
 	
+	public void methodMitException() throws IllegalArgumentException {
+		throw new IllegalArgumentException("XXX");
+	}
+	
 
 }
