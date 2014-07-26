@@ -1,5 +1,7 @@
 package org.jasm.item.modifier;
 
+import org.jasm.JasmConsts;
+
 public class FieldModifier extends AbstractClassMemberModifier {
 	
 	private int value = -1;
@@ -60,7 +62,7 @@ public class FieldModifier extends AbstractClassMemberModifier {
 		komma = append(buf, isEnum(), komma, "enum") || komma;
 		String result =  buf.toString();
 		if (result.length() == 0) {
-			return "default";
+			return JasmConsts.DEFAULT;
 		} else {
 			return result;
 		}

@@ -2,7 +2,7 @@ package org.jasm.item.attribute;
 
 import org.jasm.item.AbstractByteCodeItem;
 
-public abstract class AbstractAttributeContent extends AbstractByteCodeItem {
+public abstract class AbstractSimpleAttributeContent extends AbstractByteCodeItem implements IAttributeContent {
 	
 	private int lengthToRead = -1;
 	

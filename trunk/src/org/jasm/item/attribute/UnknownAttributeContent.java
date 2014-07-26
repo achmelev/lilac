@@ -5,9 +5,8 @@ import java.util.List;
 import org.apache.commons.codec.binary.Hex;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
-import org.jasm.item.IBytecodeItem;
 
-public class UnknownAttributeContent extends AbstractAttributeContent {
+public class UnknownAttributeContent extends AbstractSimpleAttributeContent {
 	
 	private byte [] data = null;
 	
@@ -60,8 +59,6 @@ public class UnknownAttributeContent extends AbstractAttributeContent {
 	@Override
 	public String getPrintArgs() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(((Attribute)getParent()).getName().getPrintLabel());
-		buf.append(", ");
 		buf.append("0x"+new String(Hex.encodeHex(data)));
 		return buf.toString();
 	}
