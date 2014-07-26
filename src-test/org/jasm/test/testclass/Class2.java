@@ -25,5 +25,19 @@ public abstract class Class2  {
 		throw new IllegalArgumentException("XXX");
 	}
 	
+	protected void methodWithAnonymousClass() {
+		Runnable run = new Runnable() {
+			
+			@Override
+			public void run() {
+				
+			}
+		};
+	}
+	
+	private class InnerClass {
+		
+	}
+	
 
 }

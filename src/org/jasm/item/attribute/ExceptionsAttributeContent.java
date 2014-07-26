@@ -11,7 +11,7 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
 
-public class ExceptionsAttributeContent extends AbstractAttributeContent {
+public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent {
 	
 	private int [] indexes = null; 
 	private ClassInfo[] classInfos = null;
@@ -72,10 +72,13 @@ public class ExceptionsAttributeContent extends AbstractAttributeContent {
 	@Override
 	public String getPrintArgs() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(((Attribute)getParent()).getName().getPrintLabel());
+		int index = 0;
 		for (ClassInfo cli: classInfos) {
-			buf.append(", ");
+			if (index >0) {
+				buf.append(", ");
+			}
 			buf.append(cli.getPrintLabel());
+			index++;
 		}
 		return buf.toString();
 	}
@@ -83,10 +86,13 @@ public class ExceptionsAttributeContent extends AbstractAttributeContent {
 	@Override
 	public String getPrintComment() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(((Attribute)getParent()).getName().getValue());
+		int index = 0;
 		for (ClassInfo cli: classInfos) {
-			buf.append(", ");
+			if (index > 0) {
+				buf.append(", ");
+			}
 			buf.append(cli.getClassName());
+			index++;
 		}
 		return buf.toString();
 	}

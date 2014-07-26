@@ -8,10 +8,10 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.Utf8Info;
 
-public class Attribute extends AbstractByteCodeItem implements IContainerBytecodeItem<AbstractAttributeContent>{
+public class Attribute extends AbstractByteCodeItem implements IContainerBytecodeItem<IAttributeContent>{
 	
 	private Utf8Info name = null;
-	private AbstractAttributeContent content = null;
+	private IAttributeContent content = null;
 	
 	private int nameIndex = -1;
 	
@@ -23,7 +23,7 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		
 	}
 	
-	public Attribute(AbstractAttributeContent content, Utf8Info name) {
+	public Attribute(AbstractSimpleAttributeContent content, Utf8Info name) {
 		this.name = name;
 		this.content = content;
 		this.content.setParent(this);
@@ -59,11 +59,13 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 
 	}
 	
-	private AbstractAttributeContent selectContent() {
+	private IAttributeContent selectContent() {
 		if (name.getValue().equals("ConstantValue")) {
 			return new ConstantValueAttributeContent();
 		} else if (name.getValue().equals("Exceptions")) {
 		    return new ExceptionsAttributeContent();
+		} else if (name.getValue().equals("InnerClasses")) {
+		    return new InnerClassesAttribute();
 		} else {
 			return new UnknownAttributeContent();
 		}
@@ -127,7 +129,7 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 
 
 	@Override
-	public AbstractAttributeContent get(int index) {
+	public IAttributeContent get(int index) {
 		if (index != 0) {
 			throw new ArrayIndexOutOfBoundsException();
 		}
@@ -137,7 +139,7 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 
 
 	@Override
-	public int indexOf(AbstractAttributeContent item) {
+	public int indexOf(IAttributeContent item) {
 		if (item == content) {
 			return 0;
 		} else {
@@ -149,7 +151,7 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		return name;
 	}
 
-	public AbstractAttributeContent getContent() {
+	public IAttributeContent getContent() {
 		return content;
 	}
 	

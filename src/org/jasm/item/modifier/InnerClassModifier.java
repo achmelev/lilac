@@ -2,11 +2,11 @@ package org.jasm.item.modifier;
 
 import org.jasm.JasmConsts;
 
-public class ClassModifier {
+public class InnerClassModifier {
 	
 	private int value = -1;
 	
-	public ClassModifier(int value) {
+	public InnerClassModifier(int value) {
 		this.value = value;
 	}
 	
@@ -14,13 +14,22 @@ public class ClassModifier {
 		return (this.value & 0x0001) !=0;
 	}
 	
+	public boolean isPrivate() {
+		return (this.value & 0x0002) !=0;
+	}
+	
+	public boolean isProtected() {
+		return (this.value & 0x0004) !=0;
+	}
+	
+	public boolean isStatic() {
+		return (this.value & 0x0004) !=0;
+	}
+	
 	public boolean isFinal() {
 		return (this.value & 0x0010) !=0;
 	}
 	
-	public boolean isSuper() {
-		return (this.value & 0x0020) !=0;
-	}
 	
 	public boolean isInterface() {
 		return (this.value & 0x0200) !=0;
@@ -46,8 +55,10 @@ public class ClassModifier {
 		StringBuffer buf = new StringBuffer();
 		boolean komma = false;
 		komma = append(buf, isPublic(), komma, "public") || komma;
+		komma = append(buf, isProtected(), komma, "protected") || komma;
+		komma = append(buf, isPrivate(), komma, "private") || komma;
+		komma = append(buf, isStatic(), komma, "static") || komma;
 		komma = append(buf, isFinal(), komma, "final") || komma;
-		komma = append(buf, isSuper(), komma, "super") || komma;
 		komma = append(buf, isInterface(), komma, "interface") || komma;
 		komma = append(buf, isAbstract(), komma, "abstract") || komma;
 		komma = append(buf, isSyntetic(), komma, "syntetic") || komma;

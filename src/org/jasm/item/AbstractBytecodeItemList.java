@@ -185,7 +185,6 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	
 	@Override
 	public String getPrintLabel() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

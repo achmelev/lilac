@@ -9,7 +9,7 @@ import org.jasm.item.IBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
 
-public class ConstantValueAttributeContent extends AbstractAttributeContent {
+public class ConstantValueAttributeContent extends AbstractSimpleAttributeContent {
 	
 	private int valueIndex = -1;
 	private IPrimitiveValueReferencingEntry valueEntry = null;
@@ -63,8 +63,6 @@ public class ConstantValueAttributeContent extends AbstractAttributeContent {
 	@Override
 	public String getPrintArgs() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(((Attribute)getParent()).getName().getPrintLabel());
-		buf.append(", ");
 		buf.append(((AbstractConstantPoolEntry)valueEntry).getPrintLabel());
 		return buf.toString();
 	}
@@ -72,8 +70,6 @@ public class ConstantValueAttributeContent extends AbstractAttributeContent {
 	@Override
 	public String getPrintComment() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(((Attribute)getParent()).getName().getValue());
-		buf.append(", ");
 		buf.append(valueEntry.getValue().toString());
 		return buf.toString();
 	}

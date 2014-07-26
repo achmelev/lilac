@@ -1,5 +1,7 @@
 package org.jasm.item.modifier;
 
+import org.jasm.JasmConsts;
+
 public class MethodModifier extends AbstractClassMemberModifier {
 	
 	private int value = -1;
@@ -76,7 +78,7 @@ public class MethodModifier extends AbstractClassMemberModifier {
 		komma = append(buf, isSyntetic(), komma, "syntetic") || komma;
 		String result =  buf.toString();
 		if (result.length() == 0) {
-			return "default";
+			return JasmConsts.DEFAULT;
 		} else {
 			return result;
 		}
