@@ -11,7 +11,7 @@ public abstract class Class2  {
 	public static final int constInt = 1;
 	
 	
-	
+	@Deprecated
 	private void privateMethod(int a) {
 	}
 	

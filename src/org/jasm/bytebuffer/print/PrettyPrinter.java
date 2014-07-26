@@ -56,7 +56,6 @@ public class PrettyPrinter {
 				if (item1 !=null) {
 					printItem(item1);
 				}
-			
 			}
 			removeIndent();
 			printLine("}");
@@ -64,6 +63,7 @@ public class PrettyPrinter {
 			if (item.getPrintArgs() != null) {
 				buf.append(" "+item.getPrintArgs());
 			}
+			buf.append(";");
 			if (item.getPrintComment() != null) {
 				buf.append(" // "+item.getPrintComment());
 			}

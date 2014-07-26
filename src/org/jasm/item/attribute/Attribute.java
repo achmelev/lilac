@@ -74,6 +74,8 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		    return new SignatureAttributeContent();
 		} else if (name.getValue().equals("SourceFile")) {
 		    return new SourceFileAttributeContent();
+		} else if (name.getValue().equals("Deprecated")) {
+		    return new DeprecatedAttributeContent();
 		} else {
 			return new UnknownAttributeContent();
 		}
