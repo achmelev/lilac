@@ -15,12 +15,15 @@ import org.jasm.item.attribute.Attributes;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.modifier.ClassModifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import sun.net.NetHooks;
 
 
 public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeItem<IBytecodeItem> {
 	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	private int majorVersion = -1;
 	private int minorVersion = -1;
@@ -79,12 +82,18 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		currentOffset+=4;
 		pool.read(source, currentOffset);
 		currentOffset+=pool.getLength();
+		if (log.isDebugEnabled()) {
+			log.debug("Reading modifier, class, supetClass, currentOffset="+currentOffset);
+		}
 		modifier = new ClassModifier(source.readUnsignedShort(currentOffset));
 		currentOffset+=2;
 		thisClassIndex = source.readUnsignedShort(currentOffset);
 		currentOffset+=2;
 		superClassIndex = source.readUnsignedShort(currentOffset);
 		currentOffset+=2;
+		if (log.isDebugEnabled()) {
+			log.debug("Reading interfaces, currentOffset="+currentOffset);
+		}
 		int interfacesLength = source.readUnsignedShort(currentOffset);
 		interfacesIndexes = new ArrayList<>();
 		for (int i=0;i<interfacesLength; i++) {
@@ -108,13 +117,20 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		currentOffset+=8;
 		pool.write(target, currentOffset);
 		currentOffset+=pool.getLength();
+		if (log.isDebugEnabled()) {
+			log.debug("Writing modifier, class, supetClass, currentOffset="+currentOffset);
+		}
 		target.writeUnsignedShort(currentOffset, modifier.getValue());
 		currentOffset+=2;
 		target.writeUnsignedShort(currentOffset, pool.indexOf(thisClass)+1);
 		currentOffset+=2;
 		target.writeUnsignedShort(currentOffset, pool.indexOf(superClass)+1);
 		currentOffset+=2;
+		if (log.isDebugEnabled()) {
+			log.debug("Writing interfaces, currentOffset="+currentOffset);
+		}
 		target.writeUnsignedShort(currentOffset, interfaces.size());
+		
 		for (ClassInfo cl: interfaces) {
 			currentOffset+=2;
 			target.writeUnsignedShort(currentOffset, pool.indexOf(cl)+1);
@@ -198,7 +214,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		this.thisClass = (ClassInfo)pool.get(this.thisClassIndex-1);
 		this.superClass = (ClassInfo)pool.get(this.superClassIndex-1);
 		this.interfaces = new ArrayList<>();
-		for (int i=0;i<interfaces.size(); i++) {
+		for (int i=0;i<interfacesIndexes.size(); i++) {
 			interfaces.add((ClassInfo)pool.get(interfacesIndexes.get(i)-1));
 		}
 		fields.resolve();

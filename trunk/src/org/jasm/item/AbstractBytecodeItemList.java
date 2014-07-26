@@ -19,7 +19,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	@Override
 	public void read(IByteBuffer source, long offset) {
 		if (log.isDebugEnabled()) {
-			log.debug("Reading items");
+			log.debug("Reading items, offset="+offset);
 		}
 		items.clear();
 		long currentOffset = offset;
@@ -49,7 +49,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	@Override
 	public void write(IByteBuffer target, long offset) {
 		if (log.isDebugEnabled()) {
-			log.debug("Writing items");
+			log.debug("Writing items, offset="+offset);
 		}
 		long currentOffset = offset;
 		target.writeUnsignedShort(offset, size+getSizeDiff());
