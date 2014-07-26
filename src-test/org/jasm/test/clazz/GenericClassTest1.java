@@ -16,6 +16,8 @@ import org.jasm.item.attribute.ConstantValueAttributeContent;
 import org.jasm.item.attribute.EnclosingMethodAttributeContent;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
 import org.jasm.item.attribute.InnerClassesAttributeContent;
+import org.jasm.item.attribute.SignatureAttributeContent;
+import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.test.item.DummyRoot;
@@ -26,14 +28,14 @@ import org.slf4j.LoggerFactory;
 
 import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
-public class InnerClassClassTest1 {
+public class GenericClassTest1 {
 	
     private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Test
 	public void test() {
 		ClassLoader cl = this.getClass().getClassLoader();
-		InputStream stream = cl.getResourceAsStream("org/jasm/test/testclass/Class2$1.class");
+		InputStream stream = cl.getResourceAsStream("org/jasm/test/testclass/GenericClass.class");
 		ByteArrayOutputStream bo = new ByteArrayOutputStream();
 		byte [] buf = new byte[1024];
 		try {
@@ -64,10 +66,9 @@ public class InnerClassClassTest1 {
 		writer.close();
 		log.debug("code: \n"+sw.toString());
 		
-		
-		Assert.assertEquals("org/jasm/test/testclass/Class2", ((EnclosingMethodAttributeContent)clazz.getAttributes().get(1).getContent()).getClassName());
-		Assert.assertEquals("methodWithAnonymousClass", ((EnclosingMethodAttributeContent)clazz.getAttributes().get(1).getContent()).getMethodName());
-		Assert.assertEquals("()V", ((EnclosingMethodAttributeContent)clazz.getAttributes().get(1).getContent()).getMethodDescriptor());
+		Assert.assertEquals("<T:Ljava/lang/Object;>Ljava/lang/Object;", ((SignatureAttributeContent)clazz.getAttributes().get(1).getContent()).getValue());
+		Assert.assertEquals("GenericClass.java", ((SourceFileAttributeContent)clazz.getAttributes().get(0).getContent()).getValue());
+		Assert.assertEquals("(TT;)TT;", ((SignatureAttributeContent)clazz.getMethods().get(1).getAttributes().get(0).getContent()).getValue());
 		
 		
 		byte [] data2 = new byte[clazz.getLength()];

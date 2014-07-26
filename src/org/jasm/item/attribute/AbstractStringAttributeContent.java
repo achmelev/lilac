@@ -6,17 +6,18 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
+import org.jasm.item.constantpool.Utf8Info;
 
-public class ConstantValueAttributeContent extends AbstractSimpleAttributeContent {
+public abstract class AbstractStringAttributeContent extends AbstractSimpleAttributeContent {
 	
 	private int valueIndex = -1;
-	private IPrimitiveValueReferencingEntry valueEntry = null;
+	private Utf8Info valueEntry = null;
 	
-	public ConstantValueAttributeContent(IPrimitiveValueReferencingEntry entry) {
+	public AbstractStringAttributeContent(Utf8Info entry) {
 		this.valueEntry = entry;
 	}
 	
-	public ConstantValueAttributeContent() {
+	public AbstractStringAttributeContent() {
 		
 	}
 
@@ -27,7 +28,7 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
-		target.writeUnsignedShort(offset, ((AbstractConstantPoolEntry)valueEntry).getIndexInPool());
+		target.writeUnsignedShort(offset, valueEntry.getIndexInPool());
 	}
 
 	@Override
@@ -52,16 +53,12 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 	
 	
 
-	
-	@Override
-	public String getPrintName() {
-		return "constant value";
-	}
+
 
 	@Override
 	public String getPrintArgs() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(((AbstractConstantPoolEntry)valueEntry).getPrintLabel());
+		buf.append(valueEntry.getPrintLabel());
 		return buf.toString();
 	}
 
@@ -74,13 +71,13 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 
 	@Override
 	protected void doResolve() {
-		this.valueEntry = (IPrimitiveValueReferencingEntry)getConstantPool().get(this.valueIndex-1);
+		this.valueEntry = (Utf8Info)getConstantPool().get(this.valueIndex-1);
 	}
 
-	public AbstractConstantPoolEntry getConstantPoolEntry() {
-		return (AbstractConstantPoolEntry)valueEntry;
+	public Utf8Info getValueEntry() {
+		return valueEntry;
 	}
-	
+
 	public Object getValue() {
 		return valueEntry.getValue();
 	}
