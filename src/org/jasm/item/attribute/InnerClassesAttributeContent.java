@@ -3,7 +3,7 @@ package org.jasm.item.attribute;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.item.AbstractBytecodeItemList;
 
-public class InnerClassesAttribute extends AbstractBytecodeItemList<InnerClass> implements IAttributeContent {
+public class InnerClassesAttributeContent extends AbstractBytecodeItemList<InnerClass> implements IAttributeContent {
 	
 	
 	@Override
