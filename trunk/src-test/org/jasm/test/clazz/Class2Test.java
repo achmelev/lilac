@@ -14,7 +14,7 @@ import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
-import org.jasm.item.attribute.InnerClassesAttribute;
+import org.jasm.item.attribute.InnerClassesAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.test.item.DummyRoot;
@@ -73,14 +73,14 @@ public class Class2Test {
 		assertFalse(clazz.getModifier().isInterface());
 		assertTrue(clazz.getModifier().isSuper());
 		
-		assertEquals("org/jasm/test/testclass/Class2$1", ((InnerClassesAttribute)clazz.getAttributes().get(1).getContent()).get(0).getInnerClassName());
-		assertNull(((InnerClassesAttribute)clazz.getAttributes().get(1).getContent()).get(0).getOuterClassName());
-		assertNull(((InnerClassesAttribute)clazz.getAttributes().get(1).getContent()).get(0).getInnerName());
+		assertEquals("org/jasm/test/testclass/Class2$1", ((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(0).getInnerClassName());
+		assertNull(((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(0).getOuterClassName());
+		assertNull(((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(0).getInnerName());
 		
-		assertEquals("org/jasm/test/testclass/Class2$InnerClass", ((InnerClassesAttribute)clazz.getAttributes().get(1).getContent()).get(1).getInnerClassName());
-		assertEquals("org/jasm/test/testclass/Class2", ((InnerClassesAttribute)clazz.getAttributes().get(1).getContent()).get(1).getOuterClassName());
-		assertEquals("InnerClass", ((InnerClassesAttribute)clazz.getAttributes().get(1).getContent()).get(1).getInnerNameValue());
-		assertTrue(((InnerClassesAttribute)clazz.getAttributes().get(1).getContent()).get(1).getModifier().isPrivate());
+		assertEquals("org/jasm/test/testclass/Class2$InnerClass", ((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(1).getInnerClassName());
+		assertEquals("org/jasm/test/testclass/Class2", ((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(1).getOuterClassName());
+		assertEquals("InnerClass", ((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(1).getInnerNameValue());
+		assertTrue(((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(1).getModifier().isPrivate());
 		
 		String name = "staticString"; String descriptor = "Ljava/lang/String;";
 		assertNotNull(clazz.getFields().getField(name, descriptor));

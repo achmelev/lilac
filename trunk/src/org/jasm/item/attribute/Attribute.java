@@ -65,7 +65,9 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		} else if (name.getValue().equals("Exceptions")) {
 		    return new ExceptionsAttributeContent();
 		} else if (name.getValue().equals("InnerClasses")) {
-		    return new InnerClassesAttribute();
+		    return new InnerClassesAttributeContent();
+		} else if (name.getValue().equals("EnclosingMethod")) {
+		    return new EnclosingMethodAttributeContent();
 		} else {
 			return new UnknownAttributeContent();
 		}
