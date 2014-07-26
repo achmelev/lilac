@@ -13,6 +13,7 @@ import java.io.StringWriter;
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
+import org.jasm.item.attribute.DeprecatedAttributeContent;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
 import org.jasm.item.attribute.InnerClassesAttributeContent;
 import org.jasm.item.clazz.Clazz;
@@ -105,6 +106,10 @@ public class Class2Test {
 		descriptor = "()V";
 		assertEquals(((ExceptionsAttributeContent)clazz.getMethods().getMethod(name, descriptor).getAttributes().get(0).getContent()).getExceptionClassNames().size(),1);
 		assertEquals(((ExceptionsAttributeContent)clazz.getMethods().getMethod(name, descriptor).getAttributes().get(0).getContent()).getExceptionClassNames().get(0),"java/lang/IllegalArgumentException");
+		
+		name = "privateMethod"; 
+		descriptor = "(I)V";
+		assertTrue(clazz.getMethods().getMethod(name, descriptor).getAttributes().get(0).getContent() instanceof DeprecatedAttributeContent);
 		
 		
 		
