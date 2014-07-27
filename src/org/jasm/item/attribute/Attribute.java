@@ -6,6 +6,8 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.item.RuntimeInvisibleAnnotationsAttributeContent;
+import org.jasm.item.RuntimeVisibleAnnotationsAttributeContent;
 import org.jasm.item.constantpool.Utf8Info;
 
 public class Attribute extends AbstractByteCodeItem implements IContainerBytecodeItem<IAttributeContent>{
@@ -76,6 +78,10 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		    return new SourceFileAttributeContent();
 		} else if (name.getValue().equals("Deprecated")) {
 		    return new DeprecatedAttributeContent();
+		} else if (name.getValue().equals("RuntimeInvisibleAnnotations")) {
+		    return new RuntimeInvisibleAnnotationsAttributeContent();
+		} else if (name.getValue().equals("RuntimeVisibleAnnotations")) {
+		    return new RuntimeVisibleAnnotationsAttributeContent();
 		} else {
 			return new UnknownAttributeContent();
 		}
