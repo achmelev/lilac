@@ -6,13 +6,15 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.IBytecodeItem;
+import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
 import org.jasm.item.constantpool.IntegerInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
 
-public class AnnotationValue extends AbstractByteCodeItem {
+public class AnnotationElementValue extends AbstractByteCodeItem implements IContainerBytecodeItem<Annotation> {
 	
 	private char tag = 0;
     
@@ -27,13 +29,13 @@ public class AnnotationValue extends AbstractByteCodeItem {
     private int classInfoIndex = -1;
     private Utf8Info classInfo = null;
     
-    private AnnotationValue nestedValue = null;
+    private Annotation nestedAnnotation = null;
     
-    public AnnotationValue() {
+    public AnnotationElementValue() {
     	
     }
     
-    public AnnotationValue(IntegerInfo value, char descriptor) {
+    public AnnotationElementValue(IntegerInfo value, char descriptor) {
     	if (descriptor=='B' || descriptor=='C' || descriptor=='I' || descriptor=='S' || descriptor=='Z') {
     		this.primitiveValueEntry= value;
     		tag = descriptor;
@@ -42,30 +44,31 @@ public class AnnotationValue extends AbstractByteCodeItem {
     	}
     }
     
-    public AnnotationValue(StringInfo value) {
+    public AnnotationElementValue(StringInfo value) {
     	tag = 's';
     	this.primitiveValueEntry = value;
     }
     
-    public AnnotationValue(Utf8Info enumConstName, Utf8Info enumTypeName) {
+    public AnnotationElementValue(Utf8Info enumConstName, Utf8Info enumTypeName) {
     	this.enumConstName = enumConstName;
     	this.enumTypeName = enumTypeName;
     	this.tag = 'e';
     }
     
-    public AnnotationValue(Utf8Info classInfo) {
+    public AnnotationElementValue(Utf8Info classInfo) {
     	this.classInfo = classInfo;
     	this.tag = 'c';
     }
     
-    public AnnotationValue(AnnotationValue nestedValue) {
-    	this.nestedValue = nestedValue;
+    public AnnotationElementValue(Annotation nestedValue) {
+    	this.nestedAnnotation = nestedValue;
     	this.tag = '@';
+    	nestedValue.setParent(this);
     }
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
-		tag = (char)source.readUnsignedShort(offset);
+		tag = (char)source.readUnsignedByte(offset);
 		
 		
 		if (isPrimitiveValue()) {
@@ -76,8 +79,9 @@ public class AnnotationValue extends AbstractByteCodeItem {
 		} else if (isClassValue()) {
 			classInfoIndex = source.readUnsignedShort(offset+1);
 		} else if (isNested()) {
-			nestedValue = new AnnotationValue();
-			nestedValue.read(source, offset+1);
+			nestedAnnotation = new Annotation();
+			nestedAnnotation.setParent(this);
+			nestedAnnotation.read(source, offset+1);
 		} else {
 			throw new IllegalStateException("illegal tag : "+tag);
 		}
@@ -87,7 +91,7 @@ public class AnnotationValue extends AbstractByteCodeItem {
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
-		target.writeUnsignedShort(offset, tag);
+		target.writeUnsignedByte(offset, (short)tag);
 		if (isPrimitiveValue()) {
 			target.writeUnsignedShort(offset+1, primitiveValueEntry.getIndexInPool());
 		} else if (isEnumValue()) {
@@ -96,7 +100,7 @@ public class AnnotationValue extends AbstractByteCodeItem {
 		} else if (isClassValue()) {
 			target.writeUnsignedShort(offset+1, classInfo.getIndexInPool());
 		} else if (isNested()) {
-			nestedValue.write(target, offset+1);
+			nestedAnnotation.write(target, offset+1);
 		} else {
 			throw new IllegalStateException("illegal tag : "+tag);
 		}
@@ -112,7 +116,7 @@ public class AnnotationValue extends AbstractByteCodeItem {
 		} else if (isClassValue()) {
 			return 3;
 		} else if (isNested()) {
-			return 1+nestedValue.getLength();
+			return 1+nestedAnnotation.getLength();
 		} else {
 			throw new IllegalStateException("illegal tag : "+tag);
 		}
@@ -127,7 +131,7 @@ public class AnnotationValue extends AbstractByteCodeItem {
 	public List<IPrintable> getStructureParts() {
 		if (isNested()) {
 			List<IPrintable> result = new ArrayList<IPrintable>();
-			result.add(nestedValue);
+			result.add(nestedAnnotation);
 			return result;
 		} else {
 			return null;
@@ -141,7 +145,7 @@ public class AnnotationValue extends AbstractByteCodeItem {
 
 	@Override
 	public String getPrintName() {
-		return "element value";
+		return "value";
 	}
 
 	@Override
@@ -190,7 +194,7 @@ public class AnnotationValue extends AbstractByteCodeItem {
 		} else if (isClassValue()) {
 			classInfo = (Utf8Info)getConstantPool().get(classInfoIndex-1);
 		} else if (isNested()) {
-			nestedValue.resolve();
+			nestedAnnotation.resolve();
 		} else {
 			throw new IllegalStateException("illegal tag : "+tag);
 		}
@@ -214,11 +218,36 @@ public class AnnotationValue extends AbstractByteCodeItem {
 	}
 	
 	public boolean isClassValue() {
-		return (tag == 'e');
+		return (tag == 'c');
 	}
 	
 	public boolean isNested() {
 		return (tag == '@');
+	}
+
+	@Override
+	public int getSize() {
+		if (isNested()) {
+			return 1;
+		}
+		return 0;
+	}
+
+	@Override
+	public Annotation get(int index) {
+		if (!isNested() || index > 0) {
+			throw new IndexOutOfBoundsException();
+		}
+		return nestedAnnotation;
+	}
+
+	@Override
+	public int indexOf(Annotation item) {
+		if (this.nestedAnnotation == item) {
+			return 0;
+		} else {
+			return -1;
+		}
 	}
 
 }
