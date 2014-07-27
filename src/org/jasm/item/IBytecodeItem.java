@@ -1,6 +1,5 @@
 package org.jasm.item;
 
-import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
 
