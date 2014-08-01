@@ -7,8 +7,12 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.Utf8Info;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Attribute extends AbstractByteCodeItem implements IContainerBytecodeItem<IAttributeContent>{
+	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	private Utf8Info name = null;
 	private IAttributeContent content = null;
@@ -44,6 +48,9 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		}
 		this.sourceBuffer = source;
 		this.contentOffset = offset+6;
+		if (log.isDebugEnabled()) {
+			log.debug("Read attribute "+this.hashCode()+"  offset="+offset+", contentOffset="+contentOffset);
+		}
 		this.contentLength = (int)length;
 	}
 	
@@ -52,6 +59,9 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		this.name = (Utf8Info)getConstantPool().get(this.nameIndex-1);
 		this.content = selectContent();
 		this.content.setParent(this);
+		if (log.isDebugEnabled()) {
+			log.debug("Reading attribute's "+this.hashCode()+" content "+name.getValue()+" at "+contentOffset);
+		}
 		this.content.prepareRead(contentLength);
 		this.content.read(sourceBuffer, contentOffset);
 		this.content.setParent(this);
@@ -80,6 +90,10 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		    return new RuntimeInvisibleAnnotationsAttributeContent();
 		} else if (name.getValue().equals("RuntimeVisibleAnnotations")) {
 		    return new RuntimeVisibleAnnotationsAttributeContent();
+		} else if (name.getValue().equals("RuntimeInvisibleParameterAnnotations")) {
+		    return new RuntimeInvisibleParameterAnnotationsAttributeContent();
+		} else if (name.getValue().equals("RuntimeVisibleParameterAnnotations")) {
+		    return new RuntimeVisibleParameterAnnotationsAttributeContent();
 		} else {
 			return new UnknownAttributeContent();
 		}
