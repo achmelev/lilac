@@ -4,7 +4,7 @@ package org.jasm.item.attribute;
 
 
 public class RuntimeVisibleAnnotationsAttributeContent extends
-		AbstractAnnotations {
+		AbstractAnnotationsAttributeContent {
 
 	@Override
 	public String getPrintName() {

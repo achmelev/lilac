@@ -23,15 +23,22 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 		}
 		items.clear();
 		long currentOffset = offset;
-		size = source.readUnsignedShort(currentOffset)-getSizeDiff();
-		currentOffset+=2;
+		if (sizeFieldLength() == 2) {
+			size = source.readUnsignedShort(currentOffset)-getSizeDiff();
+		} else if (sizeFieldLength() == 1){
+			size = source.readUnsignedByte(currentOffset)-getSizeDiff();
+		} else {
+			throw new IllegalArgumentException("Illegal size length: "+sizeFieldLength());
+		}
+		
+		currentOffset+=sizeFieldLength();
 		int i = 0;
 		while (i<size) {
 			T item = createEmptyItem(source, currentOffset);
 			
 			item.read(source, currentOffset);
 			if (log.isDebugEnabled()) {
-				log.debug("read item +"+i+"/"+size+": "+item+";currentOffset="+currentOffset+"; item.length="+item.getLength());
+				log.debug("read item "+i+"/"+size+": "+item+";currentOffset="+currentOffset+"; item.length="+item.getLength());
 			}
 			items.add(item);
 			i++;
@@ -52,8 +59,15 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 			log.debug("Writing items, offset="+offset);
 		}
 		long currentOffset = offset;
-		target.writeUnsignedShort(offset, size+getSizeDiff());
-		currentOffset+=2;
+		if (sizeFieldLength() == 2) {
+			target.writeUnsignedShort(offset, size+getSizeDiff());
+		} else if (sizeFieldLength() == 1){
+			target.writeUnsignedByte(offset, (short)(size+getSizeDiff()));
+		} else {
+			throw new IllegalArgumentException("Illegal size length: "+sizeFieldLength());
+		}
+		
+		currentOffset+=sizeFieldLength();
 		for (IBytecodeItem item: items) {
 			if (item != null) {
 				item.write(target, currentOffset);
@@ -68,7 +82,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	
 	@Override
 	public int getLength() {
-		int result = 2;
+		int result = sizeFieldLength();
 		for (IBytecodeItem item: items) {
 			if (item != null) {
 				result+=item.getLength();
@@ -196,6 +210,10 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	@Override
 	public String getPrintComment() {
 		return null;
+	}
+	
+	protected int sizeFieldLength() {
+		return 2;
 	}
 	
 }
