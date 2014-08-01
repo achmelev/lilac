@@ -1,8 +1,7 @@
-package org.jasm.item;
+package org.jasm.item.attribute;
 
 import org.jasm.bytebuffer.IByteBuffer;
-import org.jasm.item.attribute.Annotation;
-import org.jasm.item.attribute.IAttributeContent;
+import org.jasm.item.AbstractBytecodeItemList;
 
 public abstract class AbstractAnnotations extends AbstractBytecodeItemList<Annotation> implements IAttributeContent {
 	@Override

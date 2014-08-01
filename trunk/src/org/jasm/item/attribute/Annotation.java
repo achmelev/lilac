@@ -47,9 +47,15 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		target.writeUnsignedShort(offset, type.getIndexInPool());
 		target.writeUnsignedShort(offset+2, values.size());
 		long currentOffset = offset+4;
+		int counter = 0;
 		for (AnnotationElementNameValue value: values) {
+			if (log.isDebugEnabled()) {
+				log.debug("write annotation name/value "+counter+"/"+values.size()+" offset="+currentOffset);
+				counter++;
+			}
 			value.write(target, currentOffset);
 			currentOffset+=value.getLength();
+			
 		}
 
 	}
@@ -121,5 +127,19 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	public int indexOf(AnnotationElementNameValue item) {
 		return values.indexOf(item);
 	}
+
+	public Utf8Info getType() {
+		return type;
+	}
+	
+	public String getTypeValue() {
+		return type.getValue();
+	}
+
+	public List<AnnotationElementNameValue> getValues() {
+		return values;
+	}
+	
+	
 	
 }

@@ -1,5 +1,9 @@
 package org.jasm.test.testclass;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
 public @interface TestAnnotation {
 	
 	String stringValue() default "dummy";
@@ -10,7 +14,7 @@ public @interface TestAnnotation {
 	long longValue();
 	boolean booleanValue();
 	Class clazzValue();
-	//int [] intArrayValue() ;
+	int [] intArrayValue() ;
 	NestedAnnotation nestedAnnotation();
 
 }

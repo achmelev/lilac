@@ -66,7 +66,7 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 
 	@Override
 	public String getPrintName() {
-		return "element value";
+		return "element name value";
 	}
 
 	@Override
@@ -107,4 +107,19 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 		return -1;
 	}
 
+	public Utf8Info getName() {
+		return name;
+	}
+	
+	public String getNameValue() {
+		return name.getValue();
+	}
+
+	public AnnotationElementValue getValue() {
+		return value;
+	}
+	
+	
+	
+	
 }
