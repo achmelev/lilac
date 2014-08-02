@@ -225,6 +225,8 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 				return ((IPrimitiveValueReferencingEntry)primitiveValueEntry).getValue().toString();
 			} else if (primitiveValueEntry instanceof StringInfo) {
 				return ((StringInfo)primitiveValueEntry).getContent();
+			} else if (primitiveValueEntry instanceof Utf8Info) {
+				return ((Utf8Info)primitiveValueEntry).getValue();
 			} else {
 				throw new IllegalStateException("Wrong entry: "+primitiveValueEntry);
 			}
@@ -346,6 +348,8 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 			return ((IPrimitiveValueReferencingEntry)primitiveValueEntry).getValue();
 		} else if (primitiveValueEntry instanceof StringInfo) {
 			return ((StringInfo)primitiveValueEntry).getContent();
+		} else if (primitiveValueEntry instanceof Utf8Info) {
+			return ((Utf8Info)primitiveValueEntry).getValue();
 		} else {
 			throw new IllegalStateException("Wrong entry: "+primitiveValueEntry);
 		}
