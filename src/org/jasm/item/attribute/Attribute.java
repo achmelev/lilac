@@ -60,7 +60,7 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		this.content = selectContent();
 		this.content.setParent(this);
 		if (log.isDebugEnabled()) {
-			log.debug("Reading attribute's "+this.hashCode()+" content "+name.getValue()+" at "+contentOffset);
+			log.debug("Reading (resolving) attribute's "+this.hashCode()+" content "+name.getValue()+" at "+contentOffset);
 		}
 		this.content.prepareRead(contentLength);
 		this.content.read(sourceBuffer, contentOffset);
@@ -104,6 +104,8 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 			return new LocalVariableTableAttributeContent();
 		} else if (name.getValue().equals("LocalVariableTypeTable")) {
 			return new LocalVariableTypeTableAttributeContent();
+		} else if (name.getValue().equals("StackMapTable")) {
+			return new StackMapAttributeContent();
 		} else {
 			return new UnknownAttributeContent();
 		}
