@@ -96,6 +96,8 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		    return new RuntimeVisibleParameterAnnotationsAttributeContent();
 		} else if (name.getValue().equals("AnnotationDefault")) {
 			return new AnnotationDefaultAttributeContent();
+		} else if (name.getValue().equals("Code")) {
+			return new CodeAttributeContent();
 		} else {
 			return new UnknownAttributeContent();
 		}

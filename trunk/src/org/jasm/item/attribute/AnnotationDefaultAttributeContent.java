@@ -11,6 +11,15 @@ public class AnnotationDefaultAttributeContent extends
 		AbstractSimpleAttributeContent implements IContainerBytecodeItem<AnnotationElementValue>{
 	
 	private AnnotationElementValue value = null;
+	
+	public AnnotationDefaultAttributeContent() {
+		
+	}
+	
+	public AnnotationDefaultAttributeContent(AnnotationElementValue value) {
+		this.value = value;
+		this.value.setParent(this);
+	}
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
