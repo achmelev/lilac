@@ -35,6 +35,17 @@ public abstract class Class2  {
 		};
 	}
 	
+	public void methodMitException2() throws IllegalArgumentException {
+		int x;
+		try {
+			x = 2;
+		} catch (RuntimeException e) {
+			x = 1;
+		} finally {
+			x = 3;
+		}
+	}
+	
 	private class InnerClass {
 		
 	}

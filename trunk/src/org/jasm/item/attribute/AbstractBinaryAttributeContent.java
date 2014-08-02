@@ -60,6 +60,11 @@ public abstract class AbstractBinaryAttributeContent extends AbstractSimpleAttri
 	protected void doResolve() {
 
 	}
+
+	public byte[] getData() {
+		return data;
+	}
 	 
+	
 
 }
