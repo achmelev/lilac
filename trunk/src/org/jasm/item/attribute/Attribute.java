@@ -98,6 +98,12 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 			return new AnnotationDefaultAttributeContent();
 		} else if (name.getValue().equals("Code")) {
 			return new CodeAttributeContent();
+		} else if (name.getValue().equals("LineNumberTable")) {
+			return new LineNumberTableAttributeContent();
+		} else if (name.getValue().equals("LocalVariableTable")) {
+			return new LocalVariableTableAttributeContent();
+		} else if (name.getValue().equals("LocalVariableTypeTable")) {
+			return new LocalVariableTypeTableAttributeContent();
 		} else {
 			return new UnknownAttributeContent();
 		}
