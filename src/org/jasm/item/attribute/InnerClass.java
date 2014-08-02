@@ -75,7 +75,7 @@ public class InnerClass extends AbstractByteCodeItem {
 			result.add(new SimplePrintable(null, "outer", outerClass.getPrintLabel(), outerClass.getPrintComment()));
 		} 
 		if (innerName != null) {
-			result.add(new SimplePrintable(null, "name", innerName.getPrintLabel(), innerName.getPrintComment()));
+			result.add(new SimplePrintable(null, "name", innerName.getPrintLabel(), innerName.getValue()));
 		} 
 		result.add(new SimplePrintable(null, "modifier", modifier.toString(), null));
 		return result;
