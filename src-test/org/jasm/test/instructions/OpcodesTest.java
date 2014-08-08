@@ -34,6 +34,8 @@ public class OpcodesTest {
 				counter++;
 				if (!names.contains(line)) {
 					names.add(line);
+				} else {
+					throw new RuntimeException(line+" is already there");
 				}
 				line = reader.readLine();
 			}
