@@ -1,6 +1,16 @@
 package org.jasm.item.instructions;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class OpCodes {
+	
+	private static Map<String, Short> nameToOpcode = new HashMap<>();
+	private static Map<Short, String> opcodeToName = new HashMap<>();
 	
 	public static short aaload = 0x32;
 	public static short aastore = 0x53;
@@ -22,6 +32,7 @@ public class OpCodes {
 	public static short baload= 0x33;
 	public static short bastore = 0x54;
 	public static short bipush= 0x10;
+	public static short caload= 0x34;
 	public static short castore= 0x55;
 	public static short checkcast= 0xc0;
 	public static short d2f= 0x90;
@@ -85,7 +96,7 @@ public class OpCodes {
 	public static short fsub = 0x66;
 	public static short getfield = 0xb4;
 	public static short getstatic = 0xb2;
-	public static short _goto = 0xa7;
+	public static short goto_ = 0xa7;
 	public static short goto_w = 0xc8;
 	public static short i2b= 0x91;
 	public static short i2c= 0x92;
@@ -94,7 +105,7 @@ public class OpCodes {
 	public static short i2l= 0x85;
 	public static short i2s= 0x93;
 	public static short iadd = 0x60;
-	public static short iaload= 0xae;
+	public static short iaload= 0x2e;
 	public static short iand = 0x7e;
 	public static short iastore  = 0x4f;
 	public static short iconst_m1= 0x2;
@@ -103,9 +114,10 @@ public class OpCodes {
 	public static short iconst_2  = 0x5;
 	public static short iconst_3  = 0x6;
 	public static short iconst_4  = 0x7;
-	public static short dconst_5 = 0x8;
+	public static short iconst_5  = 0x8;
 	public static short idiv= 0x6c;
-	public static short if_acmp= 0xa5;
+	public static short if_acmpeq= 0xa5;
+	public static short if_acmpne= 0xa6;
 	public static short if_icmpeq = 0x9f;
 	public static short if_icmpne= 0xa0;
 	public static short if_icmplt = 0xa1;
@@ -128,9 +140,9 @@ public class OpCodes {
 	public static short iload_3 = 0x1d;
 	public static short imul= 0x68;
 	public static short ineg= 0x74;
-	public static short _instanceof= 0xc1;
+	public static short instanceof_= 0xc1;
 	public static short invokedynamic= 0xba;
-	public static short invokeshorterface= 0xb9;
+	public static short invokeinterface= 0xb9;
 	public static short invokespecial = 0xb7;
 	public static short invokestatic= 0xb8;
 	public static short invokevirtual = 0xb6;
@@ -158,16 +170,16 @@ public class OpCodes {
 	public static short lastore= 0x50;
 	public static short lcmp= 0x94;
 	public static short lconst_0= 0x9;
-	public static short lconst_1= 0x1;
+	public static short lconst_1= 0xa;
 	public static short ldc= 0x12;
 	public static short ldc_w= 0x13;
 	public static short ldc2_w = 0x14;
 	public static short ldiv= 0x6d;
 	public static short lload = 0x16;
 	public static short lload_0   = 0x1e;
-	public static short lload_1   = 0x1d;
-	public static short lload_2   = 0x1e;
-	public static short lload_3   = 0x1f;
+	public static short lload_1   = 0x1f;
+	public static short lload_2   = 0x20;
+	public static short lload_3   = 0x21;
 	public static short lmul= 0x69;
 	public static short lneg  = 0x75;
 	public static short lookupswitch = 0xab;
@@ -187,7 +199,7 @@ public class OpCodes {
 	public static short monitorenter = 0xc2;
 	public static short monitorexit  = 0xc3;
 	public static short multianewarray  = 0xc5;
-	public static short _new  = 0xbb;
+	public static short new_  = 0xbb;
 	public static short newarray  = 0xbc;
 	public static short nop= 0x0;
 	public static short pop = 0x57;
@@ -195,7 +207,7 @@ public class OpCodes {
 	public static short putfield= 0xb5;
 	public static short putstatic= 0xb3;
 	public static short ret= 0xa9;
-	public static short _return= 0xb1;
+	public static short return_= 0xb1;
 	public static short saload= 0x35;
 	public static short sastore= 0x56;
 	public static short sipush = 0x11;
@@ -203,5 +215,78 @@ public class OpCodes {
 	public static short tableswitch = 0xaa;
 	public static short wide = 0xc4;
 	
-
+	
+	private static boolean _initialized = false;
+	
+	private static void initialize() {
+		
+		if (!_initialized) {
+			Class cl = null;
+			try {
+				cl = Class.forName("org.jasm.item.instructions.OpCodes");
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+			
+			Field [] fields = cl.getDeclaredFields();
+			for (Field f: fields) {
+				if (Modifier.isStatic(f.getModifiers()) && f.getType().equals(Short.TYPE)) {
+					String name = f.getName();
+					if (name.endsWith("_")) {
+						name = name.substring(0, name.length()-1);
+					}
+					short value = 0;
+					try {
+						value = f.getShort(name);
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+					if (nameToOpcode.containsKey(name)) {
+						throw new IllegalStateException(name+" is already there!");
+					}
+					nameToOpcode.put(name, value);
+					if (opcodeToName.containsKey(value)) {
+						throw new IllegalStateException(value+" is already there!");
+					}
+					opcodeToName.put(value, name);
+					
+				}
+			}
+			
+			_initialized = true;
+		}
+	}
+	
+	public static short getOpcodeForName(String name) {
+		initialize();
+		if (nameToOpcode.containsKey(name)) {
+			return nameToOpcode.get(name);
+		} else {
+			throw new IllegalArgumentException("Unknown name: "+name);
+		}
+	}
+	
+	public static String getNameForOpcode(short opcode) {
+		initialize();
+		if (opcodeToName.containsKey(opcode)) {
+			return opcodeToName.get(opcode);
+		} else {
+			throw new IllegalArgumentException("Unknown op code: "+Integer.toHexString(opcode));
+		}
+	}
+	
+	public static int getNumberOfOpcodes() {
+		initialize();
+		if (opcodeToName.keySet().size() != nameToOpcode.keySet().size()) {
+			throw new IllegalStateException(opcodeToName.keySet().size()+":"+nameToOpcode.keySet().size());
+		}
+		return opcodeToName.keySet().size();
+	}
+	
+	public static List<String> getNames() {
+		List<String> result = new ArrayList<>();
+		result.addAll(nameToOpcode.keySet());
+		return result;
+	}
+	
 }
