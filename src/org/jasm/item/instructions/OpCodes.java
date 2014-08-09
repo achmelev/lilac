@@ -510,50 +510,62 @@ public class OpCodes {
 	}
 
 	public static List<Short> getArgumentLessInstructions() {
+		initialize();
 		return argumentLessInstructions;
 	}
 	
 	public static List<Short> getBranchInstructions() {
+		initialize();
 		return branchInstructions;
 	}
 
 	public static List<Short> getLocalVariableInstructions() {
+		initialize();
 		return localVariableInstructions;
 	}
 
 	public static List<Short> getConstantPoolInstructions() {
+		initialize();
 		return constantPoolInstructions;
 	}
 
 	public static List<Short> getWideBranchInstructions() {
+		initialize();
 		return wideBranchInstructions;
 	}
 
 	public static List<Short> getSpecialInstructions() {
+		initialize();
 		return specialInstructions;
 	}
 	
 	public static boolean isArgumentLessInstruction(short opCode) {
+		initialize();
 		return argumentLessInstructions.contains(opCode);
 	}
 	
 	public static boolean isBranchInstruction(short opCode) {
+		initialize();
 		return branchInstructions.contains(opCode);
 	}
 	
 	public static boolean isLocalVariableInstruction(short opCode) {
+		initialize();
 		return localVariableInstructions.contains(opCode);
 	}
 	
 	public static boolean isConstantPoolInstruction(short opCode) {
+		initialize();
 		return constantPoolInstructions.contains(opCode);
 	}
 	
 	public static boolean isSpecialInstruction(short opCode) {
+		initialize();
 		return specialInstructions.contains(opCode);
 	}
 	
 	public static boolean isWideBranchInstruction(short opCode) {
+		initialize();
 		return wideBranchInstructions.contains(opCode);
 	}
 
