@@ -394,7 +394,7 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		if (isPrimitiveValue()) {
 			return new AbstractConstantPoolEntry[]{primitiveValueEntry};
 		} else if (isEnumValue()) {

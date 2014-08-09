@@ -21,7 +21,7 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 	}
 	
 	public ClassInfo getClassReference() {
-		return (ClassInfo)getReference()[0];
+		return (ClassInfo)getConstantReferences()[0];
 	}
 	
 	public String getClassName() {
@@ -29,7 +29,7 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 	}
 	
 	public NameAndTypeInfo getNameAndTypeReference() {
-		return (NameAndTypeInfo)getReference()[1];
+		return (NameAndTypeInfo)getConstantReferences()[1];
 	}
 	
 	public String getName() {

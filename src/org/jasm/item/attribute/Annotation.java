@@ -149,7 +149,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{type};
 	}
 	

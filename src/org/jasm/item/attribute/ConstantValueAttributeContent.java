@@ -87,7 +87,7 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{(AbstractConstantPoolEntry)valueEntry};
 	}
 

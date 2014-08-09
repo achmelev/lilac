@@ -158,7 +158,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{name, descriptor};
 	}
 	

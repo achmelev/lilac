@@ -121,7 +121,7 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return classInfos;
 	}
 

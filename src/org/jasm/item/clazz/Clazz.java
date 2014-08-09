@@ -317,7 +317,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		AbstractConstantPoolEntry[] result = new AbstractConstantPoolEntry[interfaces.size()+2];
 		result[0] = thisClass;
 		result[1] = superClass;

@@ -5,11 +5,15 @@ import java.util.List;
 
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.ConstantPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 
 public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable {
 
+	private Logger log = LoggerFactory.getLogger(this.getClass());
+	
 	private IContainerBytecodeItem parent = null;
 	
 	private boolean resolved = false;
@@ -53,6 +57,9 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	public void updateMetadata() {
 		if (!this.resolved) {
 			throw new RuntimeException("updateMetadata can be called only resolve");
+		}
+		if (log.isDebugEnabled()) {
+			log.debug("update meta data");
 		}
 		if (this instanceof IContainerBytecodeItem) {
 			IContainerBytecodeItem<IBytecodeItem> container = (IContainerBytecodeItem<IBytecodeItem>)this;

@@ -10,6 +10,9 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.IConstantPoolReference;
+import org.jasm.map.KeyToListMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +24,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	private Map<Integer, AbstractInstruction> offsets = new HashMap<>();
 	
 	private List<AbstractInstruction> items = new ArrayList<>();
+	
+	private KeyToListMap<AbstractInstruction, IBytecodeItem> instructionReferences = new KeyToListMap<>();
 	
 	@Override
 	public String getPrintName() {
@@ -239,6 +244,33 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	}
 
 
+
+	@Override
+	protected void doUpdateMetadata() {
+		instructionReferences.clear();
+		List<IBytecodeItem> allItems = ((AbstractByteCodeItem)getParent()).getAllItemsFromHere();
+		for (IBytecodeItem item: allItems) {
+			if (item instanceof IInstructionReference) {
+				IInstructionReference ir = (IInstructionReference)item;
+				AbstractInstruction[] refs = ir.getInstructionReferences();
+				for (AbstractInstruction r:refs) {
+					if (!items.contains(r)) {
+						throw new IllegalStateException(r+" isn't in list!");
+					}
+					instructionReferences.addToList(r, item);
+				}
+			}
+		}
+	}
+	
+	public List<IBytecodeItem> getReferencingItems(AbstractInstruction ir) {
+		if (!items.contains(ir)) {
+			throw new IllegalArgumentException("Entry insn't in pool: "+ir);
+		}
+		return instructionReferences.get(ir);
+	}
+
+	
 
 	
 	

@@ -5,7 +5,7 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
-public class BranchInstruction extends AbstractInstruction {
+public class BranchInstruction extends AbstractInstruction implements IInstructionReference {
 	
 	
 	private int targetOffset = -1;
@@ -35,7 +35,7 @@ public class BranchInstruction extends AbstractInstruction {
 
 	@Override
 	public String getPrintArgs() {
-		return "target"+targetInst.getOffsetInCode();
+		return targetInst.getPrintLabel();
 	}
 
 	@Override
@@ -56,6 +56,11 @@ public class BranchInstruction extends AbstractInstruction {
 	@Override
 	protected void doResolve() {
 		targetInst = getInstructions().getInstructionAtOffset(this.getOffsetInCode()+targetOffset);
+	}
+
+	@Override
+	public AbstractInstruction[] getInstructionReferences() {
+		return new AbstractInstruction[]{targetInst};
 	}
 
 }

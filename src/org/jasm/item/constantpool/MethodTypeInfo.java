@@ -21,7 +21,7 @@ public class MethodTypeInfo extends AbstractReferenceEntry implements IDescripto
 	}
 	
 	public Utf8Info getDescriptorReference() {
-		return (Utf8Info)getReference()[0];
+		return (Utf8Info)getConstantReferences()[0];
 	}
 	
 	public String getDescriptor() {

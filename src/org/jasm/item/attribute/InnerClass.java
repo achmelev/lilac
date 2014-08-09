@@ -150,7 +150,7 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		ArrayList<AbstractConstantPoolEntry> result = new ArrayList<>();
 		result.add(innerClass);
 		if (innerName != null) {

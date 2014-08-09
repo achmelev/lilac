@@ -51,7 +51,7 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 
 	
 	
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return reference;
 	}
 
