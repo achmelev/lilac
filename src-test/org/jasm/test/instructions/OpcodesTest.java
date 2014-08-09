@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -31,6 +33,30 @@ public class OpcodesTest {
 				short code = OpCodes.getOpcodeForName(line);
 				String name = OpCodes.getNameForOpcode(code);
 				Assert.assertEquals(line, name);
+				
+				int categoryCounter = 0;
+				if (OpCodes.isArgumentLessInstruction(code)) {
+					categoryCounter++;
+				}
+				if (OpCodes.isBranchInstruction(code)) {
+					categoryCounter++;
+				}
+				if (OpCodes.isConstantPoolInstruction(code)) {
+					categoryCounter++;
+				}
+				if (OpCodes.isLocalVariableInstruction(code)) {
+					categoryCounter++;
+				}
+				if (OpCodes.isSpecialInstruction(code)) {
+					categoryCounter++;
+				}
+				if (OpCodes.isWideBranchInstruction(code)) {
+					categoryCounter++;
+				}
+				if (categoryCounter != 1) {
+					Assert.fail(line+" in no category!");
+				}
+				
 				counter++;
 				if (!names.contains(line)) {
 					names.add(line);
@@ -39,6 +65,7 @@ public class OpcodesTest {
 				}
 				line = reader.readLine();
 			}
+			testUniquinessString(names);
 			if (names.size() < OpCodes.getNames().size()) {
 				log.debug("Unexpected names:");
 				for (String s: OpCodes.getNames()) {
@@ -57,10 +84,40 @@ public class OpcodesTest {
 				Assert.fail("Missing names, see above");
 			}
 			
+			testUniquinessShort(OpCodes.getArgumentLessInstructions());
+			testUniquinessShort(OpCodes.getBranchInstructions());
+			testUniquinessShort(OpCodes.getConstantPoolInstructions());
+			testUniquinessShort(OpCodes.getLocalVariableInstructions());
+			testUniquinessShort(OpCodes.getSpecialInstructions());
+			testUniquinessShort(OpCodes.getWideBranchInstructions());
+			
+			Assert.assertEquals(names.size(), OpCodes.getArgumentLessInstructions().size()+OpCodes.getBranchInstructions().size()+OpCodes.getConstantPoolInstructions().size()+OpCodes.getLocalVariableInstructions().size()+OpCodes.getSpecialInstructions().size()+OpCodes.getWideBranchInstructions().size());
 			
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	private void testUniquinessShort(List<Short> codes) {
+		Set<Short> s = new HashSet<>();
+		s.addAll(codes);
+		for (Short s1: s) {
+			if (codes.indexOf(s1) != codes.lastIndexOf(s1)) {
+				Assert.fail(Integer.toHexString(s1)+" isn't unique");
+			}
+		}
+		
+	}
+	
+	private void testUniquinessString(List<String> codes) {
+		Set<String> s = new HashSet<>();
+		s.addAll(codes);
+		for (String s1: s) {
+			if (codes.indexOf(s1) != codes.lastIndexOf(s1)) {
+				Assert.fail(s1+" isn't unique");
+			}
+		}
+		
 	}
 
 }
