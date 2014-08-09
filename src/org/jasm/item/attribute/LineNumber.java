@@ -5,11 +5,22 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.Instructions;
 
 public class LineNumber extends AbstractByteCodeItem {
 	
 	private int startPC = -1;
+	AbstractInstruction startInstruction = null;
 	private int lineNumber = -1;
+	
+	public LineNumber() {
+		
+	}
+	
+	public LineNumber(AbstractInstruction startInstruction) {
+		this.startInstruction = startInstruction;
+	}
 	
 
 	@Override
@@ -20,7 +31,8 @@ public class LineNumber extends AbstractByteCodeItem {
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
-		target.writeUnsignedShort(offset, startPC);
+		Instructions instr = ((CodeAttributeContent)getParent().getParent().getParent().getParent()).getInstructions();
+		target.writeUnsignedShort(offset, startInstruction.getOffsetInCode());
 		target.writeUnsignedShort(offset+2, lineNumber);
 	}
 
@@ -31,13 +43,11 @@ public class LineNumber extends AbstractByteCodeItem {
 
 	@Override
 	public boolean isStructure() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public List<IPrintable> getStructureParts() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -53,7 +63,7 @@ public class LineNumber extends AbstractByteCodeItem {
 
 	@Override
 	public String getPrintArgs() {
-		return startPC+", "+lineNumber;
+		return startInstruction.getOffsetInCode()+", "+lineNumber;
 	}
 
 	@Override
@@ -63,7 +73,8 @@ public class LineNumber extends AbstractByteCodeItem {
 
 	@Override
 	protected void doResolve() {
-
+		Instructions instr = ((CodeAttributeContent)getParent().getParent().getParent().getParent()).getInstructions();
+		startInstruction = instr.getInstructionAtOffset(startPC);
 	}
 
 }

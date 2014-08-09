@@ -151,4 +151,26 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 		return 1;
 	}
 
+	public int getMaxStack() {
+		return maxStack;
+	}
+
+	public int getMaxLocals() {
+		return maxLocals;
+	}
+
+	public Instructions getInstructions() {
+		return instructions;
+	}
+
+	public ExceptionHandlerTable getExceptionTable() {
+		return exceptionTable;
+	}
+
+	public Attributes getAttributes() {
+		return attributes;
+	}
+	
+	
+
 }
