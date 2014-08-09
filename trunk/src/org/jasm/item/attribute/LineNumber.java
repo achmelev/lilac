@@ -6,9 +6,10 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.Instructions;
 
-public class LineNumber extends AbstractByteCodeItem {
+public class LineNumber extends AbstractByteCodeItem implements IInstructionReference {
 	
 	private int startPC = -1;
 	AbstractInstruction startInstruction = null;
@@ -63,7 +64,7 @@ public class LineNumber extends AbstractByteCodeItem {
 
 	@Override
 	public String getPrintArgs() {
-		return startInstruction.getOffsetInCode()+", "+lineNumber;
+		return startInstruction.getPrintLabel()+", "+lineNumber;
 	}
 
 	@Override
@@ -75,6 +76,11 @@ public class LineNumber extends AbstractByteCodeItem {
 	protected void doResolve() {
 		Instructions instr = ((CodeAttributeContent)getParent().getParent().getParent().getParent()).getInstructions();
 		startInstruction = instr.getInstructionAtOffset(startPC);
+	}
+
+	@Override
+	public AbstractInstruction[] getInstructionReferences() {
+		return new AbstractInstruction[]{startInstruction};
 	}
 
 }

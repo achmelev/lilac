@@ -124,13 +124,17 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 
 	@Override
 	public int getSize() {
-		return 1;
+		return 3;
 	}
 
 	@Override
 	public IBytecodeItem get(int index) {
 		if (index == 0) {
 			return attributes;
+		} else if (index == 1) {
+			return exceptionTable;
+		} else if (index == 2) {
+			return instructions;
 		} else {
 			throw new IndexOutOfBoundsException(index+"");
 		}
@@ -140,6 +144,10 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 	public int indexOf(IBytecodeItem item) {
 		if (item == attributes) {
 			return 0;
+		} else if (item == exceptionTable) {
+			return 1;
+		} else if (item == instructions) {
+			return 2;
 		} else {
 			return -1;
 		}

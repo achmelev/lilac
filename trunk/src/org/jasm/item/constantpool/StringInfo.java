@@ -21,7 +21,7 @@ public class StringInfo extends AbstractReferenceEntry implements ITextReferenci
 	}
 	
 	public Utf8Info getUtf8Reference() {
-		return (Utf8Info)getReference()[0];
+		return (Utf8Info)getConstantReferences()[0];
 	}
 	
 	public String getContent() {

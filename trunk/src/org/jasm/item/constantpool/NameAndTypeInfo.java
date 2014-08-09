@@ -21,7 +21,7 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 	}
 	
 	public Utf8Info getNameReference() {
-		return (Utf8Info)getReference()[0];
+		return (Utf8Info)getConstantReferences()[0];
 	}
 	
 	public String getName() {
@@ -29,7 +29,7 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 	}
 	
 	public Utf8Info getDescriptorReference() {
-		return  (Utf8Info)getReference()[1];
+		return  (Utf8Info)getConstantReferences()[1];
 	}
 	
 	public String getDescriptor() {

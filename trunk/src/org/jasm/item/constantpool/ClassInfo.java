@@ -20,7 +20,7 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 	}
 	
 	public Utf8Info getClassNameReference() {
-		return  (Utf8Info)getReference()[0];
+		return  (Utf8Info)getConstantReferences()[0];
 	}
 	
 	public String getClassName() {

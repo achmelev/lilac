@@ -128,7 +128,7 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{name};
 	}
 	

@@ -57,7 +57,12 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem {
 
 	@Override
 	public String getPrintLabel() {
-		return null;
+		Instructions instr = (Instructions)getParent();
+		if (instr.getReferencingItems(this).size() > 0) {
+			return "ir"+this.getOffsetInCode();
+		} else {
+			return null;
+		}
 	}
 
 	@Override

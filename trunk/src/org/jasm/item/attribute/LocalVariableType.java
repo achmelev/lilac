@@ -80,7 +80,7 @@ public class LocalVariableType extends AbstractByteCodeItem implements IConstant
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{name,signature};
 	}
 

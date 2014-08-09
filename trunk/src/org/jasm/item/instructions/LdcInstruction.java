@@ -60,7 +60,7 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{cpEntry};
 	}
 

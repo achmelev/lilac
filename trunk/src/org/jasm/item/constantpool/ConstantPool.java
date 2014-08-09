@@ -231,10 +231,10 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		for (IBytecodeItem item: allItems) {
 			if (item instanceof IConstantPoolReference) {
 				IConstantPoolReference cr = (IConstantPoolReference)item;
-				AbstractConstantPoolEntry[] refs = cr.getReference();
+				AbstractConstantPoolEntry[] refs = cr.getConstantReferences();
 				for (AbstractConstantPoolEntry r:refs) {
 					if (!getItems().contains(r)) {
-						throw new IllegalStateException(r+" isn't in pool!");
+						throw new IllegalStateException(r+" isn't in pool, from "+item);
 					}
 					entryReferences.addToList(r, item);
 				}

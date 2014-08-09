@@ -84,7 +84,7 @@ public abstract class AbstractStringAttributeContent extends AbstractSimpleAttri
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{valueEntry};
 	}
 	

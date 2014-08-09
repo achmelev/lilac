@@ -111,7 +111,7 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{clazz,method};
 	}
 

@@ -10,9 +10,10 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.Instructions;
 
-public class ExceptionHandler extends AbstractByteCodeItem implements IConstantPoolReference {
+public class ExceptionHandler extends AbstractByteCodeItem implements IConstantPoolReference, IInstructionReference {
 	
 	private int startPC = -1;
 	private int endPC = -1;
@@ -85,7 +86,7 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 
 	@Override
 	public String getPrintArgs() {
-		return startInstruction.getOffsetInCode()+", "+endInstruction.getOffsetInCode()+", "+handlerInstruction.getOffsetInCode()+", "+(catchType==null?JasmConsts.NIL:catchType.getPrintLabel());
+		return startInstruction.getPrintLabel()+", "+endInstruction.getPrintLabel()+", "+handlerInstruction.getPrintLabel()+", "+(catchType==null?JasmConsts.NIL:catchType.getPrintLabel());
 	}
 
 	@Override
@@ -110,8 +111,18 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
-		return new AbstractConstantPoolEntry[]{catchType};
+	public AbstractConstantPoolEntry[] getConstantReferences() {
+		if (catchType != null) {
+			return new AbstractConstantPoolEntry[]{catchType};
+		} else {
+			return new AbstractConstantPoolEntry[]{};
+		}
+		
+	}
+
+	@Override
+	public AbstractInstruction[] getInstructionReferences() {
+		return new AbstractInstruction[]{startInstruction,endInstruction,handlerInstruction};
 	}
 
 }

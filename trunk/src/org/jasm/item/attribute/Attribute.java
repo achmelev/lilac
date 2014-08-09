@@ -204,7 +204,7 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 	}
 
 	@Override
-	public AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{name};
 	}
 	
