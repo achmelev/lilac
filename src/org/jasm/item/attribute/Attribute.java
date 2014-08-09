@@ -5,6 +5,7 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.Utf8Info;
 import org.slf4j.Logger;
@@ -193,6 +194,11 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 
 	public IAttributeContent getContent() {
 		return content;
+	}
+
+	@Override
+	public int getItemSizeInList(IBytecodeItem item) {
+		return 1;
 	}
 	
 	

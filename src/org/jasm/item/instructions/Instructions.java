@@ -233,6 +233,13 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 
 
 
+	@Override
+	public int getItemSizeInList(IBytecodeItem item) {
+		return 1;
+	}
+
+
+
 	
 	
 

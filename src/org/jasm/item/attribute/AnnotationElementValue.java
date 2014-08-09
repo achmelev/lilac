@@ -386,6 +386,11 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 	public AnnotationElementValue[] getArrayMembers() {
 		return arrayMembers;
 	}
+
+	@Override
+	public int getItemSizeInList(IBytecodeItem item) {
+		return 1;
+	}
 	
 	
 }

@@ -146,4 +146,9 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 		
 	}
 
+	@Override
+	public int getItemSizeInList(IBytecodeItem item) {
+		return 1;
+	}
+
 }

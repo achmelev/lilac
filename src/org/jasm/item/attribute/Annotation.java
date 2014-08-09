@@ -7,6 +7,7 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
 import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.Utf8Info;
 import org.slf4j.Logger;
@@ -138,6 +139,11 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 
 	public List<AnnotationElementNameValue> getValues() {
 		return values;
+	}
+
+	@Override
+	public int getItemSizeInList(IBytecodeItem item) {
+		return 1;
 	}
 	
 	

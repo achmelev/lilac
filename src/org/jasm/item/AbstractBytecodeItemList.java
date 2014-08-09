@@ -111,7 +111,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	public T get(int index) {
 		T result = items.get(index);
 		if (result == null) {
-			throw new IllegalArgumentException("Illegal index!");
+			throw new IllegalArgumentException("Illegal index: "+index);
 		}
 		return result;
 	}
@@ -174,7 +174,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 		return 0;
 	}
 	
-	protected int getItemSizeInList(IBytecodeItem item) {
+	public int getItemSizeInList(IBytecodeItem item) {
 		return 1;
 	}
 	
@@ -215,5 +215,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	protected int sizeFieldLength() {
 		return 2;
 	}
+
+	
 	
 }
