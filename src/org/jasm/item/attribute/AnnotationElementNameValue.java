@@ -9,9 +9,11 @@ import org.jasm.bytebuffer.print.SimplePrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 
-public class AnnotationElementNameValue extends AbstractByteCodeItem implements IContainerBytecodeItem<AnnotationElementValue>{
+public class AnnotationElementNameValue extends AbstractByteCodeItem implements IContainerBytecodeItem<AnnotationElementValue>, IConstantPoolReference {
 	
 	private int nameIndex = -1;
 	private Utf8Info name = null;
@@ -123,6 +125,11 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 	@Override
 	public int getItemSizeInList(IBytecodeItem item) {
 		return 1;
+	}
+
+	@Override
+	public AbstractConstantPoolEntry[] getReference() {
+		return new AbstractConstantPoolEntry[]{name};
 	}
 	
 	

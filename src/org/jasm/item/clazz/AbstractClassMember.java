@@ -10,10 +10,12 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.attribute.Attributes;
+import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.AbstractClassMemberModifier;
 
-public abstract class AbstractClassMember<T extends AbstractClassMemberModifier> extends AbstractByteCodeItem implements IContainerBytecodeItem<Attributes> {
+public abstract class AbstractClassMember<T extends AbstractClassMemberModifier> extends AbstractByteCodeItem implements IContainerBytecodeItem<Attributes>, IConstantPoolReference {
 	
 	private T modifier = null;
 	private Utf8Info name = null;
@@ -153,6 +155,11 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	@Override
 	public int getItemSizeInList(IBytecodeItem item) {
 		return 1;
+	}
+
+	@Override
+	public AbstractConstantPoolEntry[] getReference() {
+		return new AbstractConstantPoolEntry[]{name, descriptor};
 	}
 	
 	

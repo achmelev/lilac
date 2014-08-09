@@ -5,9 +5,11 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 
-public class LocalVariable extends AbstractByteCodeItem {
+public class LocalVariable extends AbstractByteCodeItem implements IConstantPoolReference {
 	
 	private int startPC = -1;
 	private int length = -1;
@@ -75,6 +77,11 @@ public class LocalVariable extends AbstractByteCodeItem {
 		name  = (Utf8Info)getConstantPool().get(nameIndex-1);
 		descriptor = (Utf8Info)getConstantPool().get(descriptorIndex-1);
 
+	}
+
+	@Override
+	public AbstractConstantPoolEntry[] getReference() {
+		return new AbstractConstantPoolEntry[]{name,descriptor};
 	}
 
 }

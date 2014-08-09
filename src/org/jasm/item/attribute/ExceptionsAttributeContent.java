@@ -9,9 +9,10 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
+import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
 
-public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent {
+public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
 	
 	private int [] indexes = null; 
 	private ClassInfo[] classInfos = null;
@@ -117,6 +118,11 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent {
 			result.add(cli.getClassName());
 		}
 		return result;
+	}
+
+	@Override
+	public AbstractConstantPoolEntry[] getReference() {
+		return classInfos;
 	}
 
 }

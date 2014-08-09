@@ -5,8 +5,9 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.IConstantPoolReference;
 
-public class ConstantPoolInstruction extends AbstractInstruction {
+public class ConstantPoolInstruction extends AbstractInstruction implements IConstantPoolReference {
 	
 	private int cpEntryIndex = -1;
 	private AbstractConstantPoolEntry cpEntry = null; 
@@ -56,6 +57,11 @@ public class ConstantPoolInstruction extends AbstractInstruction {
 	@Override
 	protected void doResolve() {
 		cpEntry = getConstantPool().get(cpEntryIndex-1);
+	}
+
+	@Override
+	public AbstractConstantPoolEntry[] getReference() {
+		return new AbstractConstantPoolEntry[]{cpEntry};
 	}
 
 }

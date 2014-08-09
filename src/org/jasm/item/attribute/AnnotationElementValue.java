@@ -11,6 +11,7 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
 import org.jasm.item.constantpool.IntegerInfo;
 import org.jasm.item.constantpool.StringInfo;
@@ -19,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class AnnotationElementValue extends AbstractByteCodeItem implements IContainerBytecodeItem<IBytecodeItem> {
+public class AnnotationElementValue extends AbstractByteCodeItem implements IContainerBytecodeItem<IBytecodeItem>, IConstantPoolReference {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
@@ -390,6 +391,19 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 	@Override
 	public int getItemSizeInList(IBytecodeItem item) {
 		return 1;
+	}
+
+	@Override
+	public AbstractConstantPoolEntry[] getReference() {
+		if (isPrimitiveValue()) {
+			return new AbstractConstantPoolEntry[]{primitiveValueEntry};
+		} else if (isEnumValue()) {
+			return new AbstractConstantPoolEntry[]{enumTypeName, enumConstName};
+		} else if (isClassValue()) {
+			return new AbstractConstantPoolEntry[]{classInfo};
+		} else {
+			return new AbstractConstantPoolEntry[]{};
+		}
 	}
 	
 	

@@ -6,7 +6,7 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 
 
-public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry {
+public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry implements IConstantPoolReference {
 
 	private int[] index = null;
 	private AbstractConstantPoolEntry[] reference = null;
@@ -51,7 +51,7 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry {
 
 	
 	
-	protected AbstractConstantPoolEntry[] getReference() {
+	public AbstractConstantPoolEntry[] getReference() {
 		return reference;
 	}
 
