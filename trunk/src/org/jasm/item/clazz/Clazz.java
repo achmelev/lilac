@@ -12,8 +12,10 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.attribute.Attributes;
+import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
+import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.modifier.ClassModifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +23,7 @@ import org.slf4j.LoggerFactory;
 import sun.net.NetHooks;
 
 
-public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeItem<IBytecodeItem> {
+public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeItem<IBytecodeItem>, IConstantPoolReference {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
@@ -312,6 +314,17 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	@Override
 	public int getItemSizeInList(IBytecodeItem item) {
 		return 1;
+	}
+
+	@Override
+	public AbstractConstantPoolEntry[] getReference() {
+		AbstractConstantPoolEntry[] result = new AbstractConstantPoolEntry[interfaces.size()+2];
+		result[0] = thisClass;
+		result[1] = superClass;
+		for (int i=0;i<interfaces.size(); i++) {
+			result[i+2] = interfaces.get(i);
+		}
+		return result;
 	}
 	
 	

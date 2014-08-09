@@ -5,10 +5,11 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
 import org.jasm.item.constantpool.Utf8Info;
 
-public abstract class AbstractStringAttributeContent extends AbstractSimpleAttributeContent {
+public abstract class AbstractStringAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
 	
 	private int valueIndex = -1;
 	private Utf8Info valueEntry = null;
@@ -81,5 +82,12 @@ public abstract class AbstractStringAttributeContent extends AbstractSimpleAttri
 	public Object getValue() {
 		return valueEntry.getValue();
 	}
+
+	@Override
+	public AbstractConstantPoolEntry[] getReference() {
+		return new AbstractConstantPoolEntry[]{valueEntry};
+	}
+	
+	
 
 }

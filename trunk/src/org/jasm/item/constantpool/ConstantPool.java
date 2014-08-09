@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.AbstractTaggedBytecodeItemList;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.item.clazz.Clazz;
 import org.jasm.map.KeyToListMap;
 
 public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstantPoolEntry> {
@@ -16,10 +18,11 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	
 	private KeyToListMap<String,AbstractConstantPoolEntry> entriesByName = new KeyToListMap<>();
 	private KeyToListMap<String,AbstractConstantPoolEntry> entriesByDescriptor = new KeyToListMap<String,AbstractConstantPoolEntry>();
-	private KeyToListMap<AbstractConstantPoolEntry, AbstractConstantPoolEntry> entriesByReference = new KeyToListMap<>();
 	private Map<String, AbstractConstantPoolEntry> entriesByText = new HashMap<>();
 	private Map<Object, AbstractConstantPoolEntry> entriesByPrimitive = new HashMap<>();
 	private Map<String, Utf8Info> utf8ByContent = new HashMap<>();
+	
+	private KeyToListMap<AbstractConstantPoolEntry, IBytecodeItem> entryReferences = new KeyToListMap<>();
 	
 	public ConstantPool() {
 		super(AbstractConstantPoolEntry.class, "org.jasm.item.constantpool");
@@ -48,12 +51,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	}
 
 	private void addToIndex(AbstractConstantPoolEntry entry) {
-		if (entry instanceof AbstractReferenceEntry) {
-			AbstractReferenceEntry ref = (AbstractReferenceEntry)entry;
-			for (AbstractConstantPoolEntry ref1: ref.getReference()) {
-				entriesByReference.addToList(ref1, entry);
-			}
-		}
+		
 		if (entry instanceof INameReferencingEntry) {
 			INameReferencingEntry ref = (INameReferencingEntry)entry;
 			for (String ref1: ref.getReferencedNames()) {
@@ -106,9 +104,6 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		return entriesByDescriptor.get(signature);
 	}
 	
-	public List<AbstractConstantPoolEntry> getReferencesTo(AbstractConstantPoolEntry entry) {
-		return entriesByReference.get(entry);
-	}
 	
 	public StringInfo getStringEntry(String text) {
 		return (StringInfo)entriesByText.get(text);
@@ -160,6 +155,13 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	
 	public MethodTypeInfo getMethodTypeInfo(String signature) {
 		return getRef(MethodTypeInfo.class, null, null, signature);
+	}
+	
+	public List<IBytecodeItem> getReferencingItems(AbstractConstantPoolEntry cp) {
+		if (!getItems().contains(cp)) {
+			throw new IllegalArgumentException("Entry insn't in pool: "+cp);
+		}
+		return entryReferences.get(cp);
 	}
 	
 	private <T extends AbstractConstantPoolEntry> T getRef(Class<T> clazz, String className, String name, String signature) {
@@ -216,12 +218,27 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	public void doUpdateMetadata() {
 		entriesByName.clear();
 		entriesByPrimitive.clear();
-		entriesByReference.clear();
 		entriesByText.clear();
 		entriesByDescriptor.clear();
 		utf8ByContent.clear();
 		for (AbstractConstantPoolEntry entry: getItems()) {
 			addToIndex(entry);
+		}
+		
+		entryReferences.clear();
+		
+		List<IBytecodeItem> allItems = ((AbstractByteCodeItem)getParent()).getAllItemsFromHere();
+		for (IBytecodeItem item: allItems) {
+			if (item instanceof IConstantPoolReference) {
+				IConstantPoolReference cr = (IConstantPoolReference)item;
+				AbstractConstantPoolEntry[] refs = cr.getReference();
+				for (AbstractConstantPoolEntry r:refs) {
+					if (!getItems().contains(r)) {
+						throw new IllegalStateException(r+" isn't in pool!");
+					}
+					entryReferences.addToList(r, item);
+				}
+			}
 		}
 	}
 	

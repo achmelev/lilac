@@ -6,9 +6,11 @@ import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
+import org.jasm.item.constantpool.IConstantPoolReference;
 
-public class ExceptionHandler extends AbstractByteCodeItem {
+public class ExceptionHandler extends AbstractByteCodeItem implements IConstantPoolReference {
 	
 	private int startPC = -1;
 	private int endPC = -1;
@@ -86,6 +88,11 @@ public class ExceptionHandler extends AbstractByteCodeItem {
 			catchType = (ClassInfo)getConstantPool().get(catchTypeIndex-1);
 		}
 
+	}
+
+	@Override
+	public AbstractConstantPoolEntry[] getReference() {
+		return new AbstractConstantPoolEntry[]{catchType};
 	}
 
 }

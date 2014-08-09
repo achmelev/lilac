@@ -7,11 +7,13 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Attribute extends AbstractByteCodeItem implements IContainerBytecodeItem<IAttributeContent>{
+public class Attribute extends AbstractByteCodeItem implements IContainerBytecodeItem<IAttributeContent>, IConstantPoolReference {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
@@ -199,6 +201,11 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 	@Override
 	public int getItemSizeInList(IBytecodeItem item) {
 		return 1;
+	}
+
+	@Override
+	public AbstractConstantPoolEntry[] getReference() {
+		return new AbstractConstantPoolEntry[]{name};
 	}
 	
 	

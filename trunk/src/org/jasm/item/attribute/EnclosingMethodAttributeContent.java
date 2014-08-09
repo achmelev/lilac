@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
+import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.NameAndTypeInfo;
 
-public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeContent {
+public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
 	
 	private int clazzIndex = -1;
 	private ClassInfo clazz = null;
@@ -106,6 +108,11 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 	
 	public String getMethodDescriptor() {
 		return method.getDescriptor();
+	}
+
+	@Override
+	public AbstractConstantPoolEntry[] getReference() {
+		return new AbstractConstantPoolEntry[]{clazz,method};
 	}
 
 }

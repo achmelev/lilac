@@ -7,11 +7,13 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
 import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
+import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.InnerClassModifier;
 
-public class InnerClass extends AbstractByteCodeItem {
+public class InnerClass extends AbstractByteCodeItem implements IConstantPoolReference {
 	
 	private int innerClassIndex = -1;
 	private ClassInfo innerClass = null;
@@ -145,6 +147,24 @@ public class InnerClass extends AbstractByteCodeItem {
 
 	public InnerClassModifier getModifier() {
 		return modifier;
+	}
+
+	@Override
+	public AbstractConstantPoolEntry[] getReference() {
+		ArrayList<AbstractConstantPoolEntry> result = new ArrayList<>();
+		result.add(innerClass);
+		if (innerName != null) {
+			result.add(innerName);
+		}
+		if (outerClass != null) {
+			result.add(outerClass);
+		}
+		AbstractConstantPoolEntry[] result1 = new AbstractConstantPoolEntry[result.size()];
+		for (int i=0;i<result.size(); i++) {
+			result1[i] = result.get(i);
+		}
+		
+		return result1;
 	}
 	
 	
