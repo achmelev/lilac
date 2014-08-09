@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import junit.framework.Assert;
+
 
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
@@ -17,7 +19,9 @@ import org.jasm.item.attribute.DeprecatedAttributeContent;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
 import org.jasm.item.attribute.InnerClassesAttributeContent;
 import org.jasm.item.clazz.Clazz;
+import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
+import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.test.item.DummyRoot;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -75,6 +79,9 @@ public class Class2Test {
 		assertFalse(clazz.getModifier().isInterface());
 		assertTrue(clazz.getModifier().isSuper());
 		
+		ClassInfo ci = clazz.getConstantPool().getClassInfo("org/jasm/test/testclass/Class2");
+		Assert.assertTrue(clazz.getConstantPool().getReferencingItems(ci).contains(clazz));
+		
 		assertEquals("org/jasm/test/testclass/Class2$1", ((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(0).getInnerClassName());
 		assertNull(((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(0).getOuterClassName());
 		assertNull(((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(0).getInnerName());
@@ -86,6 +93,9 @@ public class Class2Test {
 		
 		String name = "staticString"; String descriptor = "Ljava/lang/String;";
 		assertNotNull(clazz.getFields().getField(name, descriptor));
+		Utf8Info utf8 = clazz.getConstantPool().getUtf8Info("staticString");
+		Assert.assertTrue(clazz.getConstantPool().getReferencingItems(utf8).contains(clazz.getFields().getField(name, descriptor)));
+		
 		assertFalse(clazz.getFields().getField(name, descriptor).getModifier().isEnum());
 		assertFalse(clazz.getFields().getField(name, descriptor).getModifier().isFinal());
 		assertFalse(clazz.getFields().getField(name, descriptor).getModifier().isPrivate());
@@ -99,6 +109,8 @@ public class Class2Test {
 		descriptor = "I";
 		assertEquals(((ConstantValueAttributeContent)clazz.getFields().getField(name, descriptor).getAttributes().get(0).getContent()).getValue(), new Integer(0));
 		
+		
+		
 		name = "constInt"; 
 		descriptor = "I";
 		assertEquals(((ConstantValueAttributeContent)clazz.getFields().getField(name, descriptor).getAttributes().get(0).getContent()).getValue(), new Integer(1));
@@ -107,6 +119,9 @@ public class Class2Test {
 		descriptor = "()V";
 		assertEquals(((ExceptionsAttributeContent)clazz.getMethods().getMethod(name, descriptor).getAttributes().get(0).getContent()).getExceptionClassNames().size(),1);
 		assertEquals(((ExceptionsAttributeContent)clazz.getMethods().getMethod(name, descriptor).getAttributes().get(0).getContent()).getExceptionClassNames().get(0),"java/lang/IllegalArgumentException");
+		
+		utf8 = clazz.getConstantPool().getUtf8Info("methodMitException");
+		Assert.assertTrue(clazz.getConstantPool().getReferencingItems(utf8).contains(clazz.getMethods().getMethod(name, descriptor)));
 		
 		name = "privateMethod"; 
 		descriptor = "(I)V";
