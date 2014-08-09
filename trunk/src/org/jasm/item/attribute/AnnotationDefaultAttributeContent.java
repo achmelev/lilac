@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 
 public class AnnotationDefaultAttributeContent extends
@@ -105,6 +106,11 @@ public class AnnotationDefaultAttributeContent extends
 
 	public AnnotationElementValue getValue() {
 		return value;
+	}
+
+	@Override
+	public int getItemSizeInList(IBytecodeItem item) {
+		return 1;
 	}
 	
 	

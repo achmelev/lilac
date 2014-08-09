@@ -15,7 +15,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	//TODO - InvokeDynamic
 	
 	private KeyToListMap<String,AbstractConstantPoolEntry> entriesByName = new KeyToListMap<>();
-	private KeyToListMap<String,AbstractConstantPoolEntry> entriesBySignature = new KeyToListMap<String,AbstractConstantPoolEntry>();
+	private KeyToListMap<String,AbstractConstantPoolEntry> entriesByDescriptor = new KeyToListMap<String,AbstractConstantPoolEntry>();
 	private KeyToListMap<AbstractConstantPoolEntry, AbstractConstantPoolEntry> entriesByReference = new KeyToListMap<>();
 	private Map<String, AbstractConstantPoolEntry> entriesByText = new HashMap<>();
 	private Map<Object, AbstractConstantPoolEntry> entriesByPrimitive = new HashMap<>();
@@ -25,29 +25,6 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		super(AbstractConstantPoolEntry.class, "org.jasm.item.constantpool");
 	}
 
-	@Override
-	public void add(AbstractConstantPoolEntry item) {
-		super.add(item);
-		if (this.isResolved()) {
-			addToIndex(item);
-		}
-	}
-
-	@Override
-	public void add(int index, AbstractConstantPoolEntry item) {
-		super.add(index, item);
-		if (this.isResolved()) {
-			addToIndex(item);
-		}
-	}
-	
-	@Override
-	public void remove(AbstractConstantPoolEntry item) {
-		super.remove(item);
-		if (this.isResolved()) {
-			removeFromIndex(item);
-		}
-	}
 
 	@Override
 	protected int getSizeDiff() {
@@ -59,20 +36,10 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	public String getPrintName() {
 		return "constpool";
 	}
-
-
-	@Override
-	protected void doResolve() {
-		super.doResolve();
-		for (AbstractConstantPoolEntry entry: getItems()) {
-			addToIndex(entry);
-		}
-	}
-	
 	
 	
 	@Override
-	protected int getItemSizeInList(IBytecodeItem item) {
+	public int getItemSizeInList(IBytecodeItem item) {
 		if (item instanceof LongInfo || item instanceof DoubleInfo) {
 			return 2;
 		} else {
@@ -96,7 +63,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		if (entry instanceof IDescriptorReferencingEntry) {
 			IDescriptorReferencingEntry ref = (IDescriptorReferencingEntry)entry;
 			for (String ref1: ref.getReferencedDescriptors()) {
-				entriesBySignature.addToList(ref1, entry);
+				entriesByDescriptor.addToList(ref1, entry);
 			}
 		}
 		if (entry instanceof ITextReferencingEntry) {
@@ -126,45 +93,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		
 	}
 	
-	private void removeFromIndex(AbstractConstantPoolEntry entry) {
-		if (entry instanceof AbstractReferenceEntry) {
-			AbstractReferenceEntry ref = (AbstractReferenceEntry)entry;
-			for (AbstractConstantPoolEntry ref1: ref.getReference()) {
-				entriesByReference.removeFromList(ref1, entry);
-			}
-		}
-		if (entry instanceof INameReferencingEntry) {
-			INameReferencingEntry ref = (INameReferencingEntry)entry;
-			for (String ref1: ref.getReferencedNames()) {
-				entriesByName.removeFromList(ref1, entry);
-			}
-		}
-		if (entry instanceof IDescriptorReferencingEntry) {
-			IDescriptorReferencingEntry ref = (IDescriptorReferencingEntry)entry;
-			for (String ref1: ref.getReferencedDescriptors()) {
-				entriesBySignature.removeFromList(ref1, entry);
-			}
-		}
-		if (entry instanceof ITextReferencingEntry) {
-			ITextReferencingEntry ref = (ITextReferencingEntry)entry;
-			if (entriesByText.containsKey(ref.getContent())) {
-				entriesByText.remove(ref.getContent());
-			} 
-		}
-		if (entry instanceof IPrimitiveValueReferencingEntry) {
-			IPrimitiveValueReferencingEntry ref = (IPrimitiveValueReferencingEntry)entry;
-			if (entriesByPrimitive.containsKey(ref.getValue())) {
-				entriesByPrimitive.remove(ref.getValue());
-			}
-		}
-		if (entry instanceof Utf8Info) {
-			Utf8Info ref = (Utf8Info)entry;
-			if (utf8ByContent.containsKey(ref.getValue())) {
-				utf8ByContent.remove(ref.getValue());
-			} 
-		}
-		
-	}
+	
 	
 	
 	//Access Methods
@@ -174,7 +103,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	}
 	
 	public List<AbstractConstantPoolEntry> getSignatureReferences(String signature) {
-		return entriesBySignature.get(signature);
+		return entriesByDescriptor.get(signature);
 	}
 	
 	public List<AbstractConstantPoolEntry> getReferencesTo(AbstractConstantPoolEntry entry) {
@@ -236,7 +165,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	private <T extends AbstractConstantPoolEntry> T getRef(Class<T> clazz, String className, String name, String signature) {
 		List<AbstractConstantPoolEntry> values1 = (name != null)?entriesByName.get(name):null;
 		List<AbstractConstantPoolEntry> values2 = (className != null)?entriesByName.get(className):null;
-		List<AbstractConstantPoolEntry> values3 = (signature != null)?entriesBySignature.get(signature):null;
+		List<AbstractConstantPoolEntry> values3 = (signature != null)?entriesByDescriptor.get(signature):null;
 		
 		List<List<AbstractConstantPoolEntry>> ll = new ArrayList<>();
 		if (values1 != null) {
@@ -280,6 +209,23 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	public ConstantPool getConstantPool() {
 		return this;
 	}
+	
+
+
+	@Override
+	public void doUpdateMetadata() {
+		entriesByName.clear();
+		entriesByPrimitive.clear();
+		entriesByReference.clear();
+		entriesByText.clear();
+		entriesByDescriptor.clear();
+		utf8ByContent.clear();
+		for (AbstractConstantPoolEntry entry: getItems()) {
+			addToIndex(entry);
+		}
+	}
+	
+	
 	
 	
 	

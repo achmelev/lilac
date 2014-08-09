@@ -221,6 +221,19 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		methods.resolve();
 		attributes.resolve();
 	}
+	
+	
+
+	@Override
+	public void updateMetadata() {
+		pool.updateMetadata();
+		for (ClassInfo intf: interfaces) {
+			intf.updateMetadata();
+		}
+		fields.updateMetadata();
+		methods.updateMetadata();
+		attributes.updateMetadata();
+	}
 
 	@Override
 	public ConstantPool getConstantPool() {
@@ -294,6 +307,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 
 	public Methods getMethods() {
 		return methods;
+	}
+
+	@Override
+	public int getItemSizeInList(IBytecodeItem item) {
+		return 1;
 	}
 	
 	

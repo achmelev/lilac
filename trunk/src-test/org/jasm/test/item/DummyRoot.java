@@ -87,6 +87,11 @@ public class DummyRoot extends AbstractByteCodeItem implements IContainerBytecod
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public int getItemSizeInList(IBytecodeItem item) {
+		return 1;
+	}
 	
 	
 

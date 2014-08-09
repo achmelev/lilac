@@ -49,6 +49,7 @@ public class AnnotationTest {
 		Clazz clazz = new Clazz();
 		clazz.read(bbuf, 0L);
 		clazz.resolve();
+		clazz.updateMetadata();
 		
 		StringWriter sw = new StringWriter();
 		PrintWriter writer = new PrintWriter(sw);

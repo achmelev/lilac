@@ -150,4 +150,11 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 		attributes.setParent(this);
 	}
 
+	@Override
+	public int getItemSizeInList(IBytecodeItem item) {
+		return 1;
+	}
+	
+	
+
 }

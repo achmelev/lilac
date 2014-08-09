@@ -47,6 +47,7 @@ public class ConstantPoolTest {
 		
 		pool.setParent(new DummyRoot());
 		pool.resolve();
+		pool.updateMetadata();
 		
 		StringWriter sw = new StringWriter();
 		PrintWriter writer = new PrintWriter(sw);

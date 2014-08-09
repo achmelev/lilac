@@ -1,5 +1,8 @@
 package org.jasm.item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.ConstantPool;
 
@@ -45,4 +48,35 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	public ConstantPool getConstantPool() {
 		return getParent().getConstantPool();
 	}
+
+	@Override
+	public void updateMetadata() {
+		if (!this.resolved) {
+			throw new RuntimeException("updateMetadata can be called only resolve");
+		}
+		if (this instanceof IContainerBytecodeItem) {
+			IContainerBytecodeItem<IBytecodeItem> container = (IContainerBytecodeItem<IBytecodeItem>)this;
+			for (IBytecodeItem item: getItemsList(container)) {
+				item.updateMetadata();
+			}
+		}
+		doUpdateMetadata();
+	}
+	
+	public static <U extends IBytecodeItem> List<U> getItemsList(IContainerBytecodeItem<U> container) {
+		int i=0;
+		List<U> result = new ArrayList<>();
+		while (i<container.getSize()) {
+			U item = container.get(i);
+			result.add(item);
+			i+=container.getItemSizeInList(item);
+		}
+		return result;
+		
+	}
+	
+	protected void doUpdateMetadata() {
+		
+	}
+	
 }
