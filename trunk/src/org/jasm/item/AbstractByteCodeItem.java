@@ -79,4 +79,19 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		
 	}
 	
+	public List<IBytecodeItem> getAllItemsFromHere() {
+		List<IBytecodeItem> result = new ArrayList<>();
+		getAllItemsFromHere(result, this);
+		return result;
+	}
+	
+	private void getAllItemsFromHere(List<IBytecodeItem> result, IBytecodeItem item) {
+		result.add(item);
+		if (item instanceof IContainerBytecodeItem) {
+			List<IBytecodeItem> children = getItemsList((IContainerBytecodeItem<IBytecodeItem>)item);
+			for (IBytecodeItem child: children) {
+				getAllItemsFromHere(result, child);
+			}
+		}
+	}
 }
