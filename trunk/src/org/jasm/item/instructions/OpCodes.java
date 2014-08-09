@@ -11,11 +11,12 @@ public class OpCodes {
 	
 	private static Map<String, Short> nameToOpcode = new HashMap<>();
 	private static Map<Short, String> opcodeToName = new HashMap<>();
-	private static List<Short> oneByteInstructions = new ArrayList<>();
+	private static List<Short> argumentLessInstructions = new ArrayList<>();
 	private static List<Short> localVariableInstructions = new ArrayList<>();
 	private static List<Short> constantPoolInstructions = new ArrayList<>();
 	private static List<Short> branchInstructions = new ArrayList<>();
 	private static List<Short> wideBranchInstructions = new ArrayList<>();
+	private static List<Short> specialInstructions = new ArrayList<>();
 	
 	public static short aaload = 0x32;
 	public static short aastore = 0x53;
@@ -259,162 +260,167 @@ public class OpCodes {
 			}
 			
 			//bipush,iinc,invokedynamic,invokeinterface,ldc,lookupswitch,multinewarray,newarray,sipush,tableswitch, wide
+			specialInstructions.add(bipush);
+			specialInstructions.add(iinc);
+			specialInstructions.add(invokedynamic);
+			specialInstructions.add(invokeinterface);
+			specialInstructions.add(ldc);
+			specialInstructions.add(lookupswitch);
+			specialInstructions.add(multianewarray);
+			specialInstructions.add(newarray);
+			specialInstructions.add(sipush);
+			specialInstructions.add(tableswitch);
+			specialInstructions.add(wide);
 			
-			//One Byte Instructions
-			oneByteInstructions.add(aaload);
-			oneByteInstructions.add(aastore);
-			oneByteInstructions.add(aconst_null);
-			oneByteInstructions.add(aload_0);
-			oneByteInstructions.add(aload_1);
-			oneByteInstructions.add(aload_2);
-			oneByteInstructions.add(aload_3);
-			oneByteInstructions.add(areturn);
-			oneByteInstructions.add(arraylength);
-			oneByteInstructions.add(astore_0);
-			oneByteInstructions.add(astore_1);
-			oneByteInstructions.add(astore_2);
-			oneByteInstructions.add(astore_3);
-			oneByteInstructions.add(athrow);
-			oneByteInstructions.add(baload);
-			oneByteInstructions.add(bastore);
-			oneByteInstructions.add(caload);
-			oneByteInstructions.add(castore);
-			oneByteInstructions.add(d2f);
-			oneByteInstructions.add(d2i);
-			oneByteInstructions.add(d2i);
-			oneByteInstructions.add(d2l);
-			oneByteInstructions.add(dadd);
-			oneByteInstructions.add(dadd);
-			oneByteInstructions.add(daload);
-			oneByteInstructions.add(dastore);
-			oneByteInstructions.add(dcmpg);
-			oneByteInstructions.add(dcmpl);
-			oneByteInstructions.add(dconst_0);
-			oneByteInstructions.add(dconst_1);
-			oneByteInstructions.add(ddiv);
-			oneByteInstructions.add(dload_0);
-			oneByteInstructions.add(dload_1);
-			oneByteInstructions.add(dload_2);
-			oneByteInstructions.add(dload_3);
-			oneByteInstructions.add(dmul);
-			oneByteInstructions.add(dneg);
-			oneByteInstructions.add(drem);
-			oneByteInstructions.add(dreturn);
-			oneByteInstructions.add(dstore_0);
-			oneByteInstructions.add(dstore_1);
-			oneByteInstructions.add(dstore_2);
-			oneByteInstructions.add(dstore_3);
-			oneByteInstructions.add(dsub);
-			oneByteInstructions.add(dup);
-			oneByteInstructions.add(dup_x1);
-			oneByteInstructions.add(dup_x2);
-			oneByteInstructions.add(dup2);
-			oneByteInstructions.add(dup2_x1);
-			oneByteInstructions.add(dup2_x2);
-			oneByteInstructions.add(f2d);
-			oneByteInstructions.add(f2i);
-			oneByteInstructions.add(f2l);
-			oneByteInstructions.add(fadd);
-			oneByteInstructions.add(faload);
-			oneByteInstructions.add(fastore);
-			oneByteInstructions.add(fcmpg);
-			oneByteInstructions.add(fcmpl);
-			oneByteInstructions.add(fconst_0);
-			oneByteInstructions.add(fconst_1);
-			oneByteInstructions.add(fconst_2);
-			oneByteInstructions.add(fdiv);
-			oneByteInstructions.add(fload_0);
-			oneByteInstructions.add(fload_1);
-			oneByteInstructions.add(fload_2);
-			oneByteInstructions.add(fload_3);
-			oneByteInstructions.add(fmul);
-			oneByteInstructions.add(fneg);
-			oneByteInstructions.add(frem);
-			oneByteInstructions.add(freturn);
-			oneByteInstructions.add(fstore_0);
-			oneByteInstructions.add(fstore_1);
-			oneByteInstructions.add(fstore_2);
-			oneByteInstructions.add(fstore_3);
-			oneByteInstructions.add(fsub);
-			oneByteInstructions.add(i2b);
-			oneByteInstructions.add(i2c);
-			oneByteInstructions.add(i2d);
-			oneByteInstructions.add(i2f);
-			oneByteInstructions.add(i2l);
-			oneByteInstructions.add(i2s);
-			oneByteInstructions.add(iadd);
-			oneByteInstructions.add(iaload);
-			oneByteInstructions.add(iand);
-			oneByteInstructions.add(iastore);
-			oneByteInstructions.add(iconst_m1);
-			oneByteInstructions.add(iconst_0);
-			oneByteInstructions.add(iconst_1);
-			oneByteInstructions.add(iconst_2);
-			oneByteInstructions.add(iconst_3);
-			oneByteInstructions.add(iconst_4);
-			oneByteInstructions.add(iconst_5);
-			oneByteInstructions.add(idiv);
-			oneByteInstructions.add(iload_0);
-			oneByteInstructions.add(iload_1);
-			oneByteInstructions.add(iload_2);
-			oneByteInstructions.add(iload_3);
-			oneByteInstructions.add(imul);
-			oneByteInstructions.add(ineg);
-			oneByteInstructions.add(ineg);
-			oneByteInstructions.add(ior);
-			oneByteInstructions.add(ineg);
-			oneByteInstructions.add(irem);
-			oneByteInstructions.add(ireturn);
-			oneByteInstructions.add(ishl);
-			oneByteInstructions.add(ishr);
-			oneByteInstructions.add(istore_0);
-			oneByteInstructions.add(istore_1);
-			oneByteInstructions.add(istore_2);
-			oneByteInstructions.add(istore_3);
-			oneByteInstructions.add(isub);
-			oneByteInstructions.add(iushr);
-			oneByteInstructions.add(ixor);
-			oneByteInstructions.add(ishr);
-			oneByteInstructions.add(l2d);
-			oneByteInstructions.add(l2f);
-			oneByteInstructions.add(l2i);
-			oneByteInstructions.add(iadd);
-			oneByteInstructions.add(laload);
-			oneByteInstructions.add(land);
-			oneByteInstructions.add(lastore);
-			oneByteInstructions.add(lcmp);
-			oneByteInstructions.add(lconst_0);
-			oneByteInstructions.add(lconst_1);
-			oneByteInstructions.add(ldiv);
-			oneByteInstructions.add(lload_0);
-			oneByteInstructions.add(lload_1);
-			oneByteInstructions.add(lload_2);
-			oneByteInstructions.add(lload_3);
-			oneByteInstructions.add(lmul);
-			oneByteInstructions.add(lneg);
-			oneByteInstructions.add(lor);
-			oneByteInstructions.add(lrem);
-			oneByteInstructions.add(lreturn);
-			oneByteInstructions.add(lshl);
-			oneByteInstructions.add(lshr);
-			oneByteInstructions.add(lneg);
-			oneByteInstructions.add(lstore_0);
-			oneByteInstructions.add(lstore_1);
-			oneByteInstructions.add(lstore_2);
-			oneByteInstructions.add(lstore_3);
-			oneByteInstructions.add(lsub);
-			oneByteInstructions.add(lushr);
-			oneByteInstructions.add(lxor);
-			oneByteInstructions.add(monitorenter);
-			oneByteInstructions.add(monitorexit);
-			oneByteInstructions.add(nop);
-			oneByteInstructions.add(pop);
-			oneByteInstructions.add(pop2);
-			oneByteInstructions.add(ret);
-			oneByteInstructions.add(return_);
-			oneByteInstructions.add(saload);
-			oneByteInstructions.add(sastore);
-			oneByteInstructions.add(swap);
+			//Argumentless Instructions
+			argumentLessInstructions.add(aaload);
+			argumentLessInstructions.add(aastore);
+			argumentLessInstructions.add(aconst_null);
+			argumentLessInstructions.add(aload_0);
+			argumentLessInstructions.add(aload_1);
+			argumentLessInstructions.add(aload_2);
+			argumentLessInstructions.add(aload_3);
+			argumentLessInstructions.add(areturn);
+			argumentLessInstructions.add(arraylength);
+			argumentLessInstructions.add(astore_0);
+			argumentLessInstructions.add(astore_1);
+			argumentLessInstructions.add(astore_2);
+			argumentLessInstructions.add(astore_3);
+			argumentLessInstructions.add(athrow);
+			argumentLessInstructions.add(baload);
+			argumentLessInstructions.add(bastore);
+			argumentLessInstructions.add(caload);
+			argumentLessInstructions.add(castore);
+			argumentLessInstructions.add(d2f);
+			argumentLessInstructions.add(d2i);
+			argumentLessInstructions.add(d2l);
+			argumentLessInstructions.add(dadd);
+			argumentLessInstructions.add(daload);
+			argumentLessInstructions.add(dastore);
+			argumentLessInstructions.add(dcmpg);
+			argumentLessInstructions.add(dcmpl);
+			argumentLessInstructions.add(dconst_0);
+			argumentLessInstructions.add(dconst_1);
+			argumentLessInstructions.add(ddiv);
+			argumentLessInstructions.add(dload_0);
+			argumentLessInstructions.add(dload_1);
+			argumentLessInstructions.add(dload_2);
+			argumentLessInstructions.add(dload_3);
+			argumentLessInstructions.add(dmul);
+			argumentLessInstructions.add(dneg);
+			argumentLessInstructions.add(drem);
+			argumentLessInstructions.add(dreturn);
+			argumentLessInstructions.add(dstore_0);
+			argumentLessInstructions.add(dstore_1);
+			argumentLessInstructions.add(dstore_2);
+			argumentLessInstructions.add(dstore_3);
+			argumentLessInstructions.add(dsub);
+			argumentLessInstructions.add(dup);
+			argumentLessInstructions.add(dup_x1);
+			argumentLessInstructions.add(dup_x2);
+			argumentLessInstructions.add(dup2);
+			argumentLessInstructions.add(dup2_x1);
+			argumentLessInstructions.add(dup2_x2);
+			argumentLessInstructions.add(f2d);
+			argumentLessInstructions.add(f2i);
+			argumentLessInstructions.add(f2l);
+			argumentLessInstructions.add(fadd);
+			argumentLessInstructions.add(faload);
+			argumentLessInstructions.add(fastore);
+			argumentLessInstructions.add(fcmpg);
+			argumentLessInstructions.add(fcmpl);
+			argumentLessInstructions.add(fconst_0);
+			argumentLessInstructions.add(fconst_1);
+			argumentLessInstructions.add(fconst_2);
+			argumentLessInstructions.add(fdiv);
+			argumentLessInstructions.add(fload_0);
+			argumentLessInstructions.add(fload_1);
+			argumentLessInstructions.add(fload_2);
+			argumentLessInstructions.add(fload_3);
+			argumentLessInstructions.add(fmul);
+			argumentLessInstructions.add(fneg);
+			argumentLessInstructions.add(frem);
+			argumentLessInstructions.add(freturn);
+			argumentLessInstructions.add(fstore_0);
+			argumentLessInstructions.add(fstore_1);
+			argumentLessInstructions.add(fstore_2);
+			argumentLessInstructions.add(fstore_3);
+			argumentLessInstructions.add(fsub);
+			argumentLessInstructions.add(i2b);
+			argumentLessInstructions.add(i2c);
+			argumentLessInstructions.add(i2d);
+			argumentLessInstructions.add(i2f);
+			argumentLessInstructions.add(i2l);
+			argumentLessInstructions.add(i2s);
+			argumentLessInstructions.add(iadd);
+			argumentLessInstructions.add(iaload);
+			argumentLessInstructions.add(iand);
+			argumentLessInstructions.add(iastore);
+			argumentLessInstructions.add(iconst_m1);
+			argumentLessInstructions.add(iconst_0);
+			argumentLessInstructions.add(iconst_1);
+			argumentLessInstructions.add(iconst_2);
+			argumentLessInstructions.add(iconst_3);
+			argumentLessInstructions.add(iconst_4);
+			argumentLessInstructions.add(iconst_5);
+			argumentLessInstructions.add(idiv);
+			argumentLessInstructions.add(iload_0);
+			argumentLessInstructions.add(iload_1);
+			argumentLessInstructions.add(iload_2);
+			argumentLessInstructions.add(iload_3);
+			argumentLessInstructions.add(imul);
+			argumentLessInstructions.add(ineg);
+			argumentLessInstructions.add(ior);
+			argumentLessInstructions.add(irem);
+			argumentLessInstructions.add(ireturn);
+			argumentLessInstructions.add(ishl);
+			argumentLessInstructions.add(ishr);
+			argumentLessInstructions.add(istore_0);
+			argumentLessInstructions.add(istore_1);
+			argumentLessInstructions.add(istore_2);
+			argumentLessInstructions.add(istore_3);
+			argumentLessInstructions.add(isub);
+			argumentLessInstructions.add(iushr);
+			argumentLessInstructions.add(ixor);
+			argumentLessInstructions.add(l2d);
+			argumentLessInstructions.add(l2f);
+			argumentLessInstructions.add(l2i);
+			argumentLessInstructions.add(ladd);
+			argumentLessInstructions.add(laload);
+			argumentLessInstructions.add(land);
+			argumentLessInstructions.add(lastore);
+			argumentLessInstructions.add(lcmp);
+			argumentLessInstructions.add(lconst_0);
+			argumentLessInstructions.add(lconst_1);
+			argumentLessInstructions.add(ldiv);
+			argumentLessInstructions.add(lload_0);
+			argumentLessInstructions.add(lload_1);
+			argumentLessInstructions.add(lload_2);
+			argumentLessInstructions.add(lload_3);
+			argumentLessInstructions.add(lmul);
+			argumentLessInstructions.add(lneg);
+			argumentLessInstructions.add(lor);
+			argumentLessInstructions.add(lrem);
+			argumentLessInstructions.add(lreturn);
+			argumentLessInstructions.add(lshl);
+			argumentLessInstructions.add(lshr);
+			argumentLessInstructions.add(lstore_0);
+			argumentLessInstructions.add(lstore_1);
+			argumentLessInstructions.add(lstore_2);
+			argumentLessInstructions.add(lstore_3);
+			argumentLessInstructions.add(lsub);
+			argumentLessInstructions.add(lushr);
+			argumentLessInstructions.add(lxor);
+			argumentLessInstructions.add(monitorenter);
+			argumentLessInstructions.add(monitorexit);
+			argumentLessInstructions.add(nop);
+			argumentLessInstructions.add(pop);
+			argumentLessInstructions.add(pop2);
+			argumentLessInstructions.add(ret);
+			argumentLessInstructions.add(return_);
+			argumentLessInstructions.add(saload);
+			argumentLessInstructions.add(sastore);
+			argumentLessInstructions.add(swap);
 			
 			//Instruction with local variable as argument
 			localVariableInstructions.add(aload);
@@ -458,6 +464,7 @@ public class OpCodes {
 			branchInstructions.add(ifgt);
 			branchInstructions.add(ifle);
 			branchInstructions.add(iflt);
+			branchInstructions.add(ifne);
 			branchInstructions.add(ifnonnull);
 			branchInstructions.add(ifnull);
 			branchInstructions.add(jsr);
@@ -501,5 +508,55 @@ public class OpCodes {
 		result.addAll(nameToOpcode.keySet());
 		return result;
 	}
+
+	public static List<Short> getArgumentLessInstructions() {
+		return argumentLessInstructions;
+	}
+	
+	public static List<Short> getBranchInstructions() {
+		return branchInstructions;
+	}
+
+	public static List<Short> getLocalVariableInstructions() {
+		return localVariableInstructions;
+	}
+
+	public static List<Short> getConstantPoolInstructions() {
+		return constantPoolInstructions;
+	}
+
+	public static List<Short> getWideBranchInstructions() {
+		return wideBranchInstructions;
+	}
+
+	public static List<Short> getSpecialInstructions() {
+		return specialInstructions;
+	}
+	
+	public static boolean isArgumentLessInstruction(short opCode) {
+		return argumentLessInstructions.contains(opCode);
+	}
+	
+	public static boolean isBranchInstruction(short opCode) {
+		return branchInstructions.contains(opCode);
+	}
+	
+	public static boolean isLocalVariableInstruction(short opCode) {
+		return localVariableInstructions.contains(opCode);
+	}
+	
+	public static boolean isConstantPoolInstruction(short opCode) {
+		return constantPoolInstructions.contains(opCode);
+	}
+	
+	public static boolean isSpecialInstruction(short opCode) {
+		return specialInstructions.contains(opCode);
+	}
+	
+	public static boolean isWideBranchInstruction(short opCode) {
+		return wideBranchInstructions.contains(opCode);
+	}
+
+	
 	
 }
