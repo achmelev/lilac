@@ -11,6 +11,7 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.item.instructions.Instructions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,7 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 	
 	private int maxStack;
 	private int maxLocals;
-	private byte[] code;
+	private Instructions instructions;
 	private ExceptionHandlerTable exceptionTable;
 	private Attributes attributes = null;
 	
@@ -39,6 +40,8 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 		attributes.setParent(this);
 		exceptionTable = new ExceptionHandlerTable();
 		exceptionTable.setParent(this);
+		instructions = new Instructions();
+		instructions.setParent(this);
 	}
 	
 	@Override
@@ -48,10 +51,8 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 		currentOffset+=2;
 		maxLocals = source.readUnsignedShort(currentOffset);
 		currentOffset+=2;
-		long codeLength = source.readUnsignedInt(currentOffset);
-		currentOffset+=4;
-		code = source.readByteArray(currentOffset, (int)codeLength);
-		currentOffset+=code.length;
+		instructions.read(source, currentOffset);
+		currentOffset+=instructions.getLength();
 		exceptionTable.read(source, currentOffset);
 		currentOffset+=exceptionTable.getLength();
 		attributes.read(source, currentOffset);
@@ -64,10 +65,8 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 		currentOffset+=2;
 		target.writeUnsignedShort(currentOffset, maxLocals);
 		currentOffset+=2;
-		target.writeUnsignedInt(currentOffset, code.length);
-		currentOffset+=4;
-		target.writeByteArray(currentOffset, code);
-		currentOffset+=code.length;
+		instructions.write(target, currentOffset);
+		currentOffset+=instructions.getLength();
 		exceptionTable.write(target, currentOffset);
 		currentOffset+=exceptionTable.getLength();
 		attributes.write(target, currentOffset);
@@ -75,7 +74,7 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 
 	@Override
 	public int getLength() {
-		return 2+2+4+code.length+exceptionTable.getLength()+attributes.getLength();
+		return 2+2+instructions.getLength()+exceptionTable.getLength()+attributes.getLength();
 	}
 
 	@Override
@@ -90,6 +89,7 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 		result.add(new SimplePrintable(null, "maxstack", maxStack+"", null));
 		result.add(new SimplePrintable(null, "maxlocals", maxLocals+"", null));
 		result.add(exceptionTable);
+		result.add(instructions);
 		
 		return result;
 	}
@@ -116,6 +116,7 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 
 	@Override
 	protected void doResolve() {
+		instructions.resolve();
 		exceptionTable.resolve();
 		attributes.resolve();
 
