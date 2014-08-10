@@ -5,7 +5,7 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
-public class ArgumentLessInstruction extends AbstractInstruction {
+public class ArgumentLessInstruction extends AbstractInstruction implements ILocalVariableReference {
 	
 	public ArgumentLessInstruction() {
 		
@@ -13,6 +13,19 @@ public class ArgumentLessInstruction extends AbstractInstruction {
 	
 	public ArgumentLessInstruction(short opCode) {
 		super(opCode);
+	}
+	
+	
+
+	@Override
+	public String getPrintName() {
+		
+		String name =  super.getPrintName();
+		if (name.indexOf("load")==1 || name.indexOf("store") == 1) {
+			name = "short "+name.substring(0, name.indexOf('_'));
+		}
+		return name;
+		
 	}
 
 	@Override
@@ -32,7 +45,13 @@ public class ArgumentLessInstruction extends AbstractInstruction {
 
 	@Override
 	public String getPrintArgs() {
-		return null;
+		String name =  super.getPrintName();
+		if (name.indexOf("load")==1 || name.indexOf("store") == 1) {
+			return getLocalVariableReferences()[0].toString();
+		} else {
+			return null;
+		}
+		
 	}
 
 	@Override
@@ -53,6 +72,21 @@ public class ArgumentLessInstruction extends AbstractInstruction {
 	@Override
 	protected void doResolve() {
 
+	}
+
+	@Override
+	public LocalVariable[] getLocalVariableReferences() {
+		String name = super.getPrintName();
+		if (name.indexOf("load")==1 || name.indexOf("store") == 1) {
+			
+			String indexStr = name.substring(name.indexOf("_")+1, name.length());
+			int index = Integer.parseInt(indexStr);
+			char type = name.charAt(0);
+			return new LocalVariable[]{new LocalVariable(index, type)};
+			
+		} else {
+			return new LocalVariable[]{};
+		}
 	}
 
 }

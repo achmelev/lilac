@@ -5,7 +5,7 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
-public class LocalVariableInstruction extends AbstractInstruction {
+public class LocalVariableInstruction extends AbstractInstruction implements ILocalVariableReference {
 	
 	private short localVariableIndex = -1;
 	
@@ -55,5 +55,13 @@ public class LocalVariableInstruction extends AbstractInstruction {
 	protected void doResolve() {
 		
 	}
+
+	@Override
+	public LocalVariable[] getLocalVariableReferences() {
+		char type = getPrintName().charAt(0);
+		return new LocalVariable[]{new LocalVariable(localVariableIndex, type)};
+	}
+	
+	
 
 }

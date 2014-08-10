@@ -2,11 +2,15 @@ package org.jasm.item.instructions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.bytebuffer.print.SimplePrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
@@ -26,6 +30,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	private List<AbstractInstruction> items = new ArrayList<>();
 	
 	private KeyToListMap<AbstractInstruction, IBytecodeItem> instructionReferences = new KeyToListMap<>();
+	
+	private Set<LocalVariable> localVariableReferences = new HashSet<>();
 	
 	@Override
 	public String getPrintName() {
@@ -179,6 +185,26 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	@Override
 	public List<IPrintable> getStructureParts() {
 		List<IPrintable> result = new ArrayList<>();
+		
+		for (LocalVariable loc: localVariableReferences) {
+			String type = null;
+			if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE) {
+				type = "reference";
+			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_INT) {
+				type = "int";
+			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT) {
+				type = "float";
+			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE) {
+				type = "double";
+			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_LONG) {
+				type = "long";
+			} else {
+				throw new IllegalStateException("Unknown type: "+loc.getType());
+			}
+			result.add(new SimplePrintable(null, "declare "+type, new String[]{loc.toString(),loc.getIndex()+""}, (String[])null));
+			
+		}
+		
 		result.addAll(items);
 		return result;
 	}
@@ -248,6 +274,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	@Override
 	protected void doUpdateMetadata() {
 		instructionReferences.clear();
+		localVariableReferences.clear();
+
 		List<IBytecodeItem> allItems = ((AbstractByteCodeItem)getParent()).getAllItemsFromHere();
 		for (IBytecodeItem item: allItems) {
 			if (item instanceof IInstructionReference) {
@@ -260,7 +288,15 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 					instructionReferences.addToList(r, item);
 				}
 			}
+			if (item instanceof ILocalVariableReference) {
+				ILocalVariableReference lref = (ILocalVariableReference)item;
+				for (LocalVariable l: lref.getLocalVariableReferences()) {
+					localVariableReferences.add(l);
+				}
+			}
 		}
+		
+				
 	}
 	
 	public List<IBytecodeItem> getReferencingItems(AbstractInstruction ir) {
