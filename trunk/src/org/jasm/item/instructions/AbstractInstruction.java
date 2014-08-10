@@ -1,6 +1,5 @@
 package org.jasm.item.instructions;
 
-import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.attribute.CodeAttributeContent;
 
