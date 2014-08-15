@@ -13,6 +13,7 @@ public class OpCodes {
 	private static Map<Short, String> opcodeToName = new HashMap<>();
 	private static List<Short> argumentLessInstructions = new ArrayList<>();
 	private static List<Short> localVariableInstructions = new ArrayList<>();
+	private static List<Short> localVariableShortInstructions = new ArrayList<>();
 	private static List<Short> constantPoolInstructions = new ArrayList<>();
 	private static List<Short> branchInstructions = new ArrayList<>();
 	private static List<Short> wideBranchInstructions = new ArrayList<>();
@@ -276,16 +277,8 @@ public class OpCodes {
 			argumentLessInstructions.add(aaload);
 			argumentLessInstructions.add(aastore);
 			argumentLessInstructions.add(aconst_null);
-			argumentLessInstructions.add(aload_0);
-			argumentLessInstructions.add(aload_1);
-			argumentLessInstructions.add(aload_2);
-			argumentLessInstructions.add(aload_3);
 			argumentLessInstructions.add(areturn);
 			argumentLessInstructions.add(arraylength);
-			argumentLessInstructions.add(astore_0);
-			argumentLessInstructions.add(astore_1);
-			argumentLessInstructions.add(astore_2);
-			argumentLessInstructions.add(astore_3);
 			argumentLessInstructions.add(athrow);
 			argumentLessInstructions.add(baload);
 			argumentLessInstructions.add(bastore);
@@ -302,18 +295,10 @@ public class OpCodes {
 			argumentLessInstructions.add(dconst_0);
 			argumentLessInstructions.add(dconst_1);
 			argumentLessInstructions.add(ddiv);
-			argumentLessInstructions.add(dload_0);
-			argumentLessInstructions.add(dload_1);
-			argumentLessInstructions.add(dload_2);
-			argumentLessInstructions.add(dload_3);
 			argumentLessInstructions.add(dmul);
 			argumentLessInstructions.add(dneg);
 			argumentLessInstructions.add(drem);
 			argumentLessInstructions.add(dreturn);
-			argumentLessInstructions.add(dstore_0);
-			argumentLessInstructions.add(dstore_1);
-			argumentLessInstructions.add(dstore_2);
-			argumentLessInstructions.add(dstore_3);
 			argumentLessInstructions.add(dsub);
 			argumentLessInstructions.add(dup);
 			argumentLessInstructions.add(dup_x1);
@@ -333,18 +318,10 @@ public class OpCodes {
 			argumentLessInstructions.add(fconst_1);
 			argumentLessInstructions.add(fconst_2);
 			argumentLessInstructions.add(fdiv);
-			argumentLessInstructions.add(fload_0);
-			argumentLessInstructions.add(fload_1);
-			argumentLessInstructions.add(fload_2);
-			argumentLessInstructions.add(fload_3);
 			argumentLessInstructions.add(fmul);
 			argumentLessInstructions.add(fneg);
 			argumentLessInstructions.add(frem);
 			argumentLessInstructions.add(freturn);
-			argumentLessInstructions.add(fstore_0);
-			argumentLessInstructions.add(fstore_1);
-			argumentLessInstructions.add(fstore_2);
-			argumentLessInstructions.add(fstore_3);
 			argumentLessInstructions.add(fsub);
 			argumentLessInstructions.add(i2b);
 			argumentLessInstructions.add(i2c);
@@ -364,10 +341,6 @@ public class OpCodes {
 			argumentLessInstructions.add(iconst_4);
 			argumentLessInstructions.add(iconst_5);
 			argumentLessInstructions.add(idiv);
-			argumentLessInstructions.add(iload_0);
-			argumentLessInstructions.add(iload_1);
-			argumentLessInstructions.add(iload_2);
-			argumentLessInstructions.add(iload_3);
 			argumentLessInstructions.add(imul);
 			argumentLessInstructions.add(ineg);
 			argumentLessInstructions.add(ior);
@@ -375,10 +348,6 @@ public class OpCodes {
 			argumentLessInstructions.add(ireturn);
 			argumentLessInstructions.add(ishl);
 			argumentLessInstructions.add(ishr);
-			argumentLessInstructions.add(istore_0);
-			argumentLessInstructions.add(istore_1);
-			argumentLessInstructions.add(istore_2);
-			argumentLessInstructions.add(istore_3);
 			argumentLessInstructions.add(isub);
 			argumentLessInstructions.add(iushr);
 			argumentLessInstructions.add(ixor);
@@ -433,6 +402,43 @@ public class OpCodes {
 			localVariableInstructions.add(istore);
 			localVariableInstructions.add(lload);
 			localVariableInstructions.add(lstore);
+			
+			//Short-Versions of the local variable instructions (without argument)
+			localVariableShortInstructions.add(aload_0);
+			localVariableShortInstructions.add(aload_1);
+			localVariableShortInstructions.add(aload_2);
+			localVariableShortInstructions.add(aload_3);
+			localVariableShortInstructions.add(astore_0);
+			localVariableShortInstructions.add(astore_1);
+			localVariableShortInstructions.add(astore_2);
+			localVariableShortInstructions.add(astore_3);
+			localVariableShortInstructions.add(dload_0);
+			localVariableShortInstructions.add(dload_1);
+			localVariableShortInstructions.add(dload_2);
+			localVariableShortInstructions.add(dload_3);
+			localVariableShortInstructions.add(dstore_0);
+			localVariableShortInstructions.add(dstore_1);
+			localVariableShortInstructions.add(dstore_2);
+			localVariableShortInstructions.add(dstore_3);
+			localVariableShortInstructions.add(fload_0);
+			localVariableShortInstructions.add(fload_1);
+			localVariableShortInstructions.add(fload_2);
+			localVariableShortInstructions.add(fload_3);
+			localVariableShortInstructions.add(fstore_0);
+			localVariableShortInstructions.add(fstore_1);
+			localVariableShortInstructions.add(fstore_2);
+			localVariableShortInstructions.add(fstore_3);
+			localVariableShortInstructions.add(iload_0);
+			localVariableShortInstructions.add(iload_1);
+			localVariableShortInstructions.add(iload_2);
+			localVariableShortInstructions.add(iload_3);
+			localVariableShortInstructions.add(istore_0);
+			localVariableShortInstructions.add(istore_1);
+			localVariableShortInstructions.add(istore_2);
+			localVariableShortInstructions.add(istore_3);
+			
+			
+			
 			
 			//Instructions with constants from constant pool as argument 
 			constantPoolInstructions.add(anewarray);
@@ -552,6 +558,11 @@ public class OpCodes {
 	public static boolean isLocalVariableInstruction(short opCode) {
 		initialize();
 		return localVariableInstructions.contains(opCode);
+	}
+	
+	public static boolean isShortLocalVariableInstruction(short opCode) {
+		initialize();
+		return localVariableShortInstructions.contains(opCode);
 	}
 	
 	public static boolean isConstantPoolInstruction(short opCode) {

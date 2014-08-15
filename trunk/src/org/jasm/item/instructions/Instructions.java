@@ -48,6 +48,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			return new ArgumentLessInstruction(opCode);
 		} else if (OpCodes.isLocalVariableInstruction(opCode)) {
 			return new LocalVariableInstruction(opCode, (short)-1);
+		} else if (OpCodes.isShortLocalVariableInstruction(opCode)) {
+			return new ShortLocalVariableInstruction(opCode);
 		} else if (OpCodes.isConstantPoolInstruction(opCode)) {
 			return new ConstantPoolInstruction(opCode, null);
 		} else if (OpCodes.isBranchInstruction(opCode)) {
@@ -119,7 +121,9 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			AbstractInstruction instr = createEmptyItem(source, currentOffset);
 			
 			instr.setParent(this);
-			instr.read(source, currentOffset+1);
+			if (instr.getLength() > 1) {
+				instr.read(source, currentOffset+1);
+			}
 			if (log.isDebugEnabled()) {
 				log.debug("Read instruction "+instr.getPrintName()+" at offset = "+currentOffset+", length="+instr.getLength());
 			}
