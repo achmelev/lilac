@@ -5,7 +5,7 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
-public class ArgumentLessInstruction extends AbstractInstruction implements ILocalVariableReference {
+public class ArgumentLessInstruction extends AbstractInstruction  {
 	
 	public ArgumentLessInstruction() {
 		
@@ -45,13 +45,7 @@ public class ArgumentLessInstruction extends AbstractInstruction implements ILoc
 
 	@Override
 	public String getPrintArgs() {
-		String name =  super.getPrintName();
-		if (name.indexOf("load")==1 || name.indexOf("store") == 1) {
-			return getLocalVariableReferences()[0].toString();
-		} else {
-			return null;
-		}
-		
+		return null;
 	}
 
 	@Override
@@ -74,19 +68,6 @@ public class ArgumentLessInstruction extends AbstractInstruction implements ILoc
 
 	}
 
-	@Override
-	public LocalVariable[] getLocalVariableReferences() {
-		String name = super.getPrintName();
-		if (name.indexOf("load")==1 || name.indexOf("store") == 1) {
-			
-			String indexStr = name.substring(name.indexOf("_")+1, name.length());
-			int index = Integer.parseInt(indexStr);
-			char type = name.charAt(0);
-			return new LocalVariable[]{new LocalVariable(index, type)};
-			
-		} else {
-			return new LocalVariable[]{};
-		}
-	}
+	
 
 }
