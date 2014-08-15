@@ -33,6 +33,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	
 	private Set<LocalVariable> localVariableReferences = new HashSet<>();
 	
+	
 	@Override
 	public String getPrintName() {
 		return "instructions";
@@ -310,8 +311,10 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		return instructionReferences.get(ir);
 	}
 
+	public int getCodeLength() {
+		return getLength()-4;
+	}
 	
-
 	
 	
 

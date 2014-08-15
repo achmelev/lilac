@@ -207,6 +207,16 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{name};
 	}
+
+	@Override
+	public String toString() {
+		if (content == null) {
+			return super.toString();
+		} else {
+			return "Attribute."+content.getClass().getSimpleName();
+		}
+		
+	}
 	
 	
 	

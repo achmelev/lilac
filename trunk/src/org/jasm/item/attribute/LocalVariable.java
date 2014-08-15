@@ -2,17 +2,22 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
+import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.Instructions;
 
 public class LocalVariable extends AbstractByteCodeItem implements IConstantPoolReference {
 	
 	private int startPC = -1;
+	private AbstractInstruction startInstruction = null;
 	private int length = -1;
+	private AbstractInstruction endIndsruction = null;
 	private int nameIndex = -1;
 	private Utf8Info name = null;
 	private int descriptorIndex = -1;
@@ -30,7 +35,14 @@ public class LocalVariable extends AbstractByteCodeItem implements IConstantPool
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
-		target.writeUnsignedShort(offset, startPC);
+		target.writeUnsignedShort(offset, startInstruction.getOffsetInCode());
+		Instructions instr = ((CodeAttributeContent)getParent().getParent().getParent().getParent()).getInstructions();
+		int length = 0;
+		if (endIndsruction == null) {
+			length = instr.getCodeLength()-startInstruction.getOffsetInCode();
+		} else {
+			length = endIndsruction.getOffsetInCode()-startInstruction.getOffsetInCode();
+		}
 		target.writeUnsignedShort(offset+2, length);
 		target.writeUnsignedShort(offset+4, name.getIndexInPool());
 		target.writeUnsignedShort(offset+6, descriptor.getIndexInPool());
@@ -64,7 +76,7 @@ public class LocalVariable extends AbstractByteCodeItem implements IConstantPool
 
 	@Override
 	public String getPrintArgs() {
-		return startPC+", "+length+", "+name.getPrintLabel()+", "+descriptor.getPrintLabel()+", "+index;
+		return startInstruction.getPrintLabel()+", "+((endIndsruction==null)?JasmConsts.NIL:endIndsruction.getPrintLabel())+", "+name.getPrintLabel()+", "+descriptor.getPrintLabel()+", "+index;
 	}
 
 	@Override
@@ -76,6 +88,13 @@ public class LocalVariable extends AbstractByteCodeItem implements IConstantPool
 	protected void doResolve() {
 		name  = (Utf8Info)getConstantPool().get(nameIndex-1);
 		descriptor = (Utf8Info)getConstantPool().get(descriptorIndex-1);
+		Instructions instr = ((CodeAttributeContent)getParent().getParent().getParent().getParent()).getInstructions();
+		startInstruction = instr.getInstructionAtOffset(startPC);
+		if (startPC+length == instr.getCodeLength()) {
+			
+		} else {
+			endIndsruction = instr.getInstructionAtOffset(startPC+length);
+		}
 
 	}
 
