@@ -13,7 +13,7 @@ public class OpCodes {
 	private static Map<Short, String> opcodeToName = new HashMap<>();
 	private static List<Short> argumentLessInstructions = new ArrayList<>();
 	private static List<Short> localVariableInstructions = new ArrayList<>();
-	private static List<Short> localVariableShortInstructions = new ArrayList<>();
+	private static List<Short> shortLocalVariableInstructions = new ArrayList<>();
 	private static List<Short> constantPoolInstructions = new ArrayList<>();
 	private static List<Short> branchInstructions = new ArrayList<>();
 	private static List<Short> wideBranchInstructions = new ArrayList<>();
@@ -404,38 +404,38 @@ public class OpCodes {
 			localVariableInstructions.add(lstore);
 			
 			//Short-Versions of the local variable instructions (without argument)
-			localVariableShortInstructions.add(aload_0);
-			localVariableShortInstructions.add(aload_1);
-			localVariableShortInstructions.add(aload_2);
-			localVariableShortInstructions.add(aload_3);
-			localVariableShortInstructions.add(astore_0);
-			localVariableShortInstructions.add(astore_1);
-			localVariableShortInstructions.add(astore_2);
-			localVariableShortInstructions.add(astore_3);
-			localVariableShortInstructions.add(dload_0);
-			localVariableShortInstructions.add(dload_1);
-			localVariableShortInstructions.add(dload_2);
-			localVariableShortInstructions.add(dload_3);
-			localVariableShortInstructions.add(dstore_0);
-			localVariableShortInstructions.add(dstore_1);
-			localVariableShortInstructions.add(dstore_2);
-			localVariableShortInstructions.add(dstore_3);
-			localVariableShortInstructions.add(fload_0);
-			localVariableShortInstructions.add(fload_1);
-			localVariableShortInstructions.add(fload_2);
-			localVariableShortInstructions.add(fload_3);
-			localVariableShortInstructions.add(fstore_0);
-			localVariableShortInstructions.add(fstore_1);
-			localVariableShortInstructions.add(fstore_2);
-			localVariableShortInstructions.add(fstore_3);
-			localVariableShortInstructions.add(iload_0);
-			localVariableShortInstructions.add(iload_1);
-			localVariableShortInstructions.add(iload_2);
-			localVariableShortInstructions.add(iload_3);
-			localVariableShortInstructions.add(istore_0);
-			localVariableShortInstructions.add(istore_1);
-			localVariableShortInstructions.add(istore_2);
-			localVariableShortInstructions.add(istore_3);
+			shortLocalVariableInstructions.add(aload_0);
+			shortLocalVariableInstructions.add(aload_1);
+			shortLocalVariableInstructions.add(aload_2);
+			shortLocalVariableInstructions.add(aload_3);
+			shortLocalVariableInstructions.add(astore_0);
+			shortLocalVariableInstructions.add(astore_1);
+			shortLocalVariableInstructions.add(astore_2);
+			shortLocalVariableInstructions.add(astore_3);
+			shortLocalVariableInstructions.add(dload_0);
+			shortLocalVariableInstructions.add(dload_1);
+			shortLocalVariableInstructions.add(dload_2);
+			shortLocalVariableInstructions.add(dload_3);
+			shortLocalVariableInstructions.add(dstore_0);
+			shortLocalVariableInstructions.add(dstore_1);
+			shortLocalVariableInstructions.add(dstore_2);
+			shortLocalVariableInstructions.add(dstore_3);
+			shortLocalVariableInstructions.add(fload_0);
+			shortLocalVariableInstructions.add(fload_1);
+			shortLocalVariableInstructions.add(fload_2);
+			shortLocalVariableInstructions.add(fload_3);
+			shortLocalVariableInstructions.add(fstore_0);
+			shortLocalVariableInstructions.add(fstore_1);
+			shortLocalVariableInstructions.add(fstore_2);
+			shortLocalVariableInstructions.add(fstore_3);
+			shortLocalVariableInstructions.add(iload_0);
+			shortLocalVariableInstructions.add(iload_1);
+			shortLocalVariableInstructions.add(iload_2);
+			shortLocalVariableInstructions.add(iload_3);
+			shortLocalVariableInstructions.add(istore_0);
+			shortLocalVariableInstructions.add(istore_1);
+			shortLocalVariableInstructions.add(istore_2);
+			shortLocalVariableInstructions.add(istore_3);
 			
 			
 			
@@ -529,6 +529,11 @@ public class OpCodes {
 		initialize();
 		return localVariableInstructions;
 	}
+	
+	public static List<Short> getShortLocalVariableInstructions() {
+		initialize();
+		return shortLocalVariableInstructions;
+	}
 
 	public static List<Short> getConstantPoolInstructions() {
 		initialize();
@@ -562,7 +567,7 @@ public class OpCodes {
 	
 	public static boolean isShortLocalVariableInstruction(short opCode) {
 		initialize();
-		return localVariableShortInstructions.contains(opCode);
+		return shortLocalVariableInstructions.contains(opCode);
 	}
 	
 	public static boolean isConstantPoolInstruction(short opCode) {

@@ -47,6 +47,9 @@ public class OpcodesTest {
 				if (OpCodes.isLocalVariableInstruction(code)) {
 					categoryCounter++;
 				}
+				if (OpCodes.isShortLocalVariableInstruction(code)) {
+					categoryCounter++;
+				}
 				if (OpCodes.isSpecialInstruction(code)) {
 					categoryCounter++;
 				}
@@ -91,9 +94,8 @@ public class OpcodesTest {
 			testUniquinessShort(OpCodes.getSpecialInstructions());
 			testUniquinessShort(OpCodes.getWideBranchInstructions());
 			
-			Assert.assertEquals(names.size(), OpCodes.getArgumentLessInstructions().size()+OpCodes.getBranchInstructions().size()+OpCodes.getConstantPoolInstructions().size()+OpCodes.getLocalVariableInstructions().size()+OpCodes.getSpecialInstructions().size()+OpCodes.getWideBranchInstructions().size());
+			Assert.assertEquals(names.size(), OpCodes.getArgumentLessInstructions().size()+OpCodes.getBranchInstructions().size()+OpCodes.getConstantPoolInstructions().size()+OpCodes.getLocalVariableInstructions().size()+OpCodes.getShortLocalVariableInstructions().size()+OpCodes.getSpecialInstructions().size()+OpCodes.getWideBranchInstructions().size());
 			
-			Assert.assertTrue(OpCodes.isArgumentLessInstruction((short)42));
 			
 		} catch (IOException e) {
 			throw new RuntimeException(e);
