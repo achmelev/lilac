@@ -37,8 +37,19 @@ public abstract class Class2  {
 	
 	public void methodMitException2() throws IllegalArgumentException {
 		int x;
+		long y;
+		double  z;
+		short s;
+		float f;
+		boolean b;
+		
 		try {
 			x = 2;
+			y= 1L;
+			z= 3.0;
+			s = 5;
+			f = 4.0f;
+			b  = false;
 		} catch (RuntimeException e) {
 			x = 1;
 		} finally {

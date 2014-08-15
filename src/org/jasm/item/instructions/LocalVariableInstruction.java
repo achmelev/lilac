@@ -33,7 +33,8 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 
 	@Override
 	public String getPrintArgs() {
-		return "loc"+localVariableIndex;
+		char type = getPrintName().charAt(0);
+		return type+"loc"+localVariableIndex;
 	}
 
 	@Override

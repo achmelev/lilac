@@ -32,7 +32,6 @@ public class LineNumber extends AbstractByteCodeItem implements IInstructionRefe
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
-		Instructions instr = ((CodeAttributeContent)getParent().getParent().getParent().getParent()).getInstructions();
 		target.writeUnsignedShort(offset, startInstruction.getOffsetInCode());
 		target.writeUnsignedShort(offset+2, lineNumber);
 	}
