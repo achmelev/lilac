@@ -9,10 +9,13 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.item.descriptor.IllegalDescriptorException;
+import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.ILocalVariableReference;
 import org.jasm.item.instructions.Instructions;
 
-public class LocalVariable extends AbstractByteCodeItem implements IConstantPoolReference {
+public class LocalVariable extends AbstractByteCodeItem implements IConstantPoolReference, ILocalVariableReference {
 	
 	private int startPC = -1;
 	private AbstractInstruction startInstruction = null;
@@ -76,7 +79,7 @@ public class LocalVariable extends AbstractByteCodeItem implements IConstantPool
 
 	@Override
 	public String getPrintArgs() {
-		return startInstruction.getPrintLabel()+", "+((endIndsruction==null)?JasmConsts.NIL:endIndsruction.getPrintLabel())+", "+name.getPrintLabel()+", "+descriptor.getPrintLabel()+", "+index;
+		return startInstruction.getPrintLabel()+", "+((endIndsruction==null)?JasmConsts.NIL:endIndsruction.getPrintLabel())+", "+name.getPrintLabel()+", "+descriptor.getPrintLabel()+", "+getVariableType()+"loc"+index;
 	}
 
 	@Override
@@ -101,6 +104,34 @@ public class LocalVariable extends AbstractByteCodeItem implements IConstantPool
 	@Override
 	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{name,descriptor};
+	}
+	
+	protected char getVariableType() throws IllegalDescriptorException {
+		TypeDescriptor desc = new TypeDescriptor(descriptor.getValue());
+		if (desc.isBoolean() || 
+			desc.isByte() || 
+			desc.isCharacter() ||
+			desc.isInteger() ||
+			desc.isShort()) {
+			return JasmConsts.LOCAL_VARIABLE_TYPE_INT;
+		} else if (desc.isDouble()) {
+			return JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE;
+		} else if (desc.isFloat()) {
+			return JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT;
+		} else if (desc.isLong()) {
+			return JasmConsts.LOCAL_VARIABLE_TYPE_LONG;
+		} else if (desc.isObject() || desc.isArray()) {
+			return JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE;
+		} else {
+			throw new IllegalStateException("Clouldn't convert: "+desc);
+		}
+			
+		
+	}
+
+	@Override
+	public org.jasm.item.instructions.LocalVariable[] getLocalVariableReferences() {
+		return new org.jasm.item.instructions.LocalVariable[]{new org.jasm.item.instructions.LocalVariable(index,getVariableType())};
 	}
 
 }

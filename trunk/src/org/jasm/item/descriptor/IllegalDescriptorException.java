@@ -1,6 +1,6 @@
 package org.jasm.item.descriptor;
 
-public class IllegalDescriptorException extends Exception {
+public class IllegalDescriptorException extends RuntimeException {
 
 	public IllegalDescriptorException(String message) {
 		super(message);
