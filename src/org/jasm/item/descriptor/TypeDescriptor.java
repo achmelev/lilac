@@ -15,7 +15,10 @@ public class TypeDescriptor {
 	
 	private TypeDescriptor componentType;
 	
+	private String descriptor;
+	
 	public TypeDescriptor(String descriptor) throws IllegalDescriptorException {
+		this.descriptor = descriptor;
 		isByte = false;
 		isCharacter = false;
 		isDouble = false;
@@ -101,6 +104,11 @@ public class TypeDescriptor {
 			throw new IllegalStateException("isn't an array!");
 		}
 		return componentType;
+	}
+
+	@Override
+	public String toString() {
+		return descriptor;
 	}
 	
 	
