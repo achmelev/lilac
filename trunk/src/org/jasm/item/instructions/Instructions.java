@@ -57,6 +57,10 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			return new BranchInstruction(opCode, null);
 		} else if (OpCodes.ldc == opCode) {
 			return new LdcInstruction(null);
+		} else if (OpCodes.bipush == opCode) {
+			return new BipushInstruction((byte)-1);
+		} else if (OpCodes.iinc == opCode) {
+			return new IincInstruction((short)-1,(byte)-1);
 		} else {
 			throw new RuntimeException("Unknown op code: "+Integer.toHexString(opCode)+" at offset "+offset);
 		}
