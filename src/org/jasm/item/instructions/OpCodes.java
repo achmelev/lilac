@@ -362,10 +362,6 @@ public class OpCodes {
 			argumentLessInstructions.add(lconst_0);
 			argumentLessInstructions.add(lconst_1);
 			argumentLessInstructions.add(ldiv);
-			argumentLessInstructions.add(lload_0);
-			argumentLessInstructions.add(lload_1);
-			argumentLessInstructions.add(lload_2);
-			argumentLessInstructions.add(lload_3);
 			argumentLessInstructions.add(lmul);
 			argumentLessInstructions.add(lneg);
 			argumentLessInstructions.add(lor);
@@ -373,10 +369,6 @@ public class OpCodes {
 			argumentLessInstructions.add(lreturn);
 			argumentLessInstructions.add(lshl);
 			argumentLessInstructions.add(lshr);
-			argumentLessInstructions.add(lstore_0);
-			argumentLessInstructions.add(lstore_1);
-			argumentLessInstructions.add(lstore_2);
-			argumentLessInstructions.add(lstore_3);
 			argumentLessInstructions.add(lsub);
 			argumentLessInstructions.add(lushr);
 			argumentLessInstructions.add(lxor);
@@ -436,6 +428,14 @@ public class OpCodes {
 			shortLocalVariableInstructions.add(istore_1);
 			shortLocalVariableInstructions.add(istore_2);
 			shortLocalVariableInstructions.add(istore_3);
+			shortLocalVariableInstructions.add(lload_0);
+			shortLocalVariableInstructions.add(lload_1);
+			shortLocalVariableInstructions.add(lload_2);
+			shortLocalVariableInstructions.add(lload_3);
+			shortLocalVariableInstructions.add(lstore_0);
+			shortLocalVariableInstructions.add(lstore_1);
+			shortLocalVariableInstructions.add(lstore_2);
+			shortLocalVariableInstructions.add(lstore_3);
 			
 			
 			
