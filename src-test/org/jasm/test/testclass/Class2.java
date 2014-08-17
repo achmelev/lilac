@@ -45,7 +45,9 @@ public abstract class Class2  {
 		
 		try {
 			x = 2;
+			x++;
 			y= 1L;
+			y++;
 			z= 3.0;
 			s = 5;
 			f = 4.0f;
