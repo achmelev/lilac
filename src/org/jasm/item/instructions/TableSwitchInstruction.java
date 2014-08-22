@@ -66,7 +66,7 @@ public class TableSwitchInstruction extends AbstractInstruction {
 
 	@Override
 	public int getLength() {
-		return calculatePad()+12+(high-low+1)*4;
+		return 1+calculatePad()+12+(high-low+1)*4;
 	}
 
 	@Override

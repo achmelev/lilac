@@ -66,7 +66,7 @@ public class LookupSwitchInstruction extends AbstractInstruction {
 
 	@Override
 	public int getLength() {
-		return calculatePad()+8+values.length*8;
+		return 1+calculatePad()+8+values.length*8;
 	}
 
 	@Override

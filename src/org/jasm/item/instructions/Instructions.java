@@ -67,6 +67,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			return new LookupSwitchInstruction();
 		} else if (OpCodes.tableswitch == opCode) {
 			return new TableSwitchInstruction();
+		} else if (OpCodes.multianewarray == opCode) {
+			return new MultianewarrayInstruction();
 		} else {
 			throw new RuntimeException("Unknown op code: "+Integer.toHexString(opCode)+" at offset "+offset);
 		}
