@@ -61,6 +61,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			return new BipushInstruction((byte)-1);
 		} else if (OpCodes.iinc == opCode) {
 			return new IincInstruction((short)-1,(byte)-1);
+		} else if (OpCodes.invokeinterface == opCode) {
+			return new InvokeInterfaceInstruction(opCode,null);
 		} else {
 			throw new RuntimeException("Unknown op code: "+Integer.toHexString(opCode)+" at offset "+offset);
 		}
@@ -124,6 +126,13 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		currentOffset+=4;
 		while (currentOffset<(offset+codeLength+4)) {
 			AbstractInstruction instr = createEmptyItem(source, currentOffset);
+			if (items.size() == 0) {
+				instr.setOffsetInCode(0);
+			} else {
+				AbstractInstruction previousInstruction = items.get(items.size()-1);
+				instr.setOffsetInCode(previousInstruction.getOffsetInCode()+previousInstruction.getLength());
+			}
+			offsets.put(instr.getOffsetInCode(), instr);
 			
 			instr.setParent(this);
 			if (instr.getLength() > 1) {
@@ -132,6 +141,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			if (log.isDebugEnabled()) {
 				log.debug("Read instruction "+instr.getPrintName()+" at offset = "+currentOffset+", length="+instr.getLength());
 			}
+			
 			items.add(instr);
 			currentOffset+=instr.getLength();
 		}
@@ -264,7 +274,6 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 
 	@Override
 	protected void doResolve() {
-		setOffsets();
 		for (AbstractInstruction instr: items) {
 			instr.resolve();
 		}
