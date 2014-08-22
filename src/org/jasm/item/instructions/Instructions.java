@@ -72,14 +72,9 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 
 	
 	private void setOffsets() {
+		offsets.clear();
 		for (int i=0;i<items.size(); i++) {
 			AbstractInstruction instruction = items.get(i);
-			if (i==0) {
-				instruction.setOffsetInCode(0);
-			} else {
-				AbstractInstruction previousInstruction = items.get(i-1);
-				instruction.setOffsetInCode(previousInstruction.getOffsetInCode()+previousInstruction.getLength());
-			}
 			offsets.put(instruction.getOffsetInCode(), instruction);
 		}
 	}
@@ -126,15 +121,9 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		currentOffset+=4;
 		while (currentOffset<(offset+codeLength+4)) {
 			AbstractInstruction instr = createEmptyItem(source, currentOffset);
-			if (items.size() == 0) {
-				instr.setOffsetInCode(0);
-			} else {
-				AbstractInstruction previousInstruction = items.get(items.size()-1);
-				instr.setOffsetInCode(previousInstruction.getOffsetInCode()+previousInstruction.getLength());
-			}
-			offsets.put(instr.getOffsetInCode(), instr);
-			
 			instr.setParent(this);
+			items.add(instr);
+			offsets.put(instr.getOffsetInCode(), instr);
 			if (instr.getLength() > 1) {
 				instr.read(source, currentOffset+1);
 			}
@@ -142,7 +131,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 				log.debug("Read instruction "+instr.getPrintName()+" at offset = "+currentOffset+", length="+instr.getLength());
 			}
 			
-			items.add(instr);
+			
 			currentOffset+=instr.getLength();
 		}
 		if (currentOffset!=(offset+codeLength+4)) {

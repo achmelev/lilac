@@ -26,11 +26,14 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem {
 	}
 
 	public int getOffsetInCode() {
-		return offsetInCode;
-	}
-
-	public void setOffsetInCode(int offsetInCode) {
-		this.offsetInCode = offsetInCode;
+		Instructions instr = (Instructions)getParent();
+		int index = instr.indexOf(this);
+		if (index > 0) {
+			AbstractInstruction prev = instr.get(index-1);
+			return prev.getOffsetInCode()+prev.getLength();
+		} else {
+			return 0;
+		}
 	}
 	
 	protected CodeAttributeContent getCode() {
