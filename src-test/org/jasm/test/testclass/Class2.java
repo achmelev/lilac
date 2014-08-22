@@ -94,6 +94,17 @@ public abstract class Class2  {
 		}
 	}
 	
+	public void arraysMethod(int a) {
+		boolean [] ba = new boolean[a]; 
+		char [] ca = new char[a]; 
+		byte [] bya = new byte[a]; 
+		double [] da = new double[a];
+		float [] fa = new float[a];
+		int [] ia = new int[a];
+		long [] la = new long[a];
+		short [] sa = new short[a]; 
+	}
+	
 	private class InnerClass {
 		
 	}

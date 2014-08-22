@@ -69,6 +69,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			return new TableSwitchInstruction();
 		} else if (OpCodes.multianewarray == opCode) {
 			return new MultianewarrayInstruction();
+		} else if (OpCodes.newarray == opCode) {
+			return new NewarrayInstruction();
 		} else {
 			throw new RuntimeException("Unknown op code: "+Integer.toHexString(opCode)+" at offset "+offset);
 		}
@@ -202,15 +204,15 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		for (LocalVariable loc: localVariableReferences) {
 			String type = null;
 			if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE) {
-				type = "reference";
+				type = JasmConsts.TYPENAME_OBJECT;
 			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_INT) {
-				type = "int";
+				type = JasmConsts.TYPENAME_INT;
 			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT) {
-				type = "float";
+				type = JasmConsts.TYPENAME_FLOAT;
 			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE) {
-				type = "double";
+				type = JasmConsts.TYPENAME_DOUBLE;
 			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_LONG) {
-				type = "long";
+				type = JasmConsts.TYPENAME_LONG;
 			} else {
 				throw new IllegalStateException("Unknown type: "+loc.getType());
 			}
