@@ -71,6 +71,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			return new MultianewarrayInstruction();
 		} else if (OpCodes.newarray == opCode) {
 			return new NewarrayInstruction();
+		} else if (OpCodes.sipush == opCode) {
+			return new SipushInstruction((short)-1);
 		} else {
 			throw new RuntimeException("Unknown op code: "+Integer.toHexString(opCode)+" at offset "+offset);
 		}

@@ -87,7 +87,7 @@ public abstract class Class2  {
 			break;
 			case 3: r = 5;
 			break;
-			case 100: r = 7;
+			case 100: r = 300;
 			break;
 			default: r= 10;
 			
