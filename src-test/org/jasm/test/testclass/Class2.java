@@ -78,6 +78,20 @@ public abstract class Class2  {
 		}
 	}
 	
+	public void switchMethod2(int a) {
+		int r = -1;
+		switch(a) {
+			case 1: r = 1;
+			break;
+			case 3: r = 5;
+			break;
+			case 100: r = 7;
+			break;
+			default: r= 10;
+			
+		}
+	}
+	
 	private class InnerClass {
 		
 	}
