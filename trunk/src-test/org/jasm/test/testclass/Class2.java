@@ -64,6 +64,20 @@ public abstract class Class2  {
 		intf.testMethod(3);
 	}
 	
+	public void switchMethod(int a) {
+		int r = -1;
+		switch(a) {
+			case 1: r = 1;
+			break;
+			case 3: r = 5;
+			break;
+			case 5: r = 7;
+			break;
+			default: r= 10;
+			
+		}
+	}
+	
 	private class InnerClass {
 		
 	}

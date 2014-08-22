@@ -63,6 +63,10 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			return new IincInstruction((short)-1,(byte)-1);
 		} else if (OpCodes.invokeinterface == opCode) {
 			return new InvokeInterfaceInstruction(opCode,null);
+		} else if (OpCodes.lookupswitch == opCode) {
+			return new LookupSwitchInstruction();
+		} else if (OpCodes.tableswitch == opCode) {
+			return new TableSwitchInstruction();
 		} else {
 			throw new RuntimeException("Unknown op code: "+Integer.toHexString(opCode)+" at offset "+offset);
 		}
@@ -124,11 +128,10 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			instr.setParent(this);
 			items.add(instr);
 			offsets.put(instr.getOffsetInCode(), instr);
-			if (instr.getLength() > 1) {
-				instr.read(source, currentOffset+1);
-			}
+			instr.read(source, currentOffset+1);
+			
 			if (log.isDebugEnabled()) {
-				log.debug("Read instruction "+instr.getPrintName()+" at offset = "+currentOffset+", length="+instr.getLength());
+				log.debug("Read instruction "+instr.getPrintName()+" at offset = "+currentOffset+", length="+instr.getLength()+", offsetInCode="+instr.getOffsetInCode());
 			}
 			
 			
