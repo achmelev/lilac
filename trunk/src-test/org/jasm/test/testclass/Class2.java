@@ -43,6 +43,8 @@ public abstract class Class2  {
 		float f;
 		boolean b;
 		
+		int [] [] multi = new int [4] [6];
+		
 		try {
 			x = 2;
 			x++;
