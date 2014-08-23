@@ -27,11 +27,13 @@ public abstract class AbstractHttpJarTest {
 	
 	
 	protected void doJarTest() {
+		log.info("Testing "+getURL());
 		File f = getFile(getURL());
 		try {
 			JarFile jar = new JarFile(f);
 			Enumeration<JarEntry> entries = jar.entries();
 			int errorCounter = 0;
+			int counter = 0;
 			while (entries.hasMoreElements()) {
 				JarEntry entry = entries.nextElement();
 				if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
@@ -43,9 +45,11 @@ public abstract class AbstractHttpJarTest {
 						errorCounter++;
 					}
 					data.close();
+					counter++;
 				}
 			}
 			Assert.assertEquals(0, errorCounter);
+			log.info("Successfully tested "+counter+" classes!");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
