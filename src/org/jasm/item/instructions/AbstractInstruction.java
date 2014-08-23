@@ -6,14 +6,19 @@ import org.jasm.item.attribute.CodeAttributeContent;
 public abstract class AbstractInstruction extends AbstractByteCodeItem {
 
 	private short opCode = -1;
-	private int offsetInCode = -1;
+	private boolean isWide = false;
 	
 	public AbstractInstruction() {
 		
 	}
 	
-	public AbstractInstruction(short opCode) {
+	public AbstractInstruction(short opCode, boolean isWide) {
 		this.opCode = opCode;
+		this.isWide = isWide;
+	}
+	
+	public AbstractInstruction(short opCode) {
+		this(opCode, false);
 	}
 	
 
@@ -69,7 +74,11 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem {
 
 	@Override
 	public String getPrintName() {
-		return OpCodes.getNameForOpcode(opCode);
+		return (this.isWide?"wide ":"")+OpCodes.getNameForOpcode(opCode);
+	}
+
+	public boolean isWide() {
+		return isWide;
 	}
 
 	

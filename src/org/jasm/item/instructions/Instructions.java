@@ -1,6 +1,7 @@
 package org.jasm.item.instructions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.map.KeyToListMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 public class Instructions extends AbstractByteCodeItem implements IContainerBytecodeItem<AbstractInstruction>, IPrintable {
 	
@@ -48,7 +50,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		if (OpCodes.isArgumentLessInstruction(opCode)) {
 			return new ArgumentLessInstruction(opCode);
 		} else if (OpCodes.isLocalVariableInstruction(opCode)) {
-			return new LocalVariableInstruction(opCode, (short)-1);
+			return new LocalVariableInstruction(opCode, false,(short)-1);
 		} else if (OpCodes.isShortLocalVariableInstruction(opCode)) {
 			return new ShortLocalVariableInstruction(opCode);
 		} else if (OpCodes.isConstantPoolInstruction(opCode)) {
@@ -60,7 +62,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		} else if (OpCodes.bipush == opCode) {
 			return new BipushInstruction((byte)-1);
 		} else if (OpCodes.iinc == opCode) {
-			return new IincInstruction((short)-1,(byte)-1);
+			return new IincInstruction(-1,(short)-1, false);
 		} else if (OpCodes.invokeinterface == opCode) {
 			return new InvokeInterfaceInstruction(opCode,null);
 		} else if (OpCodes.lookupswitch == opCode) {
@@ -73,6 +75,15 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			return new NewarrayInstruction();
 		} else if (OpCodes.sipush == opCode) {
 			return new SipushInstruction((short)-1);
+		} else if (OpCodes.wide == opCode) {
+			short opCode2 = source.readUnsignedByte(offset+1);
+			if (OpCodes.isWideFormat1Instruction(opCode2)) {
+				return new LocalVariableInstruction(opCode2, true, -1);
+			} else if (OpCodes.iinc == opCode2) {
+				return new IincInstruction(-1,(short)-1, true);
+			} else {
+				throw new RuntimeException("Unknown wide op code: "+Integer.toHexString(opCode2)+" at offset "+(offset+1));
+			}
 		} else {
 			throw new RuntimeException("Unknown op code: "+Integer.toHexString(opCode)+" at offset "+offset);
 		}
@@ -134,7 +145,12 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			instr.setParent(this);
 			items.add(instr);
 			offsets.put(instr.getOffsetInCode(), instr);
-			instr.read(source, currentOffset+1);
+			if (instr.isWide()) {
+				instr.read(source, currentOffset+2);
+			} else {
+				instr.read(source, currentOffset+1);
+			}
+			
 			
 			if (log.isDebugEnabled()) {
 				log.debug("Read instruction "+instr.getPrintName()+" at offset = "+currentOffset+", length="+instr.getLength()+", offsetInCode="+instr.getOffsetInCode());
@@ -164,8 +180,18 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		target.writeUnsignedInt(currentOffset, codeLength);
 		currentOffset+=4;
 		for (AbstractInstruction instr: items) {
-			target.writeUnsignedByte(currentOffset, instr.getOpCode());
-			instr.write(target, currentOffset+1);
+			if (instr.isWide()) {
+				target.writeUnsignedByte(currentOffset, OpCodes.wide);
+				target.writeUnsignedByte(currentOffset+1, instr.getOpCode());
+			} else {
+				target.writeUnsignedByte(currentOffset, instr.getOpCode());
+			}
+			
+			if (instr.isWide()) {
+				instr.write(target, currentOffset+2);
+			} else {
+				instr.write(target, currentOffset+1);
+			}
 			if (log.isDebugEnabled()) {
 				log.debug("Written instruction "+instr.getPrintName()+" at offset = "+currentOffset+", length="+instr.getLength());
 			}
@@ -203,10 +229,16 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	public List<IPrintable> getStructureParts() {
 		List<IPrintable> result = new ArrayList<>();
 		
-		for (LocalVariable loc: localVariableReferences) {
+		List<LocalVariable> localVariableReferencesList = new ArrayList<>();
+		localVariableReferencesList.addAll(localVariableReferences);
+		Collections.sort(localVariableReferencesList);
+		
+		for (LocalVariable loc: localVariableReferencesList) {
 			String type = null;
 			if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE) {
 				type = JasmConsts.TYPENAME_OBJECT;
+			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS) {
+				type = JasmConsts.TYPENAME_RETURNADRESS;
 			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_INT) {
 				type = JasmConsts.TYPENAME_INT;
 			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT) {

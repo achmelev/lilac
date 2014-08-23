@@ -1,6 +1,6 @@
 package org.jasm.item.instructions;
 
-public class LocalVariable {
+public class LocalVariable implements Comparable<LocalVariable> {
 	
 	private int index;;
 	private char type;
@@ -47,6 +47,11 @@ public class LocalVariable {
 
 	public String toString() {
 		return type+"loc"+index;
+	}
+
+	@Override
+	public int compareTo(LocalVariable o) {
+		return new Integer(index).compareTo(new Integer(o.getIndex()));
 	}
 	
 

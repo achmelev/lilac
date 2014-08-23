@@ -7,18 +7,22 @@ import org.jasm.bytebuffer.print.IPrintable;
 
 public class LocalVariableInstruction extends AbstractInstruction implements ILocalVariableReference {
 	
-	private short localVariableIndex = -1;
+	private int localVariableIndex = -1;
 	
 	
-	public LocalVariableInstruction(short opCode, short localVariableIndex) {
-		super(opCode);
+	public LocalVariableInstruction(short opCode,boolean isWide, int localVariableIndex) {
+		super(opCode, isWide);
 		this.localVariableIndex = localVariableIndex;
+		if (!isWide && localVariableIndex>255) {
+			throw new IllegalArgumentException(""+localVariableIndex);
+		}
 		
 	}
+	
 
 	@Override
 	public int getLength() {
-		return 2;
+		return this.isWide()?4:2;
 	}
 
 	@Override
@@ -44,12 +48,22 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
-		this.localVariableIndex = source.readUnsignedByte(offset);
+		if (this.isWide()) {
+			this.localVariableIndex = source.readUnsignedShort(offset);
+		} else {
+			this.localVariableIndex = source.readUnsignedByte(offset);
+		}
+		
 	}
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
-		target.writeUnsignedByte(offset, localVariableIndex);
+		if (this.isWide()) {
+			target.writeUnsignedShort(offset, (short)localVariableIndex);
+		} else {
+			target.writeUnsignedByte(offset, (short)localVariableIndex);
+		}
+		
 	}
 
 	@Override
@@ -59,7 +73,7 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 
 	@Override
 	public LocalVariable[] getLocalVariableReferences() {
-		char type = getPrintName().charAt(0);
+		char type = OpCodes.getNameForOpcode(getOpCode()).charAt(0);
 		return new LocalVariable[]{new LocalVariable(localVariableIndex, type)};
 	}
 	

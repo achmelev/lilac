@@ -8,11 +8,11 @@ import org.jasm.bytebuffer.print.IPrintable;
 
 public class IincInstruction extends AbstractInstruction implements ILocalVariableReference {
 	
-	private short localVariableIndex = -1;
-	private byte value = -1;
+	private int localVariableIndex = -1;
+	private short value = -1;
 	
-	public IincInstruction(short localVariableIndex, byte value) {
-		super(OpCodes.iinc);
+	public IincInstruction(int localVariableIndex ,short value, boolean isWide) {
+		super(OpCodes.iinc, isWide);
 		this.localVariableIndex = localVariableIndex;
 		this.value = value;
 	}
@@ -20,20 +20,32 @@ public class IincInstruction extends AbstractInstruction implements ILocalVariab
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
-		localVariableIndex = source.readUnsignedByte(offset);
-		value = source.readByte(offset+1);
+		if (isWide()) {
+			localVariableIndex = source.readUnsignedShort(offset);
+			value = source.readShort(offset+2);
+		} else {
+			localVariableIndex = source.readUnsignedByte(offset);
+			value = source.readByte(offset+1);
+		}
+		
 
 	}
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
-		target.writeUnsignedByte(offset, localVariableIndex);
-		target.writeByte(offset+1, value);
+		if (this.isWide()) {
+			target.writeUnsignedShort(offset, localVariableIndex);
+			target.writeShort(offset+2, value);
+		} else {
+			target.writeUnsignedByte(offset, (short)localVariableIndex);
+			target.writeByte(offset+1, (byte)value);
+		}
+		
 	}
 
 	@Override
 	public int getLength() {
-		return 3;
+		return this.isWide()?6:3;
 	}
 
 	@Override

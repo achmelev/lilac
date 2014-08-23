@@ -9,6 +9,7 @@ public class JasmConsts {
 	public static char LOCAL_VARIABLE_TYPE_DOUBLE = 'd';
 	public static char LOCAL_VARIABLE_TYPE_FLOAT = 'f';
 	public static char LOCAL_VARIABLE_TYPE_LONG = 'l';
+	public static char LOCAL_VARIABLE_TYPE_RETURNADRESS = 'r';
 	
 	public static short ARRAY_TYPE_BOOLEAN = 4;
 	public static short ARRAY_TYPE_CHAR = 5;
@@ -28,5 +29,6 @@ public class JasmConsts {
 	public static String TYPENAME_SHORT="short";
 	public static String TYPENAME_LONG="long";
 	public static String TYPENAME_OBJECT="object";
+	public static String TYPENAME_RETURNADRESS="returnadress";
 	
 }

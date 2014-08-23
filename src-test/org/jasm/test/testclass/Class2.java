@@ -42,10 +42,12 @@ public abstract class Class2  {
 		short s;
 		float f;
 		boolean b;
+		byte by ;
 		
 		int [] [] multi = new int [4] [6];
 		
 		try {
+			by = (byte)200;
 			x = 2;
 			x++;
 			y= 1L;
@@ -105,9 +107,13 @@ public abstract class Class2  {
 		short [] sa = new short[a]; 
 	}
 	
+	
+	
 	private class InnerClass {
 		
 	}
+	
+	
 	
 
 }
