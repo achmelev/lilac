@@ -18,6 +18,7 @@ public class OpCodes {
 	private static List<Short> branchInstructions = new ArrayList<>();
 	private static List<Short> wideBranchInstructions = new ArrayList<>();
 	private static List<Short> specialInstructions = new ArrayList<>();
+	private static List<Short> wideInstructionsFormat1 = new ArrayList<>();
 	
 	public static short aaload = 0x32;
 	public static short aastore = 0x53;
@@ -479,6 +480,18 @@ public class OpCodes {
 			wideBranchInstructions.add(goto_w);
 			wideBranchInstructions.add(jsr_w);
 			
+			//
+			wideInstructionsFormat1.add(OpCodes.aload);
+			wideInstructionsFormat1.add(OpCodes.astore);
+			wideInstructionsFormat1.add(OpCodes.dload);
+			wideInstructionsFormat1.add(OpCodes.dstore);
+			wideInstructionsFormat1.add(OpCodes.fload);
+			wideInstructionsFormat1.add(OpCodes.fstore);
+			wideInstructionsFormat1.add(OpCodes.iload);
+			wideInstructionsFormat1.add(OpCodes.istore);
+			wideInstructionsFormat1.add(OpCodes.lload);
+			wideInstructionsFormat1.add(OpCodes.lstore);
+			
 			_initialized = true;
 		}
 	}
@@ -583,6 +596,11 @@ public class OpCodes {
 	public static boolean isWideBranchInstruction(short opCode) {
 		initialize();
 		return wideBranchInstructions.contains(opCode);
+	}
+	
+	public static boolean isWideFormat1Instruction(short opCode) {
+		initialize();
+		return wideInstructionsFormat1.contains(opCode);
 	}
 
 	
