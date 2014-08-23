@@ -35,7 +35,12 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 	@Override
 	public void write(IByteBuffer target, long offset) {
 		target.writeUnsignedShort(offset, clazz.getIndexInPool());
-		target.writeUnsignedShort(offset+2, method.getIndexInPool());
+		if (method != null) {
+			target.writeUnsignedShort(offset+2, method.getIndexInPool());
+		} else {
+			target.writeUnsignedShort(offset+2, 0);
+		}
+		
 	}
 
 	@Override
@@ -87,7 +92,12 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 	@Override
 	protected void doResolve() {
 		this.clazz = (ClassInfo)getConstantPool().get(this.clazzIndex-1);
-		this.method = (NameAndTypeInfo)getConstantPool().get(this.methodIndex-1);
+		if (this.methodIndex == 0) {
+
+		} else {
+			this.method = (NameAndTypeInfo)getConstantPool().get(this.methodIndex-1);
+		}
+		
 	}
 
 	public ClassInfo getClazz() {
@@ -112,7 +122,12 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 
 	@Override
 	public AbstractConstantPoolEntry[] getConstantReferences() {
-		return new AbstractConstantPoolEntry[]{clazz,method};
+		if (method == null) {
+			return new AbstractConstantPoolEntry[]{clazz};
+		} else {
+			return new AbstractConstantPoolEntry[]{clazz,method};
+		}
+		
 	}
 
 }

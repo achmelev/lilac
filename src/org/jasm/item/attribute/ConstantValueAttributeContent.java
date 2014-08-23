@@ -7,14 +7,18 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
+import org.jasm.item.constantpool.StringInfo;
 
 public class ConstantValueAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
 	
 	private int valueIndex = -1;
-	private IPrimitiveValueReferencingEntry valueEntry = null;
+	private AbstractConstantPoolEntry  valueEntry = null;
 	
-	public ConstantValueAttributeContent(IPrimitiveValueReferencingEntry entry) {
+	public ConstantValueAttributeContent(AbstractConstantPoolEntry entry) {
 		this.valueEntry = entry;
+		if (!(this.valueEntry instanceof StringInfo || this.valueEntry instanceof IPrimitiveValueReferencingEntry)) {
+			throw new IllegalArgumentException(valueEntry+"");
+		}
 	}
 	
 	public ConstantValueAttributeContent() {
@@ -69,13 +73,18 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 	@Override
 	public String getPrintComment() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(valueEntry.getValue().toString());
+		if (valueEntry instanceof StringInfo) {
+			buf.append(((StringInfo)valueEntry).getContent());
+		} else {
+			buf.append(((IPrimitiveValueReferencingEntry)valueEntry).getValue());
+		}
+		
 		return buf.toString();
 	}
 
 	@Override
 	protected void doResolve() {
-		this.valueEntry = (IPrimitiveValueReferencingEntry)getConstantPool().get(this.valueIndex-1);
+		this.valueEntry = getConstantPool().get(this.valueIndex-1);
 	}
 
 	public AbstractConstantPoolEntry getConstantPoolEntry() {
@@ -83,7 +92,12 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 	}
 	
 	public Object getValue() {
-		return valueEntry.getValue();
+		if (valueEntry instanceof StringInfo) {
+			return ((StringInfo)valueEntry).getContent();
+		} else {
+			return ((IPrimitiveValueReferencingEntry)valueEntry).getValue();
+		}
+		
 	}
 
 	@Override

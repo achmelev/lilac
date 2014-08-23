@@ -15,5 +15,6 @@
 		<dependency org="org.apache.httpcomponents" name="httpclient" rev="4.3.5">
 			<exclude org="commons-logging" name="commons-logging"/>
 		</dependency>
+		<dependency org="commons-io" name="commons-io" rev="2.4"/>
     </dependencies>
 </ivy-module>

@@ -19,5 +19,6 @@
 	<classpathentry kind="lib" path="lib/commons-codec-jar.jar" sourcepath="lib/commons-codec-source.jar"/>
 	<classpathentry kind="lib" path="lib/httpclient-jar.jar" sourcepath="lib/httpclient-source.jar"/>
 	<classpathentry kind="lib" path="lib/httpcore-jar.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-jar.jar" sourcepath="lib/commons-io-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
