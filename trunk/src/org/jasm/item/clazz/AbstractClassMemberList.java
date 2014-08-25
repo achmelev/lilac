@@ -76,7 +76,7 @@ public abstract class AbstractClassMemberList<T extends AbstractClassMember> ext
 		if (candidates.size() ==  0) {
 			return null;
 		} else if (candidates.size() > 1) {
-			throw new IllegalArgumentException("more than one entry found!");
+			throw new IllegalArgumentException("more than one entry found for: "+name+"@"+descriptor);
 		} else {
 			T entry = candidates.get(0);
 			return entry;

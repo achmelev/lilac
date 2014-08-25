@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.Assert;
 
@@ -14,11 +16,15 @@ import junit.framework.Assert;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
+import org.jasm.item.attribute.Attributes;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
 import org.jasm.item.attribute.DeprecatedAttributeContent;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
+import org.jasm.item.attribute.IAttributeContent;
+import org.jasm.item.attribute.InnerClass;
 import org.jasm.item.attribute.InnerClassesAttributeContent;
 import org.jasm.item.clazz.Clazz;
+import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.Utf8Info;
@@ -27,7 +33,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 public class Class2Test {
 	
@@ -79,22 +84,24 @@ public class Class2Test {
 		assertFalse(clazz.getModifier().isInterface());
 		assertTrue(clazz.getModifier().isSuper());
 		
-		ClassInfo ci = clazz.getConstantPool().getClassInfo("org/jasm/test/testclass/Class2");
-		Assert.assertTrue(clazz.getConstantPool().getReferencingItems(ci).contains(clazz));
+		List<ClassInfo> ci = clazz.getConstantPool().getClassInfos("org/jasm/test/testclass/Class2");
+		Assert.assertTrue(clazz.getConstantPool().getReferencingItems(createCPList(ci)).contains(clazz));
 		
-		assertEquals("org/jasm/test/testclass/Class2$1", ((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(0).getInnerClassName());
-		assertNull(((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(0).getOuterClassName());
-		assertNull(((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(0).getInnerName());
+		InnerClass incl = getInnerClass(clazz.getAttributes(), "org/jasm/test/testclass/Class2$1");
+		assertNotNull(incl);
+		assertNull(incl.getOuterClassName());
+		assertNull(incl.getInnerName());
 		
-		assertEquals("org/jasm/test/testclass/Class2$InnerClass", ((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(1).getInnerClassName());
-		assertEquals("org/jasm/test/testclass/Class2", ((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(1).getOuterClassName());
-		assertEquals("InnerClass", ((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(1).getInnerNameValue());
-		assertTrue(((InnerClassesAttributeContent)clazz.getAttributes().get(1).getContent()).get(1).getModifier().isPrivate());
+		incl = getInnerClass(clazz.getAttributes(), "org/jasm/test/testclass/Class2$InnerClass");
+		assertNotNull(incl);
+		assertEquals("org/jasm/test/testclass/Class2", incl.getOuterClassName());
+		assertEquals("InnerClass", incl.getInnerNameValue());
+		assertTrue(incl.getModifier().isPrivate());
 		
 		String name = "staticString"; String descriptor = "Ljava/lang/String;";
 		assertNotNull(clazz.getFields().getField(name, descriptor));
-		Utf8Info utf8 = clazz.getConstantPool().getUtf8Info("staticString");
-		Assert.assertTrue(clazz.getConstantPool().getReferencingItems(utf8).contains(clazz.getFields().getField(name, descriptor)));
+		List<Utf8Info> utf8 = clazz.getConstantPool().getUtf8Infos("staticString");
+		Assert.assertTrue(clazz.getConstantPool().getReferencingItems(createCPList(utf8)).contains(clazz.getFields().getField(name, descriptor)));
 		
 		assertFalse(clazz.getFields().getField(name, descriptor).getModifier().isEnum());
 		assertFalse(clazz.getFields().getField(name, descriptor).getModifier().isFinal());
@@ -107,25 +114,25 @@ public class Class2Test {
 		
 		name = "finalIntField"; 
 		descriptor = "I";
-		assertEquals(((ConstantValueAttributeContent)clazz.getFields().getField(name, descriptor).getAttributes().get(0).getContent()).getValue(), new Integer(0));
+		assertEquals((getAttributeContent(clazz.getFields().getField(name, descriptor).getAttributes(), ConstantValueAttributeContent.class)).getValue(), new Integer(0));
 		
 		
 		
 		name = "constInt"; 
 		descriptor = "I";
-		assertEquals(((ConstantValueAttributeContent)clazz.getFields().getField(name, descriptor).getAttributes().get(0).getContent()).getValue(), new Integer(1));
+		assertEquals((getAttributeContent(clazz.getFields().getField(name, descriptor).getAttributes(), ConstantValueAttributeContent.class)).getValue(), new Integer(1));
 		
 		name = "methodMitException"; 
 		descriptor = "()V";
-		assertEquals(((ExceptionsAttributeContent)clazz.getMethods().getMethod(name, descriptor).getAttributes().get(0).getContent()).getExceptionClassNames().size(),1);
-		assertEquals(((ExceptionsAttributeContent)clazz.getMethods().getMethod(name, descriptor).getAttributes().get(0).getContent()).getExceptionClassNames().get(0),"java/lang/IllegalArgumentException");
+		assertEquals((getAttributeContent(clazz.getMethods().getMethod(name, descriptor).getAttributes(), ExceptionsAttributeContent.class)).getExceptionClassNames().size(), 1);
+		assertEquals((getAttributeContent(clazz.getMethods().getMethod(name, descriptor).getAttributes(), ExceptionsAttributeContent.class)).getExceptionClassNames().get(0), "java/lang/IllegalArgumentException");
 		
-		utf8 = clazz.getConstantPool().getUtf8Info("methodMitException");
-		Assert.assertTrue(clazz.getConstantPool().getReferencingItems(utf8).contains(clazz.getMethods().getMethod(name, descriptor)));
+		utf8 = clazz.getConstantPool().getUtf8Infos("methodMitException");
+		Assert.assertTrue(clazz.getConstantPool().getReferencingItems(createCPList(utf8)).contains(clazz.getMethods().getMethod(name, descriptor)));
 		
 		name = "privateMethod"; 
 		descriptor = "(I)V";
-		assertTrue(clazz.getMethods().getMethod(name, descriptor).getAttributes().get(0).getContent() instanceof DeprecatedAttributeContent);
+		assertNotNull(getAttributeContent(clazz.getMethods().getMethod(name, descriptor).getAttributes(), DeprecatedAttributeContent.class));
 		
 		
 		
@@ -134,6 +141,37 @@ public class Class2Test {
 		clazz.write(bbuf2, 0);
 		assertArrayEquals(data2, data);
 		
+	}
+	
+	private <T extends AbstractConstantPoolEntry> List<AbstractConstantPoolEntry> createCPList(List<T> input) {
+		List<AbstractConstantPoolEntry> result = new ArrayList<>();
+		result.addAll(input);
+		return result;
+	}
+	
+	private InnerClass getInnerClass(Attributes attrs, String name) {
+		for (int i=0;i<attrs.getSize(); i++) {
+			if (attrs.get(i).getContent() instanceof InnerClassesAttributeContent) {
+				InnerClassesAttributeContent content = (InnerClassesAttributeContent)attrs.get(i).getContent();
+				for (int j=0;j<content.getSize();j++) {
+					InnerClass incl = content.get(j);
+					if (incl.getInnerClassName().equals(name)) {
+						return incl;
+					}
+					
+				}
+			}
+		}
+		return null;
+	}
+	
+	private <T extends IAttributeContent> T getAttributeContent(Attributes attrs, Class<T> clazz) {
+		for (int i=0;i<attrs.getSize(); i++) {
+			if (attrs.get(i).getContent().getClass().equals(clazz)) {
+				return (T) attrs.get(i).getContent();
+			}
+		}
+		return null;
 	}
 
 }

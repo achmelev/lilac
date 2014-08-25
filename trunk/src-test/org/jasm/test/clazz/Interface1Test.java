@@ -1,6 +1,9 @@
 package org.jasm.test.clazz;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,13 +14,9 @@ import java.io.StringWriter;
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.clazz.Clazz;
-import org.jasm.item.constantpool.ConstantPool;
-import org.jasm.test.item.DummyRoot;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 public class Interface1Test {
 	

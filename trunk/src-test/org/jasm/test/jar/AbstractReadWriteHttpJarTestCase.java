@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.item.clazz.Clazz;
 
-public abstract class AbstractReadWriteHttpJarTest extends
-		AbstractHttpJarTest {
+public abstract class AbstractReadWriteHttpJarTestCase extends
+		AbstractHttpJarTestCase {
 	
 	@Override
 	protected void testClass(byte[] data) {

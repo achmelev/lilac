@@ -1,6 +1,6 @@
 package org.jasm.test.clazz;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,23 +8,14 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-
-
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
-import org.jasm.item.attribute.ConstantValueAttributeContent;
 import org.jasm.item.attribute.EnclosingMethodAttributeContent;
-import org.jasm.item.attribute.ExceptionsAttributeContent;
-import org.jasm.item.attribute.InnerClassesAttributeContent;
 import org.jasm.item.clazz.Clazz;
-import org.jasm.item.constantpool.ConstantPool;
-import org.jasm.test.item.DummyRoot;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 public class InnerClassTest1 {
 	

@@ -1,6 +1,6 @@
 package org.jasm.test.clazz;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,25 +8,17 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-
-
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
-import org.jasm.item.attribute.ConstantValueAttributeContent;
-import org.jasm.item.attribute.EnclosingMethodAttributeContent;
-import org.jasm.item.attribute.ExceptionsAttributeContent;
-import org.jasm.item.attribute.InnerClassesAttributeContent;
+import org.jasm.item.attribute.Attributes;
+import org.jasm.item.attribute.IAttributeContent;
 import org.jasm.item.attribute.SignatureAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.clazz.Clazz;
-import org.jasm.item.constantpool.ConstantPool;
-import org.jasm.test.item.DummyRoot;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 public class GenericClassTest1 {
 	
@@ -67,9 +59,9 @@ public class GenericClassTest1 {
 		writer.close();
 		log.debug("code: \n"+sw.toString());
 		
-		Assert.assertEquals("<T:Ljava/lang/Object;>Ljava/lang/Object;", ((SignatureAttributeContent)clazz.getAttributes().get(1).getContent()).getValue());
-		Assert.assertEquals("GenericClass.java", ((SourceFileAttributeContent)clazz.getAttributes().get(0).getContent()).getValue());
-		Assert.assertEquals("(TT;)TT;", ((SignatureAttributeContent)clazz.getMethods().get(1).getAttributes().get(0).getContent()).getValue());
+		Assert.assertEquals("<T:Ljava/lang/Object;>Ljava/lang/Object;", getAttributeContent(clazz.getAttributes(), SignatureAttributeContent.class).getValue());
+		Assert.assertEquals("GenericClass.java", getAttributeContent(clazz.getAttributes(), SourceFileAttributeContent.class).getValue());
+		Assert.assertEquals("(TT;)TT;", getAttributeContent(clazz.getMethods().get(1).getAttributes(), SignatureAttributeContent.class).getValue());
 		
 		
 		byte [] data2 = new byte[clazz.getLength()];
@@ -79,6 +71,15 @@ public class GenericClassTest1 {
 		
 		assertArrayEquals(data2, data);
 		
+	}
+	
+	private <T extends IAttributeContent> T getAttributeContent(Attributes attrs, Class<T> clazz) {
+		for (int i=0;i<attrs.getSize(); i++) {
+			if (attrs.get(i).getContent().getClass().equals(clazz)) {
+				return (T) attrs.get(i).getContent();
+			}
+		}
+		return null;
 	}
 
 }

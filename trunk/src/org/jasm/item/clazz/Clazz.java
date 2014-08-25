@@ -3,8 +3,6 @@ package org.jasm.item.clazz;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.smartcardio.ATR;
-
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
@@ -19,8 +17,6 @@ import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.modifier.ClassModifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import sun.net.NetHooks;
 
 
 public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeItem<IBytecodeItem>, IConstantPoolReference {

@@ -1,6 +1,7 @@
 package org.jasm.test.clazz;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -12,13 +13,9 @@ import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.attribute.AnnotationDefaultAttributeContent;
 import org.jasm.item.clazz.Clazz;
-import org.jasm.item.constantpool.ConstantPool;
-import org.jasm.test.item.DummyRoot;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 public class AnnotationTest {
 	
