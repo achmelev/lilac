@@ -18,9 +18,9 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	
 	private KeyToListMap<String,AbstractConstantPoolEntry> entriesByName = new KeyToListMap<>();
 	private KeyToListMap<String,AbstractConstantPoolEntry> entriesByDescriptor = new KeyToListMap<String,AbstractConstantPoolEntry>();
-	private Map<String, AbstractConstantPoolEntry> entriesByText = new HashMap<>();
-	private Map<Object, AbstractConstantPoolEntry> entriesByPrimitive = new HashMap<>();
-	private Map<String, Utf8Info> utf8ByContent = new HashMap<>();
+	private KeyToListMap<String, AbstractConstantPoolEntry> entriesByText = new KeyToListMap<>();
+	private KeyToListMap<Object, AbstractConstantPoolEntry> entriesByPrimitive = new KeyToListMap<>();
+	private KeyToListMap<String, Utf8Info> utf8ByContent = new KeyToListMap<>();
 	
 	private KeyToListMap<AbstractConstantPoolEntry, IBytecodeItem> entryReferences = new KeyToListMap<>();
 	
@@ -67,7 +67,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		if (entry instanceof ITextReferencingEntry) {
 			ITextReferencingEntry ref = (ITextReferencingEntry)entry;
 			if (!entriesByText.containsKey(ref.getContent())) {
-				entriesByText.put(ref.getContent(),entry );
+				entriesByText.addToList(ref.getContent(),entry );
 			} else {
 				throw new IllegalArgumentException("There is already an entry containing: "+ref.getContent());
 			}
@@ -75,7 +75,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		if (entry instanceof IPrimitiveValueReferencingEntry) {
 			IPrimitiveValueReferencingEntry ref = (IPrimitiveValueReferencingEntry)entry;
 			if (!entriesByPrimitive.containsKey(ref.getValue())) {
-				entriesByPrimitive.put(ref.getValue(),entry );
+				entriesByPrimitive.addToList(ref.getValue(),entry );
 			} else {
 				throw new IllegalArgumentException("There is already an entry containing: "+ref.getValue());
 			}
@@ -83,7 +83,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		if (entry instanceof Utf8Info) {
 			Utf8Info ref = (Utf8Info)entry;
 			if (!utf8ByContent.containsKey(ref.getValue())) {
-				utf8ByContent.put(ref.getValue(),ref );
+				utf8ByContent.addToList(ref.getValue(),ref );
 			} else {
 				throw new IllegalArgumentException("There is already an entry containing: "+ref.getValue());
 			}
@@ -105,66 +105,101 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	}
 	
 	
-	public StringInfo getStringEntry(String text) {
-		return (StringInfo)entriesByText.get(text);
+	public List<StringInfo> getStringEntries(String text) {
+		List<AbstractConstantPoolEntry> entries = entriesByText.get(text);
+		List<StringInfo> result = new ArrayList<>();
+		for (AbstractConstantPoolEntry entry: entries) {
+			result.add((StringInfo) entry);
+		}
+		return result;
 	}
 	
-	public IntegerInfo getIntegerEntry(int value) {
-		return (IntegerInfo)entriesByText.get(value);
+	public List<IntegerInfo> getIntegerEntries(int value) {
+		List<AbstractConstantPoolEntry> entries = entriesByPrimitive.get(value);
+		List<IntegerInfo> result = new ArrayList<>();
+		for (AbstractConstantPoolEntry entry: entries) {
+			result.add((IntegerInfo) entry);
+		}
+		return result;
 	}
 	
-	public FloatInfo getFloatEntry(float value) {
-		return (FloatInfo)entriesByPrimitive.get(value);
+	public List<FloatInfo> getFloatEntries(float value) {
+		List<AbstractConstantPoolEntry> entries = entriesByPrimitive.get(value);
+		List<FloatInfo> result = new ArrayList<>();
+		for (AbstractConstantPoolEntry entry: entries) {
+			result.add((FloatInfo) entry);
+		}
+		return result;
 	}
 	
-	public LongInfo getLongEntry(long value) {
-		return (LongInfo)entriesByPrimitive.get(value);
+	public List<DoubleInfo> getDoubleEntries(double value) {
+		List<AbstractConstantPoolEntry> entries = entriesByPrimitive.get(value);
+		List<DoubleInfo> result = new ArrayList<>();
+		for (AbstractConstantPoolEntry entry: entries) {
+			result.add((DoubleInfo) entry);
+		}
+		return result;
 	}
 	
-	public DoubleInfo getDoubleEntry(double value) {
-		return (DoubleInfo)entriesByPrimitive.get(value);
+	public List<LongInfo> getLongEntries(long value) {
+		List<AbstractConstantPoolEntry> entries = entriesByPrimitive.get(value);
+		List<LongInfo> result = new ArrayList<>();
+		for (AbstractConstantPoolEntry entry: entries) {
+			result.add((LongInfo) entry);
+		}
+		return result;
 	}
 	
-	public Utf8Info getUtf8Info(String text) {
+	
+	
+	public List<Utf8Info> getUtf8Infos(String text) {
 		return utf8ByContent.get(text);
 	}
 	
-	public ClassInfo getClassInfo(String className) {
-		return getRef(ClassInfo.class, className, null, null);
+	public List<ClassInfo> getClassInfos(String className) {
+		return getRefs(ClassInfo.class, className, null, null);
 	}
 	
-	public MethodrefInfo getMethodRef(String className, String name, String signature) {
-		return getRef(MethodrefInfo.class, className, name, signature);
+	public List<MethodrefInfo> getMethodRefs(String className, String name, String signature) {
+		return getRefs(MethodrefInfo.class, className, name, signature);
 	}
 	
-	public FieldrefInfo getFieldRef(String className, String name, String signature) {
-		return getRef(FieldrefInfo.class, className, name, signature);
+	public List<FieldrefInfo> getFieldRefs(String className, String name, String signature) {
+		return getRefs(FieldrefInfo.class, className, name, signature);
 	}
 	
-	public InterfaceMethodrefInfo getInterfaceMethodRef(String className, String name, String signature) {
-		return getRef(InterfaceMethodrefInfo.class, className, name, signature);
+	public List<InterfaceMethodrefInfo> getInterfaceMethodRef(String className, String name, String signature) {
+		return getRefs(InterfaceMethodrefInfo.class, className, name, signature);
 	}
 	
-	public NameAndTypeInfo getNameAndTypeInfo(String name, String signature) {
-		return getRef(NameAndTypeInfo.class, null, name, signature);
+	public List<NameAndTypeInfo> getNameAndTypeInfos(String name, String signature) {
+		return getRefs(NameAndTypeInfo.class, null, name, signature);
 	}
 	
-	public MethodHandleInfo getMethodHandleInfo(String className, String name, String signature) {
-		return getRef(MethodHandleInfo.class, className, name, signature);
+	public List<MethodHandleInfo> getMethodHandleInfo(String className, String name, String signature) {
+		return getRefs(MethodHandleInfo.class, className, name, signature);
 	}
 	
-	public MethodTypeInfo getMethodTypeInfo(String signature) {
-		return getRef(MethodTypeInfo.class, null, null, signature);
+	public List<MethodTypeInfo> getMethodTypeInfo(String signature) {
+		return getRefs(MethodTypeInfo.class, null, null, signature);
 	}
 	
-	public List<IBytecodeItem> getReferencingItems(AbstractConstantPoolEntry cp) {
-		if (!getItems().contains(cp)) {
-			throw new IllegalArgumentException("Entry insn't in pool: "+cp);
+	public List<IBytecodeItem> getReferencingItems(List<AbstractConstantPoolEntry> cps) {
+		
+		List<IBytecodeItem> result = new ArrayList<>();
+		for (AbstractConstantPoolEntry cp: cps) {
+			if (!getItems().contains(cp)) {
+				throw new IllegalArgumentException("Entry insn't in pool: "+cp);
+			}
+			result.addAll(entryReferences.get(cp));
 		}
-		return entryReferences.get(cp);
+		
+		return result;
 	}
 	
-	private <T extends AbstractConstantPoolEntry> T getRef(Class<T> clazz, String className, String name, String signature) {
+	
+	
+	private <T extends AbstractConstantPoolEntry> List<T> getRefs(Class<T> clazz, String className, String name, String signature) {
 		List<AbstractConstantPoolEntry> values1 = (name != null)?entriesByName.get(name):null;
 		List<AbstractConstantPoolEntry> values2 = (className != null)?entriesByName.get(className):null;
 		List<AbstractConstantPoolEntry> values3 = (signature != null)?entriesByDescriptor.get(signature):null;
@@ -184,7 +219,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		}
 		List<AbstractConstantPoolEntry> scan = ll.get(0);
 		ll.remove(0);
-		List<AbstractConstantPoolEntry> candidates = new ArrayList<>(); 
+		List<T> candidates = new ArrayList<>(); 
 		for (AbstractConstantPoolEntry entry: scan) {
 			boolean toAdd = true;
 			if (entry.getClass().equals(clazz)) {
@@ -192,19 +227,12 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 					toAdd = toAdd && l.contains(entry);
 				}
 				if (toAdd) {
-					candidates.add(entry);
+					candidates.add((T)entry);
 				}
 			}
 		}
 		
-		if (candidates.size() ==  0) {
-			return null;
-		} else if (candidates.size() > 1) {
-			throw new IllegalArgumentException("more than one entry found!");
-		} else {
-			AbstractConstantPoolEntry entry = candidates.get(0);
-			return (T)entry;
-		}
+		return candidates;
 	}
 
 	@Override

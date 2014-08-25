@@ -65,6 +65,7 @@
     	    <fileset dir="${test.src.dir}">
     	    	<include name="**/*.properties"/>
     	    	<include name="**/*.xml"/>
+    	    	<include name="**/*.txt"/>
     	    </fileset>
     	</copy>
     	<!-- Junit tests -->
@@ -79,7 +80,7 @@
     		
     		<batchtest fork="false" todir="${test.report.dir}">
     		    <fileset dir="${test.src.dir}">
-    		      <include name="**/*Test*.java"/>
+    		      <include name="**/*Test.java"/>
   
     		    </fileset>
     		 </batchtest>

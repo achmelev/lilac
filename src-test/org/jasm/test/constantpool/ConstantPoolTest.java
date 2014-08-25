@@ -64,29 +64,29 @@ public class ConstantPoolTest {
 		
 		assertArrayEquals(data1, data2);
 		
-		assertNotNull(pool.getClassInfo("org/jasm/test/testclass/Class1"));
-		assertNotNull(pool.getUtf8Info("org/jasm/test/testclass/Class1"));
-		assertSame(pool.getClassInfo("org/jasm/test/testclass/Class1").getClassNameReference(), pool.getUtf8Info("org/jasm/test/testclass/Class1"));
+		assertTrue(pool.getClassInfos("org/jasm/test/testclass/Class1").size()>0);
+		assertTrue(pool.getUtf8Infos("org/jasm/test/testclass/Class1").size()>0);
+		assertTrue(pool.getUtf8Infos("org/jasm/test/testclass/Class1").contains(pool.getClassInfos("org/jasm/test/testclass/Class1").get(0).getClassNameReference()));
 		
-		assertNotNull(pool.getStringEntry("HELLO WORLD"));
-		assertNotNull(pool.getUtf8Info("HELLO WORLD"));
-		assertSame(pool.getStringEntry("HELLO WORLD").getUtf8Reference(), pool.getUtf8Info("HELLO WORLD"));
+		assertTrue(pool.getStringEntries("HELLO WORLD").size()>0);
+		assertTrue(pool.getUtf8Infos("HELLO WORLD").size()>0);
+		assertTrue(pool.getUtf8Infos("HELLO WORLD").contains(pool.getStringEntries("HELLO WORLD").get(0).getUtf8Reference()));
 		
-		assertNotNull(pool.getMethodRef("java/lang/Object", "<init>", "()V"));
-		assertNotNull(pool.getClassInfo("java/lang/Object"));
-		assertNotNull(pool.getNameAndTypeInfo("<init>", "()V"));
-		assertSame(pool.getMethodRef("java/lang/Object", "<init>", "()V").getNameAndTypeReference(),pool.getNameAndTypeInfo("<init>", "()V"));
-		assertSame(pool.getMethodRef("java/lang/Object", "<init>", "()V").getClassReference(),pool.getClassInfo("java/lang/Object"));
+		assertTrue(pool.getMethodRefs("java/lang/Object", "<init>", "()V").size()>0);
+		assertTrue(pool.getClassInfos("java/lang/Object").size()>0);
+		assertTrue(pool.getNameAndTypeInfos("<init>", "()V").size()>0);
+		assertTrue(pool.getNameAndTypeInfos("<init>", "()V").contains(pool.getMethodRefs("java/lang/Object", "<init>", "()V").get(0).getNameAndTypeReference()));
+		assertTrue(pool.getClassInfos("java/lang/Object").contains(pool.getMethodRefs("java/lang/Object", "<init>", "()V").get(0).getClassReference()));
 		
-		assertNotNull(pool.getFieldRef("org/jasm/test/testclass/Class1", "STRING_CONSTANT", "Ljava/lang/String;"));
-		assertNotNull(pool.getClassInfo("org/jasm/test/testclass/Class1"));
-		assertNotNull(pool.getNameAndTypeInfo("STRING_CONSTANT", "Ljava/lang/String;"));
-		assertSame(pool.getFieldRef("org/jasm/test/testclass/Class1", "STRING_CONSTANT", "Ljava/lang/String;").getNameAndTypeReference(),pool.getNameAndTypeInfo("STRING_CONSTANT", "Ljava/lang/String;"));
-		assertSame(pool.getFieldRef("org/jasm/test/testclass/Class1", "STRING_CONSTANT", "Ljava/lang/String;").getClassReference(),pool.getClassInfo("org/jasm/test/testclass/Class1"));
+		assertTrue(pool.getFieldRefs("org/jasm/test/testclass/Class1", "STRING_CONSTANT", "Ljava/lang/String;").size()>0);
+		assertTrue(pool.getClassInfos("org/jasm/test/testclass/Class1").size()>0);
+		assertTrue(pool.getNameAndTypeInfos("STRING_CONSTANT", "Ljava/lang/String;").size()>0);
+		assertTrue(pool.getNameAndTypeInfos("STRING_CONSTANT", "Ljava/lang/String;").contains(pool.getFieldRefs("org/jasm/test/testclass/Class1", "STRING_CONSTANT", "Ljava/lang/String;").get(0).getNameAndTypeReference()));
+		assertTrue(pool.getClassInfos("org/jasm/test/testclass/Class1").contains(pool.getFieldRefs("org/jasm/test/testclass/Class1", "STRING_CONSTANT", "Ljava/lang/String;").get(0).getClassReference()));
 		
-		assertNotNull(pool.getLongEntry(10000));
-		assertNotNull(pool.getFloatEntry(10.1f));
-		assertNotNull(pool.getDoubleEntry(100.1));
+		assertTrue(pool.getLongEntries(10000).size()>0);
+		assertTrue(pool.getFloatEntries(10.1f).size()>0);
+		assertTrue(pool.getDoubleEntries(100.1).size()>0);
 	}
 	
 	

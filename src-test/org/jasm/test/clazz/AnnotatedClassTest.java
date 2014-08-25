@@ -1,6 +1,8 @@
 package org.jasm.test.clazz;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,18 +15,15 @@ import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.attribute.Annotation;
 import org.jasm.item.attribute.AnnotationElementNameValue;
 import org.jasm.item.attribute.AnnotationElementValue;
+import org.jasm.item.attribute.Attributes;
 import org.jasm.item.attribute.RuntimeInvisibleAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeInvisibleParameterAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeVisibleAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeVisibleParameterAnnotationsAttributeContent;
 import org.jasm.item.clazz.Clazz;
-import org.jasm.item.constantpool.ConstantPool;
-import org.jasm.test.item.DummyRoot;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 public class AnnotatedClassTest {
 	
@@ -64,8 +63,13 @@ public class AnnotatedClassTest {
 		writer.close();
 		log.debug("code: \n"+sw.toString());
 		
-		assertTrue(clazz.getAttributes().get(1).getContent() instanceof RuntimeInvisibleAnnotationsAttributeContent);
-		RuntimeVisibleAnnotationsAttributeContent content = (RuntimeVisibleAnnotationsAttributeContent)clazz.getAttributes().get(2).getContent();
+		
+		RuntimeInvisibleAnnotationsAttributeContent invisibleAnn = getAttributeContent(clazz.getAttributes(), RuntimeInvisibleAnnotationsAttributeContent.class);
+		RuntimeVisibleAnnotationsAttributeContent visibleAnn = getAttributeContent(clazz.getAttributes(), RuntimeVisibleAnnotationsAttributeContent.class);
+		
+		assertNotNull(invisibleAnn);
+		assertNotNull(visibleAnn);
+		RuntimeVisibleAnnotationsAttributeContent content = visibleAnn;
 		Annotation ann = content.get(0);
 		
 		assertEquals("Lorg/jasm/test/testclass/TestAnnotation;",ann.getTypeValue());
@@ -110,8 +114,13 @@ public class AnnotatedClassTest {
 		assertEquals(6,array[2].getPrimitiveValue());
 		
 		
-		assertTrue(clazz.getMethods().getMethod("annotatedMethod", "(I)V").getAttributes().get(0).getContent() instanceof RuntimeInvisibleParameterAnnotationsAttributeContent);
-		RuntimeVisibleParameterAnnotationsAttributeContent parContent =  (RuntimeVisibleParameterAnnotationsAttributeContent)clazz.getMethods().getMethod("annotatedMethod", "(I)V").getAttributes().get(1).getContent();
+		RuntimeInvisibleParameterAnnotationsAttributeContent invisibleParAnn = getAttributeContent(clazz.getMethods().getMethod("annotatedMethod", "(I)V").getAttributes(), RuntimeInvisibleParameterAnnotationsAttributeContent.class);
+		RuntimeVisibleParameterAnnotationsAttributeContent visibleParAnn = getAttributeContent(clazz.getMethods().getMethod("annotatedMethod", "(I)V").getAttributes(), RuntimeVisibleParameterAnnotationsAttributeContent.class);
+		
+		assertNotNull(invisibleParAnn);
+		assertNotNull(visibleParAnn);
+		
+		RuntimeVisibleParameterAnnotationsAttributeContent parContent =  visibleParAnn;
 		ann = parContent.get(0).get(0);
 		
 		assertEquals("Lorg/jasm/test/testclass/TestAnnotation;",ann.getTypeValue());
@@ -159,6 +168,16 @@ public class AnnotatedClassTest {
 		ByteArrayByteBuffer bbuf2 = new ByteArrayByteBuffer(data2);
 		clazz.write(bbuf2, 0);
 		assertArrayEquals(data2, data);
+		
+	}
+	
+	private <T> T getAttributeContent(Attributes attrs, Class<T> clazz) {
+		for (int i=0;i<attrs.getSize(); i++) {
+			if (attrs.get(i).getContent().getClass().equals(clazz)) {
+				return (T)attrs.get(i).getContent();
+			}
+		}
+		return null;
 		
 	}
 

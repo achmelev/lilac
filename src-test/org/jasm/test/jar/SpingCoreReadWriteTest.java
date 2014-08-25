@@ -3,7 +3,7 @@ package org.jasm.test.jar;
 import org.junit.Test;
 
 public class SpingCoreReadWriteTest extends
-		AbstractReadWriteHttpJarTest {
+		AbstractReadWriteHttpJarTestCase {
 
 
 	@Override
