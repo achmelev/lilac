@@ -5,6 +5,7 @@
     <property name="build.dir" value="classes" />
 	<property name="test.build.dir" value="classes-test" />
     <property name="src.dir" value="src" />
+	<property name="src.gen.dir" value="src-gen" />
 	<property name="test.src.dir" value="src-test" />
 	<property name="report.dir" value="report" />
 	<property name="test.report.dir" value="report-test" />
@@ -18,6 +19,10 @@
         <fileset dir="${dest.dir}/lib" />
 	</path>
     
+	<path id="dev.lib.path.id">
+	        <fileset dir="${lib.dir}" />
+		</path>
+	
 	<path id="test.lib.path.id">
 	        <fileset dir="${dest.dir}/lib" />
 			<pathelement path="${build.dir}"/>
@@ -42,15 +47,58 @@
 	    <mkdir dir="${dest.dir}/lib" />
 	    <ivy:retrieve pattern="${dest.dir}/lib/[artifact].[ext]" conf="build"/>
 	</target> 
+	
+	<target name="clean-grammar" depends="retrieve">
+		 <delete dir ="${src.gen.dir}/org"/>
+	</target>
+	
+	<target name="generate-grammar" depends="retrieve">
+		<mkdir dir="${src.gen.dir}"/>
+		<java classname="org.antlr.v4.Tool" classpathref="lib.path.id">
+			<arg value="-lib"/>
+			<arg value="grammar"/>
+			<arg value="-o"/>
+			<arg value="${src.gen.dir}/org/jasm/parser"/>
+			<arg value="-package"/>
+			<arg value="org.jasm.parser"/>
+			<arg value="-listener"/>
+			<arg value="-visitor"/>
+			<arg value="grammar/JavaAssembler.g4"/>
+        </java>
+	</target>
+	
+	<target name="generate-grammar-dev" depends="clean-grammar">
+			<mkdir dir="${src.gen.dir}"/>
+			<java classname="org.antlr.v4.Tool" classpathref="dev.lib.path.id">
+				<arg value="-lib"/>
+				<arg value="grammar"/>
+				<arg value="-o"/>
+				<arg value="${src.gen.dir}/org/jasm/parser"/>
+				<arg value="-package"/>
+				<arg value="org.jasm.parser"/>
+				<arg value="-listener"/>
+				<arg value="-visitor"/>
+				<arg value="grammar/JavaAssembler.g4"/>
+	        </java>
+		</target>
 
     
-    <target name="build" depends="retrieve" description="build the project">
+    <target name="build" depends="generate-grammar" description="build the project">
     	<!-- create dirs -->
         <mkdir dir="${build.dir}" />
     	<mkdir dir="${test.build.dir}" />
     	<mkdir dir="${dest.dir}" />
     	<mkdir dir="${report.dir}" />
     	<mkdir dir="${test.report.dir}" />
+    	<!-- Compile src-gen -->
+    	<javac srcdir="${src.gen.dir}" debug="on" debuglevel="lines,source" destdir="${build.dir}" classpathref="lib.path.id" includeAntRuntime="false"/>
+    	<copy todir="${build.dir}">
+    	    <fileset dir="${src.gen.dir}">
+    	    	<include name="**/*.properties"/>
+    	    	<include name="**/*.xml"/>
+    	    	<include name="**/*.tokens"/>
+    	    </fileset>
+    	</copy>
     	<!-- Compile -->
         <javac srcdir="${src.dir}" debug="on" debuglevel="lines,source" destdir="${build.dir}" classpathref="lib.path.id" includeAntRuntime="false"/>
     	<copy todir="${build.dir}">
@@ -130,7 +178,7 @@
     </target>
 
   
-    <target name="clean" description="clean the project">
+    <target name="clean" description="clean the project" depends="clean-grammar">
     	<delete dir="${build.dir}"/>
     	<delete dir="${test.build.dir}"/>
     	<delete dir="${report.dir}"/>

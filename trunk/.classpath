@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src-gen"/>
 	<classpathentry kind="src" path="src-test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/commons-cli-jar.jar" sourcepath="lib/commons-cli-source.jar"/>
@@ -20,5 +21,10 @@
 	<classpathentry kind="lib" path="lib/httpclient-jar.jar" sourcepath="lib/httpclient-source.jar"/>
 	<classpathentry kind="lib" path="lib/httpcore-jar.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-jar.jar" sourcepath="lib/commons-io-source.jar"/>
+	<classpathentry kind="lib" path="lib/antlr-runtime-jar.jar"/>
+	<classpathentry kind="lib" path="lib/org.abego.treelayout.core-jar.jar"/>
+	<classpathentry kind="lib" path="lib/antlr4-annotations-jar.jar"/>
+	<classpathentry kind="lib" path="lib/antlr4-runtime-jar.jar" sourcepath="lib/antlr4-runtime-source.jar"/>
+	<classpathentry kind="lib" path="lib/antlr4-jar.jar" sourcepath="lib/antlr4-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
