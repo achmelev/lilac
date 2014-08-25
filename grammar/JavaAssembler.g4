@@ -1,0 +1,4 @@
+grammar JavaAssembler;
+
+clazz: 'class' '{' '}';
+
