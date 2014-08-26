@@ -18,6 +18,7 @@ import org.jasm.item.IBytecodeItem;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
+import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,6 +131,18 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void enterClassname(ClassnameContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
 		clazz.setThisClassSymbol(createSymbolReference(ctx.Identifier()));
+	}
+	
+	
+	
+
+	
+
+
+	@Override
+	public void enterSuperclass(SuperclassContext ctx) {
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.setSuperClassSymbol(createSymbolReference(ctx.Identifier()));
 	}
 
 

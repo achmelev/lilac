@@ -33,6 +33,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	private SymbolReference thisClassSymbol;
 	private ClassInfo superClass;
 	private int superClassIndex = -1;
+	private SymbolReference superClassSymbol;
 	private List<ClassInfo> interfaces;
 	private List<Integer> interfacesIndexes = null;
 	private Fields fields = null;
@@ -124,7 +125,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		currentOffset+=2;
 		target.writeUnsignedShort(currentOffset, pool.indexOf(thisClass)+1);
 		currentOffset+=2;
-		target.writeUnsignedShort(currentOffset, pool.indexOf(superClass)+1);
+		if (this.superClass != null) {
+			target.writeUnsignedShort(currentOffset, pool.indexOf(superClass)+1);
+		} else {
+			target.writeUnsignedShort(currentOffset, 0);
+		}
 		currentOffset+=2;
 		if (log.isDebugEnabled()) {
 			log.debug("Writing interfaces, currentOffset="+currentOffset);
@@ -167,7 +172,9 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		
 		result.add(new SimplePrintable(null, "version", new String[]{majorVersion+"."+minorVersion}, (String)null));
 		result.add(new SimplePrintable(null, "name", new String[]{thisClass.getPrintLabel()}, thisClass.getClassName()));
-		result.add(new SimplePrintable(null, "extends", new String[]{superClass.getPrintLabel()}, superClass.getClassName()));
+		if (this.superClass != null) {
+			result.add(new SimplePrintable(null, "extends", new String[]{superClass.getPrintLabel()}, superClass.getClassName()));
+		}
 		if (interfaces != null && interfaces.size()>0) {
 			String [] comment = new String[interfaces.size()];
 			String[] args = new String[interfaces.size()];
@@ -212,7 +219,9 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	protected void doResolve() {
 		pool.resolve();
 		this.thisClass = (ClassInfo)pool.get(this.thisClassIndex-1);
-		this.superClass = (ClassInfo)pool.get(this.superClassIndex-1);
+		if (this.superClassIndex != 0) {
+			this.superClass = (ClassInfo)pool.get(this.superClassIndex-1);
+		}
 		this.interfaces = new ArrayList<>();
 		for (int i=0;i<interfacesIndexes.size(); i++) {
 			interfaces.add((ClassInfo)pool.get(interfacesIndexes.get(i)-1));
@@ -316,11 +325,14 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 
 	@Override
 	public AbstractConstantPoolEntry[] getConstantReferences() {
-		AbstractConstantPoolEntry[] result = new AbstractConstantPoolEntry[interfaces.size()+2];
+		int n = (superClass !=null)?2:1;
+		AbstractConstantPoolEntry[] result = new AbstractConstantPoolEntry[interfaces.size()+n];
 		result[0] = thisClass;
-		result[1] = superClass;
+		if (this.superClass != null) {
+			result[1] = superClass;
+		}
 		for (int i=0;i<interfaces.size(); i++) {
-			result[i+2] = interfaces.get(i);
+			result[i+n] = interfaces.get(i);
 		}
 		return result;
 	}
@@ -342,6 +354,14 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 
 	public void setThisClassSymbol(SymbolReference thisClassSymbol) {
 		this.thisClassSymbol = thisClassSymbol;
+	}
+
+	public SymbolReference getSuperClassSymbol() {
+		return superClassSymbol;
+	}
+
+	public void setSuperClassSymbol(SymbolReference superClassSymbol) {
+		this.superClassSymbol = superClassSymbol;
 	}
 	
 	
