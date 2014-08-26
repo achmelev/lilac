@@ -13,8 +13,10 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.clazz.Clazz;
+import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
 import org.slf4j.Logger;
@@ -99,6 +101,8 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 
 	@Override
 	public void enterClazz(ClazzContext ctx) {
+		Clazz clazz = new Clazz();
+		clazz.setSourceLocation(createSourceLocation(ctx.CLASS()));
 		stack.push(new Clazz());
 	}
 
@@ -113,18 +117,33 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void enterVersion(VersionContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
 		String version = ctx.VersionLiteral().getText();
-		int lineNumber = ctx.VersionLiteral().getSymbol().getLine();
-		int charPosition = ctx.VersionLiteral().getSymbol().getCharPositionInLine();
 		try {
 			clazz.setVersion(version);
 		} catch (IllegalArgumentException e) {
-			errorMessages.add(new ErrorMessage(lineNumber, charPosition, e.getMessage()));
+			errorMessages.add(createErrorMessage(ctx.VersionLiteral(), "illegal version literal "+version));
 		}
 	}
 	
 	
 	
+	@Override
+	public void enterClassname(ClassnameContext ctx) {
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.setThisClassSymbol(createSymbolReference(ctx.Identifier()));
+	}
+
+
+	private SourceLocation createSourceLocation(TerminalNode node) {
+		return new SourceLocation(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine());
+	}
 	
+	private SymbolReference createSymbolReference(TerminalNode node) {
+		return new SymbolReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private ErrorMessage createErrorMessage(TerminalNode node, String msg) {
+		return new ErrorMessage(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), msg);
+	}
 	
 
 }
