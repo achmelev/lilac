@@ -323,7 +323,16 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		return result;
 	}
 	
-	
+	public void setVersion(String version) {
+		String prefix = version.substring(0,version.indexOf('.'));
+		String postfix = version.substring(version.indexOf('.')+1,version.length());
+		try {
+			majorVersion = Integer.parseInt(prefix);
+			minorVersion = Integer.parseInt(postfix);
+		} catch (RuntimeException e) {
+			throw new IllegalArgumentException("illegal version literal "+version);
+		}
+	}
 	
 	
 
