@@ -16,6 +16,14 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.clazz.Clazz;
+import org.jasm.item.modifier.ClassModifier;
+import org.jasm.parser.JavaAssemblerParser.ClassmodifierAbstractContext;
+import org.jasm.parser.JavaAssemblerParser.ClassmodifierAnnotationContext;
+import org.jasm.parser.JavaAssemblerParser.ClassmodifierEnumContext;
+import org.jasm.parser.JavaAssemblerParser.ClassmodifierInterfaceContext;
+import org.jasm.parser.JavaAssemblerParser.ClassmodifierPublicContext;
+import org.jasm.parser.JavaAssemblerParser.ClassmodifierSuperContext;
+import org.jasm.parser.JavaAssemblerParser.ClassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
@@ -104,7 +112,8 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void enterClazz(ClazzContext ctx) {
 		Clazz clazz = new Clazz();
 		clazz.setSourceLocation(createSourceLocation(ctx.CLASS()));
-		stack.push(new Clazz());
+		clazz.setModifier(new ClassModifier(0));
+		stack.push(clazz);
 	}
 
 
@@ -133,16 +142,60 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		clazz.setThisClassSymbol(createSymbolReference(ctx.Identifier()));
 	}
 	
-	
-	
-
-	
-
 
 	@Override
 	public void enterSuperclass(SuperclassContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
 		clazz.setSuperClassSymbol(createSymbolReference(ctx.Identifier()));
+	}
+	
+	
+
+
+	@Override
+	public void enterClassmodifierEnum(ClassmodifierEnumContext ctx) {
+		setClassModifier(ctx.ENUM().getText());
+	}
+
+
+	@Override
+	public void enterClassmodifierInterface(ClassmodifierInterfaceContext ctx) {
+		setClassModifier(ctx.INTERFACE().getText());
+	}
+
+
+	@Override
+	public void enterClassmodifierPublic(ClassmodifierPublicContext ctx) {
+		setClassModifier(ctx.PUBLIC().getText());
+	}
+
+
+	@Override
+	public void enterClassmodifierAnnotation(ClassmodifierAnnotationContext ctx) {
+		setClassModifier(ctx.ANNOTATION().getText());
+	}
+
+
+	@Override
+	public void enterClassmodifierAbstract(ClassmodifierAbstractContext ctx) {
+		setClassModifier(ctx.ABSTRACT().getText());
+	}
+
+
+	@Override
+	public void enterClassmodifierSyntetic(ClassmodifierSynteticContext ctx) {
+		setClassModifier(ctx.SYNTETIC().getText());
+	}
+
+
+	@Override
+	public void enterClassmodifierSuper(ClassmodifierSuperContext ctx) {
+		setClassModifier(ctx.SUPER().getText());
+	}
+	
+	private void setClassModifier(String label) {
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.getModifier().setFlag(label);
 	}
 
 

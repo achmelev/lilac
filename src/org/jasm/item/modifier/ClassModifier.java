@@ -78,7 +78,20 @@ public class ClassModifier extends AbstractModifier {
 		
 	}
 	
-
+	public void setFlag(String label) {
+		boolean result = false;
+		result = result || setFlag(label, PUBLIC_LABEL, PUBLIC_BIT);
+		result = result || setFlag(label, FINAL_LABEL, FINAL_BIT);
+		result = result || setFlag(label, SUPER_LABEL, SUPER_BIT);
+		result = result || setFlag(label, ABSTRACT_LABEL, ABSTRACT_BIT);
+		result = result || setFlag(label, INTERFACE_LABEL, INTERFACE_BIT);
+		result = result || setFlag(label, SYNTETIC_LABEL, SYNTETIC_BIT);
+		result = result || setFlag(label, ANNOTATION_LABEL, ANNOTATION_BIT);
+		result = result || setFlag(label, ENUM_LABEL, ENUM_BIT);
+		if (!result) {
+			throw new IllegalArgumentException("Illegal modifier label: "+label);
+		}
+	}
 	
 	
 

@@ -7,11 +7,26 @@ clazz:
 	 	version SEMI
 	 	classname SEMI
 	 	(superclass SEMI)?
+	 	(classmodifier SEMI)?
 	 RBRACE;
 
 version: VERSION VersionLiteral;
+
 classname: NAME Identifier;
+
 superclass: EXTENDS Identifier;
+
+classmodifier: MODIFIER classmodifierlabel (COMMA  classmodifierlabel)*;
+
+classmodifierlabel: PUBLIC 		# classmodifierPublic
+					| SUPER  		# classmodifierSuper
+					| INTERFACE  	# classmodifierInterface
+					| ABSTRACT   	# classmodifierAbstract
+					| SYNTETIC 		# classmodifierSyntetic
+					| ANNOTATION     # classmodifierAnnotation
+					| ENUM			# classmodifierEnum
+					;
+					
 
 
 //Lexer
@@ -21,7 +36,17 @@ superclass: EXTENDS Identifier;
 CLASS         : 'class';
 VERSION       : 'version';
 NAME          : 'name';
-EXTENDS          : 'extends';
+EXTENDS       : 'extends';
+MODIFIER      : 'modifier';
+PUBLIC        : 'public';
+FINAL         :  'final';
+SUPER         :  'super';
+INTERFACE     :  'interface';
+ABSTRACT      :   'abstract';
+SYNTETIC      :   'syntetic';
+ANNOTATION    :   'annotation';
+ENUM          :   'enum';
+
 
 //Version
 
@@ -277,6 +302,7 @@ NullLiteral
 LBRACE          : '{';
 RBRACE          : '}';
 SEMI            : ';';
+COMMA           : ',';
 
 
 // Identifiers
