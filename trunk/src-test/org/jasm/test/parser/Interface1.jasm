@@ -1,0 +1,8 @@
+/*
+Interface class
+*/
+class {
+  //version field
+  version 51.0;
+  
+}

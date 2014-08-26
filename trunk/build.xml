@@ -114,6 +114,7 @@
     	    	<include name="**/*.properties"/>
     	    	<include name="**/*.xml"/>
     	    	<include name="**/*.txt"/>
+    	    	<include name="**/*.jasm"/>
     	    </fileset>
     	</copy>
     	<!-- Junit tests -->
