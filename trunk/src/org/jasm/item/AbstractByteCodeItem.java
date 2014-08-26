@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.ConstantPool;
+import org.jasm.parser.SourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,8 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	private IContainerBytecodeItem parent = null;
 	
 	private boolean resolved = false;
+	
+	private SourceLocation sourceLocation = null;
 	
 	public IContainerBytecodeItem  getParent() {
 		return parent;
@@ -101,4 +104,10 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 			}
 		}
 	}
+
+	public void setSourceLocation(SourceLocation sourceLocation) {
+		this.sourceLocation = sourceLocation;
+	}
+	
+	
 }

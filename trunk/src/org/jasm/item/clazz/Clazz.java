@@ -15,6 +15,7 @@ import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.modifier.ClassModifier;
+import org.jasm.parser.SymbolReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +30,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	private ClassModifier modifier = null;
 	private ClassInfo thisClass; 
 	private int thisClassIndex = -1;
+	private SymbolReference thisClassSymbol;
 	private ClassInfo superClass;
 	private int superClassIndex = -1;
 	private List<ClassInfo> interfaces;
@@ -332,6 +334,14 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		} catch (RuntimeException e) {
 			throw new IllegalArgumentException("illegal version literal "+version);
 		}
+	}
+
+	public SymbolReference getThisClassSymbol() {
+		return thisClassSymbol;
+	}
+
+	public void setThisClassSymbol(SymbolReference thisClassSymbol) {
+		this.thisClassSymbol = thisClassSymbol;
 	}
 	
 	

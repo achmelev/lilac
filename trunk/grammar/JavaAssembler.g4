@@ -5,9 +5,11 @@ grammar JavaAssembler;
 clazz:
 	 CLASS LBRACE 
 	 	version SEMI
+	 	classname SEMI
 	 RBRACE;
 
 version: VERSION VersionLiteral;
+classname: NAME Identifier;
 
 
 //Lexer
@@ -15,7 +17,8 @@ version: VERSION VersionLiteral;
 // Keywords
 
 CLASS         : 'class';
-VERSION         : 'version';
+VERSION       : 'version';
+NAME          : 'name';
 
 //Version
 

@@ -17,6 +17,7 @@ public class Interface1ParserTest extends AbstractParserTestCase {
 		Assert.assertNotNull(clazz);
 		Assert.assertEquals(51, clazz.getMajorVersion());
 		Assert.assertEquals(0, clazz.getMinorVersion());
+		Assert.assertEquals("cp0", clazz.getThisClassSymbol().getName());
 	}
 
 }

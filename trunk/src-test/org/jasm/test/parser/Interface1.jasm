@@ -4,5 +4,6 @@ Interface class
 class {
   //version field
   version 51.0;
+  name cp0; // org/jasm/test/testclass/Interface1
   
 }
