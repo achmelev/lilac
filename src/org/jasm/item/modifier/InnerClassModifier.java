@@ -2,7 +2,7 @@ package org.jasm.item.modifier;
 
 import org.jasm.JasmConsts;
 
-public class InnerClassModifier {
+public class InnerClassModifier extends AbstractModifier {
 	
 	private static int PUBLIC_BIT=0x0001;
 	private static String PUBLIC_LABEL="public";
@@ -26,10 +26,8 @@ public class InnerClassModifier {
 	private static String ENUM_LABEL="enum";
 	
 	
-	private int value = -1;
-	
 	public InnerClassModifier(int value) {
-		this.value = value;
+		super(value);
 	}
 	
 	public boolean isPublic() {
@@ -93,20 +91,6 @@ public class InnerClassModifier {
 			return result;
 		}
 		
-	}
-	
-	private boolean append(StringBuffer buf, boolean flag,boolean comma, String word) {
-		if (flag) {
-			if (comma) {
-				buf.append(", ");
-			}
-			buf.append(word);
-		}
-		return flag;
-	}
-
-	public int getValue() {
-		return value;
 	}
 	
 	
