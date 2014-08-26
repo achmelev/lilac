@@ -30,10 +30,8 @@ public class MethodModifier extends AbstractClassMemberModifier {
 	private static String SYNTETIC_LABEL="syntetic";
 	
 	
-	private int value = -1;
-	
 	public MethodModifier(int value) {
-		this.value = value;
+		super(value);
 	}
 	
 	public boolean isPublic() {
@@ -111,19 +109,6 @@ public class MethodModifier extends AbstractClassMemberModifier {
 		
 	}
 	
-	private boolean append(StringBuffer buf, boolean flag,boolean comma, String word) {
-		if (flag) {
-			if (comma) {
-				buf.append(", ");
-			}
-			buf.append(word);
-		}
-		return flag;
-	}
-
-	public int getValue() {
-		return value;
-	}
 	
 	
 

@@ -2,7 +2,7 @@ package org.jasm.item.modifier;
 
 import org.jasm.JasmConsts;
 
-public class ClassModifier {
+public class ClassModifier extends AbstractModifier {
 	
 	private static int PUBLIC_BIT=0x0001;
 	private static String PUBLIC_LABEL="public";
@@ -21,10 +21,9 @@ public class ClassModifier {
 	private static int ENUM_BIT=0x4000;
 	private static String ENUM_LABEL="enum";
 	
-	private int value = -1;
 	
 	public ClassModifier(int value) {
-		this.value = value;
+		super(value);
 	}
 	
 	public boolean isPublic() {
@@ -79,19 +78,7 @@ public class ClassModifier {
 		
 	}
 	
-	private boolean append(StringBuffer buf, boolean flag,boolean comma, String word) {
-		if (flag) {
-			if (comma) {
-				buf.append(", ");
-			}
-			buf.append(word);
-		}
-		return flag;
-	}
 
-	public int getValue() {
-		return value;
-	}
 	
 	
 
