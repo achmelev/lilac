@@ -1,5 +1,7 @@
 package org.jasm.item.modifier;
 
+import org.jasm.JasmConsts;
+
 public abstract class AbstractModifier {
 	
 	protected int value = -1;
@@ -21,5 +23,19 @@ public abstract class AbstractModifier {
 		}
 		return flag;
 	}
+	
+	protected boolean setFlag(String label, String flagLabel, int bit) {
+		if (label.equals(flagLabel)) {
+			value |= bit;
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean hasNoFlags() {
+		return toString().equals(JasmConsts.DEFAULT);
+	}
+	
 
 }

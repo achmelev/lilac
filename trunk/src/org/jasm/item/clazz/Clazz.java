@@ -186,7 +186,9 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			result.add(new SimplePrintable(null, "implements", args, comment));
 			
 		}
-		result.add(new SimplePrintable(null, "modifier", new String[]{modifier.toString()}, (String)null));
+		if (!modifier.hasNoFlags()) {
+			result.add(new SimplePrintable(null, "modifier", new String[]{modifier.toString()}, (String)null));
+		}
 		result.add(pool);
 		result.add(attributes);
 		result.add(fields);

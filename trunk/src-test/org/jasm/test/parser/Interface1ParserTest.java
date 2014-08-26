@@ -19,6 +19,15 @@ public class Interface1ParserTest extends AbstractParserTestCase {
 		Assert.assertEquals(0, clazz.getMinorVersion());
 		Assert.assertEquals("cp0", clazz.getThisClassSymbol().getName());
 		Assert.assertEquals("cp2", clazz.getSuperClassSymbol().getName());
+		
+		Assert.assertTrue(clazz.getModifier().isAbstract());
+		Assert.assertFalse(clazz.getModifier().isAnnotation());
+		Assert.assertFalse(clazz.getModifier().isEnum());
+		Assert.assertFalse(clazz.getModifier().isFinal());
+		Assert.assertTrue(clazz.getModifier().isInterface());
+		Assert.assertTrue(clazz.getModifier().isPublic());
+		Assert.assertFalse(clazz.getModifier().isSuper());
+		Assert.assertFalse(clazz.getModifier().isSyntetic());
 	}
 
 }
