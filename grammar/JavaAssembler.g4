@@ -6,10 +6,12 @@ clazz:
 	 CLASS LBRACE 
 	 	version SEMI
 	 	classname SEMI
+	 	(superclass SEMI)?
 	 RBRACE;
 
 version: VERSION VersionLiteral;
 classname: NAME Identifier;
+superclass: EXTENDS Identifier;
 
 
 //Lexer
@@ -19,6 +21,7 @@ classname: NAME Identifier;
 CLASS         : 'class';
 VERSION       : 'version';
 NAME          : 'name';
+EXTENDS          : 'extends';
 
 //Version
 
