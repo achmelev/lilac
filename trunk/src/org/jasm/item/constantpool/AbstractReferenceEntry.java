@@ -4,12 +4,13 @@ package org.jasm.item.constantpool;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
+import org.jasm.parser.literals.SymbolReference;
 
 
 public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry implements IConstantPoolReference {
 
 	private int[] index = null;
-	private String[] referenceLabels = null;
+	private SymbolReference[] referenceLabels = null;
 	private AbstractConstantPoolEntry[] reference = null;
 	
 	protected AbstractReferenceEntry() {
@@ -96,11 +97,11 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 
 	protected abstract int getNumberOfReferences();
 
-	public String[] getReferenceLabels() {
+	public SymbolReference[] getReferenceLabels() {
 		return referenceLabels;
 	}
 
-	public void setReferenceLabels(String[] referenceLabels) {
+	public void setReferenceLabels(SymbolReference[] referenceLabels) {
 		this.referenceLabels = referenceLabels;
 	}
 	

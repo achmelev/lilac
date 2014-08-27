@@ -20,12 +20,17 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.jasm.item.IBytecodeItem;
+import org.jasm.item.attribute.Attribute;
+import org.jasm.item.attribute.Attributes;
+import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.ClassModifier;
+import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
+import org.jasm.parser.JavaAssemblerParser.ClassattributesContext;
 import org.jasm.parser.JavaAssemblerParser.ClassinfoContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierAbstractContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierAnnotationContext;
@@ -40,6 +45,11 @@ import org.jasm.parser.JavaAssemblerParser.ConstpoolContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
+import org.jasm.parser.literals.Keyword;
+import org.jasm.parser.literals.Label;
+import org.jasm.parser.literals.StringLiteral;
+import org.jasm.parser.literals.SymbolReference;
+import org.jasm.parser.literals.VersionLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -144,12 +154,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterVersion(VersionContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
-		String version = ctx.VersionLiteral().getText();
-		try {
-			clazz.setVersion(version);
-		} catch (IllegalArgumentException e) {
-			createErrorMessageForSymbol(ctx.VersionLiteral(), "illegal version literal "+version);
-		}
+		clazz.setVersion(createVersionLiteral(ctx.VersionLiteral()));
 	}
 	
 	
@@ -172,57 +177,71 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 
 	@Override
 	public void enterClassmodifierEnum(ClassmodifierEnumContext ctx) {
-		setClassModifier(ctx.ENUM().getText());
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.getModifierLiterals().add(createKeyword(ctx.ENUM()));
 	}
 
 
 	@Override
 	public void enterClassmodifierInterface(ClassmodifierInterfaceContext ctx) {
-		setClassModifier(ctx.INTERFACE().getText());
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.getModifierLiterals().add(createKeyword(ctx.INTERFACE()));
 	}
 
 
 	@Override
 	public void enterClassmodifierPublic(ClassmodifierPublicContext ctx) {
-		setClassModifier(ctx.PUBLIC().getText());
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.getModifierLiterals().add(createKeyword(ctx.PUBLIC()));
 	}
 
 
 	@Override
 	public void enterClassmodifierAnnotation(ClassmodifierAnnotationContext ctx) {
-		setClassModifier(ctx.ANNOTATION().getText());
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.getModifierLiterals().add(createKeyword(ctx.ANNOTATION()));
 	}
+	
 
 
 	@Override
 	public void enterClassmodifierAbstract(ClassmodifierAbstractContext ctx) {
-		setClassModifier(ctx.ABSTRACT().getText());
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.getModifierLiterals().add(createKeyword(ctx.ABSTRACT()));
 	}
 
 
 	@Override
 	public void enterClassmodifierSyntetic(ClassmodifierSynteticContext ctx) {
-		setClassModifier(ctx.SYNTETIC().getText());
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.getModifierLiterals().add(createKeyword(ctx.SYNTETIC()));
 	}
 
 
 	@Override
 	public void enterClassmodifierSuper(ClassmodifierSuperContext ctx) {
-		setClassModifier(ctx.SUPER().getText());
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.getModifierLiterals().add(createKeyword(ctx.SUPER()));
 	}
 	
 	
 
 
 	@Override
+	public void enterConstpool(ConstpoolContext ctx) {
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.getConstantPool().setSourceLocation(createSourceLocation(ctx.CONSTPOOL()));
+	}
+
+
+	@Override
 	public void enterClassinfo(ClassinfoContext ctx) {
 		ClassInfo entry = new ClassInfo();
-		String label = null;
 		if (ctx.label() != null) {
-			label = ctx.label().Identifier().getText();
+			entry.setLabel(createLabel(ctx.label().Identifier()));
 		}
-		entry.setLabel(label);
-		entry.setReferenceLabels(new String[]{ctx.Identifier().getText()});
+		entry.setSourceLocation(createSourceLocation(ctx.CLASSINFO()));
+		entry.setReferenceLabels(new SymbolReference[]{createSymbolReference(ctx.Identifier())});
 		addConstantPoolEntry(entry);
 	}
 	
@@ -230,14 +249,36 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterUtf8info(Utf8infoContext ctx) {
 		Utf8Info entry = new Utf8Info();
-		String label = null;
 		if (ctx.label() != null) {
-			label = ctx.label().Identifier().getText();
+			entry.setLabel(createLabel(ctx.label().Identifier()));
 		}
-		entry.setLabel(label);
-		entry.setValue(ctx.StringLiteral().getText());
+		entry.setValueLiteral(createStringLiteral(ctx.StringLiteral()));
 		addConstantPoolEntry(entry);
 	}
+	
+	
+	
+
+
+	@Override
+	public void enterClassattributes(ClassattributesContext ctx) {
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.getAttributes().setSourceLocation(createSourceLocation(ctx.ATTRIBUTES()));
+	}
+
+
+	@Override
+	public void enterClassattributeSourceFile(
+			ClassattributeSourceFileContext ctx) {
+		Clazz clazz = (Clazz)stack.peek();
+		Attribute attr = new Attribute();
+		attr.setSourceLocation(createSourceLocation(ctx.SOURCE()));
+		clazz.getAttributes().add(attr);
+		SourceFileAttributeContent content = new SourceFileAttributeContent();
+		content.setValueLabel(createSymbolReference(ctx.Identifier()));
+		attr.setContent(content);
+	}
+	
 
 
 	public void emitError(int line, int charPosition, String message) {
@@ -253,6 +294,8 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			emitError(entry.getSourceLocation().getLine(), entry.getSourceLocation().getCharPosition(), "dublicate constant pool entry label "+entry.getPrintLabel());
 		}
 	}
+	
+	
 	private void setClassModifier(String label) {
 		Clazz clazz = (Clazz)stack.peek();
 		clazz.getModifier().setFlag(label);
@@ -265,6 +308,22 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private SymbolReference createSymbolReference(TerminalNode node) {
 		return new SymbolReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private Label createLabel(TerminalNode node) {
+		return new Label(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private StringLiteral createStringLiteral(TerminalNode node) {
+		return new StringLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private Keyword createKeyword(TerminalNode node) {
+		return new Keyword(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private VersionLiteral createVersionLiteral(TerminalNode node) {
+		return new VersionLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
 	}
 	
 	private void createErrorMessageForSymbol(TerminalNode node, String msg) {
