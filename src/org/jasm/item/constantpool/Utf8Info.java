@@ -7,10 +7,12 @@ import java.io.IOException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.Utf8String;
 import org.jasm.bytebuffer.print.PrettyPrinter;
+import org.jasm.parser.literals.StringLiteral;
 
 public class Utf8Info extends AbstractConstantPoolEntry {
 	
 	private int length = -1;
+	private StringLiteral valueLiteral;
 	private String value = null;
 	
 	public Utf8Info() {
@@ -93,6 +95,10 @@ public class Utf8Info extends AbstractConstantPoolEntry {
 	@Override
 	public String getPrintComment() {
 		return null;
+	}
+
+	public void setValueLiteral(StringLiteral valueLiteral) {
+		this.valueLiteral = valueLiteral;
 	}
 	
 	

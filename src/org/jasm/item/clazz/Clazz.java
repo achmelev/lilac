@@ -15,7 +15,10 @@ import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.modifier.ClassModifier;
-import org.jasm.parser.SymbolReference;
+import org.jasm.parser.literals.Keyword;
+import org.jasm.parser.literals.StringLiteral;
+import org.jasm.parser.literals.SymbolReference;
+import org.jasm.parser.literals.VersionLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,9 +27,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
+	private VersionLiteral version;
 	private int majorVersion = -1;
 	private int minorVersion = -1;
 	private ConstantPool pool = null;
+	private List<Keyword> modifierLiterals;
 	private ClassModifier modifier = null;
 	private ClassInfo thisClass; 
 	private int thisClassIndex = -1;
@@ -67,6 +72,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		attributes = new Attributes();
 		attributes.setParent(this);
 		children.add(attributes);
+		modifierLiterals= new ArrayList<>();
 		
 	}
 
@@ -339,15 +345,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		return result;
 	}
 	
-	public void setVersion(String version) {
-		String prefix = version.substring(0,version.indexOf('.'));
-		String postfix = version.substring(version.indexOf('.')+1,version.length());
-		try {
-			majorVersion = Integer.parseInt(prefix);
-			minorVersion = Integer.parseInt(postfix);
-		} catch (RuntimeException e) {
-			throw new IllegalArgumentException("illegal version literal "+version);
-		}
+	public void setVersion(VersionLiteral version) {
+		this.version = version;
 	}
 
 	public SymbolReference getThisClassSymbol() {
@@ -365,6 +364,13 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	public void setSuperClassSymbol(SymbolReference superClassSymbol) {
 		this.superClassSymbol = superClassSymbol;
 	}
+
+	public List<Keyword> getModifierLiterals() {
+		return modifierLiterals;
+	}
+
+	
+	
 	
 	
 

@@ -114,6 +114,21 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		}
 		
 	}
+	
+	private Utf8Info selectNameEntry() {
+		String name = null;
+		if (content instanceof SourceFileAttributeContent) {
+			name = "SourceFile";
+		} else {
+			throw new IllegalStateException("unknown attribute content type: "+content.getClass());
+		}
+		List<Utf8Info> infos = getConstantPool().getUtf8Infos(name);
+		if (infos.size() == 0){
+			return null;
+		} else {
+			return infos.get(0);
+		}
+	}
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
@@ -197,6 +212,11 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 	public IAttributeContent getContent() {
 		return content;
 	}
+	
+	public void setContent(IAttributeContent content) {
+		content.setParent(this);
+		this.content = content;
+	}
 
 	@Override
 	public int getItemSizeInList(IBytecodeItem item) {
@@ -207,6 +227,10 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{name};
 	}
+	
+	
+
+	
 
 	@Override
 	public String toString() {

@@ -8,10 +8,12 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
 import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.parser.literals.SymbolReference;
 
 public abstract class AbstractStringAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
 	
 	private int valueIndex = -1;
+	private SymbolReference valueLabel;
 	private Utf8Info valueEntry = null;
 	
 	public AbstractStringAttributeContent(Utf8Info entry) {
@@ -87,6 +89,16 @@ public abstract class AbstractStringAttributeContent extends AbstractSimpleAttri
 	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{valueEntry};
 	}
+
+	public SymbolReference getValueLabel() {
+		return valueLabel;
+	}
+
+	public void setValueLabel(SymbolReference valueLabel) {
+		this.valueLabel = valueLabel;
+	}
+
+	
 	
 	
 
