@@ -18,4 +18,8 @@ class {
     cp6: utf8info "SourceFile";
     cp7: utf8info "Interface1.java";
   }
+  
+  attributes {
+    source file cp7; // Interface1.java
+  }
 }
