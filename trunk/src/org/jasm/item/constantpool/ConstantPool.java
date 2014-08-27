@@ -11,6 +11,7 @@ import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.map.KeyToListMap;
+import org.jasm.parser.SymbolTable;
 
 public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstantPoolEntry> {
 	
@@ -23,6 +24,8 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	private KeyToListMap<String, Utf8Info> utf8ByContent = new KeyToListMap<>();
 	
 	private KeyToListMap<AbstractConstantPoolEntry, IBytecodeItem> entryReferences = new KeyToListMap<>();
+	
+	private SymbolTable symbolTable = new SymbolTable(null);
 	
 	public ConstantPool() {
 		super(AbstractConstantPoolEntry.class, "org.jasm.item.constantpool");
@@ -240,6 +243,9 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		return this;
 	}
 	
+	public SymbolTable getSymbolTable() {
+		return symbolTable;
+	}
 
 
 	@Override
