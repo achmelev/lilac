@@ -28,6 +28,8 @@ public class Interface1ParserTest extends AbstractParserTestCase {
 		Assert.assertTrue(clazz.getModifier().isPublic());
 		Assert.assertFalse(clazz.getModifier().isSuper());
 		Assert.assertFalse(clazz.getModifier().isSyntetic());
+		
+		Assert.assertEquals(8, clazz.getConstantPool().getSize());
 	}
 
 }
