@@ -8,6 +8,7 @@ clazz:
 	 	classname SEMI
 	 	(superclass SEMI)?
 	 	(classmodifier SEMI)?
+	 	 constpool?
 	 RBRACE;
 
 version: VERSION VersionLiteral;
@@ -27,7 +28,15 @@ classmodifierlabel: PUBLIC 		# classmodifierPublic
 					| ENUM			# classmodifierEnum
 					;
 					
+constpool: CONSTPOOL LBRACE
+			 	(constpoolentry SEMI)+
+			 RBRACE;
 
+constpoolentry:  label? UTF8INFO StringLiteral #utf8info
+				 | label? CLASSINFO Identifier #classinfo
+				 ;
+
+label: Identifier COLON;
 
 //Lexer
 
@@ -46,6 +55,11 @@ ABSTRACT      :   'abstract';
 SYNTETIC      :   'syntetic';
 ANNOTATION    :   'annotation';
 ENUM          :   'enum';
+CONSTPOOL     :   'constpool';
+CLASSINFO     :   'classinfo';
+UTF8INFO     :    'utf8info';
+
+
 
 
 //Version
@@ -303,6 +317,7 @@ LBRACE          : '{';
 RBRACE          : '}';
 SEMI            : ';';
 COMMA           : ',';
+COLON           : ':';
 
 
 // Identifiers

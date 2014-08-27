@@ -125,6 +125,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 				items.add(null);
 			}
 		}
+		item.setParent(this);
 	}
 	
 	public void add(int index, T item) {
@@ -136,6 +137,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 				items.add(index+1,null);
 			}
 		}
+		item.setParent(this);
 	}
 	
 	public void remove( T item) {

@@ -15,6 +15,7 @@ public interface IBytecodeItem {
 	//Tree
 	public boolean isRoot();
 	public IContainerBytecodeItem  getParent();
+	public <T> T getAncestor(Class<T> type);
 	public void setParent(IContainerBytecodeItem  parent);
 	
 

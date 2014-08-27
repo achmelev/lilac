@@ -9,6 +9,7 @@ import org.jasm.bytebuffer.print.PrettyPrinter;
 public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry implements IConstantPoolReference {
 
 	private int[] index = null;
+	private String[] referenceLabels = null;
 	private AbstractConstantPoolEntry[] reference = null;
 	
 	protected AbstractReferenceEntry() {
@@ -94,6 +95,14 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 	}
 
 	protected abstract int getNumberOfReferences();
+
+	public String[] getReferenceLabels() {
+		return referenceLabels;
+	}
+
+	public void setReferenceLabels(String[] referenceLabels) {
+		this.referenceLabels = referenceLabels;
+	}
 	
 	
 	

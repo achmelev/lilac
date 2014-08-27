@@ -55,6 +55,16 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	public ConstantPool getConstantPool() {
 		return getParent().getConstantPool();
 	}
+	
+	public <T> T getAncestor(Class<T> type) {
+		if (this.getParent() == null) {
+			return null;
+		} else if (this.getParent().getClass().equals(type)) {
+			return (T)getParent();
+		} else {
+			return getParent().getAncestor(type);
+		}
+	}
 
 	@Override
 	public void updateMetadata() {
@@ -108,6 +118,11 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	public void setSourceLocation(SourceLocation sourceLocation) {
 		this.sourceLocation = sourceLocation;
 	}
+
+	public SourceLocation getSourceLocation() {
+		return sourceLocation;
+	}
+	
 	
 	
 }
