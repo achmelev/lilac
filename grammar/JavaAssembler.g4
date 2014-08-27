@@ -9,6 +9,7 @@ clazz:
 	 	(superclass SEMI)?
 	 	(classmodifier SEMI)?
 	 	 constpool?
+	 	 classattributes?
 	 RBRACE;
 
 version: VERSION VersionLiteral;
@@ -36,6 +37,12 @@ constpoolentry:  label? UTF8INFO StringLiteral #utf8info
 				 | label? CLASSINFO Identifier #classinfo
 				 ;
 
+classattributes : ATTRIBUTES LBRACE
+					(classattribute SEMI)+
+				  RBRACE;
+
+classattribute : SOURCE FILE Identifier #classattributeSourceFile;
+
 label: Identifier COLON;
 
 //Lexer
@@ -57,7 +64,10 @@ ANNOTATION    :   'annotation';
 ENUM          :   'enum';
 CONSTPOOL     :   'constpool';
 CLASSINFO     :   'classinfo';
-UTF8INFO     :    'utf8info';
+UTF8INFO      :    'utf8info';
+ATTRIBUTES    :    'attributes';
+SOURCE        :    'source';
+FILE          :    'file';
 
 
 
