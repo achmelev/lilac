@@ -15,11 +15,10 @@ public class Interface1ParserTest extends AbstractParserTestCase {
 	public void test() {
 		Clazz clazz = parse();
 		Assert.assertNotNull(clazz);
-		Assert.assertEquals(51, clazz.getMajorVersion());
-		Assert.assertEquals(0, clazz.getMinorVersion());
-		Assert.assertEquals("cp0", clazz.getThisClassSymbol().getName());
-		Assert.assertEquals("cp2", clazz.getSuperClassSymbol().getName());
 		
+		
+		/*Assert.assertEquals(51, clazz.getMajorVersion());
+		Assert.assertEquals(0, clazz.getMinorVersion());
 		Assert.assertTrue(clazz.getModifier().isAbstract());
 		Assert.assertFalse(clazz.getModifier().isAnnotation());
 		Assert.assertFalse(clazz.getModifier().isEnum());
@@ -27,9 +26,10 @@ public class Interface1ParserTest extends AbstractParserTestCase {
 		Assert.assertTrue(clazz.getModifier().isInterface());
 		Assert.assertTrue(clazz.getModifier().isPublic());
 		Assert.assertFalse(clazz.getModifier().isSuper());
-		Assert.assertFalse(clazz.getModifier().isSyntetic());
+		Assert.assertFalse(clazz.getModifier().isSyntetic());*/
 		
 		Assert.assertEquals(8, clazz.getConstantPool().getSize());
+		Assert.assertEquals(1, clazz.getAttributes().getSize());
 	}
 
 }
