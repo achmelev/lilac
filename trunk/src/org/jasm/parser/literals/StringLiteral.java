@@ -1,5 +1,7 @@
 package org.jasm.parser.literals;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 public class StringLiteral extends AbstractLiteral {
 
 	public StringLiteral(int line, int charPosition, String content) {
@@ -7,8 +9,7 @@ public class StringLiteral extends AbstractLiteral {
 	}
 	
 	public String getStringValue() {
-		//TODO - StringLiteral->String
-		return getContent();
+		return StringEscapeUtils.unescapeJava(getContent());
 	}
 
 }

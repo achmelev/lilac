@@ -1,5 +1,7 @@
 package org.jasm.item.descriptor;
 
+import org.jasm.item.utils.IdentifierUtils;
+
 public class TypeDescriptor {
 	
 	private boolean isByte;
@@ -43,7 +45,13 @@ public class TypeDescriptor {
 		} else if (descriptor.equals("J")) {
 			isLong = true;
 		} else if (descriptor.startsWith("L") & descriptor.endsWith(";")) {
-			isObject = true;
+			String className = descriptor.substring(1,descriptor.length()-1);
+			if (IdentifierUtils.isValidJasmClassName(className)) {
+				isObject = true;
+			} else {
+				throw new IllegalDescriptorException("illegal type descriptor: "+className);
+			}
+			
 		} else if (descriptor.startsWith("[")) {
 			isArray = true;
 			if (descriptor.length()<2) {
@@ -57,6 +65,7 @@ public class TypeDescriptor {
 		} else {
 			throw new IllegalDescriptorException(("illegal type descriptor: "+descriptor));
 		}
+		
 	}
 
 	public boolean isByte() {
