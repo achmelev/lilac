@@ -24,6 +24,7 @@ import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.Attributes;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.clazz.Clazz;
+import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
@@ -42,6 +43,20 @@ import org.jasm.parser.JavaAssemblerParser.ClassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
 import org.jasm.parser.JavaAssemblerParser.ConstpoolContext;
+import org.jasm.parser.JavaAssemblerParser.MethodContext;
+import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmodifierAbstractContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmodifierFinalContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmodifierNativeContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmodifierPrivateContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmodifierProtectedContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmodifierPublicContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmodifierStaticContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmodifierStrictContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmodifierSynchronizedContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmodifierSynteticContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmodifierVarargsContext;
+import org.jasm.parser.JavaAssemblerParser.MethodnameContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
@@ -279,6 +294,115 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		attr.setContent(content);
 	}
 	
+	
+
+	@Override
+	public void enterMethodmodifierStatic(MethodmodifierStaticContext ctx) {
+		Method m = (Method)stack.peek();
+		m.getModifierLiterals().add(createKeyword(ctx.STATIC()));
+	}
+
+
+	@Override
+	public void enterMethodmodifierSynchronized(
+			MethodmodifierSynchronizedContext ctx) {
+		Method m = (Method)stack.peek();
+		m.getModifierLiterals().add(createKeyword(ctx.SYNCHRONIZED()));
+	}
+
+
+	@Override
+	public void enterMethodmodifierPrivate(MethodmodifierPrivateContext ctx) {
+		Method m = (Method)stack.peek();
+		m.getModifierLiterals().add(createKeyword(ctx.PRIVATE()));
+	}
+
+
+	@Override
+	public void enterMethodmodifierAbstract(MethodmodifierAbstractContext ctx) {
+		Method m = (Method)stack.peek();
+		m.getModifierLiterals().add(createKeyword(ctx.ABSTRACT()));
+	}
+
+
+	@Override
+	public void enterMethodmodifierNative(MethodmodifierNativeContext ctx) {
+		Method m = (Method)stack.peek();
+		m.getModifierLiterals().add(createKeyword(ctx.NATIVE()));
+	}
+
+
+	@Override
+	public void enterMethodmodifierVarargs(MethodmodifierVarargsContext ctx) {
+		Method m = (Method)stack.peek();
+		m.getModifierLiterals().add(createKeyword(ctx.VARARGS()));
+	}
+
+
+	@Override
+	public void enterMethodmodifierProtected(MethodmodifierProtectedContext ctx) {
+		Method m = (Method)stack.peek();
+		m.getModifierLiterals().add(createKeyword(ctx.PROTECTED()));
+	}
+
+
+	@Override
+	public void enterMethodmodifierStrict(MethodmodifierStrictContext ctx) {
+		Method m = (Method)stack.peek();
+		m.getModifierLiterals().add(createKeyword(ctx.STRICT()));
+	}
+
+
+	@Override
+	public void enterMethoddescriptor(MethoddescriptorContext ctx) {
+		Method m = (Method)stack.peek();
+		m.setDescriptorReference(createSymbolReference(ctx.Identifier()));
+	}
+
+
+	@Override
+	public void enterMethodmodifierPublic(MethodmodifierPublicContext ctx) {
+		Method m = (Method)stack.peek();
+		m.getModifierLiterals().add(createKeyword(ctx.PUBLIC()));
+	}
+
+
+	@Override
+	public void enterMethodmodifierSyntetic(MethodmodifierSynteticContext ctx) {
+		Method m = (Method)stack.peek();
+		m.getModifierLiterals().add(createKeyword(ctx.SYNTETIC()));
+	}
+
+
+	@Override
+	public void enterMethodmodifierFinal(MethodmodifierFinalContext ctx) {
+		Method m = (Method)stack.peek();
+		m.getModifierLiterals().add(createKeyword(ctx.FINAL()));
+	}
+
+
+	@Override
+	public void enterMethodname(MethodnameContext ctx) {
+		Method m = (Method)stack.peek();
+		m.setNameReference(createSymbolReference(ctx.Identifier()));
+	}
+
+
+	@Override
+	public void enterMethod(MethodContext ctx) {
+		Clazz clazz = (Clazz)stack.peek();
+		Method m = new Method();
+		clazz.getMethods().add(m);
+		stack.push(m);
+		
+	}
+	
+	
+
+	@Override
+	public void exitMethod(MethodContext ctx) {
+		stack.pop();
+	}
 
 
 	public void emitError(int line, int charPosition, String message) {
@@ -295,12 +419,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 	}
 	
-	
-	private void setClassModifier(String label) {
-		Clazz clazz = (Clazz)stack.peek();
-		clazz.getModifier().setFlag(label);
-	}
-
 
 	private SourceLocation createSourceLocation(TerminalNode node) {
 		return new SourceLocation(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine());

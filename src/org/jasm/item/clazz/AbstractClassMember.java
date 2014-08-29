@@ -14,13 +14,19 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.AbstractClassMemberModifier;
+import org.jasm.parser.literals.Keyword;
+import org.jasm.parser.literals.StringLiteral;
+import org.jasm.parser.literals.SymbolReference;
 
 public abstract class AbstractClassMember<T extends AbstractClassMemberModifier> extends AbstractByteCodeItem implements IContainerBytecodeItem<Attributes>, IConstantPoolReference {
 	
+	private List<Keyword> modifierLiterals;
 	private T modifier = null;
 	private Utf8Info name = null;
+	private SymbolReference nameReference;
 	private int nameIndex = -1;
 	private Utf8Info descriptor = null;
+	private SymbolReference descriptorReference;
 	private int descriptorIndex = -1;
 	private Attributes attributes = null;
 	
@@ -150,6 +156,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	private void initChildren() {
 		attributes = new Attributes();
 		attributes.setParent(this);
+		modifierLiterals = new ArrayList<>();
 	}
 
 	@Override
@@ -161,6 +168,21 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{name, descriptor};
 	}
+
+	public void setNameReference(SymbolReference nameReference) {
+		this.nameReference = nameReference;
+	}
+
+	public void setDescriptorReference(SymbolReference descriptorReference) {
+		this.descriptorReference = descriptorReference;
+	}
+
+	public List<Keyword> getModifierLiterals() {
+		return modifierLiterals;
+	}
+	
+	
+	
 	
 	
 
