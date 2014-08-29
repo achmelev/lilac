@@ -3,6 +3,7 @@ package org.jasm.item.attribute;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
@@ -59,6 +60,11 @@ public abstract class AbstractBinaryAttributeContent extends AbstractSimpleAttri
 	@Override
 	protected void doResolve() {
 
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	public byte[] getData() {

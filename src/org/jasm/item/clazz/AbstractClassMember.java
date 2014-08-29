@@ -3,6 +3,7 @@ package org.jasm.item.clazz;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
@@ -99,6 +100,11 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 		this.name = (Utf8Info)getConstantPool().get(this.nameIndex-1);
 		this.descriptor = (Utf8Info)getConstantPool().get(this.descriptorIndex-1);
 		attributes.resolve();
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 	
 	public Attributes getAttributes() {

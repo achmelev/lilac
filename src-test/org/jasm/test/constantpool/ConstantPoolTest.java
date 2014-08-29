@@ -8,6 +8,7 @@ import java.io.StringWriter;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
+import org.jasm.item.clazz.Clazz;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.test.item.DummyRoot;
 import org.junit.Test;
@@ -45,7 +46,7 @@ public class ConstantPoolTest {
 		ByteArrayByteBuffer bbuf = new ByteArrayByteBuffer(data);
 		pool.read(bbuf, 8);
 		
-		pool.setParent(new DummyRoot());
+		pool.setParent(new Clazz());
 		pool.resolve();
 		pool.updateMetadata();
 		

@@ -1,5 +1,6 @@
 package org.jasm.item.constantpool;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 
 public class LongInfo extends AbstractConstantPoolEntry implements IPrimitiveValueReferencingEntry {
@@ -28,6 +29,11 @@ public class LongInfo extends AbstractConstantPoolEntry implements IPrimitiveVal
 	protected void doResolve() {
 		
 
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	@Override

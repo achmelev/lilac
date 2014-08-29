@@ -2,6 +2,7 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
@@ -108,6 +109,11 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 		endInstruction = instr.getInstructionAtOffset(endPC);
 		handlerInstruction = instr.getInstructionAtOffset(handlerPC);
 
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	@Override

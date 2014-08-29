@@ -2,6 +2,7 @@ package org.jasm.test.item;
 
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
@@ -68,6 +69,11 @@ public class DummyRoot extends AbstractByteCodeItem implements IContainerBytecod
 	protected void doResolve() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		
 	}
 
 	@Override

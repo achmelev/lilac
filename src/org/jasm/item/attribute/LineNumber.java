@@ -2,6 +2,7 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
@@ -75,6 +76,11 @@ public class LineNumber extends AbstractByteCodeItem implements IInstructionRefe
 	protected void doResolve() {
 		Instructions instr = ((CodeAttributeContent)getParent().getParent().getParent().getParent()).getInstructions();
 		startInstruction = instr.getInstructionAtOffset(startPC);
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package org.jasm.item.attribute;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
@@ -112,6 +113,11 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 		if (innerNameIndex != 0) {
 			this.innerName = (Utf8Info)this.getConstantPool().get(innerNameIndex-1);
 		}
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	public ClassInfo getInnerClass() {

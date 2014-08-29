@@ -2,6 +2,7 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
@@ -75,6 +76,11 @@ public abstract class AbstractStringAttributeContent extends AbstractSimpleAttri
 	@Override
 	protected void doResolve() {
 		this.valueEntry = (Utf8Info)getConstantPool().get(this.valueIndex-1);
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	public Utf8Info getValueEntry() {

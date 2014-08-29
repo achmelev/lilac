@@ -2,6 +2,7 @@ package org.jasm.item.constantpool;
 
 
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.parser.literals.SymbolReference;
@@ -50,7 +51,11 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 			reference[i] = (AbstractConstantPoolEntry)getParent().get(index[i]-1);
 		}
 	}
-
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
+	}
 	
 	
 	public AbstractConstantPoolEntry[] getConstantReferences() {

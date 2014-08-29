@@ -2,6 +2,7 @@ package org.jasm.item.instructions;
 
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
@@ -103,6 +104,11 @@ public class LookupSwitchInstruction extends AbstractInstruction {
 		for (int i=0;i<numberOfPairs; i++) {
 			targets[i] = instr.getInstructionAtOffset(targetOffsets[i]+this.getOffsetInCode());
 		}
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 	
 	private int calculatePad() {

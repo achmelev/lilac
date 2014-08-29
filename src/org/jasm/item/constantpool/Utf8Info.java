@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.Utf8String;
 import org.jasm.bytebuffer.print.PrettyPrinter;
@@ -31,6 +32,11 @@ public class Utf8Info extends AbstractConstantPoolEntry {
 	@Override
 	public void doResolve() {
 
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 	
 	
