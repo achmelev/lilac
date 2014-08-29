@@ -26,5 +26,6 @@
 	<classpathentry kind="lib" path="lib/antlr4-annotations-jar.jar"/>
 	<classpathentry kind="lib" path="lib/antlr4-runtime-jar.jar" sourcepath="lib/antlr4-runtime-source.jar"/>
 	<classpathentry kind="lib" path="lib/antlr4-jar.jar" sourcepath="lib/antlr4-source.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-jar.jar" sourcepath="lib/commons-lang3-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

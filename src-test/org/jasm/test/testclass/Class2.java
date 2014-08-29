@@ -2,7 +2,7 @@ package org.jasm.test.testclass;
 
 public abstract class Class2  {
 	
-	public static String staticString = "HELLO WORLD";
+	public static String staticString = "HELLO \n Ä WORLD";
 	
 	private final int finalIntField = 0;
 	

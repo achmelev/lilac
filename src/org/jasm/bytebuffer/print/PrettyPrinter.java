@@ -2,7 +2,7 @@ package org.jasm.bytebuffer.print;
 
 import java.io.PrintWriter;
 
-import org.jasm.item.IBytecodeItem;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 public class PrettyPrinter {
 	
@@ -72,7 +72,6 @@ public class PrettyPrinter {
 	}
 	
 	public static String getJavaStyleString(String source) {
-		//TODO - umsetzen
-		return "\""+source+"\"";
+		return "\""+StringEscapeUtils.escapeJava(source)+"\"";
 	}
 }
