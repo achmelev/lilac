@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.IBytecodeItem;
@@ -104,6 +105,11 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 		for (int i=0;i<indexes.length; i++) {
 			classInfos[i] = (ClassInfo)getConstantPool().get(indexes[i]-1);
 		}
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	

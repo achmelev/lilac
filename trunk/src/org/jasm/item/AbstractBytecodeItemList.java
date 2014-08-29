@@ -3,6 +3,7 @@ package org.jasm.item;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.ConstantPool;
@@ -102,6 +103,11 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 			}
 		}
 		
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	public int getSize() {

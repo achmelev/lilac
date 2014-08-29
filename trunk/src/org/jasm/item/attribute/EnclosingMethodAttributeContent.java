@@ -3,6 +3,7 @@ package org.jasm.item.attribute;
 import java.util.List;
 
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
@@ -98,6 +99,11 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 			this.method = (NameAndTypeInfo)getConstantPool().get(this.methodIndex-1);
 		}
 		
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	public ClassInfo getClazz() {

@@ -2,6 +2,7 @@ package org.jasm.item.instructions;
 
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
@@ -61,6 +62,11 @@ public class BranchInstruction extends AbstractInstruction implements IInstructi
 	@Override
 	public AbstractInstruction[] getInstructionReferences() {
 		return new AbstractInstruction[]{targetInst};
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 }

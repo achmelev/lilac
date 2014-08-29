@@ -2,6 +2,7 @@ package org.jasm.item.instructions;
 
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
@@ -73,6 +74,11 @@ public class IincInstruction extends AbstractInstruction implements ILocalVariab
 	protected void doResolve() {
 		
 
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	@Override

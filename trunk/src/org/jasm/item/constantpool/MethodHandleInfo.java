@@ -1,5 +1,6 @@
 package org.jasm.item.constantpool;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 
 public class MethodHandleInfo extends AbstractConstantPoolEntry implements INameReferencingEntry, IDescriptorReferencingEntry {
@@ -43,6 +44,11 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 	@Override
 	protected void doResolve() {
 		reference = (AbstractConstantPoolEntry)getParent().get(index-1);
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	

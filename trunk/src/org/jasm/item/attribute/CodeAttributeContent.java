@@ -6,6 +6,7 @@ import java.util.List;
 import javax.smartcardio.ATR;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
@@ -120,6 +121,11 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 		exceptionTable.resolve();
 		attributes.resolve();
 
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	@Override

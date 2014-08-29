@@ -2,6 +2,7 @@ package org.jasm.item.instructions;
 
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
@@ -56,6 +57,11 @@ public class ShortLocalVariableInstruction extends AbstractInstruction implement
 	@Override
 	protected void doResolve() {
 		this.localVariableIndex = getInstructionIndex();
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	@Override

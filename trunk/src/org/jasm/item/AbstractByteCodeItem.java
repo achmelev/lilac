@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.item.clazz.Clazz;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.parser.SourceLocation;
+import org.jasm.parser.literals.AbstractLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,11 +39,16 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		if ((this.parent == null) && !isRoot()) {
 			throw new RuntimeException("Cannot resolve orphan item!");
 		}
-		doResolve();
+		if (isAfterParseResolving()) {
+			doResolveAfterParse();
+		} else {
+			doResolve();
+		}
 		this.resolved = true;
 	}
 	
 	protected abstract void doResolve();
+	protected abstract void doResolveAfterParse();
 
 	@Override
 	public boolean isRoot() {
@@ -123,6 +130,38 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		return sourceLocation;
 	}
 	
+	//Methods for "after parse"-resolving
+	
+	private boolean isAfterParseResolving() {
+		return this.getRoot().getParser() != null;
+	}
+	
+	protected Clazz getRoot() {
+		if (this instanceof Clazz) {
+			return (Clazz)this;
+		} else {
+			return getAncestor(Clazz.class);
+		}
+	}
 	
 	
+	protected void emitError(AbstractLiteral literal, String message) {
+		if (literal !=  null) {
+			getRoot().getParser().emitError(literal.getLine(), literal.getCharPosition(), message);
+		} else {
+			SourceLocation sl = getNextSourceLocation();
+			getRoot().getParser().emitError(sl.getLine(), sl.getCharPosition(), message);
+		}
+		
+	}
+	
+	public SourceLocation getNextSourceLocation() {
+		if (this.sourceLocation != null) {
+			return sourceLocation;
+		} else if (this.parent == null ) {
+			throw new IllegalStateException("no source location available!");
+		} else {
+			return getParent().getNextSourceLocation();
+		}
+	}
 }

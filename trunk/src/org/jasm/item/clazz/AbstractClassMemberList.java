@@ -15,16 +15,6 @@ public abstract class AbstractClassMemberList<T extends AbstractClassMember> ext
 	private KeyToListMap<String, T> nameToMember = new KeyToListMap<String, T>(); 
 	private KeyToListMap<String, T> descriptorToMember = new KeyToListMap<String, T>(); 
 	
-	@Override
-	protected void doResolve() {
-		super.doResolve();
-		
-		
-	}
-	
-	
-
-
 
 	@Override
 	protected void doUpdateMetadata() {

@@ -2,6 +2,7 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
@@ -70,6 +71,11 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		this.content.setParent(this);
 		this.content.resolve();
 
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 	
 	private IAttributeContent selectContent() {

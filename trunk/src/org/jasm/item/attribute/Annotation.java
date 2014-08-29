@@ -3,6 +3,7 @@ package org.jasm.item.attribute;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
@@ -114,6 +115,11 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 			value.resolve();
 		}
 
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	@Override

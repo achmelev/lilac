@@ -2,6 +2,7 @@ package org.jasm.item;
 
 
 import org.jasm.bytebuffer.IByteBuffer;
+import org.jasm.parser.SourceLocation;
 
 public interface IBytecodeItem {
 	
@@ -17,6 +18,9 @@ public interface IBytecodeItem {
 	public IContainerBytecodeItem  getParent();
 	public <T> T getAncestor(Class<T> type);
 	public void setParent(IContainerBytecodeItem  parent);
+	
+	//Source
+	public SourceLocation getNextSourceLocation();
 	
 
 }

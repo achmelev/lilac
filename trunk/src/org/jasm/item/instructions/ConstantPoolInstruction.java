@@ -2,6 +2,7 @@ package org.jasm.item.instructions;
 
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
@@ -57,6 +58,11 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 	@Override
 	protected void doResolve() {
 		cpEntry = getConstantPool().get(cpEntryIndex-1);
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	@Override

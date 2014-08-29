@@ -3,6 +3,7 @@ package org.jasm.item.clazz;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
@@ -15,6 +16,7 @@ import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.modifier.ClassModifier;
+import org.jasm.parser.AssemblerParser;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.StringLiteral;
 import org.jasm.parser.literals.SymbolReference;
@@ -26,6 +28,8 @@ import org.slf4j.LoggerFactory;
 public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeItem<IBytecodeItem>, IConstantPoolReference {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
+	
+	private AssemblerParser parser = null;
 	
 	private VersionLiteral version;
 	private int majorVersion = -1;
@@ -73,6 +77,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		attributes.setParent(this);
 		children.add(attributes);
 		modifierLiterals= new ArrayList<>();
+		interfaces = new ArrayList<>();
 		
 	}
 
@@ -239,6 +244,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		attributes.resolve();
 	}
 	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
+	}
+	
 	
 
 	@Override
@@ -367,6 +377,14 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 
 	public List<Keyword> getModifierLiterals() {
 		return modifierLiterals;
+	}
+
+	public void setParser(AssemblerParser parser) {
+		this.parser = parser;
+	}
+
+	public AssemblerParser getParser() {
+		return parser;
 	}
 
 	

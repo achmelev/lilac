@@ -3,6 +3,7 @@ package org.jasm.item.attribute;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
@@ -87,6 +88,11 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 		this.name = (Utf8Info)getConstantPool().get(this.nameIndex-1);
 		value.resolve();
 
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	@Override

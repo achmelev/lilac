@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.lang.model.element.ElementVisitor;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
@@ -261,6 +262,11 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 			throw new IllegalStateException("illegal tag : "+tag);
 		}
 		
+	}
+	
+	@Override
+	protected void doResolveAfterParse() {
+		throw new NotImplementedException("not implemented");
 	}
 
 	public boolean isPrimitiveValue() {
