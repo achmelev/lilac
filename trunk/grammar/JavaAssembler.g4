@@ -10,6 +10,7 @@ clazz:
 	 	(classmodifier SEMI)?
 	 	 constpool?
 	 	 classattributes?
+	 	 methods?
 	 RBRACE;
 
 version: VERSION VersionLiteral;
@@ -43,33 +44,71 @@ classattributes : ATTRIBUTES LBRACE
 
 classattribute : SOURCE FILE Identifier #classattributeSourceFile;
 
+methods : METHODS LBRACE
+					(method)+
+				  RBRACE;
+
+method  : METHOD  LBRACE
+					methodname SEMI
+					methoddescriptor SEMI
+					(methodmodifier SEMI)?
+				  RBRACE;
+				  
+methodname: NAME Identifier;
+methoddescriptor: DESCRIPTOR Identifier;
+
+methodmodifier: MODIFIER methodmodifierlabel (COMMA  methodmodifierlabel)*;
+				  
+
+methodmodifierlabel:  PUBLIC 		# methodmodifierPublic
+					| PRIVATE  		# methodmodifierPrivate
+					| PROTECTED  	# methodmodifierProtected
+					| ABSTRACT   	# methodmodifierAbstract
+					| STATIC 		# methodmodifierStatic
+					| FINAL         # methodmodifierFinal
+					| SYNCHRONIZED	# methodmodifierSynchronized
+					| VARARGS	    # methodmodifierVarargs
+					| NATIVE	    # methodmodifierNative
+					| ABSTRACT	    # methodmodifierAbstract
+					| STRICT 	    # methodmodifierStrict
+					| SYNTETIC 	    # methodmodifierSyntetic
+					;
+
 label: Identifier COLON;
 
 //Lexer
 
 // Keywords
 
-CLASS         : 'class';
-VERSION       : 'version';
-NAME          : 'name';
-EXTENDS       : 'extends';
-MODIFIER      : 'modifier';
-PUBLIC        : 'public';
+CLASS         :  'class';
+VERSION       :  'version';
+NAME          :  'name';
+EXTENDS       :  'extends';
+MODIFIER      :  'modifier';
+PUBLIC        :  'public';
 FINAL         :  'final';
 SUPER         :  'super';
 INTERFACE     :  'interface';
-ABSTRACT      :   'abstract';
-SYNTETIC      :   'syntetic';
-ANNOTATION    :   'annotation';
-ENUM          :   'enum';
-CONSTPOOL     :   'constpool';
-CLASSINFO     :   'classinfo';
-UTF8INFO      :    'utf8info';
-ATTRIBUTES    :    'attributes';
-SOURCE        :    'source';
-FILE          :    'file';
-
-
+ABSTRACT      :  'abstract';
+SYNTETIC      :  'syntetic';
+ANNOTATION    :  'annotation';
+ENUM          :  'enum';
+CONSTPOOL     :  'constpool';
+CLASSINFO     :  'classinfo';
+UTF8INFO      :  'utf8info';
+ATTRIBUTES    :  'attributes';
+SOURCE        :  'source';
+FILE          :  'file';
+METHODS       :  'methods';
+METHOD        :  'method';
+DESCRIPTOR    :  'descriptor';
+PRIVATE       :  'private';
+PROTECTED     :  'protected';
+STATIC        :  'static';
+SYNCHRONIZED  :  'synchronized';
+VARARGS       :  'varargs';
+NATIVE        :  'native';
+STRICT        :  'strict';
 
 
 //Version

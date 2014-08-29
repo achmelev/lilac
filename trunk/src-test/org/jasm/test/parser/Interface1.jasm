@@ -22,4 +22,12 @@ class {
   attributes {
     source file cp7; // Interface1.java
   }
+  
+  methods {
+    method {
+      name cp4; // testMethod
+      descriptor cp5; // (I)V
+      modifier public, abstract;
+    }
+  }
 }

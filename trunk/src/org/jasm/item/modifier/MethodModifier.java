@@ -83,6 +83,27 @@ public class MethodModifier extends AbstractClassMemberModifier {
 		return (this.value & SYNTETIC_BIT) !=0;
 	}
 	
+	public void setFlag(String label) {
+		boolean result = false;
+		result = result || setFlag(label, PUBLIC_LABEL, PUBLIC_BIT);
+		result = result || setFlag(label, PRIVATE_LABEL, PRIVATE_BIT);
+		result = result || setFlag(label, PROTECTED_LABEL, PROTECTED_BIT);
+		result = result || setFlag(label, ABSTRACT_LABEL, ABSTRACT_BIT);
+		result = result || setFlag(label, STATIC_LABEL, STATIC_BIT);
+		result = result || setFlag(label, FINAL_LABEL, FINAL_BIT);
+		result = result || setFlag(label, SYNCHRONIZED_LABEL, SYNCHRONIZED_BIT);
+		result = result || setFlag(label, VARARGS_LABEL, VARARGS_BIT);
+		result = result || setFlag(label, BRIDGE_LABEL, BRIDGE_BIT);
+		result = result || setFlag(label, VARARGS_LABEL, VARARGS_BIT);
+		result = result || setFlag(label, NATIVE_LABEL, NATIVE_BIT);
+		result = result || setFlag(label, ABSTRACT_LABEL, ABSTRACT_BIT);
+		result = result || setFlag(label, STRICT_LABEL, STRICT_BIT);
+		result = result || setFlag(label, SYNTETIC_LABEL, SYNTETIC_BIT);
+		if (!result) {
+			throw new IllegalArgumentException("Illegal modifier label: "+label);
+		}
+	}
+	
 	
 	
 	public String toString() {
