@@ -36,8 +36,8 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 
 	@Override
 	public void writeBody(IByteBuffer target, long offset) {
-		for (int i=0;i<index.length; i++) {
-			target.writeUnsignedShort(offset+i*2, index[i]);
+		for (int i=0;i<reference.length; i++) {
+			target.writeUnsignedShort(offset+i*2, reference[i].getIndexInPool());
 		}
 	}
 

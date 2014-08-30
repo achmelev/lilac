@@ -36,7 +36,7 @@ public class Utf8Info extends AbstractConstantPoolEntry {
 	
 	@Override
 	protected void doResolveAfterParse() {
-		value = valueLiteral.getStringValue();
+		setValue(valueLiteral.getStringValue());
 	}
 	
 	
@@ -60,7 +60,7 @@ public class Utf8Info extends AbstractConstantPoolEntry {
 			throw new RuntimeException(e);
 		}
 		byte[] data = bo.toByteArray();
-		this.length = data.length;
+		this.length = data.length+1;
 	}
 
 	@Override
