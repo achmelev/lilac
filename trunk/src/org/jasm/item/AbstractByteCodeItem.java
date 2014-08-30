@@ -134,7 +134,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	
 	//Methods for "after parse"-resolving
 	
-	private boolean isAfterParseResolving() {
+	protected boolean isAfterParseResolving() {
 		return this.getRoot().getParser() != null;
 	}
 	
