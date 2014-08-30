@@ -3,7 +3,6 @@ package org.jasm.item.clazz;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
@@ -18,7 +17,6 @@ import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.parser.literals.Keyword;
-import org.jasm.parser.literals.StringLiteral;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
 import org.slf4j.Logger;
@@ -258,6 +256,18 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		}
 		//Pool
 		pool.resolve();
+		pool.updateIndexes();
+		//this, super
+		thisClass = pool.checkAndLoadFromSymbolTable(ClassInfo.class, thisClassSymbol, "classinfo");
+		if (superClassSymbol != null) {
+			superClass = pool.checkAndLoadFromSymbolTable(ClassInfo.class, superClassSymbol, "classinfo");
+		}
+		//Modifier
+		modifier = new ClassModifier(0);
+		for (Keyword k: modifierLiterals) {
+			modifier.setFlag(k.getKeyword());
+		}
+		
 		
 	}
 	

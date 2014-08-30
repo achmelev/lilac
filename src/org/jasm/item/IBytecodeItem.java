@@ -9,6 +9,7 @@ public interface IBytecodeItem {
 	public void read(IByteBuffer source, long offset);
 	public void write(IByteBuffer target, long offset);
 	public void resolve();
+	public boolean hasResolveErrors();
 	public void updateMetadata();
 	public int getLength();
 	
