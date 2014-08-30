@@ -155,6 +155,7 @@ public class TypeDescriptorTest {
 		Assert.assertFalse(desc.isLong());
 		Assert.assertTrue(desc.isObject());
 		Assert.assertFalse(desc.isShort());
+		Assert.assertEquals("java/lang/Object",desc.getClassName());
 		
 		try {
 			desc = new TypeDescriptor("[Ljava/lang/Object;");
