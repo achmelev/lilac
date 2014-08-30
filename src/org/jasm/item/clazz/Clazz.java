@@ -246,7 +246,19 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		//Version
+		try {
+			String versionStr = version.getContent();
+			majorVersion = Integer.parseInt(versionStr.substring(0, versionStr.indexOf('.')));
+			minorVersion = Integer.parseInt(versionStr.substring(versionStr.indexOf('.')+1, versionStr.length()));
+		} catch (Exception e) {
+			emitError(version, "malformed or illegal version");
+			majorVersion = 0;
+			minorVersion = 0;
+		}
+		//Pool
+		pool.resolve();
+		
 	}
 	
 	

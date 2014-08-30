@@ -1,10 +1,7 @@
 package org.jasm.item.constantpool;
 
 
-
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
-import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.parser.literals.SymbolReference;
 
 
@@ -13,6 +10,8 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 	private int[] index = null;
 	private SymbolReference[] referenceLabels = null;
 	private AbstractConstantPoolEntry[] reference = null;
+	
+	private boolean referencesVerified = false;
 	
 	protected AbstractReferenceEntry() {
 		
@@ -54,7 +53,16 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+	
+		reference = new AbstractConstantPoolEntry[getNumberOfReferences()];
+		for (int i=0;i<referenceLabels.length; i++) {
+			SymbolReference ref = referenceLabels[i];
+			if (getConstantPool().getSymbolTable().contains(ref.getSymbolName())) {
+				reference[i] = (AbstractConstantPoolEntry)getConstantPool().getSymbolTable().get(ref.getSymbolName());
+			} else {
+				emitError(ref, "unknown constants label "+ref.getSymbolName());
+			}
+		}
 	}
 	
 	
@@ -109,6 +117,33 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 	public void setReferenceLabels(SymbolReference[] referenceLabels) {
 		this.referenceLabels = referenceLabels;
 	}
+	
+	
+	
+	public void verifyReferences() {
+		if (!referencesVerified) {
+			for (int i=0;i<referenceLabels.length; i++) {
+				if (!reference[i].hasResolveErrors()) {
+					if (reference[i] instanceof AbstractReferenceEntry) {
+						AbstractReferenceEntry ar = (AbstractReferenceEntry)reference[i];
+						ar.verifyReferences();
+						if (!ar.hasResolveErrors()) {
+							verifyReference(i, referenceLabels[i], reference[i]);
+						} else {
+							hasResolveErrors(true);
+						}
+					} else {
+						verifyReference(i, referenceLabels[i], reference[i]);
+					}
+				} else {
+					hasResolveErrors(true);
+				}
+			}
+			referencesVerified = true;
+		}
+	}
+	
+	protected abstract boolean verifyReference(int index, SymbolReference ref, AbstractConstantPoolEntry value);
 	
 	
 	

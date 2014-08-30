@@ -107,7 +107,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		doResolve();
 	}
 
 	public int getSize() {

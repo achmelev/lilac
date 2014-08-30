@@ -1,6 +1,16 @@
 package org.jasm.item.constantpool;
 
+
+
+import org.jasm.item.descriptor.IllegalDescriptorException;
+import org.jasm.item.descriptor.MethodDescriptor;
+import org.jasm.item.descriptor.TypeDescriptor;
+import org.jasm.item.utils.IdentifierUtils;
+import org.jasm.parser.literals.SymbolReference;
+
 public class NameAndTypeInfo extends AbstractReferenceEntry implements INameReferencingEntry, IDescriptorReferencingEntry {
+	
+
 	
 	public NameAndTypeInfo() {
 		
@@ -54,6 +64,43 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 	@Override
 	public String[] getReferencedNames() {
 		return new String[]{getName()};
+	}
+
+	@Override
+	protected boolean verifyReference(int index, SymbolReference ref,
+			AbstractConstantPoolEntry value) {
+		if (!(value instanceof Utf8Info)) {
+			emitError(ref, "wrong constant pool entry type, expected utf8info");
+			return false;
+		}
+		String valueStr = ((Utf8Info)value).getValue();
+		if (index == 0) {
+			if (!IdentifierUtils.isValidIdentifier(valueStr)) {
+				emitError(ref, "malformed identifier:  "+valueStr);
+			}
+		} else if (index == 1) {
+			try {
+				MethodDescriptor desc = new MethodDescriptor(valueStr);
+			} catch (IllegalDescriptorException e) {
+				try {
+					TypeDescriptor desc = new TypeDescriptor(valueStr);
+				} catch (IllegalDescriptorException e1) {
+					emitError(ref, "malformed type or method descriptor");
+				}
+			}
+		} else {
+			throw new IllegalArgumentException("wrong index: "+index);
+		}
+		return true;
+	}
+
+	public boolean isFieldDescriptor() {
+		try {
+			TypeDescriptor desc = new TypeDescriptor(getDescriptor());
+			return true;
+		} catch (IllegalDescriptorException e) {
+			return false;
+		}
 	}
 	
 	

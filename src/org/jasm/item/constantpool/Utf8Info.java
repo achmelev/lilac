@@ -36,7 +36,7 @@ public class Utf8Info extends AbstractConstantPoolEntry {
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		value = valueLiteral.getStringValue();
 	}
 	
 	

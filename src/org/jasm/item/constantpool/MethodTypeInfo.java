@@ -1,5 +1,7 @@
 package org.jasm.item.constantpool;
 
+import org.jasm.parser.literals.SymbolReference;
+
 public class MethodTypeInfo extends AbstractReferenceEntry implements IDescriptorReferencingEntry {
 	
 	public MethodTypeInfo() {
@@ -41,6 +43,16 @@ public class MethodTypeInfo extends AbstractReferenceEntry implements IDescripto
 	@Override
 	public String[] getReferencedDescriptors() {
 		return new String[]{getDescriptor()};
+	}
+	
+	@Override
+	protected boolean verifyReference(int index, SymbolReference ref,
+			AbstractConstantPoolEntry value) {
+		if (!(value instanceof Utf8Info)) {
+			emitError(ref, "wrong constant pool entry type, expected utf8info");
+			return false;
+		}
+		return true;
 	}
 
 }

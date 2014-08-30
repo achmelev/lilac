@@ -9,7 +9,7 @@ public class StringLiteral extends AbstractLiteral {
 	}
 	
 	public String getStringValue() {
-		return StringEscapeUtils.unescapeJava(getContent());
+		return StringEscapeUtils.unescapeJava(getContent().substring(1,getContent().length()-1));
 	}
 
 }

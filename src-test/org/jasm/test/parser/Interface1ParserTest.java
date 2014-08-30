@@ -14,12 +14,17 @@ public class Interface1ParserTest extends AbstractParserTestCase {
 	@Test
 	public void test() {
 		Clazz clazz = parse();
+		if (parser.getErrorMessages().size() > 0) {
+			parser.debugErrors();
+			Assert.fail("Parsing failed!");
+		} 
+		
 		Assert.assertNotNull(clazz);
 		
 		
-		/*Assert.assertEquals(51, clazz.getMajorVersion());
+		Assert.assertEquals(51, clazz.getMajorVersion());
 		Assert.assertEquals(0, clazz.getMinorVersion());
-		Assert.assertTrue(clazz.getModifier().isAbstract());
+		/*Assert.assertTrue(clazz.getModifier().isAbstract());
 		Assert.assertFalse(clazz.getModifier().isAnnotation());
 		Assert.assertFalse(clazz.getModifier().isEnum());
 		Assert.assertFalse(clazz.getModifier().isFinal());

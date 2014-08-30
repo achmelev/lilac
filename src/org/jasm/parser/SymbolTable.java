@@ -20,7 +20,12 @@ public class SymbolTable {
 	}
 	
 	public boolean contains(String name) {
-		return symbols.containsKey(name);
+		if (symbols.containsKey(name)) {
+			ISymbolTableEntry value = symbols.get(name);
+			return !value.hasResolveErrors();
+		} else {
+			return false;
+		}
 	}
 	
 	public boolean containsWithRecursion(String name) {
@@ -32,11 +37,14 @@ public class SymbolTable {
 	}
 	
 	public ISymbolTableEntry get(String name) {
+		if (!contains(name)) {
+			return null;
+		}
 		return symbols.get(name);
 	}
 	
 	public ISymbolTableEntry getWithRecursion(String name) {
-		ISymbolTableEntry result =  symbols.get(name);
+		ISymbolTableEntry result =  get(name);
 		if (result == null && parent != null) {
 			result = parent.getWithRecursion(name);
 		}

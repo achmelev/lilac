@@ -24,6 +24,10 @@ public class IdentifierUtilsTest {
 		
 		Assert.assertEquals("name.name", IdentifierUtils.convertToJavaClassName("name/name"));
 		Assert.assertEquals("name/name/n", IdentifierUtils.convertToJasmClassName("name.name.n"));
+		
+		Assert.assertTrue(IdentifierUtils.isValidIdentifier("java"));
+		
+		Assert.assertTrue(IdentifierUtils.isValidJasmClassName("java/lang/Object"));
 	}
 
 }

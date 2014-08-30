@@ -1,5 +1,7 @@
 package org.jasm.item.constantpool;
 
+import org.jasm.parser.literals.SymbolReference;
+
 public class FieldrefInfo extends AbstractRefInfo {
 	
 	
@@ -21,6 +23,7 @@ public class FieldrefInfo extends AbstractRefInfo {
 	public String getPrintName() {
 		return "fieldrefinfo";
 	}
+
 	
 	
 	
