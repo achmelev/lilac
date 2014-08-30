@@ -1,5 +1,8 @@
 package org.jasm.item.constantpool;
 
+import org.jasm.item.utils.IdentifierUtils;
+import org.jasm.parser.literals.SymbolReference;
+
 public class ClassInfo extends AbstractReferenceEntry implements INameReferencingEntry {
 	
 	public ClassInfo() {
@@ -41,6 +44,24 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 	public String[] getReferencedNames() {
 		return new String[]{getClassName()};
 	}
+
+	@Override
+	protected boolean verifyReference(int index, SymbolReference ref,
+			AbstractConstantPoolEntry value) {
+		if (!(value instanceof Utf8Info)) {
+			emitError(ref, "wrong constant pool entry type, expected utf8info");
+			return false;
+		}
+		String className = ((Utf8Info)value).getValue();
+		if (!IdentifierUtils.isValidJasmClassName(className)) {
+			emitError(ref, "invalid class name "+className);
+			return false;
+		}
+		return true;
+	}
+	
+	
+	
 	
 	
 	

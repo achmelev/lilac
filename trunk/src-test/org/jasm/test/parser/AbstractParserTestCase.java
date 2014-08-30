@@ -7,9 +7,12 @@ import org.jasm.parser.AssemblerParser;
 
 public abstract class AbstractParserTestCase {
 	
+	protected AssemblerParser parser = null;
+	
 	protected Clazz parse() {
 		InputStream inp = this.getClass().getClassLoader().getResourceAsStream("org/jasm/test/parser/"+getDateiName());
-		return new AssemblerParser().parse(inp);
+		parser = new AssemblerParser();
+		return parser.parse(inp);
 	}
 	
 	protected abstract String getDateiName();

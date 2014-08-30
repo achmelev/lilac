@@ -1,5 +1,7 @@
 package org.jasm.item.constantpool;
 
+import org.jasm.parser.literals.SymbolReference;
+
 public abstract class AbstractRefInfo extends AbstractReferenceEntry implements INameReferencingEntry, IDescriptorReferencingEntry {
 	
 	public AbstractRefInfo() {
@@ -63,6 +65,31 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 	@Override
 	public String[] getReferencedNames() {
 		return new String[]{getName(), getClassName()};
+	}
+
+	@Override
+	public short getTag() {
+		return 0;
+	}
+
+	@Override
+	protected boolean verifyReference(int index, SymbolReference ref,
+			AbstractConstantPoolEntry value) {
+		if (index == 0) {
+			if (!(value instanceof ClassInfo)) {
+				emitError(ref, "wrong constant pool entry type, expected classinfo");
+				return false;
+			}
+			return true;
+		} else if (index == 1) {
+			if (!(value instanceof NameAndTypeInfo)) {
+				emitError(ref, "wrong constant pool entry type, expected nameandtypeinfo");
+				return false;
+			}
+			return true;
+		} else {
+			throw new IllegalArgumentException("wrong index: "+index);
+		}
 	}
 	
 	

@@ -23,6 +23,8 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	
 	private SourceLocation sourceLocation = null;
 	
+	private boolean hasResolveErrors = false;
+	
 	public IContainerBytecodeItem  getParent() {
 		return parent;
 	}
@@ -152,6 +154,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 			SourceLocation sl = getNextSourceLocation();
 			getRoot().getParser().emitError(sl.getLine(), sl.getCharPosition(), message);
 		}
+		hasResolveErrors = true;
 		
 	}
 	
@@ -164,4 +167,15 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 			return getParent().getNextSourceLocation();
 		}
 	}
+
+	public boolean hasResolveErrors() {
+		return hasResolveErrors;
+	}
+	
+	public void hasResolveErrors(boolean value) {
+		this.hasResolveErrors = value;
+	}
+	
+	
+	
 }

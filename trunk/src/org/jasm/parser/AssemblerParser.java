@@ -57,6 +57,7 @@ import org.jasm.parser.JavaAssemblerParser.MethodmodifierSynchronizedContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierVarargsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodnameContext;
+import org.jasm.parser.JavaAssemblerParser.MethodsContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
@@ -114,18 +115,14 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (log.isDebugEnabled()) {
 			log.debug("tree: "+tree.toStringTree());
 		}
-		debugErrors();
-		
-		
 		
 		if (errorMessages.size() == 0) {
 			//Walk tree an create class
 			ParseTreeWalker walker = new ParseTreeWalker();
 			walker.walk(this, tree);
-			debugErrors();
 			if (errorMessages.size() == 0) {
-				//resolve and validate symbolic references
-				//TODO
+				Clazz clazz = result;
+				clazz.resolve();
 				
 			} else {
 				result = null;
@@ -137,7 +134,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		return result;
 	}
 	
-	private void debugErrors() {
+	public void debugErrors() {
 		if (log.isDebugEnabled()) {
 			if (getErrorMessages().size() > 0) {
 				StringBuffer buf = new StringBuffer();
@@ -156,6 +153,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		Clazz clazz = new Clazz();
 		clazz.setSourceLocation(createSourceLocation(ctx.CLASS()));
 		clazz.setModifier(new ClassModifier(0));
+		clazz.setParser(this);
 		stack.push(clazz);
 	}
 
@@ -297,6 +295,13 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 
 	@Override
+	public void enterMethods(MethodsContext ctx) {
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.getMethods().setSourceLocation(createSourceLocation(ctx.METHODS()));
+	}
+
+
+	@Override
 	public void enterMethodmodifierStatic(MethodmodifierStaticContext ctx) {
 		Method m = (Method)stack.peek();
 		m.getModifierLiterals().add(createKeyword(ctx.STATIC()));
@@ -392,6 +397,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void enterMethod(MethodContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
 		Method m = new Method();
+		m.setSourceLocation(createSourceLocation(ctx.METHOD()));
 		clazz.getMethods().add(m);
 		stack.push(m);
 		
@@ -475,7 +481,9 @@ class SyntaxErrorListener extends BaseErrorListener {
 	@Override
 	public void reportAmbiguity(Parser recognizer, DFA dfa, int startIndex,
 			int stopIndex, boolean exact, BitSet ambigAlts, ATNConfigSet configs) {
-		log.error("Ambiguity: "+startIndex+":"+stopIndex);
+		if (log.isDebugEnabled()) {
+			log.debug("Ambiguity: "+startIndex+":"+stopIndex);
+		}
 		
 	}
 

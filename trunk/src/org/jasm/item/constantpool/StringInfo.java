@@ -1,5 +1,7 @@
 package org.jasm.item.constantpool;
 
+import org.jasm.parser.literals.SymbolReference;
+
 public class StringInfo extends AbstractReferenceEntry implements ITextReferencingEntry {
 	
 	public StringInfo() {
@@ -36,6 +38,16 @@ public class StringInfo extends AbstractReferenceEntry implements ITextReferenci
 	@Override
 	public String getPrintComment() {
 		return null;
+	}
+
+	@Override
+	protected boolean verifyReference(int index, SymbolReference ref,
+			AbstractConstantPoolEntry value) {
+		if (!(value instanceof Utf8Info)) {
+			emitError(ref, "wrong constant pool entry type, expected utf8info");
+			return false;
+		}
+		return true;
 	}
 	
 	
