@@ -75,7 +75,11 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		this.name = selectNameEntry();
+		if (name == null) {
+			emitError(null, "not utf8info entry containing 'SourceFile' found");
+		}
+		this.content.resolve();
 	}
 	
 	private IAttributeContent selectContent() {

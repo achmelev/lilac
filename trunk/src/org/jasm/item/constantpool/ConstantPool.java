@@ -290,7 +290,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		T result = null;
 		if (getSymbolTable().contains(ref.getSymbolName())) {
 			ISymbolTableEntry entry = getSymbolTable().get(ref.getSymbolName());
-			if (entry instanceof ClassInfo) {
+			if (entry.getClass().equals(t)) {
 				result = (T)entry;
 			} else {
 				emitError(ref, "wrong constant pool entry, expected "+printLabel);

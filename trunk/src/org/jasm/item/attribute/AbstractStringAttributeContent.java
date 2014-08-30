@@ -80,7 +80,7 @@ public abstract class AbstractStringAttributeContent extends AbstractSimpleAttri
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		valueEntry = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, valueLabel, "utf8info");
 	}
 
 	public Utf8Info getValueEntry() {
