@@ -123,7 +123,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			if (errorMessages.size() == 0) {
 				Clazz clazz = result;
 				clazz.resolve();
-				if (!clazz.hasResolveErrors()) {
+				if (clazz.getParser().getErrorMessages().size() == 0) {
 					clazz.updateMetadata();
 				}
 				
