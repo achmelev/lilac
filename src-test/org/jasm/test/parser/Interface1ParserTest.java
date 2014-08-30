@@ -1,5 +1,6 @@
 package org.jasm.test.parser;
 
+import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.junit.Assert;
 import org.junit.Test;
@@ -38,6 +39,11 @@ public class Interface1ParserTest extends AbstractParserTestCase {
 		
 		Assert.assertEquals(8, clazz.getConstantPool().getSize());
 		Assert.assertEquals(1, clazz.getAttributes().getSize());
+		
+		Assert.assertEquals("Interface1.java", ((SourceFileAttributeContent)clazz.getAttributes().get(0).getContent()).getValueEntry().getValue());
+		
+		Assert.assertNotNull(clazz.getMethods().getMethod("testMethod", "(I)V"));
+	
 	}
 
 }

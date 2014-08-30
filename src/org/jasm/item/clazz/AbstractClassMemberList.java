@@ -5,6 +5,7 @@ package org.jasm.item.clazz;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hamcrest.core.IsAnything;
 import org.jasm.item.AbstractBytecodeItemList;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
@@ -31,8 +32,16 @@ public abstract class AbstractClassMemberList<T extends AbstractClassMember> ext
 	}
 
 	private void addToIndex(T member) {
-		nameToMember.addToList(member.getName().getValue(), member);
-		descriptorToMember.addToList(member.getDescriptor().getValue(), member);
+		T member1 = getMember(member.getName().getValue(), member.getDescriptor().getValue());
+		if (member1 == null) {
+			nameToMember.addToList(member.getName().getValue(), member);
+			descriptorToMember.addToList(member.getDescriptor().getValue(), member);
+		} else {
+			if (isAfterParseResolving()) {
+				emitError(null, "duplicate "+member.getPrintName()+" declaration "+member.getName().getValue()+"@"+member.getDescriptor().getValue());
+			}
+		}
+		
 	}
 	
 	
