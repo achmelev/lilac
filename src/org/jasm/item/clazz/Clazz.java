@@ -267,7 +267,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		for (Keyword k: modifierLiterals) {
 			modifier.setFlag(k.getKeyword());
 		}
-		
+		//Attributes
+		attributes.resolve();
 		
 	}
 	
