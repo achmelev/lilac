@@ -1,6 +1,8 @@
 package org.jasm.item.modifier;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.JasmConsts;
+
 
 public class FieldModifier extends AbstractClassMemberModifier {
 	
@@ -84,6 +86,12 @@ public class FieldModifier extends AbstractClassMemberModifier {
 		} else {
 			return result;
 		}
+		
+	}
+
+	@Override
+	public void setFlag(String value) {
+		throw new NotImplementedException("");
 		
 	}
 	

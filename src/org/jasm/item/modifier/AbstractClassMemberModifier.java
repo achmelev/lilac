@@ -6,6 +6,7 @@ public abstract class AbstractClassMemberModifier extends AbstractModifier {
 		super(value);
 	}
 	
+	public abstract void setFlag(String value);
 
 
 }
