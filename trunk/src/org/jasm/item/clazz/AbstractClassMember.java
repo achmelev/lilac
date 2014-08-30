@@ -15,6 +15,7 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.AbstractClassMemberModifier;
+import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.StringLiteral;
 import org.jasm.parser.literals.SymbolReference;
@@ -104,7 +105,25 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		this.name = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, nameReference, "utf8info");
+		if (this.name != null) {
+			if (!IdentifierUtils.isValidIdentifier(this.name.getValue())) {
+				emitError(nameReference, "invalid identifier");
+			}
+		}
+		this.descriptor = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, descriptorReference, "utf8info");
+		if (this.descriptor != null) {
+			verifyDescriptor(descriptorReference,descriptor.getValue());
+		}
+		
+		if (!this.hasResolveErrors()) {
+			modifier = createModifier(0);
+			for (Keyword kw: modifierLiterals) {
+				modifier.setFlag(kw.getKeyword());
+			}
+			attributes.resolve();
+		}
+		
 	}
 	
 	public Attributes getAttributes() {
@@ -116,9 +135,6 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 		return modifier;
 	}
 
-	public void setModifier(T modifier) {
-		this.modifier = modifier;
-	}
 
 	public Utf8Info getName() {
 		return name;
@@ -187,7 +203,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 		return modifierLiterals;
 	}
 	
-	
+	protected abstract void verifyDescriptor(SymbolReference ref, String descriptor);
 	
 	
 	

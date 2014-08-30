@@ -269,6 +269,10 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		}
 		//Attributes
 		attributes.resolve();
+		//Fields
+		fields.resolve();
+		//Methods
+		methods.resolve();
 		
 	}
 	
