@@ -70,7 +70,7 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 	protected boolean verifyReference(int index, SymbolReference ref,
 			AbstractConstantPoolEntry value) {
 		if (!(value instanceof Utf8Info)) {
-			emitError(ref, "wrong constant pool entry type, expected utf8info");
+			emitError(ref, "wrong constant pool entry, expected utf8info");
 			return false;
 		}
 		String valueStr = ((Utf8Info)value).getValue();

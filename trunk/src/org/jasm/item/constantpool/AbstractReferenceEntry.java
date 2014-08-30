@@ -60,7 +60,7 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 			if (getConstantPool().getSymbolTable().contains(ref.getSymbolName())) {
 				reference[i] = (AbstractConstantPoolEntry)getConstantPool().getSymbolTable().get(ref.getSymbolName());
 			} else {
-				emitError(ref, "unknown constants label "+ref.getSymbolName());
+				emitError(ref, "unknown constant label "+ref.getSymbolName());
 			}
 		}
 	}

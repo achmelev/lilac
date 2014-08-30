@@ -11,7 +11,9 @@ import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.map.KeyToListMap;
+import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.SymbolTable;
+import org.jasm.parser.literals.SymbolReference;
 
 public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstantPoolEntry> {
 	
@@ -250,14 +252,8 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 
 	@Override
 	public void doUpdateMetadata() {
-		entriesByName.clear();
-		entriesByPrimitive.clear();
-		entriesByText.clear();
-		entriesByDescriptor.clear();
-		utf8ByContent.clear();
-		for (AbstractConstantPoolEntry entry: getItems()) {
-			addToIndex(entry);
-		}
+		
+		updateIndexes();
 		
 		entryReferences.clear();
 		
@@ -274,6 +270,35 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 				}
 			}
 		}
+	}
+	
+	public void updateIndexes() {
+		entriesByName.clear();
+		entriesByPrimitive.clear();
+		entriesByText.clear();
+		entriesByDescriptor.clear();
+		utf8ByContent.clear();
+		for (AbstractConstantPoolEntry entry: getItems()) {
+			if (entry != null && !entry.hasResolveErrors()) {
+				addToIndex(entry);
+			}
+		}
+		
+	}
+	
+	public <T extends AbstractConstantPoolEntry> T checkAndLoadFromSymbolTable(Class<T> t, SymbolReference ref, String printLabel) {
+		T result = null;
+		if (getSymbolTable().contains(ref.getSymbolName())) {
+			ISymbolTableEntry entry = getSymbolTable().get(ref.getSymbolName());
+			if (entry instanceof ClassInfo) {
+				result = (T)entry;
+			} else {
+				emitError(ref, "wrong constant pool entry, expected "+printLabel);
+			}
+		} else {
+			emitError(ref, "unknown constant label "+ref.getSymbolName());
+		}
+		return result;
 	}
 
 
