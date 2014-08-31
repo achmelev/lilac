@@ -9,9 +9,7 @@ import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 
 public class NameAndTypeInfo extends AbstractReferenceEntry implements INameReferencingEntry, IDescriptorReferencingEntry {
-	
 
-	
 	public NameAndTypeInfo() {
 		
 	}
@@ -69,14 +67,10 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 	@Override
 	protected boolean verifyReference(int index, SymbolReference ref,
 			AbstractConstantPoolEntry value) {
-		if (!(value instanceof Utf8Info)) {
-			emitError(ref, "wrong constant pool entry, expected utf8info");
-			return false;
-		}
 		String valueStr = ((Utf8Info)value).getValue();
 		if (index == 0) {
-			if (!IdentifierUtils.isValidIdentifier(valueStr)) {
-				emitError(ref, "malformed identifier:  "+valueStr);
+			if (!IdentifierUtils.isValidIdentifier(valueStr) && !(valueStr.equals("<init>") || valueStr.equals("<cinit>"))) {
+				emitError(ref, "malformed method or field name:  "+valueStr);
 			}
 		} else if (index == 1) {
 			try {
@@ -101,6 +95,11 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 		} catch (IllegalDescriptorException e) {
 			return false;
 		}
+	}
+
+	@Override
+	protected AbstractConstantPoolEntry[] getExpectedReferenceTypes() {
+		return new AbstractConstantPoolEntry[]{new Utf8Info(),new Utf8Info()};
 	}
 	
 	

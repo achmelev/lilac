@@ -3,7 +3,6 @@ package org.jasm.item.clazz;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
@@ -17,7 +16,6 @@ import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.AbstractClassMemberModifier;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.Keyword;
-import org.jasm.parser.literals.StringLiteral;
 import org.jasm.parser.literals.SymbolReference;
 
 public abstract class AbstractClassMember<T extends AbstractClassMemberModifier> extends AbstractByteCodeItem implements IContainerBytecodeItem<Attributes>, IConstantPoolReference {
@@ -107,9 +105,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	protected void doResolveAfterParse() {
 		this.name = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, nameReference, "utf8info");
 		if (this.name != null) {
-			if (!IdentifierUtils.isValidIdentifier(this.name.getValue())) {
-				emitError(nameReference, "invalid identifier");
-			}
+			verifyName(nameReference, name.getValue());
 		}
 		this.descriptor = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, descriptorReference, "utf8info");
 		if (this.descriptor != null) {
@@ -203,6 +199,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 		return modifierLiterals;
 	}
 	
+	protected abstract void verifyName(SymbolReference ref, String name);
 	protected abstract void verifyDescriptor(SymbolReference ref, String descriptor);
 	
 	

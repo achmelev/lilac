@@ -1,0 +1,78 @@
+class {
+  version 51.0;
+  name cp0; // org/jasm/test/testclass/Class1
+  extends cp2; // java/lang/Object
+  modifier public, super;
+  constpool {
+    cp0: classinfo cp1; // org/jasm/test/testclass/Class1
+    cp1: utf8info "org/jasm/test/testclass/Class1";
+    cp2: classinfo cp3; // java/lang/Object
+    cp3: utf8info "java/lang/Object";
+    cp4: utf8info "STRING_CONSTANT";
+    cp5: utf8info "Ljava/lang/String;";
+    cp6: utf8info "SHORT_CONSTANT";
+    cp7: utf8info "S";
+    cp8: utf8info "INT_CONSTANT";
+    cp9: utf8info "I";
+    cp10: utf8info "LONG_CONSTANT";
+    cp11: utf8info "J";
+    cp12: utf8info "FLOAT_CONSTANT";
+    cp13: utf8info "F";
+    cp14: utf8info "DOUBLE_CONSTANT";
+    cp15: utf8info "D";
+    cp16: utf8info "<clinit>";
+    cp17: utf8info "()V";
+    cp18: utf8info "Code";
+    cp19: stringinfo cp20;
+    cp20: utf8info "HELLO WORLD";
+    cp21: fieldrefinfo cp0, cp22; // org/jasm/test/testclass/Class1.STRING_CONSTANT Ljava/lang/String;
+    cp22: nameandtypeinfo cp4, cp5; // STRING_CONSTANT Ljava/lang/String;
+    cp23: fieldrefinfo cp0, cp24; // org/jasm/test/testclass/Class1.SHORT_CONSTANT S
+    cp24: nameandtypeinfo cp6, cp7; // SHORT_CONSTANT S
+    cp25: fieldrefinfo cp0, cp26; // org/jasm/test/testclass/Class1.INT_CONSTANT I
+    cp26: nameandtypeinfo cp8, cp9; // INT_CONSTANT I
+    //cp27: longinfo 10000;
+    cp29: fieldrefinfo cp0, cp30; // org/jasm/test/testclass/Class1.LONG_CONSTANT J
+    cp30: nameandtypeinfo cp10, cp11; // LONG_CONSTANT J
+    //cp31: floatinfo 10.1;
+    cp32: fieldrefinfo cp0, cp33; // org/jasm/test/testclass/Class1.FLOAT_CONSTANT F
+    cp33: nameandtypeinfo cp12, cp13; // FLOAT_CONSTANT F
+    //cp34: doubleinfo 100.1;
+    cp36: fieldrefinfo cp0, cp37; // org/jasm/test/testclass/Class1.DOUBLE_CONSTANT D
+    cp37: nameandtypeinfo cp14, cp15; // DOUBLE_CONSTANT D
+    cp38: utf8info "LineNumberTable";
+    cp39: utf8info "LocalVariableTable";
+    cp40: utf8info "<init>";
+    cp41: methodrefinfo cp2, cp42; // java/lang/Object.<init> ()V
+    cp42: nameandtypeinfo cp40, cp17; // <init> ()V
+    cp43: fieldrefinfo cp44, cp46; // java/lang/System.out Ljava/io/PrintStream;
+    cp44: classinfo cp45; // java/lang/System
+    cp45: utf8info "java/lang/System";
+    cp46: nameandtypeinfo cp47, cp48; // out Ljava/io/PrintStream;
+    cp47: utf8info "out";
+    cp48: utf8info "Ljava/io/PrintStream;";
+    cp49: methodrefinfo cp50, cp52; // java/io/PrintStream.println (Ljava/lang/String;)V
+    cp50: classinfo cp51; // java/io/PrintStream
+    cp51: utf8info "java/io/PrintStream";
+    cp52: nameandtypeinfo cp53, cp54; // println (Ljava/lang/String;)V
+    cp53: utf8info "println";
+    cp54: utf8info "(Ljava/lang/String;)V";
+    cp55: utf8info "this";
+    cp56: utf8info "Lorg/jasm/test/testclass/Class1;";
+    cp57: utf8info "SourceFile";
+    cp58: utf8info "Class1.java";
+  }
+  attributes {
+    source file cp58; // Class1.java
+  }
+  
+   
+   
+  methods {
+    method {
+      name cp40; // testMethod
+      descriptor cp54; // (I)V
+      modifier public, abstract;
+    }
+  }
+}

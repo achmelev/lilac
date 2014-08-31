@@ -92,9 +92,6 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 		
 	}
 	
-	
-	
-
 	@Override
 	public String getPrintArgs() {
 		StringBuffer buf = new StringBuffer();
@@ -121,22 +118,32 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 	
 	
 	public void verifyReferences() {
+		AbstractConstantPoolEntry[] expectedTypes = getExpectedReferenceTypes();
+		if (expectedTypes.length != referenceLabels.length) {
+			throw new IllegalStateException(expectedTypes.length+"!="+referenceLabels.length);
+		}
 		if (!referencesVerified) {
 			for (int i=0;i<referenceLabels.length; i++) {
-				if (!reference[i].hasResolveErrors()) {
-					if (reference[i] instanceof AbstractReferenceEntry) {
-						AbstractReferenceEntry ar = (AbstractReferenceEntry)reference[i];
-						ar.verifyReferences();
-						if (!ar.hasResolveErrors()) {
-							verifyReference(i, referenceLabels[i], reference[i]);
+				
+				if (!reference[i].getClass().equals(expectedTypes[i].getClass())) {
+					emitError(referenceLabels[i], "wrong constant type, expected "+expectedTypes[i].getPrintName());
+					
+				} else {
+					if (!reference[i].hasResolveErrors()) {
+						if (reference[i] instanceof AbstractReferenceEntry) {
+							AbstractReferenceEntry ar = (AbstractReferenceEntry)reference[i];
+							ar.verifyReferences();
+							if (!ar.hasResolveErrors()) {
+								verifyReference(i, referenceLabels[i], reference[i]);
+							} else {
+								hasResolveErrors(true);
+							}
 						} else {
-							hasResolveErrors(true);
+							verifyReference(i, referenceLabels[i], reference[i]);
 						}
 					} else {
-						verifyReference(i, referenceLabels[i], reference[i]);
+						hasResolveErrors(true);
 					}
-				} else {
-					hasResolveErrors(true);
 				}
 			}
 			referencesVerified = true;
@@ -145,7 +152,7 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 	
 	protected abstract boolean verifyReference(int index, SymbolReference ref, AbstractConstantPoolEntry value);
 	
-	
+	protected abstract AbstractConstantPoolEntry[] getExpectedReferenceTypes();
 	
 
 }

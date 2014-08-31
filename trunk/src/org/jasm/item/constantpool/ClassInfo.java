@@ -48,16 +48,17 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 	@Override
 	protected boolean verifyReference(int index, SymbolReference ref,
 			AbstractConstantPoolEntry value) {
-		if (!(value instanceof Utf8Info)) {
-			emitError(ref, "wrong constant pool entry, expected utf8info");
-			return false;
-		}
 		String className = ((Utf8Info)value).getValue();
 		if (!IdentifierUtils.isValidJasmClassName(className)) {
 			emitError(ref, "invalid class name "+className);
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	protected AbstractConstantPoolEntry[] getExpectedReferenceTypes() {
+		return new AbstractConstantPoolEntry[]{new Utf8Info()};
 	}
 	
 	

@@ -49,13 +49,6 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 		return getClassName()+"."+getName()+" "+getSignature();
 	}
 
-	
-
-	@Override
-	public String getPrintName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String[] getReferencedDescriptors() {
@@ -68,28 +61,14 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 	}
 
 	@Override
-	public short getTag() {
-		return 0;
+	protected boolean verifyReference(int index, SymbolReference ref,
+			AbstractConstantPoolEntry value) {
+		return true;
 	}
 
 	@Override
-	protected boolean verifyReference(int index, SymbolReference ref,
-			AbstractConstantPoolEntry value) {
-		if (index == 0) {
-			if (!(value instanceof ClassInfo)) {
-				emitError(ref, "wrong constant pool entry type, expected classinfo");
-				return false;
-			}
-			return true;
-		} else if (index == 1) {
-			if (!(value instanceof NameAndTypeInfo)) {
-				emitError(ref, "wrong constant pool entry type, expected nameandtypeinfo");
-				return false;
-			}
-			return true;
-		} else {
-			throw new IllegalArgumentException("wrong index: "+index);
-		}
+	protected AbstractConstantPoolEntry[] getExpectedReferenceTypes() {
+		return new AbstractConstantPoolEntry[]{new ClassInfo(),new NameAndTypeInfo()};
 	}
 	
 	
