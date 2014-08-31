@@ -73,25 +73,15 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 			ITextReferencingEntry ref = (ITextReferencingEntry)entry;
 			if (!entriesByText.containsKey(ref.getContent())) {
 				entriesByText.addToList(ref.getContent(),entry );
-			} else {
-				throw new IllegalArgumentException("There is already an entry containing: "+ref.getContent());
-			}
+			} 
 		}
 		if (entry instanceof IPrimitiveValueReferencingEntry) {
 			IPrimitiveValueReferencingEntry ref = (IPrimitiveValueReferencingEntry)entry;
-			if (!entriesByPrimitive.containsKey(ref.getValue())) {
-				entriesByPrimitive.addToList(ref.getValue(),entry );
-			} else {
-				throw new IllegalArgumentException("There is already an entry containing: "+ref.getValue());
-			}
+			entriesByPrimitive.addToList(ref.getValue(),entry );
 		}
 		if (entry instanceof Utf8Info) {
 			Utf8Info ref = (Utf8Info)entry;
-			if (!utf8ByContent.containsKey(ref.getValue())) {
-				utf8ByContent.addToList(ref.getValue(),ref );
-			} else {
-				throw new IllegalArgumentException("There is already an entry containing: "+ref.getValue());
-			}
+			utf8ByContent.addToList(ref.getValue(),ref );
 		}
 		
 	}

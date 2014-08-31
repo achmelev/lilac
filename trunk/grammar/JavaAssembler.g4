@@ -38,6 +38,7 @@ constpoolentry:  label? UTF8INFO StringLiteral #utf8info
 				 | label? CLASSINFO  Identifier #classinfo
 				 | label? STRINGINFO Identifier #stringinfo
 				 | label? FIELDREFINFO Identifier COMMA  Identifier #fieldrefinfo
+				 | label? INTEGERINFO IntegerLiteral  #integerinfo
 				 | label? METHODREFINFO Identifier COMMA  Identifier #methodrefinfo
 				 | label? NAMEANDTYPEINFO Identifier COMMA  Identifier #nameandtypeinfo
 				 ;
@@ -102,6 +103,7 @@ CLASSINFO     :  'classinfo';
 UTF8INFO      :  'utf8info';
 STRINGINFO    :  'stringinfo';
 FIELDREFINFO  :  'fieldrefinfo';
+INTEGERINFO   :  'integerinfo';
 METHODREFINFO :  'methodrefinfo';
 NAMEANDTYPEINFO :  'nameandtypeinfo';
 ATTRIBUTES    :  'attributes';
@@ -126,10 +128,10 @@ VersionLiteral: NonZeroDigit Digit* '.' Digit?;
 // Integer Literals
 
 IntegerLiteral
-    :   DecimalIntegerLiteral
-    |   HexIntegerLiteral
-    |   OctalIntegerLiteral
-    |   BinaryIntegerLiteral
+    :   Sign? DecimalIntegerLiteral
+    |   Sign? HexIntegerLiteral
+    |   Sign? OctalIntegerLiteral
+    |   Sign? BinaryIntegerLiteral
     ;
 
 fragment
