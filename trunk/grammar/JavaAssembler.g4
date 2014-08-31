@@ -134,39 +134,31 @@ IntegerLiteral
 
 fragment
 DecimalIntegerLiteral
-    :   DecimalNumeral IntegerTypeSuffix?
+    :   DecimalNumeral
     ;
 
 fragment
 HexIntegerLiteral
-    :   HexNumeral IntegerTypeSuffix?
+    :   HexNumeral
     ;
 
 fragment
 OctalIntegerLiteral
-    :   OctalNumeral IntegerTypeSuffix?
+    :   OctalNumeral
     ;
 
 fragment
 BinaryIntegerLiteral
-    :   BinaryNumeral IntegerTypeSuffix?
+    :   BinaryNumeral
     ;
 
-fragment
-IntegerTypeSuffix
-    :   [lL]
-    ;
 
 fragment
 DecimalNumeral
     :   '0'
-    |   NonZeroDigit (Digits? | Underscores Digits)
+    |   NonZeroDigit Digit*
     ;
 
-fragment
-Digits
-    :   Digit (DigitOrUnderscore* Digit)?
-    ;
 
 fragment
 Digit
@@ -180,24 +172,13 @@ NonZeroDigit
     ;
 
 fragment
-DigitOrUnderscore
-    :   Digit
-    |   '_'
-    ;
-
-fragment
-Underscores
-    :   '_'+
-    ;
-
-fragment
 HexNumeral
     :   '0' [xX] HexDigits
     ;
 
 fragment
 HexDigits
-    :   HexDigit (HexDigitOrUnderscore* HexDigit)?
+    :   HexDigit+
     ;
 
 fragment
@@ -206,19 +187,13 @@ HexDigit
     ;
 
 fragment
-HexDigitOrUnderscore
-    :   HexDigit
-    |   '_'
-    ;
-
-fragment
 OctalNumeral
-    :   '0' Underscores? OctalDigits
+    :   '0' OctalDigits
     ;
 
 fragment
 OctalDigits
-    :   OctalDigit (OctalDigitOrUnderscore* OctalDigit)?
+    :   OctalDigit+
     ;
 
 fragment
@@ -226,11 +201,7 @@ OctalDigit
     :   [0-7]
     ;
 
-fragment
-OctalDigitOrUnderscore
-    :   OctalDigit
-    |   '_'
-    ;
+
 
 fragment
 BinaryNumeral
@@ -239,7 +210,7 @@ BinaryNumeral
 
 fragment
 BinaryDigits
-    :   BinaryDigit (BinaryDigitOrUnderscore* BinaryDigit)?
+    :   BinaryDigit+
     ;
 
 fragment
@@ -247,11 +218,6 @@ BinaryDigit
     :   [01]
     ;
 
-fragment
-BinaryDigitOrUnderscore
-    :   BinaryDigit
-    |   '_'
-    ;
 
 // Floating-Point Literals
 
@@ -262,11 +228,12 @@ FloatingPointLiteral
 
 fragment
 DecimalFloatingPointLiteral
-    :   Digits '.' Digits? ExponentPart? FloatTypeSuffix?
-    |   '.' Digits ExponentPart? FloatTypeSuffix?
-    |   Digits ExponentPart FloatTypeSuffix?
-    |   Digits FloatTypeSuffix
+    :   DecimalNumeral '.' Digit+ ExponentPart?
+    |   '.' Digit+ ExponentPart?
+    |   DecimalNumeral ExponentPart
     ;
+
+
 
 fragment
 ExponentPart
@@ -280,7 +247,7 @@ ExponentIndicator
 
 fragment
 SignedInteger
-    :   Sign? Digits
+    :   Sign? DecimalNumeral
     ;
 
 fragment
@@ -289,13 +256,8 @@ Sign
     ;
 
 fragment
-FloatTypeSuffix
-    :   [fFdD]
-    ;
-
-fragment
 HexadecimalFloatingPointLiteral
-    :   HexSignificand BinaryExponent FloatTypeSuffix?
+    :   HexSignificand BinaryExponent
     ;
 
 fragment
