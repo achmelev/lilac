@@ -35,7 +35,11 @@ constpool: CONSTPOOL LBRACE
 			 RBRACE;
 
 constpoolentry:  label? UTF8INFO StringLiteral #utf8info
-				 | label? CLASSINFO Identifier #classinfo
+				 | label? CLASSINFO  Identifier #classinfo
+				 | label? STRINGINFO Identifier #stringinfo
+				 | label? FIELDREFINFO Identifier COMMA  Identifier #fieldrefinfo
+				 | label? METHODREFINFO Identifier COMMA  Identifier #methodrefinfo
+				 | label? NAMEANDTYPEINFO Identifier COMMA  Identifier #nameandtypeinfo
 				 ;
 
 classattributes : ATTRIBUTES LBRACE
@@ -96,6 +100,10 @@ ENUM          :  'enum';
 CONSTPOOL     :  'constpool';
 CLASSINFO     :  'classinfo';
 UTF8INFO      :  'utf8info';
+STRINGINFO    :  'stringinfo';
+FIELDREFINFO  :  'fieldrefinfo';
+METHODREFINFO :  'methodrefinfo';
+NAMEANDTYPEINFO :  'nameandtypeinfo';
 ATTRIBUTES    :  'attributes';
 SOURCE        :  'source';
 FILE          :  'file';

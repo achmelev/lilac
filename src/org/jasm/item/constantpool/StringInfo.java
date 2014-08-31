@@ -43,11 +43,12 @@ public class StringInfo extends AbstractReferenceEntry implements ITextReferenci
 	@Override
 	protected boolean verifyReference(int index, SymbolReference ref,
 			AbstractConstantPoolEntry value) {
-		if (!(value instanceof Utf8Info)) {
-			emitError(ref, "wrong constant pool entry type, expected utf8info");
-			return false;
-		}
 		return true;
+	}
+
+	@Override
+	protected AbstractConstantPoolEntry[] getExpectedReferenceTypes() {
+		return new AbstractConstantPoolEntry[]{new Utf8Info()};
 	}
 	
 	

@@ -4,6 +4,7 @@ import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.descriptor.IllegalDescriptorException;
 import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.item.modifier.FieldModifier;
+import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 
 public class Field extends AbstractClassMember<FieldModifier> {
@@ -32,6 +33,14 @@ public class Field extends AbstractClassMember<FieldModifier> {
 			TypeDescriptor d = new TypeDescriptor(descriptor);
 		} catch (IllegalDescriptorException e) {
 			emitError(ref, "malformed field descriptor "+descriptor);
+		}
+		
+	}
+
+	@Override
+	protected void verifyName(SymbolReference ref, String name) {
+		if (!IdentifierUtils.isValidIdentifier(name)) {
+			emitError(ref, "invalid field name");
 		}
 		
 	}

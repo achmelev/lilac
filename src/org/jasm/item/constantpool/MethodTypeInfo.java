@@ -48,11 +48,12 @@ public class MethodTypeInfo extends AbstractReferenceEntry implements IDescripto
 	@Override
 	protected boolean verifyReference(int index, SymbolReference ref,
 			AbstractConstantPoolEntry value) {
-		if (!(value instanceof Utf8Info)) {
-			emitError(ref, "wrong constant pool entry, expected utf8info");
-			return false;
-		}
 		return true;
+	}
+
+	@Override
+	protected AbstractConstantPoolEntry[] getExpectedReferenceTypes() {
+		return new AbstractConstantPoolEntry[]{new Utf8Info()};
 	}
 
 }

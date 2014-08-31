@@ -306,7 +306,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	protected void doResolveAfterParse() {
 		super.doResolveAfterParse();
 		for (AbstractConstantPoolEntry item: getItems()) {
-			if (item instanceof AbstractReferenceEntry) {
+			if ((item instanceof AbstractReferenceEntry) && !item.hasResolveErrors()) {
 				((AbstractReferenceEntry)item).verifyReferences();
 			}
 		}

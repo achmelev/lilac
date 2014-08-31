@@ -28,6 +28,10 @@ import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
+import org.jasm.item.constantpool.FieldrefInfo;
+import org.jasm.item.constantpool.MethodrefInfo;
+import org.jasm.item.constantpool.NameAndTypeInfo;
+import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
@@ -43,6 +47,7 @@ import org.jasm.parser.JavaAssemblerParser.ClassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
 import org.jasm.parser.JavaAssemblerParser.ConstpoolContext;
+import org.jasm.parser.JavaAssemblerParser.FieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierAbstractContext;
@@ -57,7 +62,10 @@ import org.jasm.parser.JavaAssemblerParser.MethodmodifierSynchronizedContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierVarargsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodnameContext;
+import org.jasm.parser.JavaAssemblerParser.MethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodsContext;
+import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
+import org.jasm.parser.JavaAssemblerParser.StringinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
@@ -261,6 +269,19 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		addConstantPoolEntry(entry);
 	}
 	
+	
+
+	@Override
+	public void exitStringinfo(StringinfoContext ctx) {
+		StringInfo entry = new StringInfo();
+		if (ctx.label() != null) {
+			entry.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		entry.setSourceLocation(createSourceLocation(ctx.STRINGINFO()));
+		entry.setReferenceLabels(new SymbolReference[]{createSymbolReference(ctx.Identifier())});
+		addConstantPoolEntry(entry);
+	}
+
 
 	@Override
 	public void enterUtf8info(Utf8infoContext ctx) {
@@ -268,12 +289,50 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (ctx.label() != null) {
 			entry.setLabel(createLabel(ctx.label().Identifier()));
 		}
+		entry.setSourceLocation(createSourceLocation(ctx.UTF8INFO()));
 		entry.setValueLiteral(createStringLiteral(ctx.StringLiteral()));
 		addConstantPoolEntry(entry);
 	}
 	
 	
 	
+
+
+	@Override
+	public void enterMethodrefinfo(MethodrefinfoContext ctx) {
+		MethodrefInfo entry = new MethodrefInfo();
+		if (ctx.label() != null) {
+			entry.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		entry.setSourceLocation(createSourceLocation(ctx.METHODREFINFO()));
+		entry.setReferenceLabels(new SymbolReference[]{createSymbolReference(ctx.Identifier(0)),createSymbolReference(ctx.Identifier(1))});
+		addConstantPoolEntry(entry);
+	}
+
+
+	@Override
+	public void enterNameandtypeinfo(NameandtypeinfoContext ctx) {
+		NameAndTypeInfo entry = new NameAndTypeInfo();
+		if (ctx.label() != null) {
+			entry.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		entry.setSourceLocation(createSourceLocation(ctx.NAMEANDTYPEINFO()));
+		entry.setReferenceLabels(new SymbolReference[]{createSymbolReference(ctx.Identifier(0)),createSymbolReference(ctx.Identifier(1))});
+		addConstantPoolEntry(entry);
+	}
+
+
+	@Override
+	public void enterFieldrefinfo(FieldrefinfoContext ctx) {
+		FieldrefInfo entry = new FieldrefInfo();
+		if (ctx.label() != null) {
+			entry.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		entry.setSourceLocation(createSourceLocation(ctx.FIELDREFINFO()));
+		entry.setReferenceLabels(new SymbolReference[]{createSymbolReference(ctx.Identifier(0)),createSymbolReference(ctx.Identifier(1))});
+		addConstantPoolEntry(entry);
+		
+	}
 
 
 	@Override
