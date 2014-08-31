@@ -24,7 +24,7 @@ class {
     cp17: utf8info "()V";
     cp18: utf8info "Code";
     cp19: stringinfo cp20;
-    cp20: utf8info "HELLO WORLD";
+    cp20: utf8info "HELLO \n \\WORLD\r\t";
     cp21: fieldrefinfo cp0, cp22; // org/jasm/test/testclass/Class1.STRING_CONSTANT Ljava/lang/String;
     cp22: nameandtypeinfo cp4, cp5; // STRING_CONSTANT Ljava/lang/String;
     cp23: fieldrefinfo cp0, cp24; // org/jasm/test/testclass/Class1.SHORT_CONSTANT S
