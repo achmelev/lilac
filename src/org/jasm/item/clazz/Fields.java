@@ -6,7 +6,7 @@ public class Fields extends AbstractClassMemberList<Field> {
 
 	@Override
 	public String getPrintName() {
-		return "fields";
+		return null;
 	}
 
 	@Override

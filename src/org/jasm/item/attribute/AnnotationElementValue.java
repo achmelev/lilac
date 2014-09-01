@@ -202,7 +202,7 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 
 	@Override
 	public String getPrintName() {
-		return "element value";
+		return "value";
 	}
 
 	@Override

@@ -36,7 +36,6 @@ import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
-import org.jasm.parser.JavaAssemblerParser.ClassattributesContext;
 import org.jasm.parser.JavaAssemblerParser.ClassinfoContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierAbstractContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierAnnotationContext;
@@ -47,7 +46,6 @@ import org.jasm.parser.JavaAssemblerParser.ClassmodifierSuperContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
-import org.jasm.parser.JavaAssemblerParser.ConstpoolContext;
 import org.jasm.parser.JavaAssemblerParser.FieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
@@ -65,7 +63,6 @@ import org.jasm.parser.JavaAssemblerParser.MethodmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierVarargsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodnameContext;
 import org.jasm.parser.JavaAssemblerParser.MethodrefinfoContext;
-import org.jasm.parser.JavaAssemblerParser.MethodsContext;
 import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
 import org.jasm.parser.JavaAssemblerParser.StringinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
@@ -254,16 +251,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		clazz.getModifierLiterals().add(createKeyword(ctx.SUPER()));
 	}
 	
-	
-
-
-	@Override
-	public void enterConstpool(ConstpoolContext ctx) {
-		Clazz clazz = (Clazz)stack.peek();
-		clazz.getConstantPool().setSourceLocation(createSourceLocation(ctx.CONSTPOOL()));
-	}
-
-
 	@Override
 	public void enterClassinfo(ClassinfoContext ctx) {
 		ClassInfo entry = new ClassInfo();
@@ -357,13 +344,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 
 
 	@Override
-	public void enterClassattributes(ClassattributesContext ctx) {
-		Clazz clazz = (Clazz)stack.peek();
-		clazz.getAttributes().setSourceLocation(createSourceLocation(ctx.ATTRIBUTES()));
-	}
-
-
-	@Override
 	public void enterClassattributeSourceFile(
 			ClassattributeSourceFileContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
@@ -375,13 +355,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		attr.setContent(content);
 	}
 	
-	
-
-	@Override
-	public void enterMethods(MethodsContext ctx) {
-		Clazz clazz = (Clazz)stack.peek();
-		clazz.getMethods().setSourceLocation(createSourceLocation(ctx.METHODS()));
-	}
 
 
 	@Override

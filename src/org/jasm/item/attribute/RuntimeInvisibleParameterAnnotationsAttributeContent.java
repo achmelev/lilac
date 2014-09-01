@@ -8,7 +8,7 @@ public class RuntimeInvisibleParameterAnnotationsAttributeContent extends
 
 	@Override
 	public String getPrintName() {
-		return "runtime invisible parameter annotations";
+		return null;
 	}
 
 	

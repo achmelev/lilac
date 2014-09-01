@@ -93,7 +93,12 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 
 	@Override
 	public String getPrintName() {
-		return "annotation";
+		StringBuffer buf = new StringBuffer();
+		if (this.getParent() instanceof RuntimeInvisibleAnnotationsAttributeContent) {
+			buf.append("invisible ");
+		} 
+		buf.append("annotation");
+		return buf.toString();
 	}
 
 	@Override

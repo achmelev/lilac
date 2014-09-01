@@ -4,14 +4,19 @@ grammar JavaAssembler;
 
 clazz:
 	 CLASS LBRACE 
-	 	version SEMI
-	 	classname SEMI
-	 	(superclass SEMI)?
-	 	(classmodifier SEMI)?
-	 	 constpool?
-	 	 classattributes?
-	 	 methods?
+	 	classmember+
 	 RBRACE;
+
+classmember: version SEMI
+			 | classname SEMI
+			 | superclass SEMI
+			 | classmodifier SEMI
+			 | constpoolentry SEMI
+			 | classattribute
+			 | method
+			 ;
+			 
+			 
 
 version: VERSION VersionLiteral;
 
@@ -30,9 +35,6 @@ classmodifierlabel: PUBLIC 		# classmodifierPublic
 					| ENUM			# classmodifierEnum
 					;
 					
-constpool: CONSTPOOL LBRACE
-			 	(constpoolentry SEMI)+
-			 RBRACE;
 
 constpoolentry:  label? UTF8INFO StringLiteral #utf8info
 				 | label? CLASSINFO  Identifier #classinfo
@@ -43,15 +45,9 @@ constpoolentry:  label? UTF8INFO StringLiteral #utf8info
 				 | label? NAMEANDTYPEINFO Identifier COMMA  Identifier #nameandtypeinfo
 				 ;
 
-classattributes : ATTRIBUTES LBRACE
-					(classattribute SEMI)+
-				  RBRACE;
 
-classattribute : SOURCE FILE Identifier #classattributeSourceFile;
 
-methods : METHODS LBRACE
-					(method)+
-				  RBRACE;
+classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile;
 
 method  : METHOD  LBRACE
 					methodname SEMI
@@ -221,25 +217,23 @@ BinaryDigit
     ;
 
 
-// Floating-Point Literals
+// Floating-Point Literal
 
 FloatingPointLiteral
-    :   DecimalFloatingPointLiteral
-    |   HexadecimalFloatingPointLiteral
+    :   Sign? DecimalFloatingPointLiteral
+    |   'NaN'
+    |   Sign? 'Infinity'
     ;
 
 fragment
 DecimalFloatingPointLiteral
-    :   DecimalNumeral '.' Digit+ ExponentPart?
-    |   '.' Digit+ ExponentPart?
-    |   DecimalNumeral ExponentPart
-    ;
+    :   DecimalNumeral '.' Digit+ ExponentPart?;
 
 
 
 fragment
 ExponentPart
-    :   ExponentIndicator SignedInteger
+    :   ExponentIndicator Sign? DecimalNumeral
     ;
 
 fragment
@@ -247,36 +241,13 @@ ExponentIndicator
     :   [eE]
     ;
 
-fragment
-SignedInteger
-    :   Sign? DecimalNumeral
-    ;
 
 fragment
 Sign
     :   [+-]
     ;
 
-fragment
-HexadecimalFloatingPointLiteral
-    :   HexSignificand BinaryExponent
-    ;
 
-fragment
-HexSignificand
-    :   HexNumeral '.'?
-    |   '0' [xX] HexDigits? '.' HexDigits
-    ;
-
-fragment
-BinaryExponent
-    :   BinaryExponentIndicator SignedInteger
-    ;
-
-fragment
-BinaryExponentIndicator
-    :   [pP]
-    ;
  
 
 // String Literals

@@ -1,5 +1,6 @@
 package org.jasm.test.parser;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.junit.Assert;

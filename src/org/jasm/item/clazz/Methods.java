@@ -6,7 +6,7 @@ public class Methods extends AbstractClassMemberList<Method> {
 
 	@Override
 	public String getPrintName() {
-		return "methods";
+		return null;
 	}
 
 	@Override

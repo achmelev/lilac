@@ -10,7 +10,7 @@ public class Attributes extends AbstractBytecodeItemList<Attribute> {
 	
 	@Override
 	public String getPrintName() {
-		return "attributes";
+		return null;
 	}
 
 
