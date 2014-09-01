@@ -43,6 +43,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	}
 	
 	
+	
 
 	private AbstractInstruction createEmptyItem(IByteBuffer source,
 			long offset) {
@@ -277,7 +278,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 
 	@Override
 	public String getPrintComment() {
-		return null;
+		return "Instructions";
 	}
 
 

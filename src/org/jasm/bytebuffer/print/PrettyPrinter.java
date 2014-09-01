@@ -54,7 +54,7 @@ public class PrettyPrinter {
 				printLine(buf.toString());
 				addIndent();
 			} else {
-				if (item.getPrintName() != null) {
+				if (item.getPrintComment() != null) {
 					printLine(" //"+item.getPrintComment());
 				}
 			}
