@@ -6,5 +6,10 @@ public class SynteticAttributeContent extends AbstractEmptyAttributeContent {
 	public String getPrintName() {
 		return "syntetic";
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
+	}
 
 }

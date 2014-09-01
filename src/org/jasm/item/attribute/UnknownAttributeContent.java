@@ -22,6 +22,11 @@ public class UnknownAttributeContent extends AbstractBinaryAttributeContent {
 	}
 	
 	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
+	}
+	
+	@Override
 	public String getPrintComment() {
 		return ((Attribute)getParent()).getName().getValue();
 	}
@@ -29,7 +34,7 @@ public class UnknownAttributeContent extends AbstractBinaryAttributeContent {
 	@Override
 	public String getPrintArgs() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(((Attribute)getParent()).getName().getPrintLabel());
+		buf.append(((Attribute)getParent()).getName().getSymbolName());
 		buf.append(", ");
 		buf.append("0x"+new String(Hex.encodeHex(getData())));
 		return buf.toString();

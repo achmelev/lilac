@@ -76,6 +76,25 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem {
 	public String getPrintName() {
 		return (this.isWide?"wide ":"")+OpCodes.getNameForOpcode(opCode);
 	}
+	
+	
+
+	@Override
+	public String getTypeLabel() {
+		return OpCodes.getNameForOpcode(opCode);
+	}
+
+	@Override
+	protected void doResolve() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void doResolveAfterParse() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	public boolean isWide() {
 		return isWide;

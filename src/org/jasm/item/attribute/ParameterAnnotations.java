@@ -14,6 +14,11 @@ public class ParameterAnnotations extends AbstractBytecodeItemList<Annotation> {
 		buf.append("parameter annotations");
 		return  buf.toString();
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  "parameter annotations";
+	}
 
 	@Override
 	protected Annotation createEmptyItem(IByteBuffer source, long offset) {

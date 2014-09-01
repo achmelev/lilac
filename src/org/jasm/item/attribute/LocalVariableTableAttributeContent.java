@@ -10,6 +10,11 @@ public class LocalVariableTableAttributeContent extends
 	public String getPrintName() {
 		return "local variable table";
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
+	}
 
 	@Override
 	public void prepareRead(int length) {

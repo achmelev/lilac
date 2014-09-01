@@ -10,6 +10,11 @@ public class RuntimeVisibleParameterAnnotationsAttributeContent extends
 	public String getPrintName() {
 		return null;
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  "visible parameter annotations";
+	}
 
 	
 

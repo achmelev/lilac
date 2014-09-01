@@ -37,7 +37,7 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 
 	@Override
 	public String getPrintArgs() {
-		return cpEntry.getPrintLabel();
+		return cpEntry.getSymbolName();
 	}
 
 	@Override

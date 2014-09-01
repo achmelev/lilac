@@ -60,9 +60,10 @@ public class IntegerInfo extends AbstractConstantPoolEntry implements IPrimitive
 		this.value = value;
 	}
 	
+	
 	@Override
-	public String getPrintName() {
-		return "integerinfo";
+	public String getTypeLabel() {
+		return  "const int";
 	}
 
 	@Override

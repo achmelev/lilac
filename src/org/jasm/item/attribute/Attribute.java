@@ -176,6 +176,11 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 	public String getPrintName() {
 		return content.getPrintName();
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  content.getTypeLabel();
+	}
 
 	@Override
 	public String getPrintArgs() {

@@ -73,12 +73,12 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 	@Override
 	public List<IPrintable> getStructureParts() {
 		List<IPrintable> result = new ArrayList<>();
-		result.add(new SimplePrintable(null, "inner", innerClass.getPrintLabel(), innerClass.getPrintComment()));
+		result.add(new SimplePrintable(null, "inner", innerClass.getSymbolName(), innerClass.getPrintComment()));
 		if (outerClass != null) {
-			result.add(new SimplePrintable(null, "outer", outerClass.getPrintLabel(), outerClass.getPrintComment()));
+			result.add(new SimplePrintable(null, "outer", outerClass.getSymbolName(), outerClass.getPrintComment()));
 		} 
 		if (innerName != null) {
-			result.add(new SimplePrintable(null, "name", innerName.getPrintLabel(), innerName.getValue()));
+			result.add(new SimplePrintable(null, "name", innerName.getSymbolName(), innerName.getValue()));
 		} 
 		result.add(new SimplePrintable(null, "modifier", modifier.toString(), null));
 		return result;
@@ -92,6 +92,11 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 	@Override
 	public String getPrintName() {
 		return "inner class";
+	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
 	}
 
 	@Override

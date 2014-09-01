@@ -30,9 +30,10 @@ public class MethodTypeInfo extends AbstractReferenceEntry implements IDescripto
 		return getDescriptorReference().getValue();
 	}
 
+	
 	@Override
-	public String getPrintName() {
-		return "methodtypeinfo";
+	public String getTypeLabel() {
+		return "const methodtype";
 	}
 
 	@Override

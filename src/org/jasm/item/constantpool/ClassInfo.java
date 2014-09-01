@@ -30,9 +30,10 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 		return getClassNameReference().getValue();
 	}
 
+	
 	@Override
-	public String getPrintName() {
-		return "classinfo";
+	public String getTypeLabel() {
+		return  "const classref";
 	}
 
 	@Override

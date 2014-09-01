@@ -180,15 +180,15 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		List<IPrintable> result = new ArrayList<IPrintable>();
 		
 		result.add(new SimplePrintable(null, "version", new String[]{majorVersion+"."+minorVersion}, (String)null));
-		result.add(new SimplePrintable(null, "name", new String[]{thisClass.getPrintLabel()}, thisClass.getClassName()));
+		result.add(new SimplePrintable(null, "name", new String[]{thisClass.getSymbolName()}, thisClass.getClassName()));
 		if (this.superClass != null) {
-			result.add(new SimplePrintable(null, "extends", new String[]{superClass.getPrintLabel()}, superClass.getClassName()));
+			result.add(new SimplePrintable(null, "extends", new String[]{superClass.getSymbolName()}, superClass.getClassName()));
 		}
 		if (interfaces != null && interfaces.size()>0) {
 			String [] comment = new String[interfaces.size()];
 			String[] args = new String[interfaces.size()];
 			for (int i=0;i<interfaces.size(); i++) {
-				args[i] = interfaces.get(i).getPrintLabel();
+				args[i] = interfaces.get(i).getSymbolName();
 				comment[i] = interfaces.get(i).getClassName();
 		
 			}
@@ -214,6 +214,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	@Override
 	public String getPrintName() {
 		return "class";
+	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
 	}
 
 	@Override

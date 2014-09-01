@@ -71,13 +71,18 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 	public String getPrintName() {
 		return "enclosing method";
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
+	}
 
 	@Override
 	public String getPrintArgs() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(clazz.getPrintLabel());
+		buf.append(clazz.getSymbolName());
 		buf.append(", ");
-		buf.append(method.getPrintLabel());
+		buf.append(method.getSymbolName());
 		return buf.toString();
 	}
 

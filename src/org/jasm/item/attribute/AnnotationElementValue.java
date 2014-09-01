@@ -204,15 +204,20 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 	public String getPrintName() {
 		return "value";
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  "annotation value";
+	}
 
 	@Override
 	public String getPrintArgs() {
 		if (isPrimitiveValue()) {
-			return primitiveValueEntry.getPrintLabel();
+			return primitiveValueEntry.getSymbolName();
 		} else if (isEnumValue()) {
-			return enumConstName.getPrintLabel()+", "+enumTypeName.getPrintLabel();
+			return enumConstName.getSymbolName()+", "+enumTypeName.getSymbolName();
 		} else if (isClassValue()) {
-			return classInfo.getPrintLabel();
+			return classInfo.getSymbolName();
 		} else if (isNested() || isArray()) {
 			return null;
 		} else {

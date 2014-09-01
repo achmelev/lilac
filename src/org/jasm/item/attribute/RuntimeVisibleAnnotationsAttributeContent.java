@@ -10,6 +10,11 @@ public class RuntimeVisibleAnnotationsAttributeContent extends
 	public String getPrintName() {
 		return null;
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  "visible annotations";
+	}
 
 	
 

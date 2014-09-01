@@ -18,5 +18,10 @@ public class SignatureAttributeContent extends AbstractStringAttributeContent {
 	public String getPrintName() {
 		return "signature";
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
+	}
 
 }

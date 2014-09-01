@@ -21,9 +21,10 @@ public class FieldrefInfo extends AbstractRefInfo {
 		return 9;
 	}
 
+	
 	@Override
-	public String getPrintName() {
-		return "fieldrefinfo";
+	public String getTypeLabel() {
+		return  "const fieldref";
 	}
 
 	@Override

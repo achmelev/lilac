@@ -52,6 +52,14 @@ public class DummyRoot extends AbstractByteCodeItem implements IContainerBytecod
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+
+	@Override
+	public String getTypeLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public String getPrintArgs() {

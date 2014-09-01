@@ -61,6 +61,11 @@ public class LineNumber extends AbstractByteCodeItem implements IInstructionRefe
 	public String getPrintName() {
 		return "line number";
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
+	}
 
 	@Override
 	public String getPrintArgs() {

@@ -12,6 +12,7 @@ public interface IBytecodeItem {
 	public boolean hasResolveErrors();
 	public void updateMetadata();
 	public int getLength();
+	public String getTypeLabel();
 	
 	
 	//Tree

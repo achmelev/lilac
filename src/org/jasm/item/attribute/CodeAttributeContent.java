@@ -104,6 +104,11 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 	public String getPrintName() {
 		return "code";
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
+	}
 
 	@Override
 	public String getPrintArgs() {
