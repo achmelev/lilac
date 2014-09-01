@@ -296,7 +296,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 				emitError(ref, "wrong constant pool entry, expected "+printLabel);
 			}
 		} else {
-			emitError(ref, "unknown constant label "+ref.getSymbolName());
+			emitError(ref, "unknown constant "+ref.getSymbolName());
 		}
 		return result;
 	}
