@@ -107,15 +107,18 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		} catch (IOException e) {
 			throw new RuntimeException("Error creating antlr stream",e);
 		}
-				
+		
+		SyntaxErrorListener errorListener = new SyntaxErrorListener(this);
 		JavaAssemblerLexer lexer = new JavaAssemblerLexer(input);
+		lexer.removeErrorListeners();
+		lexer.addErrorListener(errorListener);
 		/*for (Token tok: lexer.getAllTokens()) {
 			log.debug(tok.getType() +" "+tok.getText());
 		}*/
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		JavaAssemblerParser parser = new JavaAssemblerParser(tokens);
 		parser.removeErrorListeners();
-		parser.addErrorListener(new SyntaxErrorListener(this));
+		parser.addErrorListener(errorListener);
 		if (log.isDebugEnabled()) {
 			//parser.setTrace(true);
 		}
