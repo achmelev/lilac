@@ -88,9 +88,10 @@ public class Utf8Info extends AbstractConstantPoolEntry {
 		return super.toString()+"("+value+")";
 	}
 
+	
 	@Override
-	public String getPrintName() {
-		return "utf8info";
+	public String getTypeLabel() {
+		return "const utf8";
 	}
 
 	@Override

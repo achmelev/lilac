@@ -99,7 +99,7 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 			if (i>0) {
 				buf.append(", ");
 			}
-			buf.append(reference[i].getPrintLabel());
+			buf.append(reference[i].getSymbolName());
 		}
 		
 		return buf.toString();

@@ -29,10 +29,10 @@ public class StringInfo extends AbstractReferenceEntry implements ITextReferenci
 	public String getContent() {
 		return getUtf8Reference().getValue();
 	}
-
+	
 	@Override
-	public String getPrintName() {
-		return "stringinfo";
+	public String getTypeLabel() {
+		return "const string";
 	}
 
 	@Override

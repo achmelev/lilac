@@ -70,6 +70,11 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 	public String getPrintName() {
 		return "exceptions";
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
+	}
 
 	@Override
 	public String getPrintArgs() {
@@ -79,7 +84,7 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 			if (index >0) {
 				buf.append(", ");
 			}
-			buf.append(cli.getPrintLabel());
+			buf.append(cli.getSymbolName());
 			index++;
 		}
 		return buf.toString();

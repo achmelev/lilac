@@ -58,7 +58,7 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 	@Override
 	public List<IPrintable> getStructureParts() {
 		List<IPrintable> result = new ArrayList<>();
-		result.add(new SimplePrintable(null, "name", name.getPrintLabel(), name.getValue()));
+		result.add(new SimplePrintable(null, "name", name.getSymbolName(), name.getValue()));
 		result.add(value);
 		return result;
 	}
@@ -71,6 +71,11 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 	@Override
 	public String getPrintName() {
 		return "element";
+	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
 	}
 
 	@Override

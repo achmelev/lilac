@@ -37,7 +37,7 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 
 	@Override
 	public String getPrintArgs() {
-		return cpEntry.getPrintLabel();
+		return cpEntry.getSymbolName();
 	}
 
 	@Override

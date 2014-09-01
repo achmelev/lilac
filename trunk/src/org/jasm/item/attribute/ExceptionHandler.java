@@ -84,10 +84,15 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 	public String getPrintName() {
 		return "exception handler";
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
+	}
 
 	@Override
 	public String getPrintArgs() {
-		return startInstruction.getPrintLabel()+", "+endInstruction.getPrintLabel()+", "+handlerInstruction.getPrintLabel()+", "+(catchType==null?JasmConsts.NIL:catchType.getPrintLabel());
+		return startInstruction.getPrintLabel()+", "+endInstruction.getPrintLabel()+", "+handlerInstruction.getPrintLabel()+", "+(catchType==null?JasmConsts.NIL:catchType.getSymbolName());
 	}
 
 	@Override

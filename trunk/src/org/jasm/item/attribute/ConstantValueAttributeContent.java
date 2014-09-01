@@ -63,11 +63,16 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 	public String getPrintName() {
 		return "constant value";
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
+	}
 
 	@Override
 	public String getPrintArgs() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(((AbstractConstantPoolEntry)valueEntry).getPrintLabel());
+		buf.append(((AbstractConstantPoolEntry)valueEntry).getSymbolName());
 		return buf.toString();
 	}
 

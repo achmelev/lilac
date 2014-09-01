@@ -4,67 +4,69 @@ class {
   extends cp2; // java/lang/Object
   modifier public, super;
 
-    cp0: classinfo cp1; // org/jasm/test/testclass/Class1
-    cp1: utf8info "org/jasm/test/testclass/Class1";
-    cp2: classinfo cp3; // java/lang/Object
-    cp3: utf8info "java/lang/Object";
-    cp4: utf8info "STRING_CONSTANT";
-    cp5: utf8info "Ljava/lang/String;";
-    cp6: utf8info "SHORT_CONSTANT";
-    cp7: utf8info "S";
-    cp8: utf8info "INT_CONSTANT";
-    cp9: utf8info "I";
-    cp10: utf8info "LONG_CONSTANT";
-    cp11: utf8info "J";
-    cp12: utf8info "FLOAT_CONSTANT";
-    cp13: utf8info "F";
-    cp14: utf8info "DOUBLE_CONSTANT";
-    cp15: utf8info "D";
-    cp16: utf8info "<clinit>";
-    cp17: utf8info "()V";
-    cp18: utf8info "Code";
-    cp19: stringinfo cp20;
-    cp20: utf8info "HELLO \n \\WORLD\r\t";
-    cp21: fieldrefinfo cp0, cp22; // org/jasm/test/testclass/Class1.STRING_CONSTANT Ljava/lang/String;
-    cp22: nameandtypeinfo cp4, cp5; // STRING_CONSTANT Ljava/lang/String;
-    cp23: fieldrefinfo cp0, cp24; // org/jasm/test/testclass/Class1.SHORT_CONSTANT S
-    cp24: nameandtypeinfo cp6, cp7; // SHORT_CONSTANT S
-    cp25: fieldrefinfo cp0, cp26; // org/jasm/test/testclass/Class1.INT_CONSTANT I
-    cp26: nameandtypeinfo cp8, cp9; // INT_CONSTANT I
-    //cp27: longinfo 10000;
-    cp29: fieldrefinfo cp0, cp30; // org/jasm/test/testclass/Class1.LONG_CONSTANT J
-    cp30: nameandtypeinfo cp10, cp11; // LONG_CONSTANT J
-    //cp31: floatinfo 10.1;
-    cp32: fieldrefinfo cp0, cp33; // org/jasm/test/testclass/Class1.FLOAT_CONSTANT F
-    cp33: nameandtypeinfo cp12, cp13; // FLOAT_CONSTANT F
-    //cp34: doubleinfo 100.1;
-    cp36: fieldrefinfo cp0, cp37; // org/jasm/test/testclass/Class1.DOUBLE_CONSTANT D
-    cp37: nameandtypeinfo cp14, cp15; // DOUBLE_CONSTANT D
-    cp38: utf8info "LineNumberTable";
-    cp39: utf8info "LocalVariableTable";
-    cp40: utf8info "<init>";
-    cp41: methodrefinfo cp2, cp42; // java/lang/Object.<init> ()V
-    cp42: nameandtypeinfo cp40, cp17; // <init> ()V
-    cp43: fieldrefinfo cp44, cp46; // java/lang/System.out Ljava/io/PrintStream;
-    cp44: classinfo cp45; // java/lang/System
-    cp45: utf8info "java/lang/System";
-    cp46: nameandtypeinfo cp47, cp48; // out Ljava/io/PrintStream;
-    cp47: utf8info "out";
-    cp48: utf8info "Ljava/io/PrintStream;";
-    cp49: methodrefinfo cp50, cp52; // java/io/PrintStream.println (Ljava/lang/String;)V
-    cp50: classinfo cp51; // java/io/PrintStream
-    cp51: utf8info "java/io/PrintStream";
-    cp52: nameandtypeinfo cp53, cp54; // println (Ljava/lang/String;)V
-    cp53: utf8info "println";
-    cp54: utf8info "(Ljava/lang/String;)V";
-    cp55: utf8info "this";
-    cp56: utf8info "Lorg/jasm/test/testclass/Class1;";
-    cp57: utf8info "SourceFile";
-    cp58: utf8info "Class1.java";
-    cp59: integerinfo 1238;
-    cp60: integerinfo -1238;
-    cp61: integerinfo 0X4d6;
-    cp62: integerinfo -0x4d6;
+    
+   //Constants
+  const classref cp0 cp1; // org/jasm/test/testclass/Class1
+  const utf8 cp1 "org/jasm/test/testclass/Class1";
+  const classref cp2 cp3; // java/lang/Object
+  const utf8 cp3 "java/lang/Object";
+  const utf8 cp4 "STRING_CONSTANT";
+  const utf8 cp5 "Ljava/lang/String;";
+  const utf8 cp6 "SHORT_CONSTANT";
+  const utf8 cp7 "S";
+  const utf8 cp8 "INT_CONSTANT";
+  const utf8 cp9 "I";
+  const utf8 cp10 "LONG_CONSTANT";
+  const utf8 cp11 "J";
+  const utf8 cp12 "FLOAT_CONSTANT";
+  const utf8 cp13 "F";
+  const utf8 cp14 "DOUBLE_CONSTANT";
+  const utf8 cp15 "D";
+  const utf8 cp16 "<clinit>";
+  const utf8 cp17 "()V";
+  const utf8 cp18 "Code";
+  const string cp19 cp20;
+  const utf8 cp20 "HELLO \n \\WORLD\r\t";
+  const fieldref cp21 cp0, cp22; // org/jasm/test/testclass/Class1.STRING_CONSTANT Ljava/lang/String;
+  const nameandtype cp22 cp4, cp5; // STRING_CONSTANT Ljava/lang/String;
+  const fieldref cp23 cp0, cp24; // org/jasm/test/testclass/Class1.SHORT_CONSTANT S
+  const nameandtype cp24 cp6, cp7; // SHORT_CONSTANT S
+  const fieldref cp25 cp0, cp26; // org/jasm/test/testclass/Class1.INT_CONSTANT I
+  const nameandtype cp26 cp8, cp9; // INT_CONSTANT I
+  //const long cp27 10000;
+  const fieldref cp29 cp0, cp30; // org/jasm/test/testclass/Class1.LONG_CONSTANT J
+  const nameandtype cp30 cp10, cp11; // LONG_CONSTANT J
+  //const float cp31 10.1;
+  const fieldref cp32 cp0, cp33; // org/jasm/test/testclass/Class1.FLOAT_CONSTANT F
+  const nameandtype cp33 cp12, cp13; // FLOAT_CONSTANT F
+  //const double cp34 100.1;
+  const fieldref cp36 cp0, cp37; // org/jasm/test/testclass/Class1.DOUBLE_CONSTANT D
+  const nameandtype cp37 cp14, cp15; // DOUBLE_CONSTANT D
+  const utf8 cp38 "LineNumberTable";
+  const utf8 cp39 "LocalVariableTable";
+  const utf8 cp40 "<init>";
+  const methodref cp41 cp2, cp42; // java/lang/Object.<init> ()V
+  const nameandtype cp42 cp40, cp17; // <init> ()V
+  const fieldref cp43 cp44, cp46; // java/lang/System.out Ljava/io/PrintStream;
+  const classref cp44 cp45; // java/lang/System
+  const utf8 cp45 "java/lang/System";
+  const nameandtype cp46 cp47, cp48; // out Ljava/io/PrintStream;
+  const utf8 cp47 "out";
+  const utf8 cp48 "Ljava/io/PrintStream;";
+  const methodref cp49 cp50, cp52; // java/io/PrintStream.println (Ljava/lang/String;)V
+  const classref cp50 cp51; // java/io/PrintStream
+  const utf8 cp51 "java/io/PrintStream";
+  const nameandtype cp52 cp53, cp54; // println (Ljava/lang/String;)V
+  const utf8 cp53 "println";
+  const utf8 cp54 "(Ljava/lang/String;)V";
+  const utf8 cp55 "this";
+  const utf8 cp56 "Lorg/jasm/test/testclass/Class1;";
+  const utf8 cp57 "SourceFile";
+  const utf8 cp58 "Class1.java";
+  const int cp59 1238;
+  const int cp60 -1238;
+  const int cp61 0X4d6;
+  const int cp62 -0x4d6;
  
 
     source file cp58; // Class1.java

@@ -252,7 +252,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			} else {
 				throw new IllegalStateException("Unknown type: "+loc.getType());
 			}
-			result.add(new SimplePrintable(null, "declare "+type, new String[]{loc.toString(),loc.getIndex()+""}, (String[])null));
+			result.add(new SimplePrintable(null, "var "+type, new String[]{loc.toString(),loc.getIndex()+""}, (String[])null));
 			
 		}
 		
@@ -363,6 +363,14 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 
 	public int getCodeLength() {
 		return getLength()-4;
+	}
+
+
+
+
+	@Override
+	public String getTypeLabel() {
+		return "instructions";
 	}
 	
 	

@@ -71,8 +71,8 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	@Override
 	public List<IPrintable> getStructureParts() {
 		List<IPrintable> result = new ArrayList<IPrintable>();
-		result.add(new SimplePrintable(null, "name", new String[]{name.getPrintLabel()}, name.getValue()));
-		result.add(new SimplePrintable(null, "descriptor", new String[]{descriptor.getPrintLabel()}, descriptor.getValue()));
+		result.add(new SimplePrintable(null, "name", new String[]{name.getSymbolName()}, name.getValue()));
+		result.add(new SimplePrintable(null, "descriptor", new String[]{descriptor.getSymbolName()}, descriptor.getValue()));
 		result.add(new SimplePrintable(null, "modifier", new String[]{modifier.toString()}, (String)null));
 		result.add(attributes);
 		return result;

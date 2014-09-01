@@ -62,7 +62,7 @@ public abstract class AbstractStringAttributeContent extends AbstractSimpleAttri
 	@Override
 	public String getPrintArgs() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(valueEntry.getPrintLabel());
+		buf.append(valueEntry.getSymbolName());
 		return buf.toString();
 	}
 

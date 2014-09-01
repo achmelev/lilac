@@ -9,6 +9,10 @@ public class Fields extends AbstractClassMemberList<Field> {
 		return null;
 	}
 	
+	@Override
+	public String getTypeLabel() {
+		return  "fields";
+	}
 	
 
 	@Override

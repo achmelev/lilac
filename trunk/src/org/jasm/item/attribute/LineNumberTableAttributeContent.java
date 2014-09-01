@@ -10,6 +10,11 @@ public class LineNumberTableAttributeContent extends
 	public String getPrintName() {
 		return "line number table";
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
+	}
 
 	@Override
 	public void prepareRead(int length) {

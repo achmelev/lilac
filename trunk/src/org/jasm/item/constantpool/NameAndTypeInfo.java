@@ -45,8 +45,8 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 	}
 
 	@Override
-	public String getPrintName() {
-		return "nameandtypeinfo";
+	public String getTypeLabel() {
+		return "const nameandtype";
 	}
 
 	@Override

@@ -36,13 +36,13 @@ classmodifierlabel: PUBLIC 		# classmodifierPublic
 					;
 					
 
-constpoolentry:  label? UTF8INFO StringLiteral #utf8info
-				 | label? CLASSINFO  Identifier #classinfo
-				 | label? STRINGINFO Identifier #stringinfo
-				 | label? FIELDREFINFO Identifier COMMA  Identifier #fieldrefinfo
-				 | label? INTEGERINFO IntegerLiteral  #integerinfo
-				 | label? METHODREFINFO Identifier COMMA  Identifier #methodrefinfo
-				 | label? NAMEANDTYPEINFO Identifier COMMA  Identifier #nameandtypeinfo
+constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
+				 | CONST CLASSINFO  label Identifier #classinfo
+				 | CONST STRINGINFO label Identifier #stringinfo
+				 | CONST FIELDREFINFO label Identifier COMMA  Identifier #fieldrefinfo
+				 | CONST INTEGERINFO label IntegerLiteral  #integerinfo
+				 | CONST METHODREFINFO label Identifier COMMA  Identifier #methodrefinfo
+				 | CONST NAMEANDTYPEINFO label Identifier COMMA  Identifier #nameandtypeinfo
 				 ;
 
 
@@ -75,13 +75,14 @@ methodmodifierlabel:  PUBLIC 		# methodmodifierPublic
 					| SYNTETIC 	    # methodmodifierSyntetic
 					;
 
-label: Identifier COLON;
+label: Identifier;
 
 //Lexer
 
 // Keywords
 
 CLASS         :  'class';
+CONST         :  'const';
 VERSION       :  'version';
 NAME          :  'name';
 EXTENDS       :  'extends';
@@ -94,14 +95,13 @@ ABSTRACT      :  'abstract';
 SYNTETIC      :  'syntetic';
 ANNOTATION    :  'annotation';
 ENUM          :  'enum';
-CONSTPOOL     :  'constpool';
-CLASSINFO     :  'classinfo';
-UTF8INFO      :  'utf8info';
-STRINGINFO    :  'stringinfo';
-FIELDREFINFO  :  'fieldrefinfo';
-INTEGERINFO   :  'integerinfo';
-METHODREFINFO :  'methodrefinfo';
-NAMEANDTYPEINFO :  'nameandtypeinfo';
+CLASSINFO     :  'classref';
+UTF8INFO      :  'utf8';
+STRINGINFO    :  'string';
+FIELDREFINFO  :  'fieldref';
+INTEGERINFO   :  'int';
+METHODREFINFO :  'methodref';
+NAMEANDTYPEINFO :  'nameandtype';
 ATTRIBUTES    :  'attributes';
 SOURCE        :  'source';
 FILE          :  'file';

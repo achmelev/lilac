@@ -17,10 +17,12 @@ public class MethodrefInfo extends AbstractRefInfo {
 		return 10;
 	}
 
+	
 	@Override
-	public String getPrintName() {
-		return "methodrefinfo";
+	public String getTypeLabel() {
+		return "const methodref";
 	}
+	
 	
 	
 

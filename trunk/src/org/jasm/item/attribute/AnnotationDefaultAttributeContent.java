@@ -61,6 +61,11 @@ public class AnnotationDefaultAttributeContent extends
 	public String getPrintName() {
 		return "annotation default";
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
+	}
 
 	@Override
 	public String getPrintArgs() {

@@ -10,9 +10,15 @@ public class Methods extends AbstractClassMemberList<Method> {
 	}
 	
 	@Override
+	public String getTypeLabel() {
+		return  "methods";
+	}
+	
+	@Override
 	public String getPrintComment() {
 		return "Methods";
 	}
+	
 
 	@Override
 	protected Method createEmptyItem(IByteBuffer source, long offset) {

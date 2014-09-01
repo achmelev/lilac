@@ -13,6 +13,7 @@ import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.item.instructions.OpCodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +82,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	@Override
 	public List<IPrintable> getStructureParts() {
 		List<IPrintable> result = new ArrayList<>();
-		result.add(new SimplePrintable(null, "type", type.getPrintLabel(), type.getValue()));
+		result.add(new SimplePrintable(null, "type", type.getSymbolName(), type.getValue()));
 		result.addAll(values);
 		return result;
 	}
@@ -99,6 +100,13 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		} 
 		buf.append("annotation");
 		return buf.toString();
+	}
+	
+	
+
+	@Override
+	public String getTypeLabel() {
+		return "annotation";
 	}
 
 	@Override

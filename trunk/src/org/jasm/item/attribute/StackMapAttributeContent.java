@@ -12,5 +12,10 @@ public class StackMapAttributeContent extends AbstractBinaryAttributeContent {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public String getTypeLabel() {
+		return  getPrintName();
+	}
 
 }

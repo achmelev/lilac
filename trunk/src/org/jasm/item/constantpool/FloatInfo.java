@@ -55,9 +55,10 @@ public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveVa
 		this.value = value;
 	}
 
+	
 	@Override
-	public String getPrintName() {
-		return "floatinfo";
+	public String getTypeLabel() {
+		return  "const float";
 	}
 
 	@Override

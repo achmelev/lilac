@@ -46,6 +46,11 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	}
 	
 	@Override
+	public String getTypeLabel() {
+		return  "const pool";
+	}
+	
+	@Override
 	public String getPrintComment() {
 		return "Constants";
 	}

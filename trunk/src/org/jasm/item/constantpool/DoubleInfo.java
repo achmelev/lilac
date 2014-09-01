@@ -55,9 +55,10 @@ public class DoubleInfo extends AbstractConstantPoolEntry implements IPrimitiveV
 		this.value = value;
 	}
 
+	
 	@Override
-	public String getPrintName() {
-		return "doubleinfo";
+	public String getTypeLabel() {
+		return  "const double";
 	}
 
 	@Override
