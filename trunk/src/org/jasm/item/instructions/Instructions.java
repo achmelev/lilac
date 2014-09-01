@@ -39,7 +39,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	
 	@Override
 	public String getPrintName() {
-		return "instructions";
+		return null;
 	}
 	
 	

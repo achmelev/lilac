@@ -42,7 +42,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 
 	@Override
 	public String getPrintName() {
-		return "constpool";
+		return null;
 	}
 	
 	

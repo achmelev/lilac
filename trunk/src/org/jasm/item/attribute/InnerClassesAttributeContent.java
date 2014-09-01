@@ -8,7 +8,7 @@ public class InnerClassesAttributeContent extends AbstractBytecodeItemList<Inner
 	
 	@Override
 	public String getPrintName() {
-		return "inner classes";
+		return null;
 	}
 
 	@Override

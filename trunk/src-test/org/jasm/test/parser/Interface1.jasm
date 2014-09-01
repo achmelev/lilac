@@ -7,27 +7,20 @@ class {
   name cp0; // org/jasm/test/testclass/Interface1
   extends cp2; // java/lang/Object
   modifier public, interface, abstract;
-  
-  constpool {
-    cp0: classinfo cp1; // org/jasm/test/testclass/Interface1
-    cp1: utf8info "org/jasm/test/testclass/Interface1";
-    cp2: classinfo cp3; // java/lang/Object
-    cp3: utf8info "java/lang/Object";
-    cp4: utf8info "testMethod";
-    cp5: utf8info "(I)V";
-    cp6: utf8info "SourceFile";
-    cp7: utf8info "Interface1.java";
-  }
-  
-  attributes {
+	cp0: classinfo cp1; // org/jasm/test/testclass/Interface1
+	cp1: utf8info "org/jasm/test/testclass/Interface1";
+	cp2: classinfo cp3; // java/lang/Object
+	cp3: utf8info "java/lang/Object";
+	cp4: utf8info "testMethod";
+	cp5: utf8info "(I)V";
+	cp6: utf8info "SourceFile";
+	cp7: utf8info "Interface1.java";
+ 
     source file cp7; // Interface1.java
-  }
-  
-  methods {
+ 
     method {
       name cp4; // testMethod
       descriptor cp5; // (I)V
       modifier public, abstract;
     }
-  }
 }

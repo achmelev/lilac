@@ -44,22 +44,31 @@ public class PrettyPrinter {
 		if (item.getPrintLabel() != null) {
 			buf.append(item.getPrintLabel()+": ");
 		}
-		buf.append(item.getPrintName());
 		if (item.isStructure()) {
-			buf.append(" {");
-			if (item.getPrintComment() != null) {
-				buf.append(" //"+item.getPrintComment());
+			if (item.getPrintName() != null) {
+				buf.append(item.getPrintName());
+				buf.append(" {");
+				if (item.getPrintComment() != null) {
+					buf.append(" //"+item.getPrintComment());
+				}
+				printLine(buf.toString());
+				addIndent();
+			} else {
+				if (item.getPrintName() != null) {
+					printLine(" //"+item.getPrintComment());
+				}
 			}
-			printLine(buf.toString());
-			addIndent();
 			for (IPrintable item1: item.getStructureParts()) {
 				if (item1 !=null) {
 					printItem(item1);
 				}
 			}
-			removeIndent();
-			printLine("}");
+			if (item.getPrintName() != null) {
+				removeIndent();
+				printLine("}");
+			}
 		} else {
+			buf.append(item.getPrintName());
 			if (item.getPrintArgs() != null) {
 				buf.append(" "+item.getPrintArgs());
 			}

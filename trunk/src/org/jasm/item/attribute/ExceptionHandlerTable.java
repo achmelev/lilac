@@ -7,7 +7,7 @@ public class ExceptionHandlerTable extends AbstractBytecodeItemList<ExceptionHan
 
 	@Override
 	public String getPrintName() {
-		return "exception handler table";
+		return null;
 	}
 
 

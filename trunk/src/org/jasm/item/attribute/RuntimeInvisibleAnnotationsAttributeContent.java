@@ -8,7 +8,7 @@ public class RuntimeInvisibleAnnotationsAttributeContent extends
 
 	@Override
 	public String getPrintName() {
-		return "runtime invisible annotations";
+		return null;
 	}
 
 	

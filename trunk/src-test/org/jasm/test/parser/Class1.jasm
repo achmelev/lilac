@@ -3,7 +3,7 @@ class {
   name cp0; // org/jasm/test/testclass/Class1
   extends cp2; // java/lang/Object
   modifier public, super;
-  constpool {
+
     cp0: classinfo cp1; // org/jasm/test/testclass/Class1
     cp1: utf8info "org/jasm/test/testclass/Class1";
     cp2: classinfo cp3; // java/lang/Object
@@ -62,21 +62,17 @@ class {
     cp57: utf8info "SourceFile";
     cp58: utf8info "Class1.java";
     cp59: integerinfo 1238;
-    cp60: integerinfo # 1238;
+    cp60: integerinfo -1238;
     cp61: integerinfo 0X4d6;
     cp62: integerinfo -0x4d6;
-  }
-  attributes {
+ 
+
     source file cp58; // Class1.java
-  }
   
-   
-   
-  methods {
     method {
       name cp40; // testMethod
       descriptor cp54; // (I)V
       modifier public, abstract;
     }
-  }
+  
 }

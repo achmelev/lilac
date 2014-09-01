@@ -70,7 +70,7 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 
 	@Override
 	public String getPrintName() {
-		return "element name value";
+		return "element";
 	}
 
 	@Override
