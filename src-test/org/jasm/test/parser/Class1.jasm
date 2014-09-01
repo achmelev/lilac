@@ -62,7 +62,7 @@ class {
     cp57: utf8info "SourceFile";
     cp58: utf8info "Class1.java";
     cp59: integerinfo 1238;
-    cp60: integerinfo -1238;
+    cp60: integerinfo # 1238;
     cp61: integerinfo 0X4d6;
     cp62: integerinfo -0x4d6;
   }
