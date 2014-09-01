@@ -19,4 +19,10 @@ public class Attributes extends AbstractBytecodeItemList<Attribute> {
 		return new Attribute();
 	}
 
+
+	@Override
+	public String getPrintComment() {
+		return "Attributes";
+	}
+
 }

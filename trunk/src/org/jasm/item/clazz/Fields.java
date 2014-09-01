@@ -8,6 +8,15 @@ public class Fields extends AbstractClassMemberList<Field> {
 	public String getPrintName() {
 		return null;
 	}
+	
+	
+
+	@Override
+	public String getPrintComment() {
+		return "Fields";
+	}
+
+
 
 	@Override
 	protected Field createEmptyItem(IByteBuffer source, long offset) {

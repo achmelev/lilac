@@ -8,6 +8,11 @@ public class Methods extends AbstractClassMemberList<Method> {
 	public String getPrintName() {
 		return null;
 	}
+	
+	@Override
+	public String getPrintComment() {
+		return "Methods";
+	}
 
 	@Override
 	protected Method createEmptyItem(IByteBuffer source, long offset) {

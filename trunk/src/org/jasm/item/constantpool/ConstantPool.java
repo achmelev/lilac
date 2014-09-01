@@ -45,6 +45,11 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		return null;
 	}
 	
+	@Override
+	public String getPrintComment() {
+		return "Constants";
+	}
+	
 	
 	@Override
 	public int getItemSizeInList(IBytecodeItem item) {
