@@ -387,6 +387,12 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		return result;
 	}
 	
+	
+	
+	public VersionLiteral getVersion() {
+		return version;
+	}
+
 	public void setVersion(VersionLiteral version) {
 		this.version = version;
 	}

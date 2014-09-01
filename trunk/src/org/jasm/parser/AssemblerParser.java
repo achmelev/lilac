@@ -39,6 +39,7 @@ import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
 import org.jasm.parser.JavaAssemblerParser.ClassinfoContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierAbstractContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierAnnotationContext;
+import org.jasm.parser.JavaAssemblerParser.ClassmodifierContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierEnumContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierInterfaceContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierPublicContext;
@@ -51,6 +52,7 @@ import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierAbstractContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmodifierContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierFinalContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierNativeContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierPrivateContext;
@@ -181,7 +183,11 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterVersion(VersionContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
-		clazz.setVersion(createVersionLiteral(ctx.VersionLiteral()));
+		if (clazz.getVersion() == null) {
+			clazz.setVersion(createVersionLiteral(ctx.VersionLiteral()));
+		} else {
+			emitError(ctx.VERSION(), "multiple class version statements");
+		}
 	}
 	
 	
@@ -189,17 +195,35 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterClassname(ClassnameContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
-		clazz.setThisClassSymbol(createSymbolReference(ctx.Identifier()));
+		if (clazz.getThisClassSymbol() == null) {
+			clazz.setThisClassSymbol(createSymbolReference(ctx.Identifier()));
+		} else {
+			emitError(ctx.NAME(), "multiple class name statements");
+		}
 	}
 	
 
 	@Override
 	public void enterSuperclass(SuperclassContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
-		clazz.setSuperClassSymbol(createSymbolReference(ctx.Identifier()));
+		if (clazz.getSuperClass() == null) {
+			clazz.setSuperClassSymbol(createSymbolReference(ctx.Identifier()));
+		} else {
+			emitError(ctx.EXTENDS(), "multiple super class statements");
+		}
+		
 	}
 	
 	
+
+
+	@Override
+	public void enterClassmodifier(ClassmodifierContext ctx) {
+		Clazz clazz = (Clazz)stack.peek();
+		if (clazz.getModifierLiterals().size() > 0) {
+			emitError(ctx.MODIFIER(), "multiple modifier statements");
+		}
+	}
 
 
 	@Override
@@ -412,15 +436,35 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		Method m = (Method)stack.peek();
 		m.getModifierLiterals().add(createKeyword(ctx.STRICT()));
 	}
+	
+	
+	
+
+	
+
+
+	@Override
+	public void enterMethodmodifier(MethodmodifierContext ctx) {
+		Method m = (Method)stack.peek();
+		if (m.getModifierLiterals().size() > 0) {
+			emitError(ctx.MODIFIER(), "multiple modifier statements within the same method statement");
+		}
+	}
 
 
 	@Override
 	public void enterMethoddescriptor(MethoddescriptorContext ctx) {
 		Method m = (Method)stack.peek();
-		m.setDescriptorReference(createSymbolReference(ctx.Identifier()));
+		if (m.getDescriptorReference() == null) {
+			m.setDescriptorReference(createSymbolReference(ctx.Identifier()));
+		} else {
+			emitError(ctx.DESCRIPTOR(), "multiple descriptor statements within the same method statement");
+		}
+		
 	}
-
-
+	
+	
+	
 	@Override
 	public void enterMethodmodifierPublic(MethodmodifierPublicContext ctx) {
 		Method m = (Method)stack.peek();
@@ -445,7 +489,11 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterMethodname(MethodnameContext ctx) {
 		Method m = (Method)stack.peek();
-		m.setNameReference(createSymbolReference(ctx.Identifier()));
+		if (m.getNameReference() == null) {
+			m.setNameReference(createSymbolReference(ctx.Identifier()));
+		} else {
+			emitError(ctx.NAME(), "multiple method name statements within the same method statement");
+		}
 	}
 
 
@@ -469,6 +517,10 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 
 	public void emitError(int line, int charPosition, String message) {
 		errorMessages.add(new ErrorMessage(line, charPosition, message));
+	}
+	
+	public void emitError(TerminalNode node, String message) {
+		errorMessages.add(new ErrorMessage(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), message));
 	}
 	
 	private void addConstantPoolEntry(AbstractConstantPoolEntry entry) {

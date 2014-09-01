@@ -38,7 +38,7 @@ public abstract class AbstractClassMemberList<T extends AbstractClassMember> ext
 			descriptorToMember.addToList(member.getDescriptor().getValue(), member);
 		} else {
 			if (isAfterParseResolving()) {
-				emitError(null, "duplicate "+member.getPrintName()+" declaration "+member.getName().getValue()+"@"+member.getDescriptor().getValue());
+				emitError(null, "multiple "+member.getPrintName()+"s with signature "+member.getName().getValue()+"@"+member.getDescriptor().getValue()+" found");
 			}
 		}
 		
