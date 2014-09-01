@@ -190,9 +190,17 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	public void setNameReference(SymbolReference nameReference) {
 		this.nameReference = nameReference;
 	}
+	
+	public SymbolReference getNameReference() {
+		return nameReference;
+	}
 
 	public void setDescriptorReference(SymbolReference descriptorReference) {
 		this.descriptorReference = descriptorReference;
+	}
+	
+	public SymbolReference getDescriptorReference() {
+		return descriptorReference;
 	}
 
 	public List<Keyword> getModifierLiterals() {
