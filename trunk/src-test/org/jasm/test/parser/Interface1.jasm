@@ -2,7 +2,7 @@
 Interface class
 */
 class {
-  version 51.0;
+  version 51_0;
   name cp0; // org/jasm/test/testclass/Interface1
   extends cp2; // java/lang/Object
   modifier public, interface, abstract;

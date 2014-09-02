@@ -179,7 +179,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	public List<IPrintable> getStructureParts() {
 		List<IPrintable> result = new ArrayList<IPrintable>();
 		
-		result.add(new SimplePrintable(null, "version", new String[]{majorVersion+"."+minorVersion}, (String)null));
+		result.add(new SimplePrintable(null, "version", new String[]{majorVersion+"_"+minorVersion}, (String)null));
 		result.add(new SimplePrintable(null, "name", new String[]{thisClass.getSymbolName()}, thisClass.getClassName()));
 		if (this.superClass != null) {
 			result.add(new SimplePrintable(null, "extends", new String[]{superClass.getSymbolName()}, superClass.getClassName()));
@@ -252,8 +252,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		//Version
 		try {
 			String versionStr = version.getContent();
-			majorVersion = Integer.parseInt(versionStr.substring(0, versionStr.indexOf('.')));
-			minorVersion = Integer.parseInt(versionStr.substring(versionStr.indexOf('.')+1, versionStr.length()));
+			majorVersion = Integer.parseInt(versionStr.substring(0, versionStr.indexOf('_')));
+			minorVersion = Integer.parseInt(versionStr.substring(versionStr.indexOf('_')+1, versionStr.length()));
 		} catch (Exception e) {
 			emitError(version, "malformed or illegal version");
 			majorVersion = 0;
