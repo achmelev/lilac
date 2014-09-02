@@ -30,7 +30,7 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 	
 	@Override
 	public String getPrintName() {
-		return getTypeLabel()+" "+"cp"+getParent().indexOf(this);
+		return getTypeLabel()+" "+createConstName();
 	}
 
 	public int getIndexInPool() {
@@ -47,7 +47,7 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 	@Override
 	public String getSymbolName() {
 		if (label == null) {
-			return "cp"+getParent().indexOf(this);
+			return createConstName();
 		}
 		return label.getLabel();
 	}
@@ -60,6 +60,13 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 		this.label = label;
 	}
 	
+	private String createConstName() {
+		String name = getTypeLabel().trim();
+		if (name.startsWith("const")) {
+			name = name.substring("const".length(),name.length()).trim();
+		}
+		return name+"_"+getParent().indexOf(this);
+	}
 	
 	
 
