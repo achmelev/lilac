@@ -90,7 +90,7 @@ public class LocalVariable extends AbstractByteCodeItem implements IConstantPool
 
 	@Override
 	public String getPrintComment() {
-		return name.getValue()+" "+descriptor.getValue();
+		return "name="+name.getValue()+",  descriptor="+descriptor.getValue();
 	}
 
 	@Override
