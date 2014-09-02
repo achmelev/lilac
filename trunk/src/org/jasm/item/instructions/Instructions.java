@@ -235,6 +235,10 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		localVariableReferencesList.addAll(localVariableReferences);
 		Collections.sort(localVariableReferencesList);
 		
+		if (localVariableReferencesList.size() > 0) {
+			result.add(new SimplePrintable(null, null, (String)null,"Variables"));
+		}
+		
 		for (LocalVariable loc: localVariableReferencesList) {
 			String type = null;
 			if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE) {
@@ -255,7 +259,9 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			result.add(new SimplePrintable(null, "var "+type, new String[]{loc.toString(),loc.getIndex()+""}, (String[])null));
 			
 		}
-		
+		if (items.size() > 0) {
+			result.add(new SimplePrintable(null, null, (String)null,"Instructions"));
+		}
 		result.addAll(items);
 		return result;
 	}
@@ -278,7 +284,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 
 	@Override
 	public String getPrintComment() {
-		return "Instructions";
+		return null;
 	}
 
 

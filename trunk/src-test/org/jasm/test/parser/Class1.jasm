@@ -33,7 +33,8 @@ class {
   const nameandtype cp24 cp6, cp7; // SHORT_CONSTANT S
   const fieldref cp25 cp0, cp26; // org/jasm/test/testclass/Class1.INT_CONSTANT I
   const nameandtype cp26 cp8, cp9; // INT_CONSTANT I
-  //const long cp27 10000;
+  const long cp27 10000;
+  const long cp271 -0x2710;
   const fieldref cp29 cp0, cp30; // org/jasm/test/testclass/Class1.LONG_CONSTANT J
   const nameandtype cp30 cp10, cp11; // LONG_CONSTANT J
   const float cp31 1.43333ap3; // 10.1
