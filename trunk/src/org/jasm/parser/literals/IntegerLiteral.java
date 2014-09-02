@@ -1,6 +1,5 @@
 package org.jasm.parser.literals;
 
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 public class IntegerLiteral extends AbstractLiteral {
 	
