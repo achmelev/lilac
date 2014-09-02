@@ -3,10 +3,12 @@ package org.jasm.item.constantpool;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.parser.literals.FloatLiteral;
+import org.jasm.parser.literals.IntegerLiteral;
 
 public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveValueReferencingEntry {
 	
 	private Float value = null;
+	private FloatLiteral valueLiteral;
 	
 	public FloatInfo() {
 		
@@ -34,7 +36,11 @@ public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveVa
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		if (valueLiteral.isValid()) {
+			value = new Float(valueLiteral.getValue());
+		} else {
+			emitError(valueLiteral, "malformed float or float out of bounds");
+		}
 	}
 
 	@Override
@@ -86,6 +92,14 @@ public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveVa
 		} else {
 			return value.toString();
 		}
+	}
+
+	public FloatLiteral getValueLiteral() {
+		return valueLiteral;
+	}
+
+	public void setValueLiteral(FloatLiteral valueLiteral) {
+		this.valueLiteral = valueLiteral;
 	}
 	
 	

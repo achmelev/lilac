@@ -119,7 +119,7 @@ STRICT        :  'strict';
 
 //Version
 
-VersionLiteral: NonZeroDigit Digit* '.' Digit?;
+VersionLiteral: NonZeroDigit Digit* '_' Digit+;
 
 // Integer Literals
 
