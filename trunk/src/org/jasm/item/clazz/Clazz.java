@@ -250,20 +250,29 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	@Override
 	protected void doResolveAfterParse() {
 		//Version
-		try {
-			String versionStr = version.getContent();
-			majorVersion = Integer.parseInt(versionStr.substring(0, versionStr.indexOf('_')));
-			minorVersion = Integer.parseInt(versionStr.substring(versionStr.indexOf('_')+1, versionStr.length()));
-		} catch (Exception e) {
-			emitError(version, "malformed or illegal version");
-			majorVersion = 0;
-			minorVersion = 0;
+		if (version != null) {
+			try {
+				String versionStr = version.getContent();
+				majorVersion = Integer.parseInt(versionStr.substring(0, versionStr.indexOf('_')));
+				minorVersion = Integer.parseInt(versionStr.substring(versionStr.indexOf('_')+1, versionStr.length()));
+			} catch (Exception e) {
+				emitError(version, "malformed or illegal version");
+				majorVersion = 0;
+				minorVersion = 0;
+			}
+		} else {
+			emitError(null, "missing version statement");
 		}
 		//Pool
 		pool.resolve();
 		pool.updateIndexes();
 		//this, super
-		thisClass = pool.checkAndLoadFromSymbolTable(ClassInfo.class, thisClassSymbol, "classinfo");
+		if (thisClassSymbol != null) {
+			thisClass = pool.checkAndLoadFromSymbolTable(ClassInfo.class, thisClassSymbol, "classinfo");
+		} else {
+			emitError(null, "missing name statement");
+		}
+		
 		if (superClassSymbol != null) {
 			superClass = pool.checkAndLoadFromSymbolTable(ClassInfo.class, superClassSymbol, "classinfo");
 		}

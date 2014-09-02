@@ -103,13 +103,21 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	
 	@Override
 	protected void doResolveAfterParse() {
-		this.name = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, nameReference, "utf8info");
-		if (this.name != null) {
-			verifyName(nameReference, name.getValue());
+		if (this.nameReference != null) {
+			this.name = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, nameReference, "utf8info");
+			if (this.name != null) {
+				verifyName(nameReference, name.getValue());
+			}
+		} else {
+			emitError(null, "missing name statement");
 		}
-		this.descriptor = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, descriptorReference, "utf8info");
-		if (this.descriptor != null) {
-			verifyDescriptor(descriptorReference,descriptor.getValue());
+		if (this.descriptorReference != null) {
+			this.descriptor = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, descriptorReference, "utf8info");
+			if (this.descriptor != null) {
+				verifyDescriptor(descriptorReference,descriptor.getValue());
+			}
+		} else {
+			emitError(null, "missing descriptor statement");
 		}
 		
 		if (!this.hasResolveErrors()) {

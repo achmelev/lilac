@@ -29,6 +29,7 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.FieldrefInfo;
+import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IntegerInfo;
 import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.constantpool.NameAndTypeInfo;
@@ -48,6 +49,7 @@ import org.jasm.parser.JavaAssemblerParser.ClassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
 import org.jasm.parser.JavaAssemblerParser.FieldrefinfoContext;
+import org.jasm.parser.JavaAssemblerParser.FloatinfoContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
@@ -70,6 +72,7 @@ import org.jasm.parser.JavaAssemblerParser.StringinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
+import org.jasm.parser.literals.FloatLiteral;
 import org.jasm.parser.literals.IntegerLiteral;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.Label;
@@ -365,6 +368,19 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		entry.setValueLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
 		addConstantPoolEntry(entry);
 	}
+	
+	
+
+	@Override
+	public void enterFloatinfo(FloatinfoContext ctx) {
+		FloatInfo entry = new FloatInfo();
+		if (ctx.label() != null) {
+			entry.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		entry.setSourceLocation(createSourceLocation(ctx.FLOATINFO()));
+		entry.setValueLiteral(createFloatLiteral(ctx.FloatingPointLiteral()));
+		addConstantPoolEntry(entry);
+	}
 
 
 	@Override
@@ -552,6 +568,10 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private IntegerLiteral createIntegerLiteral(TerminalNode node) {
 		return new IntegerLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private FloatLiteral createFloatLiteral(TerminalNode node) {
+		return new FloatLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
 	}
 	
 	private Keyword createKeyword(TerminalNode node) {

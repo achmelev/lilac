@@ -36,7 +36,14 @@ class {
   //const long cp27 10000;
   const fieldref cp29 cp0, cp30; // org/jasm/test/testclass/Class1.LONG_CONSTANT J
   const nameandtype cp30 cp10, cp11; // LONG_CONSTANT J
-  //const float cp31 10.1;
+  const float cp31 1.43333ap3; // 10.1
+  const float cp311 10.2; 
+  const float cp312 -10.2;
+  const float cp313 -1.43333ap3; // -10.1
+  const float cp314 0.0p-7e; // 0
+  const float cp315 Infinity;
+  const float cp316 -Infinity;
+  const float cp317 NaN;
   const fieldref cp32 cp0, cp33; // org/jasm/test/testclass/Class1.FLOAT_CONSTANT F
   const nameandtype cp33 cp12, cp13; // FLOAT_CONSTANT F
   //const double cp34 100.1;
