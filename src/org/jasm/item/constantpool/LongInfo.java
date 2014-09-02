@@ -2,10 +2,12 @@ package org.jasm.item.constantpool;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
+import org.jasm.parser.literals.LongLiteral;
 
 public class LongInfo extends AbstractConstantPoolEntry implements IPrimitiveValueReferencingEntry {
 	
 	private Long value = null;
+	private LongLiteral valueLiteral = null;
 	
 	public LongInfo() {
 		
@@ -33,7 +35,11 @@ public class LongInfo extends AbstractConstantPoolEntry implements IPrimitiveVal
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		if (valueLiteral.isValid()) {
+			value = new Long(valueLiteral.getValue());
+		} else {
+			emitError(valueLiteral, "malformed integer or integer out of bounds");
+		}
 	}
 
 	@Override
@@ -70,4 +76,13 @@ public class LongInfo extends AbstractConstantPoolEntry implements IPrimitiveVal
 		return null;
 	}
 
+	public LongLiteral getValueLiteral() {
+		return valueLiteral;
+	}
+
+	public void setValueLiteral(LongLiteral valueLiteral) {
+		this.valueLiteral = valueLiteral;
+	}
+	
+	
 }

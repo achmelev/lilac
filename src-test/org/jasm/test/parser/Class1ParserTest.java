@@ -67,6 +67,9 @@ public class Class1ParserTest extends AbstractParserTestCase {
 		Assert.assertEquals(1,clazz.getConstantPool().getDoubleEntries(Float.NaN).size());
 		Assert.assertEquals(1,clazz.getConstantPool().getDoubleEntries(Float.POSITIVE_INFINITY).size());
 		Assert.assertEquals(1,clazz.getConstantPool().getDoubleEntries(Float.NEGATIVE_INFINITY).size());
+		
+		Assert.assertEquals(1,clazz.getConstantPool().getLongEntries(10000).size());
+		Assert.assertEquals(1,clazz.getConstantPool().getLongEntries(-10000).size());
 	}
 
 }

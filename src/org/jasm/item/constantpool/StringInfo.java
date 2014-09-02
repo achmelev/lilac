@@ -37,7 +37,7 @@ public class StringInfo extends AbstractReferenceEntry implements ITextReferenci
 
 	@Override
 	public String getPrintComment() {
-		return null;
+		return getUtf8Reference().getPrintArgs();
 	}
 
 	@Override

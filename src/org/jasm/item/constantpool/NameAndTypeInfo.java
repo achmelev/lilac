@@ -51,7 +51,7 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 
 	@Override
 	public String getPrintComment() {
-		return getName()+" "+getDescriptor();
+		return "name="+getName()+" type="+getDescriptor();
 	}
 
 	@Override

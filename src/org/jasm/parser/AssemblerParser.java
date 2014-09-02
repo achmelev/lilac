@@ -13,7 +13,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -21,7 +20,6 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.Attribute;
-import org.jasm.item.attribute.Attributes;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Method;
@@ -32,6 +30,7 @@ import org.jasm.item.constantpool.DoubleInfo;
 import org.jasm.item.constantpool.FieldrefInfo;
 import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IntegerInfo;
+import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.constantpool.NameAndTypeInfo;
 import org.jasm.item.constantpool.StringInfo;
@@ -53,6 +52,7 @@ import org.jasm.parser.JavaAssemblerParser.DoubleinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FloatinfoContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
+import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierAbstractContext;
@@ -79,6 +79,7 @@ import org.jasm.parser.literals.FloatLiteral;
 import org.jasm.parser.literals.IntegerLiteral;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.Label;
+import org.jasm.parser.literals.LongLiteral;
 import org.jasm.parser.literals.StringLiteral;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
@@ -373,6 +374,20 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 	
 	
+	
+	
+
+	@Override
+	public void enterLonginfo(LonginfoContext ctx) {
+		LongInfo entry = new LongInfo();
+		if (ctx.label() != null) {
+			entry.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		entry.setSourceLocation(createSourceLocation(ctx.LONGINFO()));
+		entry.setValueLiteral(createLongLiteral(ctx.IntegerLiteral()));
+		addConstantPoolEntry(entry);
+	}
+
 
 	@Override
 	public void enterFloatinfo(FloatinfoContext ctx) {
@@ -585,6 +600,10 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private IntegerLiteral createIntegerLiteral(TerminalNode node) {
 		return new IntegerLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private LongLiteral createLongLiteral(TerminalNode node) {
+		return new LongLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
 	}
 	
 	private FloatLiteral createFloatLiteral(TerminalNode node) {

@@ -46,7 +46,7 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 
 	@Override
 	public String getPrintComment() {
-		return getClassName()+"."+getName()+" "+getSignature();
+		return "class="+getClassName()+", name="+getName()+", descriptor="+getSignature();
 	}
 
 

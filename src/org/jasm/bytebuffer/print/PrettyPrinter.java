@@ -68,14 +68,22 @@ public class PrettyPrinter {
 				printLine("}");
 			}
 		} else {
-			buf.append(item.getPrintName());
-			if (item.getPrintArgs() != null) {
-				buf.append(" "+item.getPrintArgs());
+			if (item.getPrintName() != null) {
+				buf.append(item.getPrintName());
+				if (item.getPrintArgs() != null) {
+					buf.append(" "+item.getPrintArgs());
+				}
+				buf.append(";");
+				if (item.getPrintComment() != null) {
+					buf.append(" // "+item.getPrintComment());
+				}
+			} else {
+				if (item.getPrintComment() != null) {
+					buf.append("//"+item.getPrintComment());
+				}
 			}
-			buf.append(";");
-			if (item.getPrintComment() != null) {
-				buf.append(" // "+item.getPrintComment());
-			}
+			
+			
 			printLine(buf.toString());
 		}
 	}
