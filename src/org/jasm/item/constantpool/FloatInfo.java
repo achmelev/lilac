@@ -2,6 +2,7 @@ package org.jasm.item.constantpool;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
+import org.jasm.parser.literals.FloatLiteral;
 
 public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveValueReferencingEntry {
 	
@@ -63,12 +64,28 @@ public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveVa
 
 	@Override
 	public String getPrintArgs() {
-		return value.toString();
+		if (Float.isNaN(value)) {
+			return "NaN";
+		} else if (value == Float.NEGATIVE_INFINITY) {
+			return "-Infinity";
+		} else if (value == Float.POSITIVE_INFINITY) {
+			return "Infinity";
+		} else {
+			return FloatLiteral.createExactHexLiteral(value);
+		}
 	}
 
 	@Override
 	public String getPrintComment() {
-		return null;
+		if (Float.isNaN(value)) {
+			return null;
+		} else if (value == Float.NEGATIVE_INFINITY) {
+			return null;
+		} else if (value == Float.POSITIVE_INFINITY) {
+			return null;
+		} else {
+			return value.toString();
+		}
 	}
 	
 	
