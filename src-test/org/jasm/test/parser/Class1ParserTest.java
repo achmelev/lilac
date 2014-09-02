@@ -49,7 +49,12 @@ public class Class1ParserTest extends AbstractParserTestCase {
 		Assert.assertEquals(1,clazz.getConstantPool().getStringEntries("HELLO \n \\WORLD\r\t").size());
 		Assert.assertEquals(2,clazz.getConstantPool().getIntegerEntries(1238).size());
 		Assert.assertEquals(2,clazz.getConstantPool().getIntegerEntries(-1238).size());
-		
+		Assert.assertEquals(1,clazz.getConstantPool().getFloatEntries(0).size());
+		Assert.assertEquals(1,clazz.getConstantPool().getFloatEntries(0x1.43333ap3f).size());
+		Assert.assertEquals(1,clazz.getConstantPool().getFloatEntries(-0x1.43333ap3f).size());
+		Assert.assertEquals(1,clazz.getConstantPool().getFloatEntries(Float.NaN).size());
+		Assert.assertEquals(1,clazz.getConstantPool().getFloatEntries(Float.POSITIVE_INFINITY).size());
+		Assert.assertEquals(1,clazz.getConstantPool().getFloatEntries(Float.NEGATIVE_INFINITY).size());
 	}
 
 }

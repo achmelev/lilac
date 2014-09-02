@@ -4,7 +4,7 @@ grammar JavaAssembler;
 
 clazz:
 	 CLASS LBRACE 
-	 	classmember+
+	 	classmember*
 	 RBRACE;
 
 classmember: version SEMI
@@ -41,6 +41,7 @@ constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 				 | CONST STRINGINFO label Identifier #stringinfo
 				 | CONST FIELDREFINFO label Identifier COMMA  Identifier #fieldrefinfo
 				 | CONST INTEGERINFO label IntegerLiteral  #integerinfo
+				 | CONST FLOATINFO   label FloatingPointLiteral  #floatinfo
 				 | CONST METHODREFINFO label Identifier COMMA  Identifier #methodrefinfo
 				 | CONST NAMEANDTYPEINFO label Identifier COMMA  Identifier #nameandtypeinfo
 				 ;
@@ -50,10 +51,13 @@ constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile;
 
 method  : METHOD  LBRACE
-					methodname SEMI
-					methoddescriptor SEMI
-					(methodmodifier SEMI)?
+					methodmember*
 				  RBRACE;
+
+methodmember: methodname SEMI
+			  | methoddescriptor SEMI
+			  | methodmodifier SEMI
+			  ;
 				  
 methodname: NAME Identifier;
 methoddescriptor: DESCRIPTOR Identifier;
@@ -100,6 +104,7 @@ UTF8INFO      :  'utf8';
 STRINGINFO    :  'string';
 FIELDREFINFO  :  'fieldref';
 INTEGERINFO   :  'int';
+FLOATINFO     :  'float';
 METHODREFINFO :  'methodref';
 NAMEANDTYPEINFO :  'nameandtype';
 ATTRIBUTES    :  'attributes';
@@ -220,7 +225,8 @@ BinaryDigit
 // Floating-Point Literal
 
 FloatingPointLiteral
-    :   Sign? DecimalFloatingPointLiteral
+	: Sign? HexFloatingPointLiteral  
+	| Sign? DecimalFloatingPointLiteral
     |   'NaN'
     |   Sign? 'Infinity'
     ;
@@ -229,16 +235,30 @@ fragment
 DecimalFloatingPointLiteral
     :   DecimalNumeral '.' Digit+ ExponentPart?;
 
+fragment
+HexFloatingPointLiteral
+    :   BinaryDigit '.' HexDigit+ HexExponentPart;
+
 
 
 fragment
 ExponentPart
     :   ExponentIndicator Sign? DecimalNumeral
     ;
+    
+fragment
+HexExponentPart
+    :   BinaryExponentIndicator Sign? HexDigits
+    ;
 
 fragment
 ExponentIndicator
     :   [eE]
+    ;
+
+fragment
+BinaryExponentIndicator
+    :   [pP]
     ;
 
 
