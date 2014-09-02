@@ -2,10 +2,13 @@ package org.jasm.item.constantpool;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
+import org.jasm.parser.literals.DoubleLiteral;
+import org.jasm.parser.literals.FloatLiteral;
 
 public class DoubleInfo extends AbstractConstantPoolEntry implements IPrimitiveValueReferencingEntry {
 	
 	private Double value = null;
+	private DoubleLiteral valueLiteral = null;
 	
 	public DoubleInfo() {
 		
@@ -33,7 +36,11 @@ public class DoubleInfo extends AbstractConstantPoolEntry implements IPrimitiveV
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		if (valueLiteral.isValid()) {
+			value = new Double(valueLiteral.getValue());
+		} else {
+			emitError(valueLiteral, "malformed double or double out of bounds");
+		}
 	}
 
 	@Override
@@ -63,12 +70,36 @@ public class DoubleInfo extends AbstractConstantPoolEntry implements IPrimitiveV
 
 	@Override
 	public String getPrintArgs() {
-		return value.toString();
+		if (Double.isNaN(value)) {
+			return "NaN";
+		} else if (value == Double.NEGATIVE_INFINITY) {
+			return "-Infinity";
+		} else if (value == Double.POSITIVE_INFINITY) {
+			return "Infinity";
+		} else {
+			return DoubleLiteral.createExactHexLiteral(value);
+		}
 	}
 
 	@Override
 	public String getPrintComment() {
-		return null;
+		if (Double.isNaN(value)) {
+			return null;
+		} else if (value == Double.NEGATIVE_INFINITY) {
+			return null;
+		} else if (value == Double.POSITIVE_INFINITY) {
+			return null;
+		} else {
+			return value.toString();
+		}
+	}
+
+	public DoubleLiteral getValueLiteral() {
+		return valueLiteral;
+	}
+
+	public void setValueLiteral(DoubleLiteral valueLiteral) {
+		this.valueLiteral = valueLiteral;
 	}
 	
 	

@@ -28,6 +28,7 @@ import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
+import org.jasm.item.constantpool.DoubleInfo;
 import org.jasm.item.constantpool.FieldrefInfo;
 import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IntegerInfo;
@@ -48,6 +49,7 @@ import org.jasm.parser.JavaAssemblerParser.ClassmodifierSuperContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
+import org.jasm.parser.JavaAssemblerParser.DoubleinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FloatinfoContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
@@ -72,6 +74,7 @@ import org.jasm.parser.JavaAssemblerParser.StringinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
+import org.jasm.parser.literals.DoubleLiteral;
 import org.jasm.parser.literals.FloatLiteral;
 import org.jasm.parser.literals.IntegerLiteral;
 import org.jasm.parser.literals.Keyword;
@@ -381,6 +384,20 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		entry.setValueLiteral(createFloatLiteral(ctx.FloatingPointLiteral()));
 		addConstantPoolEntry(entry);
 	}
+	
+	
+
+
+	@Override
+	public void enterDoubleinfo(DoubleinfoContext ctx) {
+		DoubleInfo entry = new DoubleInfo();
+		if (ctx.label() != null) {
+			entry.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		entry.setSourceLocation(createSourceLocation(ctx.DOUBLEINFO()));
+		entry.setValueLiteral(createDoubleLiteral(ctx.FloatingPointLiteral()));
+		addConstantPoolEntry(entry);
+	}
 
 
 	@Override
@@ -572,6 +589,10 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private FloatLiteral createFloatLiteral(TerminalNode node) {
 		return new FloatLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private DoubleLiteral createDoubleLiteral(TerminalNode node) {
+		return new DoubleLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
 	}
 	
 	private Keyword createKeyword(TerminalNode node) {

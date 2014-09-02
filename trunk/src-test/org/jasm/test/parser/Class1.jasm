@@ -46,7 +46,14 @@ class {
   const float cp317 NaN;
   const fieldref cp32 cp0, cp33; // org/jasm/test/testclass/Class1.FLOAT_CONSTANT F
   const nameandtype cp33 cp12, cp13; // FLOAT_CONSTANT F
-  //const double cp34 100.1;
+  const double cp34 100.1;
+  const double cp341 -100.1;
+  const double cp342 1.9066666666666p6; // 100.1
+  const double cp343 0.0;
+  const double cp345 NaN; 
+  const double cp346 -Infinity; 
+  const double cp347 Infinity; 
+  const double cp348 -1.9066666666666p6; // -100.1
   const fieldref cp36 cp0, cp37; // org/jasm/test/testclass/Class1.DOUBLE_CONSTANT D
   const nameandtype cp37 cp14, cp15; // DOUBLE_CONSTANT D
   const utf8 cp38 "LineNumberTable";
