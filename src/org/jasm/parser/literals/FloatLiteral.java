@@ -137,7 +137,7 @@ public class FloatLiteral extends AbstractLiteral {
 		mantissStr = buf.toString();
 		
 		int mantiss = Integer.parseInt(mantissStr, 16);
-		mantiss = mantiss>>1;
+		mantiss = mantiss>>>1;
 		if (mantiss<0 || mantiss>0x7fffff) {
 			throw new NumberFormatException(content);
 		}
