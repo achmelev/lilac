@@ -31,6 +31,9 @@ public class FloatLiteralTest {
 		f = -0.5f;
 		Assert.assertEquals(f, new FloatLiteral(0, 0, FloatLiteral.createExactHexLiteral(f)).getValue());
 		
+		f = 0x1.01p0f;
+		Assert.assertEquals(f, new FloatLiteral(0, 0, FloatLiteral.createExactHexLiteral(f)).getValue());
+		
 		f = 0f;
 		Assert.assertEquals(f, new FloatLiteral(0, 0, FloatLiteral.createExactHexLiteral(f)).getValue());
 		
