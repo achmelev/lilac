@@ -22,6 +22,7 @@ import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.clazz.Clazz;
+import org.jasm.item.clazz.Field;
 import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
@@ -42,6 +43,7 @@ import org.jasm.parser.JavaAssemblerParser.ClassmodifierAbstractContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierAnnotationContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierEnumContext;
+import org.jasm.parser.JavaAssemblerParser.ClassmodifierFinalContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierInterfaceContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierPublicContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierSuperContext;
@@ -49,6 +51,18 @@ import org.jasm.parser.JavaAssemblerParser.ClassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
 import org.jasm.parser.JavaAssemblerParser.DoubleinfoContext;
+import org.jasm.parser.JavaAssemblerParser.FieldContext;
+import org.jasm.parser.JavaAssemblerParser.FielddescriptorContext;
+import org.jasm.parser.JavaAssemblerParser.FieldmodifierEnumContext;
+import org.jasm.parser.JavaAssemblerParser.FieldmodifierFinalContext;
+import org.jasm.parser.JavaAssemblerParser.FieldmodifierPrivateContext;
+import org.jasm.parser.JavaAssemblerParser.FieldmodifierProtectedContext;
+import org.jasm.parser.JavaAssemblerParser.FieldmodifierPublicContext;
+import org.jasm.parser.JavaAssemblerParser.FieldmodifierStaticContext;
+import org.jasm.parser.JavaAssemblerParser.FieldmodifierSynteticContext;
+import org.jasm.parser.JavaAssemblerParser.FieldmodifierTransientContext;
+import org.jasm.parser.JavaAssemblerParser.FieldmodifierVolatileContext;
+import org.jasm.parser.JavaAssemblerParser.FieldnameContext;
 import org.jasm.parser.JavaAssemblerParser.FieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FloatinfoContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
@@ -56,6 +70,7 @@ import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierAbstractContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmodifierBridgeContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierFinalContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierNativeContext;
@@ -267,6 +282,14 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		Clazz clazz = (Clazz)stack.peek();
 		clazz.getModifierLiterals().add(createKeyword(ctx.ABSTRACT()));
 	}
+	
+	
+
+	@Override
+	public void enterClassmodifierFinal(ClassmodifierFinalContext ctx) {
+		Clazz clazz = (Clazz)stack.peek();
+		clazz.getModifierLiterals().add(createKeyword(ctx.FINAL()));
+	}
 
 
 	@Override
@@ -281,6 +304,8 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		Clazz clazz = (Clazz)stack.peek();
 		clazz.getModifierLiterals().add(createKeyword(ctx.SUPER()));
 	}
+	
+	
 	
 	@Override
 	public void enterClassinfo(ClassinfoContext ctx) {
@@ -489,7 +514,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 
 	
+	
 
+	
 
 	@Override
 	public void enterMethodmodifier(MethodmodifierContext ctx) {
@@ -532,6 +559,13 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		Method m = (Method)stack.peek();
 		m.getModifierLiterals().add(createKeyword(ctx.FINAL()));
 	}
+	
+	@Override
+	public void enterMethodmodifierBridge(MethodmodifierBridgeContext ctx) {
+		Method m = (Method)stack.peek();
+		m.getModifierLiterals().add(createKeyword(ctx.BRIDGE()));
+	}
+
 
 
 	@Override
@@ -559,6 +593,109 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 
 	@Override
 	public void exitMethod(MethodContext ctx) {
+		stack.pop();
+	}
+	
+	
+	
+
+
+	@Override
+	public void enterField(FieldContext ctx) {
+		Clazz clazz = (Clazz)stack.peek();
+		Field f = new Field();
+		f.setSourceLocation(createSourceLocation(ctx.FIELD()));
+		clazz.getFields().add(f);
+		stack.push(f);
+	}
+	
+	@Override
+	public void enterFieldname(FieldnameContext ctx) {
+		Field f = (Field)stack.peek();
+		if (f.getNameReference() == null) {
+			f.setNameReference(createSymbolReference(ctx.Identifier()));
+		} else {
+			emitError(ctx.NAME(), "multiple field name statements within the same field statement");
+		}
+	}
+	
+	@Override
+	public void enterFielddescriptor(FielddescriptorContext ctx) {
+		Field f = (Field)stack.peek();
+		if (f.getDescriptorReference() == null) {
+			f.setDescriptorReference(createSymbolReference(ctx.Identifier()));
+		} else {
+			emitError(ctx.DESCRIPTOR(), "multiple descriptor statements within the same field statement");
+		}
+		
+	}
+	
+	@Override
+	public void enterFieldmodifierFinal(FieldmodifierFinalContext ctx) {
+		Field f = (Field)stack.peek();
+		f.getModifierLiterals().add(createKeyword(ctx.FINAL()));
+	}
+	
+	
+	
+	@Override
+	public void enterFieldmodifierProtected(FieldmodifierProtectedContext ctx) {
+		Field f = (Field)stack.peek();
+		f.getModifierLiterals().add(createKeyword(ctx.PROTECTED()));
+	}
+
+
+	@Override
+	public void enterFieldmodifierPublic(FieldmodifierPublicContext ctx) {
+		Field f = (Field)stack.peek();
+		f.getModifierLiterals().add(createKeyword(ctx.PUBLIC()));
+	}
+
+
+	@Override
+	public void enterFieldmodifierEnum(FieldmodifierEnumContext ctx) {
+		Field f = (Field)stack.peek();
+		f.getModifierLiterals().add(createKeyword(ctx.ENUM()));
+	}
+
+
+	@Override
+	public void enterFieldmodifierVolatile(FieldmodifierVolatileContext ctx) {
+		Field f = (Field)stack.peek();
+		f.getModifierLiterals().add(createKeyword(ctx.VOLATILE()));
+	}
+
+
+	@Override
+	public void enterFieldmodifierTransient(FieldmodifierTransientContext ctx) {
+		Field f = (Field)stack.peek();
+		f.getModifierLiterals().add(createKeyword(ctx.TRANSIENT()));
+	}
+
+
+	@Override
+	public void enterFieldmodifierStatic(FieldmodifierStaticContext ctx) {
+		Field f = (Field)stack.peek();
+		f.getModifierLiterals().add(createKeyword(ctx.STATIC()));
+	}
+
+
+	@Override
+	public void enterFieldmodifierPrivate(FieldmodifierPrivateContext ctx) {
+		Field f = (Field)stack.peek();
+		f.getModifierLiterals().add(createKeyword(ctx.PRIVATE()));
+	}
+
+
+	@Override
+	public void enterFieldmodifierSyntetic(FieldmodifierSynteticContext ctx) {
+		Field f = (Field)stack.peek();
+		f.getModifierLiterals().add(createKeyword(ctx.SYNTETIC()));
+	}
+
+
+	@Override
+	public void exitField(FieldContext ctx) {
 		stack.pop();
 	}
 

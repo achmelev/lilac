@@ -85,6 +85,18 @@ class {
  
 
     source file cp58; // Class1.java
+    
+    field {
+    	name cp4; // STRING_CONSTANT
+    	descriptor cp5; // Ljava/lang/String;
+    	modifier public, static;
+  	}
+  	
+	  field {
+	    name cp6; // SHORT_CONSTANT
+	    descriptor cp7; // S
+	    modifier public, static;
+	  }
   
     method {
       name cp40; // testMethod
