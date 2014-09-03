@@ -18,7 +18,7 @@ import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.SymbolReference;
 
-public abstract class AbstractClassMember<T extends AbstractClassMemberModifier> extends AbstractByteCodeItem implements IContainerBytecodeItem<Attributes>, IConstantPoolReference {
+public abstract class AbstractClassMember<T extends AbstractClassMemberModifier> extends AbstractByteCodeItem implements IContainerBytecodeItem<Attributes>, IConstantPoolReference, IAttributesContainer {
 	
 	private List<Keyword> modifierLiterals;
 	private T modifier = null;
@@ -104,7 +104,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	@Override
 	protected void doResolveAfterParse() {
 		if (this.nameReference != null) {
-			this.name = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, nameReference, "utf8info");
+			this.name = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, nameReference);
 			if (this.name != null) {
 				verifyName(nameReference, name.getValue());
 			}
@@ -112,7 +112,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 			emitError(null, "missing name statement");
 		}
 		if (this.descriptorReference != null) {
-			this.descriptor = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, descriptorReference, "utf8info");
+			this.descriptor = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, descriptorReference);
 			if (this.descriptor != null) {
 				verifyDescriptor(descriptorReference,descriptor.getValue());
 			}

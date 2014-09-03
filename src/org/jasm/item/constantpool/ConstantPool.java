@@ -1,5 +1,6 @@
 package org.jasm.item.constantpool;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -286,19 +287,56 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		
 	}
 	
-	public <T extends AbstractConstantPoolEntry> T checkAndLoadFromSymbolTable(Class<T> t, SymbolReference ref, String printLabel) {
+	public <T extends AbstractConstantPoolEntry> T checkAndLoadFromSymbolTable(Class<T> t, SymbolReference ref) {
 		T result = null;
 		if (getSymbolTable().contains(ref.getSymbolName())) {
 			ISymbolTableEntry entry = getSymbolTable().get(ref.getSymbolName());
 			if (entry.getClass().equals(t)) {
 				result = (T)entry;
 			} else {
-				emitError(ref, "wrong constant pool entry, expected "+printLabel);
+				emitError(ref, "wrong constant pool entry, expected "+getConstLabel(t));
 			}
 		} else {
 			emitError(ref, "unknown constant "+ref.getSymbolName());
 		}
 		return result;
+	}
+	
+	public <T extends AbstractConstantPoolEntry> AbstractConstantPoolEntry checkAndLoadFromSymbolTable(Class<T> []t, SymbolReference ref) {
+		AbstractConstantPoolEntry result = null;
+		if (getSymbolTable().contains(ref.getSymbolName())) {
+			ISymbolTableEntry entry = getSymbolTable().get(ref.getSymbolName());
+			for (int i=0;i<t.length; i++) {
+				if (entry.getClass().equals(t[i])) {
+					result = (AbstractConstantPoolEntry)entry;
+				} 
+			}
+			if (result == null) {
+				StringBuffer buf = new StringBuffer();
+				for (int i=0;i<t.length; i++) {
+					if (i>0) {
+						buf.append(",");
+					}
+					buf.append(getConstLabel(t[i]));
+					
+				}
+				emitError(ref, "wrong constant pool entry, expected one of the following: "+buf.toString());
+			}
+			
+		} else {
+			emitError(ref, "unknown constant "+ref.getSymbolName());
+		}
+		return result;
+	}
+	
+	private <T extends AbstractConstantPoolEntry> String getConstLabel(Class<T> t) {
+		try {
+			Constructor<T> con = t.getConstructor(new Class[]{});
+			T inst = con.newInstance(new Object[]{});
+			return inst.getTypeLabel();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 

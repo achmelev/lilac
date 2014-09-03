@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeItem<IBytecodeItem>, IConstantPoolReference {
+public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeItem<IBytecodeItem>, IConstantPoolReference, IAttributesContainer {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
@@ -268,13 +268,13 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		pool.updateIndexes();
 		//this, super
 		if (thisClassSymbol != null) {
-			thisClass = pool.checkAndLoadFromSymbolTable(ClassInfo.class, thisClassSymbol, "classinfo");
+			thisClass = pool.checkAndLoadFromSymbolTable(ClassInfo.class, thisClassSymbol);
 		} else {
 			emitError(null, "missing name statement");
 		}
 		
 		if (superClassSymbol != null) {
-			superClass = pool.checkAndLoadFromSymbolTable(ClassInfo.class, superClassSymbol, "classinfo");
+			superClass = pool.checkAndLoadFromSymbolTable(ClassInfo.class, superClassSymbol);
 		}
 		//Modifier
 		modifier = new ClassModifier(0);

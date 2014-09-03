@@ -6,14 +6,21 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.DoubleInfo;
+import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
+import org.jasm.item.constantpool.IntegerInfo;
+import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.StringInfo;
+import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.parser.literals.SymbolReference;
 
 public class ConstantValueAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
 	
 	private int valueIndex = -1;
 	private AbstractConstantPoolEntry  valueEntry = null;
+	private SymbolReference valueReference;
 	
 	public ConstantValueAttributeContent(AbstractConstantPoolEntry entry) {
 		this.valueEntry = entry;
@@ -95,7 +102,7 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		valueEntry = getConstantPool().checkAndLoadFromSymbolTable(new Class[]{StringInfo.class,IntegerInfo.class,LongInfo.class,FloatInfo.class,DoubleInfo.class}, valueReference);
 	}
 
 	public AbstractConstantPoolEntry getConstantPoolEntry() {
@@ -116,4 +123,9 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 		return new AbstractConstantPoolEntry[]{(AbstractConstantPoolEntry)valueEntry};
 	}
 
+	public void setValueReference(SymbolReference valueReference) {
+		this.valueReference = valueReference;
+	}
+	
+	
 }

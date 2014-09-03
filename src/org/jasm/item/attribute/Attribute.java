@@ -129,6 +129,8 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		String name = null;
 		if (content instanceof SourceFileAttributeContent) {
 			name = "SourceFile";
+		} else if (content instanceof ConstantValueAttributeContent) {
+			name = "ConstantValue";
 		} else {
 			throw new IllegalStateException("unknown attribute content type: "+content.getClass());
 		}

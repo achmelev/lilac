@@ -43,6 +43,11 @@ public class DoubleLiteralTest {
 		f = -0x1.fffffffffffffp0;
 		Assert.assertEquals(f, new DoubleLiteral(0, 0, DoubleLiteral.createExactHexLiteral(f)).getValue());
 		
+		f = 0x1.9066666666666p6;
+		Assert.assertEquals("1.9066666666666p6", DoubleLiteral.createExactHexLiteral(f));
+		f = -0x1.9066666666666p6;
+		Assert.assertEquals("-1.9066666666666p6", DoubleLiteral.createExactHexLiteral(f));
+		
 	}
 	
 
