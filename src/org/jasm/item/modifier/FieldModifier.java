@@ -90,8 +90,20 @@ public class FieldModifier extends AbstractClassMemberModifier {
 	}
 
 	@Override
-	public void setFlag(String value) {
-		throw new NotImplementedException("");
+	public void setFlag(String label) {
+		boolean result = false;
+		result = result || setFlag(label, PUBLIC_LABEL, PUBLIC_BIT);
+		result = result || setFlag(label, PRIVATE_LABEL, PRIVATE_BIT);
+		result = result || setFlag(label, PROTECTED_LABEL, PROTECTED_BIT);
+		result = result || setFlag(label, STATIC_LABEL, STATIC_BIT);
+		result = result || setFlag(label, FINAL_LABEL, FINAL_BIT);
+		result = result || setFlag(label, VOLATILE_LABEL, VOLATILE_BIT);
+		result = result || setFlag(label, TRANSIENT_LABEL, TRANSIENT_BIT);
+		result = result || setFlag(label, SYNTETIC_LABEL, SYNTETIC_BIT);
+		result = result || setFlag(label, ENUM_LABEL, ENUM_BIT);
+		if (!result) {
+			throw new IllegalArgumentException("Illegal modifier label: "+label);
+		}
 		
 	}
 	

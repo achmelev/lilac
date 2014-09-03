@@ -94,9 +94,7 @@ public class MethodModifier extends AbstractClassMemberModifier {
 		result = result || setFlag(label, SYNCHRONIZED_LABEL, SYNCHRONIZED_BIT);
 		result = result || setFlag(label, VARARGS_LABEL, VARARGS_BIT);
 		result = result || setFlag(label, BRIDGE_LABEL, BRIDGE_BIT);
-		result = result || setFlag(label, VARARGS_LABEL, VARARGS_BIT);
 		result = result || setFlag(label, NATIVE_LABEL, NATIVE_BIT);
-		result = result || setFlag(label, ABSTRACT_LABEL, ABSTRACT_BIT);
 		result = result || setFlag(label, STRICT_LABEL, STRICT_BIT);
 		result = result || setFlag(label, SYNTETIC_LABEL, SYNTETIC_BIT);
 		if (!result) {

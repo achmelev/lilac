@@ -14,6 +14,7 @@ classmember: version SEMI
 			 | constpoolentry SEMI
 			 | classattribute
 			 | method
+			 | field
 			 ;
 			 
 			 
@@ -27,6 +28,7 @@ superclass: EXTENDS Identifier;
 classmodifier: MODIFIER classmodifierlabel (COMMA  classmodifierlabel)*;
 
 classmodifierlabel: PUBLIC 		# classmodifierPublic
+					| FINAL  		# classmodifierFinal
 					| SUPER  		# classmodifierSuper
 					| INTERFACE  	# classmodifierInterface
 					| ABSTRACT   	# classmodifierAbstract
@@ -70,15 +72,41 @@ methodmodifier: MODIFIER methodmodifierlabel (COMMA  methodmodifierlabel)*;
 methodmodifierlabel:  PUBLIC 		# methodmodifierPublic
 					| PRIVATE  		# methodmodifierPrivate
 					| PROTECTED  	# methodmodifierProtected
-					| ABSTRACT   	# methodmodifierAbstract
 					| STATIC 		# methodmodifierStatic
 					| FINAL         # methodmodifierFinal
 					| SYNCHRONIZED	# methodmodifierSynchronized
+					| BRIDGE	    # methodmodifierBridge
 					| VARARGS	    # methodmodifierVarargs
 					| NATIVE	    # methodmodifierNative
-					| ABSTRACT	    # methodmodifierAbstract
+					| ABSTRACT   	# methodmodifierAbstract
 					| STRICT 	    # methodmodifierStrict
 					| SYNTETIC 	    # methodmodifierSyntetic
+					;
+
+field  : FIELD  LBRACE
+					fieldmember*
+				  RBRACE;
+
+fieldmember: fieldname SEMI
+			  | fielddescriptor SEMI
+			  | fieldmodifier SEMI
+			  ;
+				  
+fieldname: NAME Identifier;
+fielddescriptor: DESCRIPTOR Identifier;
+
+fieldmodifier: MODIFIER fieldmodifierlabel (COMMA  fieldmodifierlabel)*;
+				  
+
+fieldmodifierlabel:  PUBLIC 		# fieldmodifierPublic
+					| PRIVATE  		# fieldmodifierPrivate
+					| PROTECTED  	# fieldmodifierProtected
+					| STATIC 		# fieldmodifierStatic
+					| FINAL         # fieldmodifierFinal
+					| VOLATILE  	# fieldmodifierVolatile
+					| TRANSIENT	    # fieldmodifierTransient
+					| SYNTETIC 	    # fieldmodifierSyntetic
+					| ENUM	 	    # fieldmodifierEnum
 					;
 
 label: Identifier;
@@ -114,8 +142,8 @@ NAMEANDTYPEINFO :  'nameandtype';
 ATTRIBUTES    :  'attributes';
 SOURCE        :  'source';
 FILE          :  'file';
-METHODS       :  'methods';
 METHOD        :  'method';
+FIELD         :  'field';
 DESCRIPTOR    :  'descriptor';
 PRIVATE       :  'private';
 PROTECTED     :  'protected';
@@ -124,6 +152,9 @@ SYNCHRONIZED  :  'synchronized';
 VARARGS       :  'varargs';
 NATIVE        :  'native';
 STRICT        :  'strict';
+VOLATILE      :  'volatile';
+TRANSIENT     :  'transient';
+BRIDGE        :  'bridge';
 
 
 //Version

@@ -42,7 +42,9 @@ public class Class1ParserTest extends AbstractParserTestCase {
 		Assert.assertEquals("Class1.java", ((SourceFileAttributeContent)clazz.getAttributes().get(0).getContent()).getValueEntry().getValue());
 		
 		Assert.assertNotNull(clazz.getMethods().getMethod("<init>", "(Ljava/lang/String;)V"));
-	
+		Assert.assertNotNull(clazz.getFields().getField("STRING_CONSTANT", "Ljava/lang/String;"));
+		Assert.assertNotNull(clazz.getFields().getField("SHORT_CONSTANT", "S"));
+		
 		Assert.assertEquals(1,clazz.getConstantPool().getFieldRefs("org/jasm/test/testclass/Class1", "STRING_CONSTANT", "Ljava/lang/String;").size());
 		
 		Assert.assertEquals(1,clazz.getConstantPool().getNameAndTypeInfos("STRING_CONSTANT", "Ljava/lang/String;").size());
