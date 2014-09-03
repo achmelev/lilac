@@ -90,6 +90,7 @@ field  : FIELD  LBRACE
 fieldmember: fieldname SEMI
 			  | fielddescriptor SEMI
 			  | fieldmodifier SEMI
+			  | fieldattribute
 			  ;
 				  
 fieldname: NAME Identifier;
@@ -109,6 +110,8 @@ fieldmodifierlabel:  PUBLIC 		# fieldmodifierPublic
 					| ENUM	 	    # fieldmodifierEnum
 					;
 
+fieldattribute : CONSTANT VALUE Identifier SEMI #fieldattributeConstantValue;
+
 label: Identifier;
 
 //Lexer
@@ -117,6 +120,7 @@ label: Identifier;
 
 CLASS         :  'class';
 CONST         :  'const';
+CONSTANT      :  'constant';
 VERSION       :  'version';
 NAME          :  'name';
 EXTENDS       :  'extends';
@@ -155,6 +159,7 @@ STRICT        :  'strict';
 VOLATILE      :  'volatile';
 TRANSIENT     :  'transient';
 BRIDGE        :  'bridge';
+VALUE         :  'value';
 
 
 //Version

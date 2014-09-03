@@ -6,8 +6,13 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public abstract class AbstractByteBuffer implements IByteBuffer {
+	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 
     
 
@@ -121,12 +126,21 @@ public abstract class AbstractByteBuffer implements IByteBuffer {
 	
 	@Override
 	public float readFloat(long offset) {
-		return Float.intBitsToFloat(readInt(offset));
+		int bits = readInt(offset);
+		float result = Float.intBitsToFloat(bits);
+		if (log.isDebugEnabled()) {
+			log.debug("readFloat from "+Integer.toHexString(bits)+",result="+Float.toHexString(result));
+		}
+		return result;
 	}
 
 
 	@Override
 	public void writeFloat(long offset, float value) {
+		int bits = Float.floatToIntBits(value);
+		if (log.isDebugEnabled()) {
+			log.debug("writeFloat from "+Float.toHexString(value)+",result="+Integer.toHexString(bits));
+		}
 		writeInt(offset, Float.floatToIntBits(value));
 		
 	}

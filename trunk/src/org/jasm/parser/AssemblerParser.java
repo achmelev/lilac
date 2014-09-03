@@ -20,9 +20,12 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.Attribute;
+import org.jasm.item.attribute.ConstantValueAttributeContent;
+import org.jasm.item.attribute.IAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Field;
+import org.jasm.item.clazz.IAttributesContainer;
 import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
@@ -52,6 +55,7 @@ import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
 import org.jasm.parser.JavaAssemblerParser.DoubleinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FieldContext;
+import org.jasm.parser.JavaAssemblerParser.FieldattributeConstantValueContext;
 import org.jasm.parser.JavaAssemblerParser.FielddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.FieldmodifierEnumContext;
 import org.jasm.parser.JavaAssemblerParser.FieldmodifierFinalContext;
@@ -441,13 +445,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterClassattributeSourceFile(
 			ClassattributeSourceFileContext ctx) {
-		Clazz clazz = (Clazz)stack.peek();
-		Attribute attr = new Attribute();
-		attr.setSourceLocation(createSourceLocation(ctx.SOURCE()));
-		clazz.getAttributes().add(attr);
 		SourceFileAttributeContent content = new SourceFileAttributeContent();
 		content.setValueLabel(createSymbolReference(ctx.Identifier()));
-		attr.setContent(content);
+		addAttribute(content, ctx.SOURCE());
 	}
 	
 
@@ -607,6 +607,17 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		stack.push(f);
 	}
 	
+	
+	
+	@Override
+	public void enterFieldattributeConstantValue(
+			FieldattributeConstantValueContext ctx) {
+		ConstantValueAttributeContent content = new ConstantValueAttributeContent();
+		content.setValueReference(createSymbolReference(ctx.Identifier()));
+		addAttribute(content, ctx.CONSTANT());
+	}
+
+
 	@Override
 	public void enterFieldname(FieldnameContext ctx) {
 		Field f = (Field)stack.peek();
@@ -757,8 +768,14 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		return new VersionLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
 	}
 	
-	private void createErrorMessageForSymbol(TerminalNode node, String msg) {
-		emitError(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), msg);
+	
+	
+	private void addAttribute(IAttributeContent content, TerminalNode node) {
+		IAttributesContainer container = (IAttributesContainer)stack.peek();
+		Attribute attr = new Attribute();
+		attr.setSourceLocation(createSourceLocation(node));
+		container.getAttributes().add(attr);
+		attr.setContent(content);
 	}
 	
 

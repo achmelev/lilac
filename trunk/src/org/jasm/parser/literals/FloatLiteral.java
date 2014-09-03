@@ -1,6 +1,11 @@
 package org.jasm.parser.literals;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FloatLiteral extends AbstractLiteral {
+	
+	private static Logger log = LoggerFactory.getLogger(FloatLiteral.class);
 
 	public FloatLiteral(int line, int charPosition, String content) {
 		super(line, charPosition, content);
@@ -51,6 +56,8 @@ public class FloatLiteral extends AbstractLiteral {
 			throw new NumberFormatException(""+value);
 		}
 		
+		
+		
 		int bits = Float.floatToIntBits(value);
 		
 		int signBit = (bits>>31)&0x1;
@@ -74,7 +81,7 @@ public class FloatLiteral extends AbstractLiteral {
 		mantisdigits[2] = Integer.toHexString((mantissBits>>11)&0xF);
 		mantisdigits[3] = Integer.toHexString((mantissBits>>7)&0xF);
 		mantisdigits[4] = Integer.toHexString((mantissBits>>3)&0xF);
-		mantisdigits[5] = Integer.toHexString((mantissBits)&0xF);
+		mantisdigits[5] = Integer.toHexString((mantissBits<<1)&0xF);
 		
 		int lastNonZeroIndex = 5;
 		while (lastNonZeroIndex>=0 && mantisdigits[lastNonZeroIndex].equals("0")) {
@@ -102,7 +109,11 @@ public class FloatLiteral extends AbstractLiteral {
 			}
 		}
 		
-		return buf.toString();
+		String result=  buf.toString();
+		if (log.isDebugEnabled()) {
+			log.debug("createExactHexLiteral "+Float.toHexString(value)+":"+Integer.toHexString(bits)+"("+Integer.toHexString(signBit)+","+Integer.toHexString(exponentBits)+","+Integer.toHexString(mantissBits)+")->"+result);
+		}
+		return result;
 	}
 	
 	private static float parseFromPositiveExactBinaryLiteral(String content) {
