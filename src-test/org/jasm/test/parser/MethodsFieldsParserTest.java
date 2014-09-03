@@ -1,16 +1,15 @@
 package org.jasm.test.parser;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class Class1ParserTest extends AbstractParserTestCase {
+public class MethodsFieldsParserTest extends AbstractParserTestCase {
 
 	@Override
 	protected String getDateiName() {
-		return "Class1.jasm";
+		return "MethodsFields.jasm";
 	}
 	
 	@Test
