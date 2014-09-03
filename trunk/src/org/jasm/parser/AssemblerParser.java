@@ -321,7 +321,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 
 	@Override
-	public void exitStringinfo(StringinfoContext ctx) {
+	public void enterStringinfo(StringinfoContext ctx) {
 		StringInfo entry = new StringInfo();
 		if (ctx.label() != null) {
 			entry.setLabel(createLabel(ctx.label().Identifier()));
@@ -342,8 +342,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		entry.setValueLiteral(createStringLiteral(ctx.StringLiteral()));
 		addConstantPoolEntry(entry);
 	}
-	
-	
 	
 
 
