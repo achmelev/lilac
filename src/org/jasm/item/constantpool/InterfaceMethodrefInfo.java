@@ -10,7 +10,6 @@ public class InterfaceMethodrefInfo extends AbstractRefInfo {
 
 	public InterfaceMethodrefInfo(ClassInfo clazz, NameAndTypeInfo nameAndType) {
 		super(clazz, nameAndType);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -21,7 +20,7 @@ public class InterfaceMethodrefInfo extends AbstractRefInfo {
 	
 	@Override
 	public String getTypeLabel() {
-		return  "const interfacemethodref";
+		return  "const intfmethodref";
 	}
 	
 	

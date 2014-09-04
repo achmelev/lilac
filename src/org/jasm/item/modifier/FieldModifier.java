@@ -1,6 +1,5 @@
 package org.jasm.item.modifier;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.JasmConsts;
 
 

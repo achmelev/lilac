@@ -1,10 +1,12 @@
 package org.jasm.test.testclass;
 
 public class Class3 implements Interface1 {
+	
+	Interface1 delegate;
 
 	@Override
-	public void testMethod(int a) {
-		
+	public void testMethod(int value) {
+		delegate.testMethod(value);
 	}
 	
 
