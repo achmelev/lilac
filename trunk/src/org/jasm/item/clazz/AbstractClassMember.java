@@ -3,6 +3,7 @@ package org.jasm.item.clazz;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
@@ -73,7 +74,10 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 		List<IPrintable> result = new ArrayList<IPrintable>();
 		result.add(new SimplePrintable(null, "name", new String[]{name.getSymbolName()}, name.getValue()));
 		result.add(new SimplePrintable(null, "descriptor", new String[]{descriptor.getSymbolName()}, descriptor.getValue()));
-		result.add(new SimplePrintable(null, "modifier", new String[]{modifier.toString()}, (String)null));
+		if (!modifier.hasNoFlags()) {
+			result.add(new SimplePrintable(null, "modifier", new String[]{modifier.toString()}, (String)null));
+		}
+		
 		result.add(attributes);
 		return result;
 	}

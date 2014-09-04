@@ -34,6 +34,7 @@ import org.jasm.item.constantpool.DoubleInfo;
 import org.jasm.item.constantpool.FieldrefInfo;
 import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IntegerInfo;
+import org.jasm.item.constantpool.InterfaceMethodrefInfo;
 import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.constantpool.NameAndTypeInfo;
@@ -70,6 +71,7 @@ import org.jasm.parser.JavaAssemblerParser.FieldnameContext;
 import org.jasm.parser.JavaAssemblerParser.FieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FloatinfoContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
+import org.jasm.parser.JavaAssemblerParser.InterfacemethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
@@ -356,6 +358,20 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			entry.setLabel(createLabel(ctx.label().Identifier()));
 		}
 		entry.setSourceLocation(createSourceLocation(ctx.METHODREFINFO()));
+		entry.setReferenceLabels(new SymbolReference[]{createSymbolReference(ctx.Identifier(0)),createSymbolReference(ctx.Identifier(1))});
+		addConstantPoolEntry(entry);
+	}
+	
+	
+
+
+	@Override
+	public void enterInterfacemethodrefinfo(InterfacemethodrefinfoContext ctx) {
+		InterfaceMethodrefInfo entry = new InterfaceMethodrefInfo();
+		if (ctx.label() != null) {
+			entry.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		entry.setSourceLocation(createSourceLocation(ctx.INTERFACEMETHODREFINFO()));
 		entry.setReferenceLabels(new SymbolReference[]{createSymbolReference(ctx.Identifier(0)),createSymbolReference(ctx.Identifier(1))});
 		addConstantPoolEntry(entry);
 	}

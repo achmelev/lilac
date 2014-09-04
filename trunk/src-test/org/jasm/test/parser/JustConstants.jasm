@@ -1,0 +1,47 @@
+class {
+  version 51_0;
+  name classref_0; // org/jasm/test/testclass/Class3
+  extends classref_2; // java/lang/Object
+  modifier public, abstract;
+   //Constants
+  const classref classref_0 utf8_1; // org/jasm/test/testclass/Class3
+  const utf8 utf8_1 "org/jasm/test/testclass/JustConstants";
+  const classref classref_2 utf8_3; // java/lang/Object
+  const utf8 utf8_3 "java/lang/Object";
+  const classref classref_4 utf8_5; // org/jasm/test/testclass/Interface1
+  const utf8 utf8_5 "org/jasm/test/testclass/Interface1";
+  const utf8 utf8_6 "delegate";
+  const utf8 utf8_7 "Lorg/jasm/test/testclass/Interface1;";
+  const utf8 utf8_8 "<init>";
+  const utf8 utf8_9 "()V";
+  const utf8 utf8_10 "Code";
+  const methodref methodref_11 classref_2, nameandtype_12; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype nameandtype_12 utf8_8, utf8_9; // name=<init> type=()V
+  const utf8 utf8_13 "LineNumberTable";
+  const utf8 utf8_14 "LocalVariableTable";
+  const utf8 utf8_15 "this";
+  const utf8 utf8_16 "Lorg/jasm/test/testclass/Class3;";
+  const utf8 utf8_17 "testMethod";
+  const utf8 utf8_18 "(I)V";
+  const fieldref fieldref_19 classref_0, nameandtype_20; // class=org/jasm/test/testclass/Class3, name=delegate, descriptor=Lorg/jasm/test/testclass/Interface1;
+  const nameandtype nameandtype_20 utf8_6, utf8_7; // name=delegate type=Lorg/jasm/test/testclass/Interface1;
+  const intfmethodref intfmethodref_21 classref_4, nameandtype_22; // class=org/jasm/test/testclass/Interface1, name=testMethod, descriptor=(I)V
+  const nameandtype nameandtype_22 utf8_17, utf8_18; // name=testMethod type=(I)V
+  const utf8 utf8_23 "value";
+  const utf8 utf8_24 "I";
+  const utf8 utf8_25 "SourceFile";
+  const utf8 utf8_26 "Class3.java";
+   
+   //Fields
+  field {
+    name utf8_6; // delegate
+    descriptor utf8_7; // Lorg/jasm/test/testclass/Interface1;
+  }
+  
+  method {
+    name utf8_17; // testMethod
+    descriptor utf8_18; // (I)V
+    modifier public, abstract;
+    
+  }
+}

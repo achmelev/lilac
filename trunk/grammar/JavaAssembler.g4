@@ -47,6 +47,7 @@ constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 				 | CONST FLOATINFO   label FloatingPointLiteral  #floatinfo
 				 | CONST DOUBLEINFO  label FloatingPointLiteral  #doubleinfo
 				 | CONST METHODREFINFO label Identifier COMMA  Identifier #methodrefinfo
+				 | CONST INTERFACEMETHODREFINFO label Identifier COMMA  Identifier #interfacemethodrefinfo
 				 | CONST NAMEANDTYPEINFO label Identifier COMMA  Identifier #nameandtypeinfo
 				 ;
 
@@ -142,6 +143,7 @@ LONGINFO      :  'long';
 FLOATINFO     :  'float';
 DOUBLEINFO     :  'double';
 METHODREFINFO :  'methodref';
+INTERFACEMETHODREFINFO : 'intfmethodref';
 NAMEANDTYPEINFO :  'nameandtype';
 ATTRIBUTES    :  'attributes';
 SOURCE        :  'source';
