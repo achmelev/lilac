@@ -10,6 +10,7 @@ clazz:
 classmember: version SEMI
 			 | classname SEMI
 			 | superclass SEMI
+			 | interfaces SEMI
 			 | classmodifier SEMI
 			 | constpoolentry SEMI
 			 | classattribute
@@ -24,6 +25,8 @@ version: VERSION VersionLiteral;
 classname: NAME Identifier;
 
 superclass: EXTENDS Identifier;
+
+interfaces: IMPLEMENTS Identifier ( COMMA Identifier)*;
 
 classmodifier: MODIFIER classmodifierlabel (COMMA  classmodifierlabel)*;
 
@@ -125,6 +128,7 @@ CONSTANT      :  'constant';
 VERSION       :  'version';
 NAME          :  'name';
 EXTENDS       :  'extends';
+IMPLEMENTS    :  'implements';
 MODIFIER      :  'modifier';
 PUBLIC        :  'public';
 FINAL         :  'final';

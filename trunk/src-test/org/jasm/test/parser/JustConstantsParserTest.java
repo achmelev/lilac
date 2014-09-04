@@ -5,7 +5,7 @@ import org.jasm.item.clazz.Clazz;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class JustConstantsTest extends AbstractParserTestCase {
+public class JustConstantsParserTest extends AbstractParserTestCase {
 
 	@Override
 	protected String getDateiName() {
