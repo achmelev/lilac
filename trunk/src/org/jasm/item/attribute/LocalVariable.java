@@ -85,7 +85,7 @@ public class LocalVariable extends AbstractByteCodeItem implements IConstantPool
 
 	@Override
 	public String getPrintArgs() {
-		return startInstruction.getPrintLabel()+", "+((endIndsruction==null)?JasmConsts.NIL:endIndsruction.getPrintLabel())+", "+name.getSymbolName()+", "+descriptor.getSymbolName()+", "+getVariableType()+"loc"+index;
+		return startInstruction.getPrintLabel()+", "+((endIndsruction==null)?JasmConsts.NIL:endIndsruction.getPrintLabel())+", "+name.getSymbolName()+", "+descriptor.getSymbolName()+", "+getVariableType()+"_"+index;
 	}
 
 	@Override

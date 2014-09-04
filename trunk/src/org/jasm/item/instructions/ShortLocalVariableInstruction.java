@@ -35,7 +35,7 @@ public class ShortLocalVariableInstruction extends AbstractInstruction implement
 	@Override
 	public String getPrintArgs() {
 		char type = getPrintName().charAt(0);
-		return type+"loc"+localVariableIndex;
+		return type+"_"+localVariableIndex;
 				
 	}
 

@@ -1,5 +1,7 @@
 package org.jasm.item.instructions;
 
+import org.jasm.JasmConsts;
+
 public class LocalVariable implements Comparable<LocalVariable> {
 	
 	private int index;;
@@ -46,12 +48,20 @@ public class LocalVariable implements Comparable<LocalVariable> {
 	}
 
 	public String toString() {
-		return type+"loc"+index;
+		return type+"_"+index;
 	}
 
 	@Override
 	public int compareTo(LocalVariable o) {
 		return new Integer(index).compareTo(new Integer(o.getIndex()));
+	}
+	
+	public int getLength() {
+		if (type == JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE || type == JasmConsts.LOCAL_VARIABLE_TYPE_LONG) {
+			return 2;
+		} else {
+			return 1;
+		}
 	}
 	
 

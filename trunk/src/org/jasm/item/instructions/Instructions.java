@@ -239,7 +239,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			result.add(new SimplePrintable(null, null, (String)null,"Variables"));
 		}
 		
-		for (LocalVariable loc: localVariableReferencesList) {
+		for (int i=0;i<localVariableReferencesList.size(); i++) {
+			LocalVariable loc = localVariableReferencesList.get(i);
 			String type = null;
 			if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE) {
 				type = JasmConsts.TYPENAME_OBJECT;
@@ -256,7 +257,11 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			} else {
 				throw new IllegalStateException("Unknown type: "+loc.getType());
 			}
-			result.add(new SimplePrintable(null, "var "+type, new String[]{loc.toString(),loc.getIndex()+""}, (String[])null));
+			
+			String offset = getOffset(localVariableReferencesList, i);
+			String [] args = (offset == null)?new String[]{loc.toString()}:new String[]{loc.toString()+" at "+offset};
+			
+			result.add(new SimplePrintable(null, "var "+type, args, (String[])null));
 			
 		}
 		if (items.size() > 0) {
@@ -264,6 +269,26 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		}
 		result.addAll(items);
 		return result;
+	}
+	
+	private String getOffset(List<LocalVariable> variables, int index) {
+		LocalVariable loc = variables.get(index);
+		if (index == 0 && loc.getIndex()==0) {
+			return null;
+		} else if (index == 0 && loc.getIndex() > 0) {
+			return "loc.getIndex()";
+		} else if (index>0 && loc.getIndex()==variables.get(index-1).getIndex()+variables.get(index-1).getLength()) {
+			return null;
+		} else if (index>0 && loc.getIndex()!=variables.get(index-1).getIndex()+variables.get(index-1).getLength()) {
+			int gap = loc.getIndex()-variables.get(index-1).getIndex();
+			if (gap == 0) {
+				return variables.get(index-1).toString();
+			} else {
+				return variables.get(index-1).toString()+"+"+gap;
+			}
+		} else {
+			throw new IllegalStateException("");
+		}
 	}
 
 

@@ -62,7 +62,7 @@ public class IincInstruction extends AbstractInstruction implements ILocalVariab
 	@Override
 	public String getPrintArgs() {
 		char type = JasmConsts.LOCAL_VARIABLE_TYPE_INT;
-		return type+"loc"+localVariableIndex;
+		return type+"_"+localVariableIndex;
 	}
 
 	@Override
