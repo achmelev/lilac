@@ -41,6 +41,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	private ClassInfo superClass;
 	private int superClassIndex = -1;
 	private SymbolReference superClassSymbol;
+	private List<SymbolReference> interfaceSymbols;
 	private List<ClassInfo> interfaces;
 	private List<Integer> interfacesIndexes = null;
 	private Fields fields = null;
@@ -276,6 +277,17 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		if (superClassSymbol != null) {
 			superClass = pool.checkAndLoadFromSymbolTable(ClassInfo.class, superClassSymbol);
 		}
+		
+		//interfaces
+		if (interfaceSymbols != null) {
+			for (SymbolReference ref: interfaceSymbols) {
+				ClassInfo cl = pool.checkAndLoadFromSymbolTable(ClassInfo.class, ref);
+				if (cl != null) {
+					interfaces.add(cl);
+				}
+			}
+		}
+		
 		//Modifier
 		modifier = new ClassModifier(0);
 		for (Keyword k: modifierLiterals) {
@@ -432,6 +444,14 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 
 	public AssemblerParser getParser() {
 		return parser;
+	}
+
+	public List<SymbolReference> getInterfaceSymbols() {
+		return interfaceSymbols;
+	}
+
+	public void setInterfaceSymbols(List<SymbolReference> interfaceSymbols) {
+		this.interfaceSymbols = interfaceSymbols;
 	}
 
 	

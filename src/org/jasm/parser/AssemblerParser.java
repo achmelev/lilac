@@ -72,6 +72,7 @@ import org.jasm.parser.JavaAssemblerParser.FieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FloatinfoContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacemethodrefinfoContext;
+import org.jasm.parser.JavaAssemblerParser.InterfacesContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
@@ -243,6 +244,22 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 	
 	
+
+
+	@Override
+	public void enterInterfaces(InterfacesContext ctx) {
+		Clazz clazz = (Clazz)stack.peek();
+		if (clazz.getInterfaceSymbols() == null) {
+			List<TerminalNode> nodes = ctx.Identifier();
+			List<SymbolReference> symbols = new ArrayList<>();
+			for (TerminalNode node: nodes) {
+				symbols.add(createSymbolReference(node));
+			}
+			clazz.setInterfaceSymbols(symbols);
+		} else {
+			emitError(ctx.IMPLEMENTS(), "multiple interfaces statements");
+		}
+	}
 
 
 	@Override

@@ -1,6 +1,5 @@
 package org.jasm.test.parser;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class Interface1AssembleDisassembleTest extends AbstractDisassembleAssembleTestCase {
