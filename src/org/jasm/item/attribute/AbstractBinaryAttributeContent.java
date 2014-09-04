@@ -2,7 +2,7 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
-import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
@@ -51,9 +51,7 @@ public abstract class AbstractBinaryAttributeContent extends AbstractSimpleAttri
 	
 	@Override
 	public String getPrintArgs() {
-		StringBuffer buf = new StringBuffer();
-		buf.append("0x"+new String(Hex.encodeHex(data)));
-		return buf.toString();
+		return "["+Base64.encodeBase64String(data)+"]";
 	}
 
 
