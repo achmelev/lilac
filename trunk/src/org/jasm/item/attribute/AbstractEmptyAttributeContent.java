@@ -62,7 +62,7 @@ public abstract class AbstractEmptyAttributeContent extends AbstractSimpleAttrib
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		
 	}
 
 	

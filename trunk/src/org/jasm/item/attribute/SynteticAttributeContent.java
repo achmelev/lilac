@@ -4,7 +4,7 @@ public class SynteticAttributeContent extends AbstractEmptyAttributeContent {
 
 	@Override
 	public String getPrintName() {
-		return "syntetic";
+		return "synthetic";
 	}
 	
 	@Override

@@ -21,10 +21,12 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
+import org.jasm.item.attribute.DeprecatedAttributeContent;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
 import org.jasm.item.attribute.IAttributeContent;
 import org.jasm.item.attribute.SignatureAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
+import org.jasm.item.attribute.SynteticAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Field;
 import org.jasm.item.clazz.IAttributesContainer;
@@ -56,6 +58,7 @@ import org.jasm.parser.JavaAssemblerParser.ClassmodifierSuperContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
+import org.jasm.parser.JavaAssemblerParser.DeprecatedattributeContext;
 import org.jasm.parser.JavaAssemblerParser.DoubleinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FieldContext;
 import org.jasm.parser.JavaAssemblerParser.FieldattributeConstantValueContext;
@@ -98,6 +101,7 @@ import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SignatureattributeContext;
 import org.jasm.parser.JavaAssemblerParser.StringinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
+import org.jasm.parser.JavaAssemblerParser.SynteticattributeContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
 import org.jasm.parser.literals.DoubleLiteral;
@@ -760,14 +764,24 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		stack.pop();
 	}
 	
-	
-
-
 	@Override
 	public void enterSignatureattribute(SignatureattributeContext ctx) {
 		SignatureAttributeContent content = new SignatureAttributeContent();
 		content.setValueLabel(createSymbolReference(ctx.Identifier()));
 		addAttribute(content, ctx.SIGNATURE());
+	}
+
+	@Override
+	public void enterDeprecatedattribute(DeprecatedattributeContext ctx) {
+		DeprecatedAttributeContent content = new DeprecatedAttributeContent();
+		addAttribute(content, ctx.DEPRECATED());
+	}
+
+
+	@Override
+	public void enterSynteticattribute(SynteticattributeContext ctx) {
+		SynteticAttributeContent content = new SynteticAttributeContent();
+		addAttribute(content, ctx.SYNTETIC());
 	}
 
 
