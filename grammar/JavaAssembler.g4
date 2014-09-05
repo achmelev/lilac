@@ -56,7 +56,9 @@ constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 
 
 
-classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile;
+classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile
+			   | signatureattribute #classattributeSignature
+			   ;
 
 method  : METHOD  LBRACE
 					methodmember*
@@ -89,6 +91,7 @@ methodmodifierlabel:  PUBLIC 		# methodmodifierPublic
 					;
 
 methodattribute: THROWS Identifier (COMMA Identifier)* SEMI #methodAttributeExceptions
+				 | signatureattribute #methodAttributeSignature
 				 ;
 
 field  : FIELD  LBRACE
@@ -118,7 +121,12 @@ fieldmodifierlabel:  PUBLIC 		# fieldmodifierPublic
 					| ENUM	 	    # fieldmodifierEnum
 					;
 
-fieldattribute : CONSTANT VALUE Identifier SEMI #fieldattributeConstantValue;
+fieldattribute : CONSTANT VALUE Identifier SEMI #fieldattributeConstantValue
+				  | signatureattribute #fieldAttributeSignature
+				 ;
+
+
+signatureattribute: SIGNATURE Identifier SEMI;
 
 label: Identifier;
 
@@ -171,7 +179,7 @@ TRANSIENT     :  'transient';
 BRIDGE        :  'bridge';
 VALUE         :  'value';
 THROWS        :  'throws';
-
+SIGNATURE     :  'signature';
 
 //Version
 
