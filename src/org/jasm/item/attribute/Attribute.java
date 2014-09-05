@@ -132,6 +132,10 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 			name = "Exceptions";
 		} else if (content instanceof SignatureAttributeContent) {
 			name = "Signature";
+		} else if (content instanceof SynteticAttributeContent) {
+			name = "Synthetic";
+		} else if (content instanceof DeprecatedAttributeContent) {
+			name = "Deprecated";
 		} else {
 			throw new IllegalStateException("unknown attribute content type: "+content.getClass());
 		}

@@ -58,6 +58,8 @@ constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 
 classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile
 			   | signatureattribute #classattributeSignature
+			   | synteticattribute #classAttributeSyntetic
+			   | deprecatedattribute #classAttributeDeprecated
 			   ;
 
 method  : METHOD  LBRACE
@@ -92,6 +94,8 @@ methodmodifierlabel:  PUBLIC 		# methodmodifierPublic
 
 methodattribute: THROWS Identifier (COMMA Identifier)* SEMI #methodAttributeExceptions
 				 | signatureattribute #methodAttributeSignature
+				 | synteticattribute #methodAttributeSyntetic
+				 | deprecatedattribute #methodAttributeDeprecated
 				 ;
 
 field  : FIELD  LBRACE
@@ -123,10 +127,14 @@ fieldmodifierlabel:  PUBLIC 		# fieldmodifierPublic
 
 fieldattribute : CONSTANT VALUE Identifier SEMI #fieldattributeConstantValue
 				  | signatureattribute #fieldAttributeSignature
+				  | synteticattribute #fieldAttributeSyntetic
+				  | deprecatedattribute #fieldAttributeDeprecated
 				 ;
 
 
 signatureattribute: SIGNATURE Identifier SEMI;
+synteticattribute: SYNTETIC SEMI;
+deprecatedattribute: DEPRECATED SEMI;
 
 label: Identifier;
 
@@ -147,7 +155,7 @@ FINAL         :  'final';
 SUPER         :  'super';
 INTERFACE     :  'interface';
 ABSTRACT      :  'abstract';
-SYNTETIC      :  'syntetic';
+SYNTETIC      :  'synthetic';
 ANNOTATION    :  'annotation';
 ENUM          :  'enum';
 CLASSINFO     :  'classref';
@@ -180,6 +188,7 @@ BRIDGE        :  'bridge';
 VALUE         :  'value';
 THROWS        :  'throws';
 SIGNATURE     :  'signature';
+DEPRECATED    :  'deprecated';
 
 //Version
 
