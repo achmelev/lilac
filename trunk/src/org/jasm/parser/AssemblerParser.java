@@ -23,6 +23,7 @@ import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
 import org.jasm.item.attribute.IAttributeContent;
+import org.jasm.item.attribute.SignatureAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Field;
@@ -94,6 +95,7 @@ import org.jasm.parser.JavaAssemblerParser.MethodmodifierVarargsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodnameContext;
 import org.jasm.parser.JavaAssemblerParser.MethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
+import org.jasm.parser.JavaAssemblerParser.SignatureattributeContext;
 import org.jasm.parser.JavaAssemblerParser.StringinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
@@ -756,6 +758,16 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void exitField(FieldContext ctx) {
 		stack.pop();
+	}
+	
+	
+
+
+	@Override
+	public void enterSignatureattribute(SignatureattributeContext ctx) {
+		SignatureAttributeContent content = new SignatureAttributeContent();
+		content.setValueLabel(createSymbolReference(ctx.Identifier()));
+		addAttribute(content, ctx.SIGNATURE());
 	}
 
 
