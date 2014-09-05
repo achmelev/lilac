@@ -1,6 +1,8 @@
 package org.jasm.test.testclass;
 
-public interface Interface1 {
+import java.io.IOException;
+
+public interface Interface2WithExceptions {
 	
 	public static String STRING_CONSTANT = "HELLO WORLD";
 	public static short  SHORT_CONSTANT = 10;
@@ -9,7 +11,7 @@ public interface Interface1 {
 	public static float  FLOAT_CONSTANT = 10.10f;
 	public static double DOUBLE_CONSTANT = 100.10;
 	
-	public abstract void testMethod(int a);
+	public abstract void testMethod(int a) throws IOException, IllegalArgumentException;
 	
 
 }

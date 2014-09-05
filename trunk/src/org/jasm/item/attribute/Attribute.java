@@ -76,9 +76,6 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 	@Override
 	protected void doResolveAfterParse() {
 		this.name = selectNameEntry();
-		if (name == null) {
-			emitError(null, "not utf8info entry containing 'SourceFile' found");
-		}
 		this.content.resolve();
 	}
 	
@@ -131,11 +128,14 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 			name = "SourceFile";
 		} else if (content instanceof ConstantValueAttributeContent) {
 			name = "ConstantValue";
+		} else if (content instanceof ExceptionsAttributeContent) {
+			name = "Exceptions";
 		} else {
 			throw new IllegalStateException("unknown attribute content type: "+content.getClass());
 		}
 		List<Utf8Info> infos = getConstantPool().getUtf8Infos(name);
 		if (infos.size() == 0){
+			emitError(null, "missing utf8info constant containing '"+name+"'");
 			return null;
 		} else {
 			return infos.get(0);
