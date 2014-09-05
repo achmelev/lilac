@@ -21,6 +21,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
+import org.jasm.item.attribute.ExceptionsAttributeContent;
 import org.jasm.item.attribute.IAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.clazz.Clazz;
@@ -74,6 +75,7 @@ import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacemethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacesContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
+import org.jasm.parser.JavaAssemblerParser.MethodAttributeExceptionsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierAbstractContext;
@@ -607,6 +609,21 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		} else {
 			emitError(ctx.NAME(), "multiple method name statements within the same method statement");
 		}
+	}
+
+	@Override
+	public void enterMethodAttributeExceptions(
+			MethodAttributeExceptionsContext ctx) {
+		ExceptionsAttributeContent content = new ExceptionsAttributeContent();
+		
+		List<TerminalNode> nodes = ctx.Identifier();
+		List<SymbolReference> symbols = new ArrayList<>();
+		for (TerminalNode node: nodes) {
+			symbols.add(createSymbolReference(node));
+		}
+		
+		content.setExceptionReferences(symbols);
+		addAttribute(content, ctx.THROWS());
 	}
 
 

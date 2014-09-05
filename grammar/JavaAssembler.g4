@@ -65,6 +65,7 @@ method  : METHOD  LBRACE
 methodmember: methodname SEMI
 			  | methoddescriptor SEMI
 			  | methodmodifier SEMI
+			  | methodattribute
 			  ;
 				  
 methodname: NAME Identifier;
@@ -86,6 +87,9 @@ methodmodifierlabel:  PUBLIC 		# methodmodifierPublic
 					| STRICT 	    # methodmodifierStrict
 					| SYNTETIC 	    # methodmodifierSyntetic
 					;
+
+methodattribute: THROWS Identifier (COMMA Identifier)* SEMI #methodAttributeExceptions
+				 ;
 
 field  : FIELD  LBRACE
 					fieldmember*
@@ -166,6 +170,7 @@ VOLATILE      :  'volatile';
 TRANSIENT     :  'transient';
 BRIDGE        :  'bridge';
 VALUE         :  'value';
+THROWS        :  'throws';
 
 
 //Version

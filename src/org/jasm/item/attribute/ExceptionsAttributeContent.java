@@ -3,19 +3,18 @@ package org.jasm.item.attribute;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
-import org.jasm.item.IBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
+import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.IConstantPoolReference;
-import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
+import org.jasm.parser.literals.SymbolReference;
 
 public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
 	
 	private int [] indexes = null; 
+	private List<SymbolReference> exceptionReferences;
 	private ClassInfo[] classInfos = null;
 	
 	public ExceptionsAttributeContent(ClassInfo[] classInfos) {
@@ -68,7 +67,7 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 	
 	@Override
 	public String getPrintName() {
-		return "exceptions";
+		return "throws";
 	}
 	
 	@Override
@@ -114,7 +113,16 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		ConstantPool pool = getConstantPool();
+		List<ClassInfo> exceptions = new ArrayList<>();
+		for (SymbolReference ref: exceptionReferences) {
+			ClassInfo cl = pool.checkAndLoadFromSymbolTable(ClassInfo.class, ref);
+			if (cl != null) {
+				exceptions.add(cl);
+			}
+		}
+		classInfos = new ClassInfo[exceptions.size()];
+		classInfos = exceptions.toArray(classInfos);
 	}
 
 	
@@ -135,5 +143,11 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return classInfos;
 	}
+
+	public void setExceptionReferences(List<SymbolReference> exceptionReferences) {
+		this.exceptionReferences = exceptionReferences;
+	}
+	
+	
 
 }
