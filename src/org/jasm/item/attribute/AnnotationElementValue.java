@@ -202,8 +202,10 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 
 	@Override
 	public String getPrintName() {
-		return "value";
+		return getPrintPrefix()+" value";
 	}
+	
+	
 	
 	@Override
 	public String getTypeLabel() {
@@ -300,6 +302,26 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 	
 	public boolean isArray() {
 		return (tag == '[');
+	}
+	
+	private String getPrintPrefix() {
+		String result = null;
+		switch (tag) {
+			case 'B': result = "byte";break;
+			case 'C': result = "char";break;
+			case 'D': result = "double";break;
+			case 'F': result = "float";break;
+			case 'I': result = "int";break;
+			case 'J': result = "long";break;
+			case 'S': result = "short";break;
+			case 'Z': result = "boolean";break;
+			case 'e': result = "enum";break;
+			case 'c': result = "class";break;
+			case '@': result = "nested";break;
+			case '[': result = "array";break;
+			default: throw new IllegalStateException("unknown tag: "+tag);
+		}
+		return result;
 	}
 
 	@Override
