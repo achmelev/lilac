@@ -13,6 +13,7 @@ public @interface TestAnnotation {
 	int intValue();
 	long longValue();
 	boolean booleanValue();
+	Days enumValue();
 	Class clazzValue();
 	int [] intArrayValue() ;
 	NestedAnnotation nestedAnnotation();
