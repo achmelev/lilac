@@ -136,6 +136,10 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 			name = "Synthetic";
 		} else if (content instanceof DeprecatedAttributeContent) {
 			name = "Deprecated";
+		} else if (content instanceof RuntimeInvisibleAnnotationsAttributeContent) {
+			name = "RuntimeInvisibleAnnotations";
+		} else if (content instanceof RuntimeVisibleAnnotationsAttributeContent) {
+			name = "RuntimeVisibleAnnotations";
 		} else {
 			throw new IllegalStateException("unknown attribute content type: "+content.getClass());
 		}

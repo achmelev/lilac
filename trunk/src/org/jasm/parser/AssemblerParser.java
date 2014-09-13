@@ -15,6 +15,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -374,7 +375,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (ctx.label() != null) {
 			entry.setLabel(createLabel(ctx.label().Identifier()));
 		}
-		entry.setSourceLocation(createSourceLocation(ctx.STRINGINFO()));
+		entry.setSourceLocation(createSourceLocation(ctx.STRING()));
 		entry.setReferenceLabels(new SymbolReference[]{createSymbolReference(ctx.Identifier())});
 		addConstantPoolEntry(entry);
 	}
@@ -453,7 +454,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (ctx.label() != null) {
 			entry.setLabel(createLabel(ctx.label().Identifier()));
 		}
-		entry.setSourceLocation(createSourceLocation(ctx.INTEGERINFO()));
+		entry.setSourceLocation(createSourceLocation(ctx.INT()));
 		entry.setValueLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
 		addConstantPoolEntry(entry);
 	}
@@ -468,7 +469,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (ctx.label() != null) {
 			entry.setLabel(createLabel(ctx.label().Identifier()));
 		}
-		entry.setSourceLocation(createSourceLocation(ctx.LONGINFO()));
+		entry.setSourceLocation(createSourceLocation(ctx.LONG()));
 		entry.setValueLiteral(createLongLiteral(ctx.IntegerLiteral()));
 		addConstantPoolEntry(entry);
 	}
@@ -480,7 +481,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (ctx.label() != null) {
 			entry.setLabel(createLabel(ctx.label().Identifier()));
 		}
-		entry.setSourceLocation(createSourceLocation(ctx.FLOATINFO()));
+		entry.setSourceLocation(createSourceLocation(ctx.FLOAT()));
 		entry.setValueLiteral(createFloatLiteral(ctx.FloatingPointLiteral()));
 		addConstantPoolEntry(entry);
 	}
@@ -494,7 +495,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (ctx.label() != null) {
 			entry.setLabel(createLabel(ctx.label().Identifier()));
 		}
-		entry.setSourceLocation(createSourceLocation(ctx.DOUBLEINFO()));
+		entry.setSourceLocation(createSourceLocation(ctx.DOUBLE()));
 		entry.setValueLiteral(createDoubleLiteral(ctx.FloatingPointLiteral()));
 		addConstantPoolEntry(entry);
 	}
@@ -808,8 +809,8 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterAnnotationdeclaration(AnnotationdeclarationContext ctx) {
 		boolean rootAnnotation = (ctx.getParent() instanceof AnnotationContext);
+		boolean nestedAnnotation = (ctx.getParent() instanceof AnnotationelementvalueContext);
 		Annotation annot = new Annotation();
-		stack.push(annot);
 		if (rootAnnotation) {
 			boolean invisible = ((AnnotationContext)ctx.getParent()).INVISIBLE() != null;
 			AbstractAnnotationsAttributeContent content = null;
@@ -825,15 +826,17 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 				annot.setSourceLocation(createSourceLocation(ctx.ANNOTATION()));
 			}
 			
-		} else {
-			AnnotationElementValue value = (AnnotationElementValue)stack.peek();
-			if (!value.isNested()) {
-				throw new IllegalStateException("Unexpected annotation value on the stack: "+value.getTag());
-			}
+		} else if (nestedAnnotation){
+			AnnotationElementValue value = new AnnotationElementValue();
+			value.setTag('@');
+			addAnnotationValue(value);
 			annot.setSourceLocation(createSourceLocation(ctx.ANNOTATION()));
 			value.setNestedAnnotation(annot);
 			
+		} else {
+			throw new IllegalStateException("");
 		}
+		stack.push(annot);
 	}
 	
 
@@ -864,13 +867,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	
 
-	@Override
-	public void enterAnnotationelementvalue(AnnotationelementvalueContext ctx) {
-		AnnotationElementValue value = new AnnotationElementValue();
-		value.setTag('@');
-		addAnnotationValue(value);
-		stack.push(value);
-	}
+	
 	
 	
 
@@ -879,6 +876,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			ArrayannotationelementvalueContext ctx) {
 		AnnotationElementValue value = new AnnotationElementValue();
 		value.setTag('[');
+		addAnnotationValue(value);
 		stack.push(value);
 	}
 	
@@ -958,13 +956,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		stack.pop();
 	}
 	
-	
-
-	@Override
-	public void exitAnnotationelementvalue(AnnotationelementvalueContext ctx) {
-		stack.pop();
-	}
-
 
 	@Override
 	public void exitArrayannotationelementvalue(
@@ -1058,6 +1049,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			IAttributeContent content;
 			try {
 				content = clazz.newInstance();
+				attr.setContent(content);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
