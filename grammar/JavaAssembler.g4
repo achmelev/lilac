@@ -60,6 +60,7 @@ classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile
 			   | signatureattribute #classattributeSignature
 			   | synteticattribute #classAttributeSyntetic
 			   | deprecatedattribute #classAttributeDeprecated
+			   | annotation #classAnnotation 
 			   ;
 
 method  : METHOD  LBRACE
@@ -96,6 +97,7 @@ methodattribute: THROWS Identifier (COMMA Identifier)* SEMI #methodAttributeExce
 				 | signatureattribute #methodAttributeSignature
 				 | synteticattribute #methodAttributeSyntetic
 				 | deprecatedattribute #methodAttributeDeprecated
+				 | annotation #methodAnnotation 
 				 ;
 
 field  : FIELD  LBRACE
@@ -129,12 +131,38 @@ fieldattribute : CONSTANT VALUE Identifier SEMI #fieldattributeConstantValue
 				  | signatureattribute #fieldAttributeSignature
 				  | synteticattribute #fieldAttributeSyntetic
 				  | deprecatedattribute #fieldAttributeDeprecated
+				  | annotation #fieldAnnotation 
 				 ;
 
 
 signatureattribute: SIGNATURE Identifier SEMI;
 synteticattribute: SYNTETIC SEMI;
 deprecatedattribute: DEPRECATED SEMI;
+
+annotation: INVISIBLE? annotationdeclaration;
+
+annotationdeclaration: ANNOTATION  LBRACE
+						 annotationtype SEMI
+						 annotationelement*
+					   RBRACE;
+					   
+annotationtype: TYPE Identifier;
+
+annotationelement: ELEMENT LBRACE
+					 annotationelementname SEMI
+					 annotationelementvalue
+				   RBRACE;
+				   
+annotationelementname: NAME Identifier;
+
+annotationelementvalue: simpleannotationelementvalue|enumannotationelementvalue|arrayannotationelementvalue|annotationdeclaration;
+
+simpleannotationelementvalue: (BYTE|CHAR|FLOAT|DOUBLE|INT|LONG|SHORT|STRING|BOOLEAN|CLASS) VALUE Identifier SEMI;
+enumannotationelementvalue: ENUM VALUE Identifier COMMA Identifier SEMI;
+arrayannotationelementvalue: ARRAY VALUE LBRACE
+								annotationelementvalue*
+							 RBRACE;
+
 
 label: Identifier;
 
@@ -189,6 +217,19 @@ VALUE         :  'value';
 THROWS        :  'throws';
 SIGNATURE     :  'signature';
 DEPRECATED    :  'deprecated';
+INVISIBLE     :  'invisible';
+TYPE          :  'type';
+ELEMENT       :  'element';
+BYTE          :  'byte';
+CHAR          :  'char';
+DOUBLE        :  'double';
+FLOAT         :  'float';
+INT           :  'int';
+LONG          :  'long';
+SHORT         :  'short';
+STRING        :  'string';
+BOOLEAN       :  'boolean';
+ARRAY         :  'array';
 
 //Version
 

@@ -7,6 +7,8 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Stack;
 
+
+
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -19,11 +21,17 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.jasm.item.IBytecodeItem;
+import org.jasm.item.attribute.AbstractAnnotationsAttributeContent;
+import org.jasm.item.attribute.Annotation;
+import org.jasm.item.attribute.AnnotationElementNameValue;
+import org.jasm.item.attribute.AnnotationElementValue;
 import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
 import org.jasm.item.attribute.DeprecatedAttributeContent;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
 import org.jasm.item.attribute.IAttributeContent;
+import org.jasm.item.attribute.RuntimeInvisibleAnnotationsAttributeContent;
+import org.jasm.item.attribute.RuntimeVisibleAnnotationsAttributeContent;
 import org.jasm.item.attribute.SignatureAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.attribute.SynteticAttributeContent;
@@ -45,6 +53,13 @@ import org.jasm.item.constantpool.NameAndTypeInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.ClassModifier;
+import org.jasm.parser.JavaAssemblerParser.AnnotationContext;
+import org.jasm.parser.JavaAssemblerParser.AnnotationdeclarationContext;
+import org.jasm.parser.JavaAssemblerParser.AnnotationelementContext;
+import org.jasm.parser.JavaAssemblerParser.AnnotationelementnameContext;
+import org.jasm.parser.JavaAssemblerParser.AnnotationelementvalueContext;
+import org.jasm.parser.JavaAssemblerParser.AnnotationtypeContext;
+import org.jasm.parser.JavaAssemblerParser.ArrayannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
 import org.jasm.parser.JavaAssemblerParser.ClassinfoContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierAbstractContext;
@@ -60,6 +75,7 @@ import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
 import org.jasm.parser.JavaAssemblerParser.DeprecatedattributeContext;
 import org.jasm.parser.JavaAssemblerParser.DoubleinfoContext;
+import org.jasm.parser.JavaAssemblerParser.EnumannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.FieldContext;
 import org.jasm.parser.JavaAssemblerParser.FieldattributeConstantValueContext;
 import org.jasm.parser.JavaAssemblerParser.FielddescriptorContext;
@@ -99,6 +115,7 @@ import org.jasm.parser.JavaAssemblerParser.MethodnameContext;
 import org.jasm.parser.JavaAssemblerParser.MethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SignatureattributeContext;
+import org.jasm.parser.JavaAssemblerParser.SimpleannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.StringinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
 import org.jasm.parser.JavaAssemblerParser.SynteticattributeContext;
@@ -783,15 +800,191 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		SynteticAttributeContent content = new SynteticAttributeContent();
 		addAttribute(content, ctx.SYNTETIC());
 	}
+	
+	//Annotations
+	
+	
+	
+	@Override
+	public void enterAnnotationdeclaration(AnnotationdeclarationContext ctx) {
+		boolean rootAnnotation = (ctx.getParent() instanceof AnnotationContext);
+		Annotation annot = new Annotation();
+		stack.push(annot);
+		if (rootAnnotation) {
+			boolean invisible = ((AnnotationContext)ctx.getParent()).INVISIBLE() != null;
+			AbstractAnnotationsAttributeContent content = null;
+			if (invisible) {
+				content = getAttributeContentCreatingIfNecessary(RuntimeInvisibleAnnotationsAttributeContent.class);
+			} else {
+				content = getAttributeContentCreatingIfNecessary(RuntimeVisibleAnnotationsAttributeContent.class);
+			}
+			content.add(annot);
+			if (invisible) {
+				annot.setSourceLocation(createSourceLocation(((AnnotationContext)ctx.getParent()).INVISIBLE()));
+			} else {
+				annot.setSourceLocation(createSourceLocation(ctx.ANNOTATION()));
+			}
+			
+		} else {
+			AnnotationElementValue value = (AnnotationElementValue)stack.peek();
+			if (!value.isNested()) {
+				throw new IllegalStateException("Unexpected annotation value on the stack: "+value.getTag());
+			}
+			annot.setSourceLocation(createSourceLocation(ctx.ANNOTATION()));
+			value.setNestedAnnotation(annot);
+			
+		}
+	}
+	
+
+	@Override
+	public void enterAnnotationtype(AnnotationtypeContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		annot.setTypeValueReference(createSymbolReference(ctx.Identifier()));
+	}
+	
+	
+
+	@Override
+	public void enterAnnotationelement(AnnotationelementContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		AnnotationElementNameValue element = new AnnotationElementNameValue();
+		annot.addElement(element);
+		stack.push(element);
+	}
+	
+	
+	
+
+	@Override
+	public void enterAnnotationelementname(AnnotationelementnameContext ctx) {
+		AnnotationElementNameValue element = (AnnotationElementNameValue)stack.peek();
+		element.setNameReference(createSymbolReference(ctx.Identifier()));
+	}
+	
+	
+
+	@Override
+	public void enterAnnotationelementvalue(AnnotationelementvalueContext ctx) {
+		AnnotationElementValue value = new AnnotationElementValue();
+		value.setTag('@');
+		addAnnotationValue(value);
+		stack.push(value);
+	}
+	
+	
+
+	@Override
+	public void enterArrayannotationelementvalue(
+			ArrayannotationelementvalueContext ctx) {
+		AnnotationElementValue value = new AnnotationElementValue();
+		value.setTag('[');
+		stack.push(value);
+	}
+	
+	@Override
+	public void enterEnumannotationelementvalue(
+			EnumannotationelementvalueContext ctx) {
+		AnnotationElementValue value = new AnnotationElementValue();
+		value.setTag('e');
+		value.setEnumTypeNameReference(createSymbolReference(ctx.Identifier(0)));
+		value.setEnumConstNameReference(createSymbolReference(ctx.Identifier(1)));
+		addAnnotationValue(value);
+	}
+
+
+	@Override
+	public void enterSimpleannotationelementvalue(
+			SimpleannotationelementvalueContext ctx) {
+		char tag = ' ';
+		if (ctx.BYTE() != null) {
+			tag = 'B';
+		} else if (ctx.BOOLEAN() != null) {
+			tag = 'Z';
+		} else if (ctx.CHAR() != null) {
+			tag = 'C';
+		} else if (ctx.CLASS() != null) {
+			tag = 'c';
+		} else if (ctx.DOUBLE() != null) {
+			tag = 'D';
+		} else if (ctx.FLOAT() != null) {
+			tag = 'F';
+		} else if (ctx.INT() != null) {
+			tag = 'I';
+		} else if (ctx.LONG() != null) {
+			tag = 'J';
+		} else if (ctx.SHORT() != null) {
+			tag = 'S';
+		} else if (ctx.STRING() != null) {
+			tag = 's';
+		} else {
+			throw new IllegalStateException("unexpected modifier");
+		}
+		
+		AnnotationElementValue value = new AnnotationElementValue();
+		value.setTag(tag);
+		if (value.isPrimitiveValue()) {
+			value.setPrimitiveValueReference(createSymbolReference(ctx.Identifier()));
+		} else {
+			value.setClassInfoReference(createSymbolReference(ctx.Identifier()));
+		}
+		addAnnotationValue(value);
+	}
+	
+	private void addAnnotationValue(AnnotationElementValue value) {
+		if (stack.peek() instanceof AnnotationElementNameValue) {
+			AnnotationElementNameValue element = (AnnotationElementNameValue)stack.peek();
+			element.setValue(value);
+		} else if (stack.peek() instanceof AnnotationElementValue) {
+			AnnotationElementValue arrayValue = (AnnotationElementValue)stack.peek();
+			if (!arrayValue.isArray()) {
+				throw new IllegalStateException("Unexpected value on the stack: "+arrayValue.getTag());
+			}
+			arrayValue.addArrayMember(value);
+		} else {
+			throw new IllegalStateException("Unexpected element in the stack");
+		}
+	}
+
+
+	@Override
+	public void exitAnnotationelement(AnnotationelementContext ctx) {
+		stack.pop();
+	}
+
+
+	@Override
+	public void exitAnnotationdeclaration(AnnotationdeclarationContext ctx) {
+		stack.pop();
+	}
+	
+	
+
+	@Override
+	public void exitAnnotationelementvalue(AnnotationelementvalueContext ctx) {
+		stack.pop();
+	}
+
+
+	@Override
+	public void exitArrayannotationelementvalue(
+			ArrayannotationelementvalueContext ctx) {
+		stack.pop();
+	}
 
 
 	public void emitError(int line, int charPosition, String message) {
 		errorMessages.add(new ErrorMessage(line, charPosition, message));
 	}
 	
+	
+	
+
+
 	public void emitError(TerminalNode node, String message) {
 		errorMessages.add(new ErrorMessage(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), message));
 	}
+	
 	
 	private void addConstantPoolEntry(AbstractConstantPoolEntry entry) {
 		ConstantPool pool = ((Clazz)stack.peek()).getConstantPool();
@@ -849,9 +1042,32 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	private void addAttribute(IAttributeContent content, TerminalNode node) {
 		IAttributesContainer container = (IAttributesContainer)stack.peek();
 		Attribute attr = new Attribute();
-		attr.setSourceLocation(createSourceLocation(node));
+		if (node != null) {
+			attr.setSourceLocation(createSourceLocation(node));
+		}
 		container.getAttributes().add(attr);
 		attr.setContent(content);
+	}
+	
+	private <T extends IAttributeContent> T getAttributeContentCreatingIfNecessary(Class<T> clazz) {
+		IAttributesContainer container = (IAttributesContainer)stack.peek();
+		List<Attribute> attributes = container.getAttributes().getAttributesByContentType(clazz);
+		if (attributes.size() == 0) {
+			Attribute attr = new Attribute();
+			container.getAttributes().add(attr);
+			IAttributeContent content;
+			try {
+				content = clazz.newInstance();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			return (T)content;
+		} else if (attributes.size() == 1) {
+			return (T)attributes.get(0).getContent();
+		} else {
+			throw new IllegalStateException("multiple attributes with content type: "+clazz.getName());
+		}
+		
 	}
 	
 

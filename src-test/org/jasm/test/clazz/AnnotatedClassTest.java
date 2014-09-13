@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
@@ -112,11 +113,11 @@ public class AnnotatedClassTest {
 		assertEquals("Lorg/jasm/test/testclass/NestedAnnotation;", anmv.getValue().getNestedAnnotation().getTypeValue());
 		
 		anmv = ann.get(9);
-		AnnotationElementValue[] array =  anmv.getValue().getArrayMembers();
-		assertEquals(3, array.length);
-		assertEquals(2,array[0].getPrimitiveValue());
-		assertEquals(5,array[1].getPrimitiveValue());
-		assertEquals(6,array[2].getPrimitiveValue());
+		List<AnnotationElementValue> array =  anmv.getValue().getArrayMembers();
+		assertEquals(3, array.size());
+		assertEquals(2,array.get(0).getPrimitiveValue());
+		assertEquals(5,array.get(1).getPrimitiveValue());
+		assertEquals(6,array.get(2).getPrimitiveValue());
 		
 		
 		RuntimeInvisibleParameterAnnotationsAttributeContent invisibleParAnn = getAttributeContent(clazz.getMethods().getMethod("annotatedMethod", "(I)V").getAttributes(), RuntimeInvisibleParameterAnnotationsAttributeContent.class);
@@ -169,10 +170,10 @@ public class AnnotatedClassTest {
 		
 		anmv = ann.get(9);
 		array =  anmv.getValue().getArrayMembers();
-		assertEquals(3, array.length);
-		assertEquals(2,array[0].getPrimitiveValue());
-		assertEquals(5,array[1].getPrimitiveValue());
-		assertEquals(6,array[2].getPrimitiveValue());
+		assertEquals(3, array.size());
+		assertEquals(2,array.get(0).getPrimitiveValue());
+		assertEquals(5,array.get(1).getPrimitiveValue());
+		assertEquals(6,array.get(2).getPrimitiveValue());
 		
 		byte [] data2 = new byte[clazz.getLength()];
 		ByteArrayByteBuffer bbuf2 = new ByteArrayByteBuffer(data2);

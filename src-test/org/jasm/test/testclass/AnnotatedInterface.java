@@ -4,7 +4,7 @@ package org.jasm.test.testclass;
 @TestInvisibleAnnotation
 public interface AnnotatedInterface {
 	
-	@TestAnnotation(booleanValue = true, byteValue = 2, charValue = 'a', enumValue=Days.TUESDAY, clazzValue = String.class, intValue = 100, longValue = 10000L, shortValue = 70, nestedAnnotation = @NestedAnnotation, intArrayValue = {40,-5,60})
+	@TestAnnotation(stringValue="notDefault" ,booleanValue = true, byteValue = 2, charValue = 'a', enumValue=Days.TUESDAY, clazzValue = String.class, intValue = 100, longValue = 10000L, shortValue = 70, nestedAnnotation = @NestedAnnotation, intArrayValue = {40,-5,60})
 	@TestInvisibleAnnotation
 	public String annotatedField = null;
 	

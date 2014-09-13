@@ -17,6 +17,7 @@ import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
 import org.jasm.item.constantpool.IntegerInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.parser.literals.SymbolReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,19 +29,23 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 	private char tag = 0;
     
     private int primitiveValueIndex = -1;
+    private SymbolReference primitiveValueReference;
     private AbstractConstantPoolEntry primitiveValueEntry = null;
     
     private int enumTypeNameIndex = -1;
+    private SymbolReference enumTypeNameReference;
     private Utf8Info enumTypeName = null;
     private int enumConstNameIndex = -1;
+    private SymbolReference enumConstNameReference;
     private Utf8Info enumConstName = null;
     
     private int classInfoIndex = -1;
+    private SymbolReference classInfoReference;
     private Utf8Info classInfo = null;
     
     private Annotation nestedAnnotation = null;
     
-    private AnnotationElementValue[] arrayMembers = null;
+    private List<AnnotationElementValue> arrayMembers = null;
     
     public AnnotationElementValue() {
     	
@@ -77,7 +82,7 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
     	nestedValue.setParent(this);
     }
     
-    public AnnotationElementValue(AnnotationElementValue[] arrayMembers) {
+    public AnnotationElementValue(List<AnnotationElementValue> arrayMembers) {
     	this.arrayMembers = arrayMembers;
     	this.tag = '[';
     	for (AnnotationElementValue arrayMember: arrayMembers) {
@@ -107,15 +112,16 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 		} else if (isArray()) {
 			int arraySize = source.readUnsignedShort(offset+1);
 			long currentOffset = offset+3;
-			arrayMembers = new AnnotationElementValue[arraySize];
+			arrayMembers = new ArrayList<>();
 			for (int i=0;i<arraySize; i++) {
-				arrayMembers[i] = new AnnotationElementValue();
-				arrayMembers[i].setParent(this);
+				AnnotationElementValue arrayMember = new AnnotationElementValue();
+				arrayMembers.add(arrayMember);
+				arrayMember.setParent(this);
 				if (log.isDebugEnabled()) {
 					log.debug("read annotation array member "+i+"/"+arraySize+" offset="+currentOffset);
 				}
-				arrayMembers[i].read(source, currentOffset);
-				currentOffset+=arrayMembers[i].getLength();
+				arrayMember.read(source, currentOffset);
+				currentOffset+=arrayMember.getLength();
 			}
 		} else {
 			throw new IllegalStateException("illegal tag : "+tag);
@@ -137,14 +143,14 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 		} else if (isNested()) {
 			nestedAnnotation.write(target, offset+1);
 		} else if (isArray()) {
-			target.writeUnsignedShort(offset+1, arrayMembers.length);
+			target.writeUnsignedShort(offset+1, arrayMembers.size());
 			long currentOffset = offset+3;
-			for (int i=0;i<arrayMembers.length; i++) {
+			for (int i=0;i<arrayMembers.size(); i++) {
 				if (log.isDebugEnabled()) {
-					log.debug("write annotation array member "+i+"/"+arrayMembers.length+" offset="+currentOffset);
+					log.debug("write annotation array member "+i+"/"+arrayMembers.size()+" offset="+currentOffset);
 				}
-				arrayMembers[i].write(target, currentOffset);
-				currentOffset+=arrayMembers[i].getLength();
+				arrayMembers.get(i).write(target, currentOffset);
+				currentOffset+=arrayMembers.get(i).getLength();
 			}
 		} else {
 			throw new IllegalStateException("illegal tag : "+tag);
@@ -164,8 +170,8 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 			return 1+nestedAnnotation.getLength();
 		} else if (isArray()) {
 			int size = 3;
-			for (int i=0;i<arrayMembers.length; i++) {
-				size+=arrayMembers[i].getLength();
+			for (int i=0;i<arrayMembers.size(); i++) {
+				size+=arrayMembers.get(i).getLength();
 			}
 			return size;
 		} else {
@@ -202,6 +208,9 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 
 	@Override
 	public String getPrintName() {
+		if (getPrintPrefix() == null) {
+			return null;
+		}
 		return getPrintPrefix()+" value";
 	}
 	
@@ -314,10 +323,11 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 			case 'I': result = "int";break;
 			case 'J': result = "long";break;
 			case 'S': result = "short";break;
+			case 's': result = "string";break;
 			case 'Z': result = "boolean";break;
 			case 'e': result = "enum";break;
 			case 'c': result = "class";break;
-			case '@': result = "nested";break;
+			case '@': result = null;break;
 			case '[': result = "array";break;
 			default: throw new IllegalStateException("unknown tag: "+tag);
 		}
@@ -329,7 +339,7 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 		if (isNested()) {
 			return 1;
 		} else if (isArray()) {
-			return arrayMembers.length;
+			return arrayMembers.size();
 		}
 		return 0;
 	}
@@ -337,7 +347,7 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 	@Override
 	public IBytecodeItem get(int index) {
 		if (isArray()) {
-			return arrayMembers[index];
+			return arrayMembers.get(index);
 		} else if (isNested()) {
 			if (index > 0) {
 				throw new IndexOutOfBoundsException();
@@ -353,8 +363,8 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 	@Override
 	public int indexOf(IBytecodeItem item) {
 		if (isArray()) {
-			for (int i=0;i<arrayMembers.length; i++) {
-				if (arrayMembers[i] == item) {
+			for (int i=0;i<arrayMembers.size(); i++) {
+				if (arrayMembers.get(i) == item) {
 					return i;
 				} else {
 					return -1;
@@ -417,7 +427,7 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 		return nestedAnnotation;
 	}
 
-	public AnnotationElementValue[] getArrayMembers() {
+	public List<AnnotationElementValue> getArrayMembers() {
 		return arrayMembers;
 	}
 
@@ -438,6 +448,45 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 			return new AbstractConstantPoolEntry[]{};
 		}
 	}
+
+	public void setTag(char tag) {
+		this.tag = tag;
+	}
+	
+	public char getTag() {
+		return tag;
+	}
+
+	public void setPrimitiveValueReference(SymbolReference primitiveValueReference) {
+		this.primitiveValueReference = primitiveValueReference;
+	}
+
+	public void setClassInfoReference(SymbolReference classInfoReference) {
+		this.classInfoReference = classInfoReference;
+	}
+	
+	public void addArrayMember(AnnotationElementValue member) {
+		member.setParent(this);
+		if (arrayMembers == null) {
+			arrayMembers = new ArrayList<>();
+		}
+		arrayMembers.add(member);
+	}
+
+	public void setNestedAnnotation(Annotation nestedAnnotation) {
+		nestedAnnotation.setParent(this);
+		this.nestedAnnotation = nestedAnnotation;
+	}
+
+	public void setEnumTypeNameReference(SymbolReference enumTypeNameReference) {
+		this.enumTypeNameReference = enumTypeNameReference;
+	}
+
+	public void setEnumConstNameReference(SymbolReference enumConstNameReference) {
+		this.enumConstNameReference = enumConstNameReference;
+	}
+	
+	
 	
 	
 }

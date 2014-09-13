@@ -14,6 +14,7 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.instructions.OpCodes;
+import org.jasm.parser.literals.SymbolReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	private int typeIndex = -1;
+	private SymbolReference typeValueReference;
 	private Utf8Info type = null;
 	private int numberOfValues = -1;
 	private List<AnnotationElementNameValue> values = new ArrayList<>();
@@ -171,7 +173,15 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{type};
 	}
+
+	public void setTypeValueReference(SymbolReference typeValueReference) {
+		this.typeValueReference = typeValueReference;
+	}
 	
+	public void addElement(AnnotationElementNameValue element) {
+		element.setParent(this);
+		values.add(element);
+	}
 	
 	
 }
