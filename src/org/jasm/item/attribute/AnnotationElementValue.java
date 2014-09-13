@@ -12,11 +12,17 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.DoubleInfo;
+import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
 import org.jasm.item.constantpool.IntegerInfo;
+import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.item.descriptor.IllegalDescriptorException;
+import org.jasm.item.descriptor.TypeDescriptor;
+import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -226,7 +232,7 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 		if (isPrimitiveValue()) {
 			return primitiveValueEntry.getSymbolName();
 		} else if (isEnumValue()) {
-			return enumConstName.getSymbolName()+", "+enumTypeName.getSymbolName();
+			return enumTypeName.getSymbolName()+", "+enumConstName.getSymbolName();
 		} else if (isClassValue()) {
 			return classInfo.getSymbolName();
 		} else if (isNested() || isArray()) {
@@ -281,9 +287,73 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 	}
 	
 	@Override
-	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+	protected void doResolveAfterParse() { 
+		if (tag == 'B' || tag == 'C' || tag == 'I' || tag == 'S' || tag == 'Z') {
+			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(IntegerInfo.class, primitiveValueReference);
+		} else if ( tag == 'F') {
+			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(FloatInfo.class, primitiveValueReference);
+		} else if ( tag == 'D') {
+			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(DoubleInfo.class, primitiveValueReference);
+		} else if ( tag == 'J') {
+			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(LongInfo.class, primitiveValueReference);
+		} else if ( tag == 's') {
+			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, primitiveValueReference);
+		} else if ( tag == 's') {
+			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, primitiveValueReference);
+		} else if ( tag == 'c') {
+			classInfo = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, classInfoReference);
+			if (classInfo != null) {
+				String value = classInfo.getValue();
+				verifyClassDescriptor(value);
+			}
+		} else if (tag == 'e') {
+			enumTypeName =  getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, enumTypeNameReference);
+			if (enumTypeName != null) {
+				verifyEnumTypeDescriptor(enumTypeName.getValue());
+			}
+			enumConstName = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, enumConstNameReference);
+			if (enumConstName != null && !IdentifierUtils.isValidIdentifier(enumConstName.getValue())) {
+				emitError(enumConstNameReference, "malformed identifier: "+enumConstName.getValue());
+			}
+		} else if (tag == '@') {
+			nestedAnnotation.resolve();
+		} else if (tag == '[') {
+			if (arrayMembers == null) {
+				arrayMembers = new ArrayList<>();
+			} else {
+				for (AnnotationElementValue v: arrayMembers) {
+					v.resolve();
+				}
+			}
+		}
 	}
+	
+	private void verifyClassDescriptor(String descriptor)  {
+		if (descriptor.equals("V")) {//void
+			
+		} else {
+			try {
+				new TypeDescriptor(descriptor);
+			} catch (IllegalDescriptorException e) {
+				emitError(classInfoReference, "malformed class annotation descriptor: "+descriptor);
+			}
+		}
+	}
+	
+	private void verifyEnumTypeDescriptor(String descriptor)  {
+		
+		try {
+			TypeDescriptor desc = new TypeDescriptor(descriptor);
+			if (!desc.isObject()) {
+				emitError(classInfoReference, "expected an enum class descriptor: "+descriptor);
+			}
+		} catch (IllegalDescriptorException e) {
+			emitError(classInfoReference, "malformed class annotation descriptor: "+descriptor);
+		}
+		
+	}
+	
+	
 
 	public boolean isPrimitiveValue() {
 		return (tag == 'B' || 

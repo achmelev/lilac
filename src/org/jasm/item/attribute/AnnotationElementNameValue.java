@@ -13,6 +13,7 @@ import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 
 public class AnnotationElementNameValue extends AbstractByteCodeItem implements IContainerBytecodeItem<AnnotationElementValue>, IConstantPoolReference {
@@ -99,7 +100,14 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		this.name = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, nameReference);
+		if (name != null) {
+			if (!IdentifierUtils.isValidIdentifier(name.getValue())) {
+				emitError(nameReference, "malformed identifier: "+name.getValue());
+			}
+			
+		}
+		value.resolve();
 	}
 
 	@Override

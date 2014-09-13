@@ -43,12 +43,12 @@ classmodifierlabel: PUBLIC 		# classmodifierPublic
 
 constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 				 | CONST CLASSINFO  label Identifier #classinfo
-				 | CONST STRINGINFO label Identifier #stringinfo
+				 | CONST STRING label Identifier #stringinfo
 				 | CONST FIELDREFINFO label Identifier COMMA  Identifier #fieldrefinfo
-				 | CONST INTEGERINFO label IntegerLiteral  #integerinfo
-				 | CONST LONGINFO label IntegerLiteral  #longinfo
-				 | CONST FLOATINFO   label FloatingPointLiteral  #floatinfo
-				 | CONST DOUBLEINFO  label FloatingPointLiteral  #doubleinfo
+				 | CONST INT label IntegerLiteral  #integerinfo
+				 | CONST LONG label IntegerLiteral  #longinfo
+				 | CONST FLOAT   label FloatingPointLiteral  #floatinfo
+				 | CONST DOUBLE  label FloatingPointLiteral  #doubleinfo
 				 | CONST METHODREFINFO label Identifier COMMA  Identifier #methodrefinfo
 				 | CONST INTERFACEMETHODREFINFO label Identifier COMMA  Identifier #interfacemethodrefinfo
 				 | CONST NAMEANDTYPEINFO label Identifier COMMA  Identifier #nameandtypeinfo
@@ -188,12 +188,7 @@ ANNOTATION    :  'annotation';
 ENUM          :  'enum';
 CLASSINFO     :  'classref';
 UTF8INFO      :  'utf8';
-STRINGINFO    :  'string';
 FIELDREFINFO  :  'fieldref';
-INTEGERINFO   :  'int';
-LONGINFO      :  'long';
-FLOATINFO     :  'float';
-DOUBLEINFO     :  'double';
 METHODREFINFO :  'methodref';
 INTERFACEMETHODREFINFO : 'intfmethodref';
 NAMEANDTYPEINFO :  'nameandtype';

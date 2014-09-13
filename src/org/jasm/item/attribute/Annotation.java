@@ -13,6 +13,8 @@ import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.item.descriptor.IllegalDescriptorException;
+import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.parser.literals.SymbolReference;
 import org.slf4j.Logger;
@@ -134,7 +136,25 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		type = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, typeValueReference);
+		if (type != null) {
+			if (verifyDescriptor(typeValueReference, type.getValue())) {
+				for (AnnotationElementNameValue value: values) {
+					value.resolve();
+				}
+			}
+		}
+	}
+	
+	private  boolean verifyDescriptor(SymbolReference ref, String descriptor) {
+		try {
+			TypeDescriptor d = new TypeDescriptor(descriptor);
+		} catch (IllegalDescriptorException e) {
+			emitError(ref, "malformed type descriptor "+descriptor);
+			return false;
+		}
+		
+		return true;
 	}
 
 	@Override
