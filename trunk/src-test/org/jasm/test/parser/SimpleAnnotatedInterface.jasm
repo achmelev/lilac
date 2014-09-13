@@ -38,14 +38,16 @@ class {
   const int int_32 30;
   const utf8 utf8_33 "SourceFile";
   const utf8 utf8_34 "SimpleAnnotatedInterface.java";
-  const int int_35 1;
-  const int int_36 99;
-  const utf8 utf8_37 "MONDAY";
-  const utf8 utf8_38 "Ljava/lang/Void;";
-  const long long_39 6;
-  const int int_41 7;
-  const int int_42 2;
-  const int int_43 6;
+  const utf8 utf8_35 "stringValue";
+  const utf8 utf8_36 "non\nDefault";
+  const int int_37 1;
+  const int int_38 99;
+  const utf8 utf8_39 "MONDAY";
+  const utf8 utf8_40 "Ljava/lang/Void;";
+  const long long_41 6;
+  const int int_43 7;
+  const int int_44 2;
+  const int int_45 6;
    //Attributes
   source file utf8_34; // SimpleAnnotatedInterface.java
   invisible annotation {
@@ -54,24 +56,28 @@ class {
   annotation {
     type utf8_9; // Lorg/jasm/test/testclass/TestAnnotation;
     element {
+      name utf8_35; // stringValue
+      string value utf8_36; // "non\nDefault"
+    }
+    element {
       name utf8_10; // booleanValue
       boolean value int_11; // 0
     }
     element {
       name utf8_12; // byteValue
-      byte value int_35; // 1
+      byte value int_37; // 1
     }
     element {
       name utf8_14; // charValue
-      char value int_36; // 99
+      char value int_38; // 99
     }
     element {
       name utf8_16; // enumValue
-      enum value utf8_17, utf8_37; // MONDAY, Lorg/jasm/test/testclass/Days;
+      enum value utf8_17, utf8_39; // MONDAY, Lorg/jasm/test/testclass/Days;
     }
     element {
       name utf8_19; // clazzValue
-      class value utf8_38; // Ljava/lang/Void;
+      class value utf8_40; // Ljava/lang/Void;
     }
     element {
       name utf8_21; // intValue
@@ -79,11 +85,11 @@ class {
     }
     element {
       name utf8_23; // longValue
-      long value long_39; // 6
+      long value long_41; // 6
     }
     element {
       name utf8_26; // shortValue
-      short value int_41; // 7
+      short value int_43; // 7
     }
     element {
       name utf8_28; // nestedAnnotation
@@ -94,9 +100,9 @@ class {
     element {
       name utf8_30; // intArrayValue
       array value {
-        int value int_42; // 2
+        int value int_44; // 2
         int value int_13; // 5
-        int value int_43; // 6
+        int value int_45; // 6
       }
     }
   }
