@@ -248,9 +248,9 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 			if (primitiveValueEntry instanceof IPrimitiveValueReferencingEntry) {
 				return ((IPrimitiveValueReferencingEntry)primitiveValueEntry).getValue().toString();
 			} else if (primitiveValueEntry instanceof StringInfo) {
-				return ((StringInfo)primitiveValueEntry).getContent();
+				return ((StringInfo)primitiveValueEntry).getPrintComment();
 			} else if (primitiveValueEntry instanceof Utf8Info) {
-				return ((Utf8Info)primitiveValueEntry).getValue();
+				return ((Utf8Info)primitiveValueEntry).getPrintArgs();
 			} else {
 				throw new IllegalStateException("Wrong entry: "+primitiveValueEntry);
 			}

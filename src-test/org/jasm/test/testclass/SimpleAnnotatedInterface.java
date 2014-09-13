@@ -1,6 +1,6 @@
 package org.jasm.test.testclass;
 
-@TestAnnotation(booleanValue = false, byteValue = 1, charValue = 'c', enumValue=Days.MONDAY, clazzValue = Void.class, intValue = 5, longValue = 6, shortValue = 7, nestedAnnotation = @NestedAnnotation, intArrayValue = {2,5,6})
+@TestAnnotation(stringValue="non\nDefault",booleanValue = false, byteValue = 1, charValue = 'c', enumValue=Days.MONDAY, clazzValue = Void.class, intValue = 5, longValue = 6, shortValue = 7, nestedAnnotation = @NestedAnnotation, intArrayValue = {2,5,6})
 @TestInvisibleAnnotation
 public interface SimpleAnnotatedInterface {
 	
