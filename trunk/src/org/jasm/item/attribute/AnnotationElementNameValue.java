@@ -13,10 +13,12 @@ import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.parser.literals.SymbolReference;
 
 public class AnnotationElementNameValue extends AbstractByteCodeItem implements IContainerBytecodeItem<AnnotationElementValue>, IConstantPoolReference {
 	
 	private int nameIndex = -1;
+	private SymbolReference nameReference;
 	private Utf8Info name = null;
 	private AnnotationElementValue value = null;
 	
@@ -141,6 +143,15 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 	@Override
 	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{name};
+	}
+
+	public void setNameReference(SymbolReference nameReference) {
+		this.nameReference = nameReference;
+	}
+
+	public void setValue(AnnotationElementValue value) {
+		value.setParent(this);
+		this.value = value;
 	}
 	
 	
