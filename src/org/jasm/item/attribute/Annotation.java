@@ -3,7 +3,6 @@ package org.jasm.item.attribute;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
@@ -15,7 +14,6 @@ import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.descriptor.IllegalDescriptorException;
 import org.jasm.item.descriptor.TypeDescriptor;
-import org.jasm.item.instructions.OpCodes;
 import org.jasm.parser.literals.SymbolReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +85,11 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	public List<IPrintable> getStructureParts() {
 		List<IPrintable> result = new ArrayList<>();
 		result.add(new SimplePrintable(null, "type", type.getSymbolName(), type.getValue()));
+		if (getParent() instanceof ParameterAnnotations) {
+			AbstractParameterAnnotationsAttributeContent greatParent = (AbstractParameterAnnotationsAttributeContent)this.getParent().getParent();
+			int index = greatParent.indexOf((ParameterAnnotations)getParent());
+			result.add(new SimplePrintable(null, "index", index+"", null));
+		}
 		result.addAll(values);
 		return result;
 	}
@@ -99,9 +102,12 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	@Override
 	public String getPrintName() {
 		StringBuffer buf = new StringBuffer();
-		if (this.getParent() instanceof RuntimeInvisibleAnnotationsAttributeContent) {
+		if ((this.getParent() instanceof RuntimeInvisibleAnnotationsAttributeContent) || getParent().getParent() instanceof RuntimeInvisibleParameterAnnotationsAttributeContent) {
 			buf.append("invisible ");
 		} 
+		if (this.getParent() instanceof ParameterAnnotations) {
+			buf.append("parameter ");
+		}
 		buf.append("annotation");
 		return buf.toString();
 	}
