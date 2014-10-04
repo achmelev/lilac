@@ -23,6 +23,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.AbstractAnnotationsAttributeContent;
+import org.jasm.item.attribute.AbstractParameterAnnotationsAttributeContent;
 import org.jasm.item.attribute.Annotation;
 import org.jasm.item.attribute.AnnotationElementNameValue;
 import org.jasm.item.attribute.AnnotationElementValue;
@@ -32,7 +33,9 @@ import org.jasm.item.attribute.DeprecatedAttributeContent;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
 import org.jasm.item.attribute.IAttributeContent;
 import org.jasm.item.attribute.RuntimeInvisibleAnnotationsAttributeContent;
+import org.jasm.item.attribute.RuntimeInvisibleParameterAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeVisibleAnnotationsAttributeContent;
+import org.jasm.item.attribute.RuntimeVisibleParameterAnnotationsAttributeContent;
 import org.jasm.item.attribute.SignatureAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.attribute.SynteticAttributeContent;
@@ -59,6 +62,7 @@ import org.jasm.parser.JavaAssemblerParser.AnnotationdeclarationContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationelementContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationelementnameContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationelementvalueContext;
+import org.jasm.parser.JavaAssemblerParser.AnnotationindexContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationtypeContext;
 import org.jasm.parser.JavaAssemblerParser.ArrayannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
@@ -813,18 +817,35 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		Annotation annot = new Annotation();
 		if (rootAnnotation) {
 			boolean invisible = ((AnnotationContext)ctx.getParent()).INVISIBLE() != null;
-			AbstractAnnotationsAttributeContent content = null;
-			if (invisible) {
-				content = getAttributeContentCreatingIfNecessary(RuntimeInvisibleAnnotationsAttributeContent.class);
+			boolean parameter = ((AnnotationContext)ctx.getParent()).PARAMETER() != null;
+			IAttributeContent content = null;
+			if (parameter) {
+				if (invisible) {
+					content = getAttributeContentCreatingIfNecessary(RuntimeInvisibleParameterAnnotationsAttributeContent.class);
+				} else {
+					content = getAttributeContentCreatingIfNecessary(RuntimeVisibleParameterAnnotationsAttributeContent.class);
+				}
+				((AbstractParameterAnnotationsAttributeContent)content).addAnnotation(annot);
+				if (invisible) {
+					annot.setSourceLocation(createSourceLocation(((AnnotationContext)ctx.getParent()).INVISIBLE()));
+				} else {
+					annot.setSourceLocation(createSourceLocation(ctx.ANNOTATION()));
+				}
+				
 			} else {
-				content = getAttributeContentCreatingIfNecessary(RuntimeVisibleAnnotationsAttributeContent.class);
+				if (invisible) {
+					content = getAttributeContentCreatingIfNecessary(RuntimeInvisibleAnnotationsAttributeContent.class);
+				} else {
+					content = getAttributeContentCreatingIfNecessary(RuntimeVisibleAnnotationsAttributeContent.class);
+				}
+				((AbstractAnnotationsAttributeContent)content).add(annot);
+				if (invisible) {
+					annot.setSourceLocation(createSourceLocation(((AnnotationContext)ctx.getParent()).INVISIBLE()));
+				} else {
+					annot.setSourceLocation(createSourceLocation(ctx.ANNOTATION()));
+				}
 			}
-			content.add(annot);
-			if (invisible) {
-				annot.setSourceLocation(createSourceLocation(((AnnotationContext)ctx.getParent()).INVISIBLE()));
-			} else {
-				annot.setSourceLocation(createSourceLocation(ctx.ANNOTATION()));
-			}
+			
 			
 		} else if (nestedAnnotation){
 			AnnotationElementValue value = new AnnotationElementValue();
@@ -847,6 +868,21 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 	
 	
+	
+	
+
+	@Override
+	public void enterAnnotationindex(AnnotationindexContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		IntegerLiteral lit = createIntegerLiteral(ctx.IntegerLiteral());
+		if (lit.isValid()) {
+			annot.setParameterIndex(lit.getValue());
+		} else {
+			emitError(ctx.IntegerLiteral(), "malformed integer or integer out of bounds");
+		}
+		
+	}
+
 
 	@Override
 	public void enterAnnotationelement(AnnotationelementContext ctx) {

@@ -9,6 +9,8 @@ import org.jasm.parser.literals.SymbolReference;
 
 public class Method extends AbstractClassMember<MethodModifier> {
 	
+	private MethodDescriptor methodDescriptor =null;
+	
 	public Method() {
 		
 	}
@@ -36,6 +38,7 @@ public class Method extends AbstractClassMember<MethodModifier> {
 	protected void verifyDescriptor(SymbolReference ref, String descriptor) {
 		try {
 			MethodDescriptor d = new MethodDescriptor(descriptor);
+			methodDescriptor = d;
 		} catch (IllegalDescriptorException e) {
 			emitError(ref, "malformed method descriptor "+descriptor);
 		}
@@ -49,5 +52,11 @@ public class Method extends AbstractClassMember<MethodModifier> {
 		}
 		
 	}
+
+	public MethodDescriptor getMethodDescriptor() {
+		return methodDescriptor;
+	}
+	
+	
 
 }

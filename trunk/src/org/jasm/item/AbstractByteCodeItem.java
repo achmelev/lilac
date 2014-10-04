@@ -158,6 +158,12 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		
 	}
 	
+	protected void emitErrorOnLocation(SourceLocation sl, String message) {
+		getRoot().getParser().emitError(sl.getLine(), sl.getCharPosition(), message);
+		hasResolveErrors = true;
+		
+	}
+	
 	public SourceLocation getNextSourceLocation() {
 		if (this.sourceLocation != null) {
 			return sourceLocation;
