@@ -36,28 +36,32 @@ class {
   const utf8 utf8_30 "intArrayValue";
   const int int_31 10;
   const int int_32 30;
-  const utf8 utf8_33 "SourceFile";
-  const utf8 utf8_34 "SimpleAnnotatedInterface.java";
-  const utf8 utf8_35 "stringValue";
-  const utf8 utf8_36 "non\nDefault";
-  const int int_37 1;
-  const int int_38 99;
-  const utf8 utf8_39 "MONDAY";
-  const utf8 utf8_40 "Ljava/lang/Void;";
-  const long long_41 6;
-  const int int_43 7;
-  const int int_44 2;
-  const int int_45 6;
+  const utf8 utf8_33 "annotatedMethodWithParameters";
+  const utf8 utf8_34 "(IDF)V";
+  const utf8 utf8_35 "RuntimeInvisibleParameterAnnotations";
+  const utf8 utf8_36 "RuntimeVisibleParameterAnnotations";
+  const utf8 utf8_37 "SourceFile";
+  const utf8 utf8_38 "SimpleAnnotatedInterface.java";
+  const utf8 utf8_39 "stringValue";
+  const utf8 utf8_40 "non\nDefault";
+  const int int_41 1;
+  const int int_42 99;
+  const utf8 utf8_43 "MONDAY";
+  const utf8 utf8_44 "Ljava/lang/Void;";
+  const long long_45 6;
+  const int int_47 7;
+  const int int_48 2;
+  const int int_49 6;
    //Attributes
-  source file utf8_34; // SimpleAnnotatedInterface.java
+  source file utf8_38; // SimpleAnnotatedInterface.java
   invisible annotation {
     type utf8_7; // Lorg/jasm/test/testclass/TestInvisibleAnnotation;
   }
   annotation {
     type utf8_9; // Lorg/jasm/test/testclass/TestAnnotation;
     element {
-      name utf8_35; // stringValue
-      string value utf8_36; // "non\nDefault"
+      name utf8_39; // stringValue
+      string value utf8_40; // "non\nDefault"
     }
     element {
       name utf8_10; // booleanValue
@@ -65,19 +69,19 @@ class {
     }
     element {
       name utf8_12; // byteValue
-      byte value int_37; // 1
+      byte value int_41; // 1
     }
     element {
       name utf8_14; // charValue
-      char value int_38; // 99
+      char value int_42; // 99
     }
     element {
       name utf8_16; // enumValue
-      enum value utf8_17, utf8_39; // MONDAY, Lorg/jasm/test/testclass/Days;
+      enum value utf8_17, utf8_43; // MONDAY, Lorg/jasm/test/testclass/Days;
     }
     element {
       name utf8_19; // clazzValue
-      class value utf8_40; // Ljava/lang/Void;
+      class value utf8_44; // Ljava/lang/Void;
     }
     element {
       name utf8_21; // intValue
@@ -85,11 +89,11 @@ class {
     }
     element {
       name utf8_23; // longValue
-      long value long_41; // 6
+      long value long_45; // 6
     }
     element {
       name utf8_26; // shortValue
-      short value int_43; // 7
+      short value int_47; // 7
     }
     element {
       name utf8_28; // nestedAnnotation
@@ -100,9 +104,9 @@ class {
     element {
       name utf8_30; // intArrayValue
       array value {
-        int value int_44; // 2
+        int value int_48; // 2
         int value int_13; // 5
-        int value int_45; // 6
+        int value int_49; // 6
       }
     }
   }
@@ -117,6 +121,118 @@ class {
     }
     annotation {
       type utf8_9; // Lorg/jasm/test/testclass/TestAnnotation;
+      element {
+        name utf8_10; // booleanValue
+        boolean value int_11; // 0
+      }
+      element {
+        name utf8_12; // byteValue
+        byte value int_13; // 5
+      }
+      element {
+        name utf8_14; // charValue
+        char value int_15; // 65
+      }
+      element {
+        name utf8_16; // enumValue
+        enum value utf8_17, utf8_18; // WEDNESDAY, Lorg/jasm/test/testclass/Days;
+      }
+      element {
+        name utf8_19; // clazzValue
+        class value utf8_20; // Ljava/lang/Integer;
+      }
+      element {
+        name utf8_21; // intValue
+        int value int_22; // 20
+      }
+      element {
+        name utf8_23; // longValue
+        long value long_24; // -60000
+      }
+      element {
+        name utf8_26; // shortValue
+        short value int_27; // 700
+      }
+      element {
+        name utf8_28; // nestedAnnotation
+        annotation {
+          type utf8_29; // Lorg/jasm/test/testclass/NestedAnnotation;
+        }
+      }
+      element {
+        name utf8_30; // intArrayValue
+        array value {
+          int value int_31; // 10
+          int value int_22; // 20
+          int value int_32; // 30
+        }
+      }
+    }
+  }
+  method {
+    name utf8_33; // annotatedMethodWithParameters
+    descriptor utf8_34; // (IDF)V
+    modifier public, abstract;
+     //Attributes
+    invisible annotation {
+      type utf8_7; // Lorg/jasm/test/testclass/TestInvisibleAnnotation;
+    }
+    annotation {
+      type utf8_9; // Lorg/jasm/test/testclass/TestAnnotation;
+      element {
+        name utf8_10; // booleanValue
+        boolean value int_11; // 0
+      }
+      element {
+        name utf8_12; // byteValue
+        byte value int_13; // 5
+      }
+      element {
+        name utf8_14; // charValue
+        char value int_15; // 65
+      }
+      element {
+        name utf8_16; // enumValue
+        enum value utf8_17, utf8_18; // WEDNESDAY, Lorg/jasm/test/testclass/Days;
+      }
+      element {
+        name utf8_19; // clazzValue
+        class value utf8_20; // Ljava/lang/Integer;
+      }
+      element {
+        name utf8_21; // intValue
+        int value int_22; // 20
+      }
+      element {
+        name utf8_23; // longValue
+        long value long_24; // -60000
+      }
+      element {
+        name utf8_26; // shortValue
+        short value int_27; // 700
+      }
+      element {
+        name utf8_28; // nestedAnnotation
+        annotation {
+          type utf8_29; // Lorg/jasm/test/testclass/NestedAnnotation;
+        }
+      }
+      element {
+        name utf8_30; // intArrayValue
+        array value {
+          int value int_31; // 10
+          int value int_22; // 20
+          int value int_32; // 30
+        }
+      }
+    }
+    invisible parameter annotation {
+      type utf8_7; // Lorg/jasm/test/testclass/TestInvisibleAnnotation;
+      index 1;
+    }
+    parameter annotation {
+      type utf8_9; // Lorg/jasm/test/testclass/TestAnnotation;
+      index 1;
       element {
         name utf8_10; // booleanValue
         boolean value int_11; // 0

@@ -139,14 +139,16 @@ signatureattribute: SIGNATURE Identifier SEMI;
 synteticattribute: SYNTETIC SEMI;
 deprecatedattribute: DEPRECATED SEMI;
 
-annotation: INVISIBLE? annotationdeclaration;
+annotation: INVISIBLE? PARAMETER? annotationdeclaration;
 
 annotationdeclaration: ANNOTATION  LBRACE
-						 annotationtype SEMI
+						 annotationtype
+						 annotationindex?
 						 annotationelement*
 					   RBRACE;
 					   
-annotationtype: TYPE Identifier;
+annotationtype: TYPE Identifier SEMI;
+annotationindex: INDEX IntegerLiteral SEMI;
 
 annotationelement: ELEMENT LBRACE
 					 annotationelementname SEMI
@@ -225,6 +227,8 @@ SHORT         :  'short';
 STRING        :  'string';
 BOOLEAN       :  'boolean';
 ARRAY         :  'array';
+INDEX         :  'index';
+PARAMETER     :  'parameter';
 
 //Version
 

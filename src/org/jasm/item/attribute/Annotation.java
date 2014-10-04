@@ -22,6 +22,9 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
+	private boolean parameterIndexSet= false;
+	private int parameterIndex = -1;
+	
 	private int typeIndex = -1;
 	private SymbolReference typeValueReference;
 	private Utf8Info type = null;
@@ -208,6 +211,21 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		element.setParent(this);
 		values.add(element);
 	}
+
+	public void setParameterIndex(int parameterIndex) {
+		this.parameterIndexSet = true;
+		this.parameterIndex = parameterIndex;
+	}
+
+	public int getParameterIndex() {
+		return parameterIndex;
+	}
+
+	public boolean isParameterIndexSet() {
+		return parameterIndexSet;
+	}
+	
+	
 	
 	
 }
