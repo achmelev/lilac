@@ -831,6 +831,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 				} else {
 					annot.setSourceLocation(createSourceLocation(ctx.ANNOTATION()));
 				}
+				if (((AbstractParameterAnnotationsAttributeContent)content).getSourceLocation() == null) {
+					((AbstractParameterAnnotationsAttributeContent)content).setSourceLocation(annot.getSourceLocation());
+				}
 				
 			} else {
 				if (invisible) {
@@ -843,6 +846,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 					annot.setSourceLocation(createSourceLocation(((AnnotationContext)ctx.getParent()).INVISIBLE()));
 				} else {
 					annot.setSourceLocation(createSourceLocation(ctx.ANNOTATION()));
+				}
+				if (((AbstractAnnotationsAttributeContent)content).getSourceLocation() == null) {
+					((AbstractAnnotationsAttributeContent)content).setSourceLocation(annot.getSourceLocation());
 				}
 			}
 			
