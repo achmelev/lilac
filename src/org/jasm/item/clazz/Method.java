@@ -47,8 +47,8 @@ public class Method extends AbstractClassMember<MethodModifier> {
 	
 	@Override
 	protected void verifyName(SymbolReference ref, String name) {
-		if (!IdentifierUtils.isValidIdentifier(name) && !(name.equals("<init>") || name.equals("<cinit>"))) {
-			emitError(ref, "invalid field name");
+		if (!IdentifierUtils.isValidIdentifier(name) && !(name.equals("<init>") || name.equals("<clinit>"))) {
+			emitError(ref, "invalid method name: "+name);
 		}
 		
 	}

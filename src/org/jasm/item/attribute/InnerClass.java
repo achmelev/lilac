@@ -13,19 +13,26 @@ import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.InnerClassModifier;
+import org.jasm.item.utils.IdentifierUtils;
+import org.jasm.parser.literals.Keyword;
+import org.jasm.parser.literals.SymbolReference;
 
 public class InnerClass extends AbstractByteCodeItem implements IConstantPoolReference {
 	
+	private SymbolReference innerClassReference;
 	private int innerClassIndex = -1;
 	private ClassInfo innerClass = null;
+	private SymbolReference outerClassReference;
 	private int outerClassIndex = -1;
 	private ClassInfo outerClass = null;
+	private SymbolReference innerNameReference;
 	private int innerNameIndex = -1;
 	private Utf8Info innerName = null;
+	private List<Keyword> modifierLiterals;
 	private InnerClassModifier modifier;
 	
 	public InnerClass() {
-		
+		modifierLiterals = new ArrayList<>();
 	}
 	
 	public InnerClass(ClassInfo innerClass, ClassInfo outerClass, Utf8Info innerName, InnerClassModifier modifier) {
@@ -80,7 +87,9 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 		if (innerName != null) {
 			result.add(new SimplePrintable(null, "name", innerName.getSymbolName(), innerName.getValue()));
 		} 
-		result.add(new SimplePrintable(null, "modifier", modifier.toString(), null));
+		if (!modifier.hasNoFlags()) {
+			result.add(new SimplePrintable(null, "modifier", modifier.toString(), null));
+		}
 		return result;
 	}
 
@@ -122,7 +131,28 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		if (this.innerClassReference != null) {
+			this.innerClass = getConstantPool().checkAndLoadFromSymbolTable(ClassInfo.class, innerClassReference);
+		} else {
+			emitError(null, "missing inner statement");
+		}
+		if (this.outerClassReference != null) {
+			this.outerClass = getConstantPool().checkAndLoadFromSymbolTable(ClassInfo.class, outerClassReference);
+		} 
+		if (this.innerNameReference != null) {
+			this.innerName = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, innerNameReference);
+			if (this.innerName != null) {
+				verifyName(innerNameReference, innerName.getValue());
+			}
+		}
+		
+		
+		if (!this.hasResolveErrors()) {
+			modifier = new InnerClassModifier(0);
+			for (Keyword kw: modifierLiterals) {
+				modifier.setFlag(kw.getKeyword());
+			}
+		}
 	}
 
 	public ClassInfo getInnerClass() {
@@ -177,6 +207,44 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 		
 		return result1;
 	}
+	
+
+	public List<Keyword> getModifierLiterals() {
+		return modifierLiterals;
+	}
+
+	public void setInnerClassReference(SymbolReference innerClassReference) {
+		this.innerClassReference = innerClassReference;
+	}
+
+	public void setOuterClassReference(SymbolReference outerClassReference) {
+		this.outerClassReference = outerClassReference;
+	}
+
+	public void setInnerNameReference(SymbolReference innerNameReference) {
+		this.innerNameReference = innerNameReference;
+	}
+
+	public SymbolReference getInnerClassReference() {
+		return innerClassReference;
+	}
+
+	public SymbolReference getOuterClassReference() {
+		return outerClassReference;
+	}
+
+	public SymbolReference getInnerNameReference() {
+		return innerNameReference;
+	}
+	
+	private void verifyName(SymbolReference ref, String name) {
+		if (!IdentifierUtils.isValidIdentifier(name)) {
+			emitError(ref, "malformed inner class name");
+		}
+		
+	}
+	
+	
 	
 	
 
