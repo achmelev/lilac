@@ -1,5 +1,7 @@
 package org.jasm.item.constantpool;
 
+import org.jasm.item.descriptor.IllegalDescriptorException;
+import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 
@@ -51,8 +53,16 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 			AbstractConstantPoolEntry value) {
 		String className = ((Utf8Info)value).getValue();
 		if (!IdentifierUtils.isValidJasmClassName(className)) {
-			emitError(ref, "invalid class name "+className);
-			return false;
+			TypeDescriptor desc = null;
+			try {
+				desc = new TypeDescriptor(className);
+			} catch (IllegalDescriptorException e) {
+				
+			}
+			if (desc == null || !desc.isArray()) { 
+				emitError(ref, "invalid class name or array type"+className);
+				return false;
+			}
 		}
 		return true;
 	}

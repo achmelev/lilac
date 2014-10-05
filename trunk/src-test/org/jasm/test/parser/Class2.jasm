@@ -1,0 +1,248 @@
+class {
+  version 51_0;
+  name classref_0; // org/jasm/test/testclass/Class2
+  extends classref_2; // java/lang/Object
+  modifier public, super, abstract;
+   //Constants
+  const classref classref_0 utf8_1; // org/jasm/test/testclass/Class2
+  const utf8 utf8_1 "org/jasm/test/testclass/Class2";
+  const classref classref_2 utf8_3; // java/lang/Object
+  const utf8 utf8_3 "java/lang/Object";
+  const utf8 utf8_4 "staticString";
+  const utf8 utf8_5 "Ljava/lang/String;";
+  const utf8 utf8_6 "finalIntField";
+  const utf8 utf8_7 "I";
+  const utf8 utf8_8 "ConstantValue";
+  const int int_9 0;
+  const utf8 utf8_10 "transientField";
+  const utf8 utf8_11 "Ljava/lang/Boolean;";
+  const utf8 utf8_12 "constInt";
+  const int int_13 1;
+  const utf8 utf8_14 "<clinit>";
+  const utf8 utf8_15 "()V";
+  const utf8 utf8_16 "Code";
+  const string string_17 utf8_18; // "HELLO \n \u00C4 WORLD"
+  const utf8 utf8_18 "HELLO \n \u00C4 WORLD";
+  const fieldref fieldref_19 classref_0, nameandtype_20; // class=org/jasm/test/testclass/Class2, name=staticString, descriptor=Ljava/lang/String;
+  const nameandtype nameandtype_20 utf8_4, utf8_5; // name=staticString type=Ljava/lang/String;
+  const utf8 utf8_21 "LineNumberTable";
+  const utf8 utf8_22 "LocalVariableTable";
+  const utf8 utf8_23 "<init>";
+  const methodref methodref_24 classref_2, nameandtype_25; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype nameandtype_25 utf8_23, utf8_15; // name=<init> type=()V
+  const fieldref fieldref_26 classref_0, nameandtype_27; // class=org/jasm/test/testclass/Class2, name=finalIntField, descriptor=I
+  const nameandtype nameandtype_27 utf8_6, utf8_7; // name=finalIntField type=I
+  const methodref methodref_28 classref_29, nameandtype_31; // class=java/lang/Boolean, name=valueOf, descriptor=(Z)Ljava/lang/Boolean;
+  const classref classref_29 utf8_30; // java/lang/Boolean
+  const utf8 utf8_30 "java/lang/Boolean";
+  const nameandtype nameandtype_31 utf8_32, utf8_33; // name=valueOf type=(Z)Ljava/lang/Boolean;
+  const utf8 utf8_32 "valueOf";
+  const utf8 utf8_33 "(Z)Ljava/lang/Boolean;";
+  const fieldref fieldref_34 classref_0, nameandtype_35; // class=org/jasm/test/testclass/Class2, name=transientField, descriptor=Ljava/lang/Boolean;
+  const nameandtype nameandtype_35 utf8_10, utf8_11; // name=transientField type=Ljava/lang/Boolean;
+  const utf8 utf8_36 "this";
+  const utf8 utf8_37 "Lorg/jasm/test/testclass/Class2;";
+  const utf8 utf8_38 "privateMethod";
+  const utf8 utf8_39 "(I)V";
+  const utf8 utf8_40 "Deprecated";
+  const utf8 utf8_41 "RuntimeVisibleAnnotations";
+  const utf8 utf8_42 "Ljava/lang/Deprecated;";
+  const utf8 utf8_43 "a";
+  const utf8 utf8_44 "protectedAbstractMethod";
+  const utf8 utf8_45 "synchronizedStaticMethod";
+  const utf8 utf8_46 "methodMitException";
+  const utf8 utf8_47 "Exceptions";
+  const classref classref_48 utf8_49; // java/lang/IllegalArgumentException
+  const utf8 utf8_49 "java/lang/IllegalArgumentException";
+  const string string_50 utf8_51; // "XXX"
+  const utf8 utf8_51 "XXX";
+  const methodref methodref_52 classref_48, nameandtype_53; // class=java/lang/IllegalArgumentException, name=<init>, descriptor=(Ljava/lang/String;)V
+  const nameandtype nameandtype_53 utf8_23, utf8_54; // name=<init> type=(Ljava/lang/String;)V
+  const utf8 utf8_54 "(Ljava/lang/String;)V";
+  const utf8 utf8_55 "methodWithAnonymousClass";
+  const classref classref_56 utf8_57; // org/jasm/test/testclass/Class2$1
+  const utf8 utf8_57 "org/jasm/test/testclass/Class2$1";
+  const methodref methodref_58 classref_56, nameandtype_59; // class=org/jasm/test/testclass/Class2$1, name=<init>, descriptor=(Lorg/jasm/test/testclass/Class2;)V
+  const nameandtype nameandtype_59 utf8_23, utf8_60; // name=<init> type=(Lorg/jasm/test/testclass/Class2;)V
+  const utf8 utf8_60 "(Lorg/jasm/test/testclass/Class2;)V";
+  const utf8 utf8_61 "run";
+  const utf8 utf8_62 "Ljava/lang/Runnable;";
+  const utf8 utf8_63 "methodMitException2";
+  const classref classref_64 utf8_65; // [[I
+  const utf8 utf8_65 "[[I";
+  const double double_66 1.8p1; // 3.0
+  const float float_68 1.0p2; // 4.0
+  const classref classref_69 utf8_70; // java/lang/RuntimeException
+  const utf8 utf8_70 "java/lang/RuntimeException";
+  const utf8 utf8_71 "x";
+  const utf8 utf8_72 "y";
+  const utf8 utf8_73 "J";
+  const utf8 utf8_74 "z";
+  const utf8 utf8_75 "D";
+  const utf8 utf8_76 "s";
+  const utf8 utf8_77 "S";
+  const utf8 utf8_78 "f";
+  const utf8 utf8_79 "F";
+  const utf8 utf8_80 "by";
+  const utf8 utf8_81 "B";
+  const utf8 utf8_82 "multi";
+  const utf8 utf8_83 "e";
+  const utf8 utf8_84 "Ljava/lang/RuntimeException;";
+  const utf8 utf8_85 "StackMapTable";
+  const classref classref_86 utf8_87; // java/lang/Throwable
+  const utf8 utf8_87 "java/lang/Throwable";
+  const utf8 utf8_88 "interfaceCall";
+  const classref classref_89 utf8_90; // org/jasm/test/testclass/Class3
+  const utf8 utf8_90 "org/jasm/test/testclass/Class3";
+  const methodref methodref_91 classref_89, nameandtype_25; // class=org/jasm/test/testclass/Class3, name=<init>, descriptor=()V
+  const intfmethodref intfmethodref_92 classref_93, nameandtype_95; // class=org/jasm/test/testclass/Interface1, name=testMethod, descriptor=(I)V
+  const classref classref_93 utf8_94; // org/jasm/test/testclass/Interface1
+  const utf8 utf8_94 "org/jasm/test/testclass/Interface1";
+  const nameandtype nameandtype_95 utf8_96, utf8_39; // name=testMethod type=(I)V
+  const utf8 utf8_96 "testMethod";
+  const utf8 utf8_97 "intf";
+  const utf8 utf8_98 "Lorg/jasm/test/testclass/Interface1;";
+  const utf8 utf8_99 "switchMethod";
+  const utf8 utf8_100 "r";
+  const utf8 utf8_101 "switchMethod2";
+  const utf8 utf8_102 "arraysMethod";
+  const utf8 utf8_103 "ba";
+  const utf8 utf8_104 "[Z";
+  const utf8 utf8_105 "ca";
+  const utf8 utf8_106 "[C";
+  const utf8 utf8_107 "bya";
+  const utf8 utf8_108 "[B";
+  const utf8 utf8_109 "da";
+  const utf8 utf8_110 "[D";
+  const utf8 utf8_111 "fa";
+  const utf8 utf8_112 "[F";
+  const utf8 utf8_113 "ia";
+  const utf8 utf8_114 "[I";
+  const utf8 utf8_115 "la";
+  const utf8 utf8_116 "[J";
+  const utf8 utf8_117 "sa";
+  const utf8 utf8_118 "[S";
+  const utf8 utf8_119 "SourceFile";
+  const utf8 utf8_120 "Class2.java";
+  const utf8 utf8_121 "InnerClasses";
+  const classref classref_122 utf8_123; // org/jasm/test/testclass/Class2$InnerClass
+  const utf8 utf8_123 "org/jasm/test/testclass/Class2$InnerClass";
+  const utf8 utf8_124 "InnerClass";
+   //Attributes
+  source file utf8_120; // Class2.java
+  inner class {
+    inner classref_56; // org/jasm/test/testclass/Class2$1
+  }
+  inner class {
+    inner classref_122; // org/jasm/test/testclass/Class2$InnerClass
+    outer classref_0; // org/jasm/test/testclass/Class2
+    name utf8_124; // InnerClass
+    modifier private;
+  }
+   //Fields
+  field {
+    name utf8_4; // staticString
+    descriptor utf8_5; // Ljava/lang/String;
+    modifier public, static;
+  }
+  field {
+    name utf8_6; // finalIntField
+    descriptor utf8_7; // I
+    modifier private, final;
+     //Attributes
+    constant value int_9; // 0
+  }
+  field {
+    name utf8_10; // transientField
+    descriptor utf8_11; // Ljava/lang/Boolean;
+    modifier protected, transient;
+  }
+  field {
+    name utf8_12; // constInt
+    descriptor utf8_7; // I
+    modifier public, static, final;
+     //Attributes
+    constant value int_13; // 1
+  }
+   //Methods
+  method {
+    name utf8_14; // <clinit>
+    descriptor utf8_15; // ()V
+    modifier static;
+    
+  }
+  method {
+    name utf8_23; // <init>
+    descriptor utf8_15; // ()V
+    modifier public;
+    
+  }
+  method {
+    name utf8_38; // privateMethod
+    descriptor utf8_39; // (I)V
+    modifier private;
+     //Attributes
+    deprecated;
+    annotation {
+      type utf8_42; // Ljava/lang/Deprecated;
+    }
+    
+  }
+  method {
+    name utf8_44; // protectedAbstractMethod
+    descriptor utf8_15; // ()V
+    modifier protected, abstract;
+  }
+  method {
+    name utf8_45; // synchronizedStaticMethod
+    descriptor utf8_15; // ()V
+    modifier static, synchronized;
+   
+  }
+  method {
+    name utf8_46; // methodMitException
+    descriptor utf8_15; // ()V
+    modifier public;
+     //Attributes
+    throws classref_48; // java/lang/IllegalArgumentException
+   
+  }
+  method {
+    name utf8_55; // methodWithAnonymousClass
+    descriptor utf8_15; // ()V
+    modifier protected;
+    
+  }
+  method {
+    name utf8_63; // methodMitException2
+    descriptor utf8_15; // ()V
+    modifier public;
+     //Attributes
+    throws classref_48; // java/lang/IllegalArgumentException
+   
+  }
+  method {
+    name utf8_88; // interfaceCall
+    descriptor utf8_15; // ()V
+    modifier public;
+    
+  }
+  method {
+    name utf8_99; // switchMethod
+    descriptor utf8_39; // (I)V
+    modifier public;
+    
+  }
+  method {
+    name utf8_101; // switchMethod2
+    descriptor utf8_39; // (I)V
+    modifier public;
+    
+  }
+  method {
+    name utf8_102; // arraysMethod
+    descriptor utf8_39; // (I)V
+    modifier public;
+  }
+    
+}

@@ -45,7 +45,7 @@ public class Field extends AbstractClassMember<FieldModifier> {
 	@Override
 	protected void verifyName(SymbolReference ref, String name) {
 		if (!IdentifierUtils.isValidIdentifier(name)) {
-			emitError(ref, "invalid field name");
+			emitError(ref, "invalid field name: "+name);
 		}
 		
 	}

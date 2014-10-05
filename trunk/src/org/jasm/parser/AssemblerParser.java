@@ -32,6 +32,8 @@ import org.jasm.item.attribute.ConstantValueAttributeContent;
 import org.jasm.item.attribute.DeprecatedAttributeContent;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
 import org.jasm.item.attribute.IAttributeContent;
+import org.jasm.item.attribute.InnerClass;
+import org.jasm.item.attribute.InnerClassesAttributeContent;
 import org.jasm.item.attribute.RuntimeInvisibleAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeInvisibleParameterAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeVisibleAnnotationsAttributeContent;
@@ -65,6 +67,7 @@ import org.jasm.parser.JavaAssemblerParser.AnnotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationindexContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationtypeContext;
 import org.jasm.parser.JavaAssemblerParser.ArrayannotationelementvalueContext;
+import org.jasm.parser.JavaAssemblerParser.ClassInnerClassContext;
 import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
 import org.jasm.parser.JavaAssemblerParser.ClassinfoContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierAbstractContext;
@@ -96,6 +99,20 @@ import org.jasm.parser.JavaAssemblerParser.FieldmodifierVolatileContext;
 import org.jasm.parser.JavaAssemblerParser.FieldnameContext;
 import org.jasm.parser.JavaAssemblerParser.FieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FloatinfoContext;
+import org.jasm.parser.JavaAssemblerParser.InnerclassContext;
+import org.jasm.parser.JavaAssemblerParser.Innerclass_innerContext;
+import org.jasm.parser.JavaAssemblerParser.Innerclass_nameContext;
+import org.jasm.parser.JavaAssemblerParser.Innerclass_outerContext;
+import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierAbstractContext;
+import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierAnnotationContext;
+import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierEnumContext;
+import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierFinalContext;
+import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierInterfaceContext;
+import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierPrivateContext;
+import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierProtectedContext;
+import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierPublicContext;
+import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierStaticContext;
+import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacemethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacesContext;
@@ -137,6 +154,7 @@ import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
@@ -259,6 +277,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		} else {
 			emitError(ctx.NAME(), "multiple class name statements");
 		}
+		
 	}
 	
 
@@ -1012,6 +1031,143 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	
 	
+	
+
+	
+
+	
+
+	@Override
+	public void enterInnerclass(InnerclassContext ctx) {
+		InnerClass innerClass = new InnerClass();
+		InnerClassesAttributeContent content = getAttributeContentCreatingIfNecessary(InnerClassesAttributeContent.class);
+		innerClass.setSourceLocation(createSourceLocation(ctx.INNER()));
+		if (content.getSourceLocation() == null) {
+			content.setSourceLocation(innerClass.getSourceLocation());
+		}
+		content.add(innerClass);
+		stack.push(innerClass);
+	}
+
+
+	@Override
+	public void enterInnerclass_inner(Innerclass_innerContext ctx) {
+		InnerClass incl = (InnerClass)stack.peek();
+		if (incl.getInnerClassReference() == null) {
+			incl.setInnerClassReference(createSymbolReference(ctx.Identifier()));
+		} else {
+			emitError(ctx.INNER(), "multiple inner statements");
+		}
+		
+	}
+	
+	@Override
+	public void enterInnerclass_outer(Innerclass_outerContext ctx) {
+		InnerClass incl = (InnerClass)stack.peek();
+		if (incl.getOuterClassReference() == null) {
+			incl.setOuterClassReference(createSymbolReference(ctx.Identifier()));
+		} else {
+			emitError(ctx.OUTER(), "multiple outer statements");
+		}
+		
+	}
+	
+	@Override
+	public void enterInnerclass_name(Innerclass_nameContext ctx) {
+		InnerClass incl = (InnerClass)stack.peek();
+		if (incl.getInnerNameReference() == null) {
+			incl.setInnerNameReference(createSymbolReference(ctx.Identifier()));
+		} else {
+			emitError(ctx.NAME(), "multiple name statements");
+		}
+	}
+	
+	
+
+
+	@Override
+	public void enterInnerclassmodifierStatic(
+			InnerclassmodifierStaticContext ctx) {
+		InnerClass incl = (InnerClass)stack.peek();
+		incl.getModifierLiterals().add(createKeyword(ctx.STATIC()));
+	}
+
+
+	@Override
+	public void enterInnerclassmodifierSyntetic(
+			InnerclassmodifierSynteticContext ctx) {
+		InnerClass incl = (InnerClass)stack.peek();
+		incl.getModifierLiterals().add(createKeyword(ctx.SYNTETIC()));
+	}
+
+
+	@Override
+	public void enterInnerclassmodifierFinal(InnerclassmodifierFinalContext ctx) {
+		InnerClass incl = (InnerClass)stack.peek();
+		incl.getModifierLiterals().add(createKeyword(ctx.FINAL()));
+	}
+
+
+	@Override
+	public void enterInnerclassmodifierProtected(
+			InnerclassmodifierProtectedContext ctx) {
+		InnerClass incl = (InnerClass)stack.peek();
+		incl.getModifierLiterals().add(createKeyword(ctx.PROTECTED()));
+	}
+
+
+	@Override
+	public void enterInnerclassmodifierEnum(InnerclassmodifierEnumContext ctx) {
+		InnerClass incl = (InnerClass)stack.peek();
+		incl.getModifierLiterals().add(createKeyword(ctx.ENUM()));
+	}
+
+
+	@Override
+	public void enterInnerclassmodifierPublic(
+			InnerclassmodifierPublicContext ctx) {
+		InnerClass incl = (InnerClass)stack.peek();
+		incl.getModifierLiterals().add(createKeyword(ctx.PUBLIC()));
+	}
+
+
+	@Override
+	public void enterInnerclassmodifierInterface(
+			InnerclassmodifierInterfaceContext ctx) {
+		InnerClass incl = (InnerClass)stack.peek();
+		incl.getModifierLiterals().add(createKeyword(ctx.INTERFACE()));
+	}
+
+
+	@Override
+	public void enterInnerclassmodifierAnnotation(
+			InnerclassmodifierAnnotationContext ctx) {
+		InnerClass incl = (InnerClass)stack.peek();
+		incl.getModifierLiterals().add(createKeyword(ctx.ANNOTATION()));
+	}
+
+
+	@Override
+	public void enterInnerclassmodifierAbstract(
+			InnerclassmodifierAbstractContext ctx) {
+		InnerClass incl = (InnerClass)stack.peek();
+		incl.getModifierLiterals().add(createKeyword(ctx.ABSTRACT()));
+	}
+
+
+	@Override
+	public void enterInnerclassmodifierPrivate(
+			InnerclassmodifierPrivateContext ctx) {
+		InnerClass incl = (InnerClass)stack.peek();
+		incl.getModifierLiterals().add(createKeyword(ctx.PRIVATE()));
+	}
+	
+	
+
+	@Override
+	public void exitClassInnerClass(ClassInnerClassContext ctx) {
+		stack.pop();
+	}
 
 
 	public void emitError(TerminalNode node, String message) {

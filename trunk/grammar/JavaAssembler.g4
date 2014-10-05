@@ -61,7 +61,34 @@ classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile
 			   | synteticattribute #classAttributeSyntetic
 			   | deprecatedattribute #classAttributeDeprecated
 			   | annotation #classAnnotation 
+			   | innerclass #classInnerClass
 			   ;
+			   
+innerclass: INNER CLASS LBRACE 
+	 			innerclassmember*
+	 		RBRACE;
+
+innerclassmember: innerclass_inner SEMI
+				  | innerclass_outer SEMI
+				  | innerclass_name SEMI
+				  | innerclass_modifier SEMI
+				  ;
+
+innerclass_inner: INNER Identifier;
+innerclass_outer: OUTER Identifier;
+innerclass_name: NAME Identifier;
+innerclass_modifier: MODIFIER innerclassmodifierlabel (COMMA  innerclassmodifierlabel)*;
+innerclassmodifierlabel: PUBLIC #innerclassmodifierPublic
+						|PRIVATE #innerclassmodifierPrivate
+						|PROTECTED #innerclassmodifierProtected
+						|STATIC #innerclassmodifierStatic
+						|FINAL #innerclassmodifierFinal
+						|INTERFACE #innerclassmodifierInterface
+						|ABSTRACT #innerclassmodifierAbstract
+						|SYNTETIC #innerclassmodifierSyntetic
+						|ANNOTATION #innerclassmodifierAnnotation
+						|ENUM #innerclassmodifierEnum
+						; 
 
 method  : METHOD  LBRACE
 					methodmember*
@@ -229,6 +256,8 @@ BOOLEAN       :  'boolean';
 ARRAY         :  'array';
 INDEX         :  'index';
 PARAMETER     :  'parameter';
+INNER         :  'inner';
+OUTER         :  'outer';
 
 //Version
 
