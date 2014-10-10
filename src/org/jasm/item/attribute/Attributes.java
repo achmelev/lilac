@@ -30,7 +30,7 @@ public class Attributes extends AbstractBytecodeItemList<Attribute> {
 
 	@Override
 	public String getPrintComment() {
-		return "Attributes";
+		return null;	
 	}
 	
 	public <U extends IAttributeContent> List<Attribute> getAttributesByContentType(Class<U> clazz) {
