@@ -7,15 +7,12 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Stack;
 
-
-
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -30,6 +27,7 @@ import org.jasm.item.attribute.AnnotationElementValue;
 import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
 import org.jasm.item.attribute.DeprecatedAttributeContent;
+import org.jasm.item.attribute.EnclosingMethodAttributeContent;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
 import org.jasm.item.attribute.IAttributeContent;
 import org.jasm.item.attribute.InnerClass;
@@ -83,6 +81,7 @@ import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
 import org.jasm.parser.JavaAssemblerParser.DeprecatedattributeContext;
 import org.jasm.parser.JavaAssemblerParser.DoubleinfoContext;
+import org.jasm.parser.JavaAssemblerParser.EnclosingmethodContext;
 import org.jasm.parser.JavaAssemblerParser.EnumannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.FieldContext;
 import org.jasm.parser.JavaAssemblerParser.FieldattributeConstantValueContext;
@@ -825,10 +824,22 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		addAttribute(content, ctx.SYNTETIC());
 	}
 	
+	@Override
+	public void enterEnclosingmethod(EnclosingmethodContext ctx) {
+		EnclosingMethodAttributeContent content = new EnclosingMethodAttributeContent();
+		content.setClazzReference(createSymbolReference(ctx.Identifier(0)));
+		content.setMethodReference(createSymbolReference(ctx.Identifier(1)));
+		addAttribute(content, ctx.ENCLOSING());
+	}
+	
+	
 	//Annotations
 	
 	
 	
+	
+
+
 	@Override
 	public void enterAnnotationdeclaration(AnnotationdeclarationContext ctx) {
 		boolean rootAnnotation = (ctx.getParent() instanceof AnnotationContext);

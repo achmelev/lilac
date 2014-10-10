@@ -27,7 +27,7 @@ public class MethodModifier extends AbstractClassMemberModifier {
 	private static int STRICT_BIT=0x0800;
 	private static String STRICT_LABEL="strict";
 	private static int SYNTETIC_BIT=0x1000;
-	private static String SYNTETIC_LABEL="syntetic";
+	private static String SYNTETIC_LABEL="synthetic";
 	
 	
 	public MethodModifier(int value) {
