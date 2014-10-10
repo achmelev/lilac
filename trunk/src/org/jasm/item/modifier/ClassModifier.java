@@ -15,7 +15,7 @@ public class ClassModifier extends AbstractModifier {
 	private static int ABSTRACT_BIT=0x0400;
 	private static String ABSTRACT_LABEL="abstract";
 	private static int SYNTETIC_BIT=0x1000;
-	private static String SYNTETIC_LABEL="syntetic";
+	private static String SYNTETIC_LABEL="synthetic";
 	private static int ANNOTATION_BIT=0x2000;
 	private static String ANNOTATION_LABEL="annotation";
 	private static int ENUM_BIT=0x4000;

@@ -62,6 +62,7 @@ classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile
 			   | deprecatedattribute #classAttributeDeprecated
 			   | annotation #classAnnotation 
 			   | innerclass #classInnerClass
+			   | enclosingmethod #classEnclosingMethod
 			   ;
 			   
 innerclass: INNER CLASS LBRACE 
@@ -89,6 +90,8 @@ innerclassmodifierlabel: PUBLIC #innerclassmodifierPublic
 						|ANNOTATION #innerclassmodifierAnnotation
 						|ENUM #innerclassmodifierEnum
 						; 
+
+enclosingmethod: ENCLOSING METHOD Identifier COMMA Identifier SEMI;
 
 method  : METHOD  LBRACE
 					methodmember*
@@ -258,6 +261,7 @@ INDEX         :  'index';
 PARAMETER     :  'parameter';
 INNER         :  'inner';
 OUTER         :  'outer';
+ENCLOSING     :  'enclosing';
 
 //Version
 

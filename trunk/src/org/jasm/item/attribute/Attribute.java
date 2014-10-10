@@ -146,6 +146,8 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 			name = "RuntimeInvisibleParameterAnnotations";
 		} else if (content instanceof InnerClassesAttributeContent) {
 			name = "InnerClasses";
+		} else if (content instanceof EnclosingMethodAttributeContent) {
+			name = "EnclosingMethod";
 		} else {
 			throw new IllegalStateException("unknown attribute content type: "+content.getClass());
 		}

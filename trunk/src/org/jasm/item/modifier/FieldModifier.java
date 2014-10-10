@@ -20,7 +20,7 @@ public class FieldModifier extends AbstractClassMemberModifier {
 	private static int TRANSIENT_BIT=0x0080;
 	private static String TRANSIENT_LABEL="transient";
 	private static int SYNTETIC_BIT=0x1000;
-	private static String SYNTETIC_LABEL="syntetic";
+	private static String SYNTETIC_LABEL="synthetic";
 	private static int ENUM_BIT=0x4000;
 	private static String ENUM_LABEL="enum";
 	

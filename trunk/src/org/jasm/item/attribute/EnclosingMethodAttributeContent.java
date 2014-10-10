@@ -10,12 +10,15 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.NameAndTypeInfo;
+import org.jasm.parser.literals.SymbolReference;
 
 public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
 	
 	private int clazzIndex = -1;
+	private SymbolReference clazzReference;
 	private ClassInfo clazz = null;
 	private int methodIndex = -1;
+	private SymbolReference methodReference;
 	private NameAndTypeInfo method = null;
 	
 	public EnclosingMethodAttributeContent(ClassInfo clazz, NameAndTypeInfo method) {
@@ -108,7 +111,14 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		this.clazz = getConstantPool().checkAndLoadFromSymbolTable(ClassInfo.class, clazzReference);
+		if (this.clazz == null) {
+			emitError(clazzReference, "unknown class info");
+		}
+		this.method = getConstantPool().checkAndLoadFromSymbolTable(NameAndTypeInfo.class, methodReference);
+		if (this.method == null) {
+			emitError(methodReference, "unknown name_and_type info");
+		}
 	}
 
 	public ClassInfo getClazz() {
@@ -140,5 +150,15 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 		}
 		
 	}
+
+	public void setClazzReference(SymbolReference clazzReference) {
+		this.clazzReference = clazzReference;
+	}
+
+	public void setMethodReference(SymbolReference methodReference) {
+		this.methodReference = methodReference;
+	}
+	
+	
 
 }
