@@ -102,7 +102,7 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 
 	@Override
 	public String getPrintName() {
-		return "code";
+		return null;
 	}
 	
 	@Override
