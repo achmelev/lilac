@@ -42,9 +42,6 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		return null;
 	}
 	
-	
-	
-
 	private AbstractInstruction createEmptyItem(IByteBuffer source,
 			long offset) {
 		short opCode = source.readUnsignedByte(offset);
@@ -241,22 +238,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		
 		for (int i=0;i<localVariableReferencesList.size(); i++) {
 			LocalVariable loc = localVariableReferencesList.get(i);
-			String type = null;
-			if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE) {
-				type = JasmConsts.TYPENAME_OBJECT;
-			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS) {
-				type = JasmConsts.TYPENAME_RETURNADRESS;
-			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_INT) {
-				type = JasmConsts.TYPENAME_INT;
-			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT) {
-				type = JasmConsts.TYPENAME_FLOAT;
-			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE) {
-				type = JasmConsts.TYPENAME_DOUBLE;
-			} else if (loc.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_LONG) {
-				type = JasmConsts.TYPENAME_LONG;
-			} else {
-				throw new IllegalStateException("Unknown type: "+loc.getType());
-			}
+			String type = LocalVariable.getTypeName(loc.getType());
+			
 			
 			String offset = getOffset(localVariableReferencesList, i);
 			String [] args = (offset == null)?new String[]{loc.toString()}:new String[]{loc.toString()+" at "+offset};
@@ -276,7 +259,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		if (index == 0 && loc.getIndex()==0) {
 			return null;
 		} else if (index == 0 && loc.getIndex() > 0) {
-			return "loc.getIndex()";
+			return loc.getIndex()+"";
 		} else if (index>0 && loc.getIndex()==variables.get(index-1).getIndex()+variables.get(index-1).getLength()) {
 			return null;
 		} else if (index>0 && loc.getIndex()!=variables.get(index-1).getIndex()+variables.get(index-1).getLength()) {

@@ -147,7 +147,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	}
 	
 	
-	protected void emitError(AbstractLiteral literal, String message) {
+	public void emitError(AbstractLiteral literal, String message) {
 		if (literal !=  null) {
 			getRoot().getParser().emitError(literal.getLine(), literal.getCharPosition(), message);
 		} else {
@@ -158,7 +158,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		
 	}
 	
-	protected void emitErrorOnLocation(SourceLocation sl, String message) {
+	public void emitErrorOnLocation(SourceLocation sl, String message) {
 		getRoot().getParser().emitError(sl.getLine(), sl.getCharPosition(), message);
 		hasResolveErrors = true;
 		
