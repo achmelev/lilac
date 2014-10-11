@@ -25,6 +25,7 @@ import org.jasm.item.attribute.Annotation;
 import org.jasm.item.attribute.AnnotationElementNameValue;
 import org.jasm.item.attribute.AnnotationElementValue;
 import org.jasm.item.attribute.Attribute;
+import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
 import org.jasm.item.attribute.DeprecatedAttributeContent;
 import org.jasm.item.attribute.EnclosingMethodAttributeContent;
@@ -56,6 +57,7 @@ import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.constantpool.NameAndTypeInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.item.instructions.LocalVariable;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.JavaAssemblerParser.AnnotationContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationdeclarationContext;
@@ -134,6 +136,12 @@ import org.jasm.parser.JavaAssemblerParser.MethodmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierVarargsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodnameContext;
 import org.jasm.parser.JavaAssemblerParser.MethodrefinfoContext;
+import org.jasm.parser.JavaAssemblerParser.Methodvar_absoluteContext;
+import org.jasm.parser.JavaAssemblerParser.Methodvar_implicitContext;
+import org.jasm.parser.JavaAssemblerParser.Methodvar_relativeContext;
+import org.jasm.parser.JavaAssemblerParser.MethodvarabsoluteContext;
+import org.jasm.parser.JavaAssemblerParser.MethodvarimplicitContext;
+import org.jasm.parser.JavaAssemblerParser.MethodvarrelativeContext;
 import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SignatureattributeContext;
 import org.jasm.parser.JavaAssemblerParser.SimpleannotationelementvalueContext;
@@ -670,6 +678,50 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		
 		content.setExceptionReferences(symbols);
 		addAttribute(content, ctx.THROWS());
+	}
+
+	@Override
+	public void enterMethodvarimplicit(MethodvarimplicitContext ctx) {
+		LocalVariable var = new LocalVariable(LocalVariable.getTypeCode(ctx.methodvartype().getText()));
+		var.setName(createSymbolReference(ctx.Identifier()));
+		addVar(var);
+	}
+	
+	
+	
+	@Override
+	public void enterMethodvarabsolute(MethodvarabsoluteContext ctx) {
+		LocalVariable var = new LocalVariable(LocalVariable.getTypeCode(ctx.methodvartype().getText()));
+		var.setName(createSymbolReference(ctx.Identifier()));
+		IntegerLiteral lit = createIntegerLiteral(ctx.IntegerLiteral());
+		if (lit.getValue()<0) {
+			emitError(ctx.IntegerLiteral(), "an offset must be positive");
+		} else {
+			var.setOffset(lit.getValue());
+			addVar(var);
+		}
+		
+	}
+	
+	
+	@Override
+	public void enterMethodvarrelative(MethodvarrelativeContext ctx) {
+		LocalVariable var = new LocalVariable(LocalVariable.getTypeCode(ctx.methodvartype().getText()));
+		var.setName(createSymbolReference(ctx.Identifier(0)));
+		IntegerLiteral lit = createIntegerLiteral(ctx.IntegerLiteral());
+		if (lit.getValue()<0) {
+			emitError(ctx.IntegerLiteral(), "an offset must be positive");
+		} else {
+			var.setOffset(lit.getValue());
+			var.setParentName(createSymbolReference(ctx.Identifier(1)));
+			addVar(var);
+		}
+	}
+
+
+	private void addVar(LocalVariable var) {
+		CodeAttributeContent content = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+		content.getInstructions().getVariablesPool().addVariable(var);
 	}
 
 

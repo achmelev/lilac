@@ -463,11 +463,6 @@ public class LocalVariablesPoolTest {
 		var.setOffset(3);
 		pool.addVariable(var);
 		
-		var = new LocalVariable(JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
-		var.setName(new SymbolReference(0, 0, "floatVar2"));
-		var.setOffset(-5);
-		pool.addVariable(var);
-		
 		var = new LocalVariable(JasmConsts.LOCAL_VARIABLE_TYPE_INT);
 		var.setName(new SymbolReference(0, 0, "intVar"));
 		pool.addVariable(var);
@@ -506,11 +501,6 @@ public class LocalVariablesPoolTest {
 		var.setOffset(3);
 		pool.addVariable(var);
 		
-		var = new LocalVariable(JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
-		var.setName(new SymbolReference(0, 0, "doubleVar3"));
-		var.setParentName(new SymbolReference(0, 0, "refVar"));
-		var.setOffset(-20);
-		pool.addVariable(var);
 		
 		var = new LocalVariable(JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
 		var.setName(new SymbolReference(0, 0, "retVar"));

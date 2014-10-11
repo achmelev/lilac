@@ -70,12 +70,7 @@ public class LocalVariable implements Comparable<LocalVariable> {
 
 	@Override
 	public int compareTo(LocalVariable o) {
-		int result = new Integer(index+getLength()).compareTo(o.getIndex()+o.getLength()); 
-		if (result == 0) {
-			result = new Integer(index).compareTo(new Integer(o.getIndex()));
-		}
-		return result;
-		
+		return new Integer(index).compareTo(new Integer(o.getIndex()));
 	}
 	
 	public int getLength() {
@@ -175,6 +170,9 @@ public class LocalVariable implements Comparable<LocalVariable> {
 	
 
 	public void setOffset(int offset) {
+		if (offset < 0) {
+			throw new IllegalArgumentException("illegal variable offset: "+index);
+		}
 		this.offset = offset;
 		offsetSet = true;
 	}
@@ -217,6 +215,27 @@ public class LocalVariable implements Comparable<LocalVariable> {
 			type = JasmConsts.TYPENAME_LONG;
 		} else {
 			throw new IllegalStateException("Unknown type: "+typeCode);
+		}
+		
+		return type;
+	}
+	
+	public static char getTypeCode(String name) {
+		char type;
+		if (name.equals(JasmConsts.TYPENAME_OBJECT)) {
+			type = JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE;
+		} else if (name.equals(JasmConsts.TYPENAME_RETURNADRESS)) {
+			type = JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS;
+		} else if (name.equals(JasmConsts.TYPENAME_INT)) {
+			type = JasmConsts.LOCAL_VARIABLE_TYPE_INT;
+		} else if (name.equals(JasmConsts.TYPENAME_FLOAT)) {
+			type = JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT;
+		} else if (name.equals(JasmConsts.TYPENAME_DOUBLE)) {
+			type = JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE;
+		} else if (name.equals(JasmConsts.TYPENAME_LONG)) {
+			type = JasmConsts.LOCAL_VARIABLE_TYPE_LONG;
+		} else {
+			throw new IllegalStateException("Unknown type: "+name);
 		}
 		
 		return type;

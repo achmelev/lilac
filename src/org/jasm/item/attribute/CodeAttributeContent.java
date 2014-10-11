@@ -130,7 +130,10 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		instructions.resolve();
+		exceptionTable.resolve();
+		attributes.resolve();
+		
 	}
 
 	@Override
