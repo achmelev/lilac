@@ -101,6 +101,7 @@ methodmember: methodname SEMI
 			  | methoddescriptor SEMI
 			  | methodmodifier SEMI
 			  | methodattribute
+			  | methodvar
 			  ;
 				  
 methodname: NAME Identifier;
@@ -129,6 +130,20 @@ methodattribute: THROWS Identifier (COMMA Identifier)* SEMI #methodAttributeExce
 				 | deprecatedattribute #methodAttributeDeprecated
 				 | annotation #methodAnnotation 
 				 ;
+
+methodvar: methodvarimplicit #methodvar_implicit
+		   | methodvarrelative #methodvar_relative
+		   | methodvarabsolute #methodvar_absolute
+		   ;
+		   
+methodvartype: DOUBLE|FLOAT|INT|LONG|OBJECT|RETURNADRESS;
+
+
+
+methodvarimplicit: VAR methodvartype Identifier SEMI;
+methodvarrelative: VAR methodvartype Identifier AT Identifier ( Plus? IntegerLiteral)? SEMI;
+methodvarabsolute: VAR methodvartype Identifier AT IntegerLiteral SEMI;
+
 
 field  : FIELD  LBRACE
 					fieldmember*
@@ -262,6 +277,13 @@ PARAMETER     :  'parameter';
 INNER         :  'inner';
 OUTER         :  'outer';
 ENCLOSING     :  'enclosing';
+OBJECT        :  'object';
+RETURNADRESS  :  'returnadress';
+AT            :  'at';
+VAR            :  'var';
+
+Plus            :  '+';
+
 
 //Version
 

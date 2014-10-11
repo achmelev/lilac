@@ -8,16 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.NotImplementedException;
-import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
-import org.jasm.item.constantpool.AbstractConstantPoolEntry;
-import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.map.KeyToListMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +32,12 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	
 	private Set<LocalVariable> localVariableReferences = new HashSet<>();
 	
+	private LocalVariablesPool variablesPool;
+	
+	public Instructions() {
+		variablesPool = new LocalVariablesPool();
+		variablesPool.setParent(this);
+	}
 	
 	@Override
 	public String getPrintName() {
@@ -236,15 +238,17 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			result.add(new SimplePrintable(null, null, (String)null,"Variables"));
 		}
 		
+		int lastOffset = 0;
 		for (int i=0;i<localVariableReferencesList.size(); i++) {
 			LocalVariable loc = localVariableReferencesList.get(i);
 			String type = LocalVariable.getTypeName(loc.getType());
 			
 			
-			String offset = getOffset(localVariableReferencesList, i);
+			String offset = getOffset(localVariableReferencesList, i, lastOffset);
 			String [] args = (offset == null)?new String[]{loc.toString()}:new String[]{loc.toString()+" at "+offset};
 			
 			result.add(new SimplePrintable(null, "var "+type, args, (String[])null));
+			lastOffset = Math.max(lastOffset, loc.getIndex()+loc.getLength());
 			
 		}
 		if (items.size() > 0) {
@@ -254,15 +258,15 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		return result;
 	}
 	
-	private String getOffset(List<LocalVariable> variables, int index) {
+	private String getOffset(List<LocalVariable> variables, int index, int lastOffset) {
 		LocalVariable loc = variables.get(index);
 		if (index == 0 && loc.getIndex()==0) {
 			return null;
 		} else if (index == 0 && loc.getIndex() > 0) {
 			return loc.getIndex()+"";
-		} else if (index>0 && loc.getIndex()==variables.get(index-1).getIndex()+variables.get(index-1).getLength()) {
+		} else if (index>0 && loc.getIndex()==lastOffset) {
 			return null;
-		} else if (index>0 && loc.getIndex()!=variables.get(index-1).getIndex()+variables.get(index-1).getLength()) {
+		} else if (index>0 && loc.getIndex()!=lastOffset) {
 			int gap = loc.getIndex()-variables.get(index-1).getIndex();
 			if (gap == 0) {
 				return variables.get(index-1).toString();
@@ -328,7 +332,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		variablesPool.resolveAfterParse();
 	}
 
 
@@ -385,6 +389,10 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	@Override
 	public String getTypeLabel() {
 		return "instructions";
+	}
+
+	public LocalVariablesPool getVariablesPool() {
+		return variablesPool;
 	}
 	
 	
