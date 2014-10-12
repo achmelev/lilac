@@ -86,13 +86,11 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem {
 
 	@Override
 	protected void doResolve() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	protected void doResolveAfterParse() {
-		// TODO Auto-generated method stub
 		
 	}
 

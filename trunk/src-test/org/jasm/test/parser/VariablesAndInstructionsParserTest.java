@@ -1,25 +1,23 @@
 package org.jasm.test.parser;
 
-
-import java.util.List;
-
-
-
 import org.jasm.JasmConsts;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Method;
 import org.jasm.item.instructions.LocalVariable;
 import org.jasm.item.instructions.LocalVariablesPool;
+import org.jasm.item.instructions.OpCodes;
 import org.jasm.parser.literals.SymbolReference;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class VariablesParserTest extends AbstractParserTestCase {
+
+
+public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 
 	@Override
 	protected String getDateiName() {
-		return "Variables.jasm";
+		return "VariablesAndInstructions.jasm";
 	}
 	
 	@Test
@@ -63,6 +61,10 @@ public class VariablesParserTest extends AbstractParserTestCase {
 		var = pool.checkAndLoad(new SymbolReference(0, 0, "r1"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
+		
+		Assert.assertTrue(code.getInstructions().get(0).getOpCode() == OpCodes.nop);
+		Assert.assertTrue(code.getInstructions().get(1).getOpCode() == OpCodes.return_);
+		
 	}
 
 }

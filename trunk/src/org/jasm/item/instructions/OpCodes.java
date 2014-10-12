@@ -603,6 +603,29 @@ public class OpCodes {
 		return wideInstructionsFormat1.contains(opCode);
 	}
 
-	
+	public static void main(String[] args) {
+		initialize();
+		StringBuffer buf = new StringBuffer();
+		String argumentLess = null;
+		buf.append("argumentlessop: ");
+		int index = 0;
+		for (Short code: argumentLessInstructions) {
+			if (!shortLocalVariableInstructions.contains(code)) {
+				String name = opcodeToName.get(code);
+				if (name == null) {
+					throw new IllegalStateException("Something has gone wrong!");
+				}
+				if (index > 0) {
+					buf.append("|");
+				}
+				buf.append("'"+name+"'");
+				index++;
+			}
+		}
+		buf.append(";");
+		argumentLess =buf.toString();
+		System.out.println("ARGUMENTLESS:");
+		System.out.println(argumentLess);
+	}
 	
 }
