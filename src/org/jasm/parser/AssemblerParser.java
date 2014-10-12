@@ -57,7 +57,10 @@ import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.constantpool.NameAndTypeInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.ArgumentLessInstruction;
 import org.jasm.item.instructions.LocalVariable;
+import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.JavaAssemblerParser.AnnotationContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationdeclarationContext;
@@ -66,6 +69,7 @@ import org.jasm.parser.JavaAssemblerParser.AnnotationelementnameContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationindexContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationtypeContext;
+import org.jasm.parser.JavaAssemblerParser.ArgumentlessopContext;
 import org.jasm.parser.JavaAssemblerParser.ArrayannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.ClassInnerClassContext;
 import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
@@ -136,9 +140,6 @@ import org.jasm.parser.JavaAssemblerParser.MethodmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierVarargsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodnameContext;
 import org.jasm.parser.JavaAssemblerParser.MethodrefinfoContext;
-import org.jasm.parser.JavaAssemblerParser.Methodvar_absoluteContext;
-import org.jasm.parser.JavaAssemblerParser.Methodvar_implicitContext;
-import org.jasm.parser.JavaAssemblerParser.Methodvar_relativeContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarabsoluteContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarimplicitContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarrelativeContext;
@@ -161,6 +162,7 @@ import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 
 public class AssemblerParser  extends JavaAssemblerBaseListener {
@@ -717,11 +719,27 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			addVar(var);
 		}
 	}
+	
+	
+
+
+	@Override
+	public void enterArgumentlessop(ArgumentlessopContext ctx) {
+		String name = ctx.getText();
+		Short code = OpCodes.getOpcodeForName(name);
+		ArgumentLessInstruction instr = new ArgumentLessInstruction(code);
+		addInstruction(instr);
+	}
 
 
 	private void addVar(LocalVariable var) {
 		CodeAttributeContent content = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
 		content.getInstructions().getVariablesPool().addVariable(var);
+	}
+	
+	private void addInstruction(AbstractInstruction instr) {
+		CodeAttributeContent content = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+		content.getInstructions().add(instr);
 	}
 
 

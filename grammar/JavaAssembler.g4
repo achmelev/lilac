@@ -102,6 +102,7 @@ methodmember: methodname SEMI
 			  | methodmodifier SEMI
 			  | methodattribute
 			  | methodvar
+			  | methodinstruction
 			  ;
 				  
 methodname: NAME Identifier;
@@ -143,6 +144,13 @@ methodvartype: DOUBLE|FLOAT|INT|LONG|OBJECT|RETURNADRESS;
 methodvarimplicit: VAR methodvartype Identifier SEMI;
 methodvarrelative: VAR methodvartype Identifier AT Identifier ( Plus? IntegerLiteral)? SEMI;
 methodvarabsolute: VAR methodvartype Identifier AT IntegerLiteral SEMI;
+
+methodinstruction: argumentlessinstruction;
+
+argumentlessinstruction : argumentlessop SEMI;
+
+argumentlessop: 'aaload'|'aastore'|'aconst_null'|'areturn'|'arraylength'|'athrow'|'baload'|'bastore'|'caload'|'castore'|'d2f'|'d2i'|'d2l'|'dadd'|'daload'|'dastore'|'dcmpg'|'dcmpl'|'dconst_0'|'dconst_1'|'ddiv'|'dmul'|'dneg'|'drem'|'dreturn'|'dsub'|'dup'|'dup_x1'|'dup_x2'|'dup2'|'dup2_x1'|'dup2_x2'|'f2d'|'f2i'|'f2l'|'fadd'|'faload'|'fastore'|'fcmpg'|'fcmpl'|'fconst_0'|'fconst_1'|'fconst_2'|'fdiv'|'fmul'|'fneg'|'frem'|'freturn'|'fsub'|'i2b'|'i2c'|'i2d'|'i2f'|'i2l'|'i2s'|'iadd'|'iaload'|'iand'|'iastore'|'iconst_m1'|'iconst_0'|'iconst_1'|'iconst_2'|'iconst_3'|'iconst_4'|'iconst_5'|'idiv'|'imul'|'ineg'|'ior'|'irem'|'ireturn'|'ishl'|'ishr'|'isub'|'iushr'|'ixor'|'l2d'|'l2f'|'l2i'|'ladd'|'laload'|'land'|'lastore'|'lcmp'|'lconst_0'|'lconst_1'|'ldiv'|'lmul'|'lneg'|'lor'|'lrem'|'lreturn'|'lshl'|'lshr'|'lsub'|'lushr'|'lxor'|'monitorenter'|'monitorexit'|'nop'|'pop'|'pop2'|'ret'|'return'|'saload'|'sastore'|'swap';
+
 
 
 field  : FIELD  LBRACE

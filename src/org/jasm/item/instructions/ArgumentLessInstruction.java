@@ -58,7 +58,7 @@ public class ArgumentLessInstruction extends AbstractInstruction  {
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		
 	}
 
 	

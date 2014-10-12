@@ -24,20 +24,26 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
-	private Map<Integer, AbstractInstruction> offsets = new HashMap<>();
+	private Map<Integer, AbstractInstruction> offsets ;
 	
-	private List<AbstractInstruction> items = new ArrayList<>();
+	private List<AbstractInstruction> items ;
 	
-	private KeyToListMap<AbstractInstruction, IBytecodeItem> instructionReferences = new KeyToListMap<>();
+	private KeyToListMap<AbstractInstruction, IBytecodeItem> instructionReferences;
 	
-	private Set<LocalVariable> localVariableReferences = new HashSet<>();
+	private Set<LocalVariable> localVariableReferences;
 	
 	private LocalVariablesPool variablesPool;
 	
 	public Instructions() {
 		variablesPool = new LocalVariablesPool();
 		variablesPool.setParent(this);
+		offsets = new HashMap<>();
+		items = new ArrayList<>();
+		localVariableReferences = new HashSet<>();
+		instructionReferences = new KeyToListMap<>();
+		
 	}
+	
 	
 	@Override
 	public String getPrintName() {
@@ -104,6 +110,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 
 
 	public void add(AbstractInstruction item) {
+		item.setParent(this);
 		items.add(item);
 		setOffsets();
 	}
@@ -111,6 +118,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 
 
 	public void add(int index, AbstractInstruction item) {
+		item.setParent(this);
 		items.add(index, item);
 		setOffsets();
 	}
@@ -333,6 +341,9 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	@Override
 	protected void doResolveAfterParse() {
 		variablesPool.resolveAfterParse();
+		for (AbstractInstruction instr: items) {
+			instr.resolve();
+		}
 	}
 
 
