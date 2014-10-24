@@ -14,7 +14,11 @@ import org.jasm.bytebuffer.print.SimplePrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.map.KeyToListMap;
+import org.jasm.parser.ISymbolTableEntry;
+import org.jasm.parser.SymbolTable;
+import org.jasm.parser.literals.SymbolReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +37,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	private Set<LocalVariable> localVariableReferences;
 	
 	private LocalVariablesPool variablesPool;
+	
+	private SymbolTable symbolTable = new SymbolTable(null);
 	
 	public Instructions() {
 		variablesPool = new LocalVariablesPool();
@@ -405,8 +411,22 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	public LocalVariablesPool getVariablesPool() {
 		return variablesPool;
 	}
+
+
+	public SymbolTable getSymbolTable() {
+		return symbolTable;
+	}
 	
-	
+	public AbstractInstruction checkAndLoadFromSymbolTable(SymbolReference ref) {
+		AbstractInstruction result = null;
+		if (getSymbolTable().contains(ref.getSymbolName())) {
+			ISymbolTableEntry entry = getSymbolTable().get(ref.getSymbolName());
+			result = (AbstractInstruction)entry;
+		} else {
+			emitError(ref, "unknown instruction label "+ref.getSymbolName());
+		}
+		return result;
+	}
 	
 
 }

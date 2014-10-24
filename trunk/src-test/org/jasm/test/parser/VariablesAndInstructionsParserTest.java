@@ -63,7 +63,9 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertEquals(7, var.getIndex());
 		
 		Assert.assertTrue(code.getInstructions().get(0).getOpCode() == OpCodes.nop);
-		Assert.assertTrue(code.getInstructions().get(1).getOpCode() == OpCodes.return_);
+		Assert.assertSame(code.getInstructions().get(0), code.getInstructions().checkAndLoadFromSymbolTable(new SymbolReference(0, 0, "label1")));
+		Assert.assertTrue(code.getInstructions().get(1).getOpCode() == OpCodes.nop);
+		Assert.assertTrue(code.getInstructions().get(2).getOpCode() == OpCodes.return_);
 		
 	}
 

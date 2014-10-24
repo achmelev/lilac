@@ -11,6 +11,7 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
@@ -59,6 +60,7 @@ import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;
+import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.LocalVariable;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.modifier.ClassModifier;
@@ -125,6 +127,7 @@ import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodAttributeExceptionsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
+import org.jasm.parser.JavaAssemblerParser.MethodinstructionContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierAbstractContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierBridgeContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierContext;
@@ -728,7 +731,16 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		String name = ctx.getText();
 		Short code = OpCodes.getOpcodeForName(name);
 		ArgumentLessInstruction instr = new ArgumentLessInstruction(code);
+		instr.setSourceLocation(createSourceLocation(ctx.Argumentlessop()));
+		setInstructionLabel(ctx, instr);
 		addInstruction(instr);
+	}
+	
+	private void setInstructionLabel(ParserRuleContext context, AbstractInstruction instr) {
+		MethodinstructionContext ctx = (MethodinstructionContext)context.getParent();
+		if (ctx.label() != null) {
+			instr.setLabel(createLabel(ctx.label().Identifier()));
+		}
 	}
 
 
@@ -739,6 +751,15 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private void addInstruction(AbstractInstruction instr) {
 		CodeAttributeContent content = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+		Instructions instrs = content.getInstructions();
+		if (instr.getLabel() != null) {
+			if (!instrs.getSymbolTable().contains(instr.getSymbolName())) {
+				instrs.getSymbolTable().add(instr);
+			} else {
+				emitError(instr.getSourceLocation().getLine(), instr.getSourceLocation().getCharPosition(), "dublicate instruction label "+instr.getSymbolName());
+			}
+		}
+		
 		content.getInstructions().add(instr);
 	}
 
