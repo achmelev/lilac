@@ -2,11 +2,15 @@ package org.jasm.item.instructions;
 
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.attribute.CodeAttributeContent;
+import org.jasm.parser.ISymbolTableEntry;
+import org.jasm.parser.literals.Label;
 
-public abstract class AbstractInstruction extends AbstractByteCodeItem {
+public abstract class AbstractInstruction extends AbstractByteCodeItem implements ISymbolTableEntry {
 
 	private short opCode = -1;
 	private boolean isWide = false;
+	
+	private Label label = null;
 	
 	public AbstractInstruction() {
 		
@@ -64,12 +68,7 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem {
 
 	@Override
 	public String getPrintLabel() {
-		Instructions instr = (Instructions)getParent();
-		if (instr.getReferencingItems(this).size() > 0) {
-			return "ir"+this.getOffsetInCode();
-		} else {
-			return null;
-		}
+		return getSymbolName();
 	}
 
 	@Override
@@ -97,8 +96,39 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem {
 	public boolean isWide() {
 		return isWide;
 	}
-
 	
+	
+
+	public Label getLabel() {
+		return label;
+	}
+
+	public void setLabel(Label label) {
+		this.label = label;
+	}
+
+	@Override
+	public String getSymbolName() {
+		if (label == null) {
+			return createInstructionLabel();
+		}
+		return label.getLabel();
+		
+	}
+
+	@Override
+	public String getSymbolTypeLabel() {
+		return getTypeLabel();
+	}
+
+	private String createInstructionLabel() {
+		Instructions instr = (Instructions)getParent();
+		if (instr.getReferencingItems(this).size() > 0) {
+			return "ir"+this.getOffsetInCode();
+		} else {
+			return null;
+		}
+	}
 	
 
 }

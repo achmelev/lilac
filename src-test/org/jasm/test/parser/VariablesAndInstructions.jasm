@@ -57,6 +57,7 @@ class {
     var long l1 at i1+2;
     var returnadress r1;
   	//Instructions
+  	label1: nop;
   	nop;
   	return;
   }
