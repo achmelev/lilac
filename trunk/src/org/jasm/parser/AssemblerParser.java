@@ -62,6 +62,7 @@ import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;
 import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.Instructions;
+import org.jasm.item.instructions.InvokeInterfaceInstruction;
 import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.LocalVariable;
 import org.jasm.item.instructions.OpCodes;
@@ -744,6 +745,12 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		String name = ctx.Constantpoolop().getText();
 		if (name.equals("ldc")) {
 			LdcInstruction instr = new LdcInstruction(null);
+			instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
+			instr.setSourceLocation(createSourceLocation(ctx.Constantpoolop()));
+			setInstructionLabel(ctx, instr);
+			addInstruction(instr);
+		} else if (name.equals("invokeinterface")) {
+			InvokeInterfaceInstruction instr = new InvokeInterfaceInstruction(OpCodes.invokeinterface, null);
 			instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
 			instr.setSourceLocation(createSourceLocation(ctx.Constantpoolop()));
 			setInstructionLabel(ctx, instr);

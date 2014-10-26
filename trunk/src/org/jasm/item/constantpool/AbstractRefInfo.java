@@ -1,5 +1,8 @@
 package org.jasm.item.constantpool;
 
+import org.jasm.item.descriptor.IllegalDescriptorException;
+import org.jasm.item.descriptor.MethodDescriptor;
+import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.parser.literals.SymbolReference;
 
 public abstract class AbstractRefInfo extends AbstractReferenceEntry implements INameReferencingEntry, IDescriptorReferencingEntry {
@@ -63,6 +66,25 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 	@Override
 	protected boolean verifyReference(int index, SymbolReference ref,
 			AbstractConstantPoolEntry value) {
+		if (index == 1) {
+			NameAndTypeInfo nti = (NameAndTypeInfo)value;
+			String descriptor = nti.getDescriptor();
+			if (isMethodRef()) {
+				try {
+					MethodDescriptor desc = new MethodDescriptor(descriptor);
+				} catch (IllegalDescriptorException e) {
+					emitError(ref, "expected method but got type descriptor");
+					return false;
+				}
+			} else {
+				try {
+					TypeDescriptor desc = new TypeDescriptor(descriptor);
+				} catch (IllegalDescriptorException e) {
+					emitError(ref, "expected type but got method descriptor");
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 
@@ -71,6 +93,6 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 		return new AbstractConstantPoolEntry[]{new ClassInfo(),new NameAndTypeInfo()};
 	}
 	
-	
+	protected abstract boolean isMethodRef();
 
 }

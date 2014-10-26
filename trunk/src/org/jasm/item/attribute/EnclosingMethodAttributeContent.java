@@ -10,6 +10,8 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.NameAndTypeInfo;
+import org.jasm.item.descriptor.IllegalDescriptorException;
+import org.jasm.item.descriptor.MethodDescriptor;
 import org.jasm.parser.literals.SymbolReference;
 
 public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
@@ -118,6 +120,12 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 		this.method = getConstantPool().checkAndLoadFromSymbolTable(NameAndTypeInfo.class, methodReference);
 		if (this.method == null) {
 			emitError(methodReference, "unknown name_and_type info");
+		} else {
+			try {
+				MethodDescriptor desc = new MethodDescriptor(method.getDescriptor());
+			} catch (IllegalDescriptorException e) {
+				emitError(methodReference, "expected method but got type descriptor");
+			}
 		}
 	}
 

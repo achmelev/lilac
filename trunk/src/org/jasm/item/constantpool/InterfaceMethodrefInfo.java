@@ -22,6 +22,11 @@ public class InterfaceMethodrefInfo extends AbstractRefInfo {
 	public String getTypeLabel() {
 		return  "const intfmethodref";
 	}
+
+	@Override
+	protected boolean isMethodRef() {
+		return true;
+	}
 	
 	
 

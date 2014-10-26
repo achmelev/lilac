@@ -31,6 +31,12 @@ class {
   const utf8 utf8_24 "SourceFile";
   const utf8 utf8_25 "AbstractGenericClass.java";
   const utf8 utf8_26 "<T:Ljava/lang/Object;>Ljava/lang/Object;";
+  const intfmethodref intfmethodref_92 classref_93, nameandtype_95; // class=org/jasm/test/testclass/Interface1, name=testMethod, descriptor=(I)V
+  const classref classref_93 utf8_94; // org/jasm/test/testclass/Interface1
+  const utf8 utf8_94 "org/jasm/test/testclass/Interface1";
+  const nameandtype nameandtype_95 utf8_96, utf8_39; // name=testMethod type=(I)V
+  const utf8 utf8_96 "testMethod";
+  const utf8 utf8_39 "(I)V";
    //Attributes
   source file utf8_25; // AbstractGenericClass.java
   signature utf8_26; // <T:Ljava/lang/Object;>Ljava/lang/Object;
@@ -63,6 +69,7 @@ class {
   	pop;
   	getfield fieldref_13;
   	pop;
+  	invokeinterface intfmethodref_92;
   	return;
   }
 }

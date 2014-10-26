@@ -8,6 +8,12 @@ public class Class3 implements Interface1 {
 	public void testMethod(int value) {
 		delegate.testMethod(value);
 	}
+
+	@Override
+	public void testMethodWithoutArgs() {
+		delegate.testMethodWithoutArgs();
+		
+	}
 	
 
 }
