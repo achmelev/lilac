@@ -60,7 +60,9 @@ import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;
+import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.Instructions;
+import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.LocalVariable;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.modifier.ClassModifier;
@@ -87,6 +89,7 @@ import org.jasm.parser.JavaAssemblerParser.ClassmodifierSuperContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
+import org.jasm.parser.JavaAssemblerParser.ConstantpoolopContext;
 import org.jasm.parser.JavaAssemblerParser.DeprecatedattributeContext;
 import org.jasm.parser.JavaAssemblerParser.DoubleinfoContext;
 import org.jasm.parser.JavaAssemblerParser.EnclosingmethodContext;
@@ -728,7 +731,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 
 	@Override
 	public void enterArgumentlessop(ArgumentlessopContext ctx) {
-		String name = ctx.getText();
+		String name = ctx.Argumentlessop().getText();
 		Short code = OpCodes.getOpcodeForName(name);
 		ArgumentLessInstruction instr = new ArgumentLessInstruction(code);
 		instr.setSourceLocation(createSourceLocation(ctx.Argumentlessop()));
@@ -736,6 +739,26 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		addInstruction(instr);
 	}
 	
+	@Override
+	public void enterConstantpoolop(ConstantpoolopContext ctx) {
+		String name = ctx.Constantpoolop().getText();
+		if (name.equals("ldc")) {
+			LdcInstruction instr = new LdcInstruction(null);
+			instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
+			instr.setSourceLocation(createSourceLocation(ctx.Constantpoolop()));
+			setInstructionLabel(ctx, instr);
+			addInstruction(instr);
+		} else {
+			Short code = OpCodes.getOpcodeForName(name);
+			ConstantPoolInstruction instr = new ConstantPoolInstruction(code, null);
+			instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
+			instr.setSourceLocation(createSourceLocation(ctx.Constantpoolop()));
+			setInstructionLabel(ctx, instr);
+			addInstruction(instr);
+		}
+	}
+
+
 	private void setInstructionLabel(ParserRuleContext context, AbstractInstruction instr) {
 		MethodinstructionContext ctx = (MethodinstructionContext)context.getParent();
 		if (ctx.label() != null) {

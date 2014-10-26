@@ -1,17 +1,53 @@
 package org.jasm.item.instructions;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.lang3.NotImplementedException;
+
+
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.ClassInfo;
+import org.jasm.item.constantpool.DoubleInfo;
+import org.jasm.item.constantpool.FieldrefInfo;
+import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
+import org.jasm.item.constantpool.IntegerInfo;
+import org.jasm.item.constantpool.InterfaceMethodrefInfo;
+import org.jasm.item.constantpool.LongInfo;
+import org.jasm.item.constantpool.MethodHandleInfo;
+import org.jasm.item.constantpool.MethodTypeInfo;
+import org.jasm.item.constantpool.MethodrefInfo;
+import org.jasm.item.constantpool.StringInfo;
+import org.jasm.parser.literals.SymbolReference;
 
 public class ConstantPoolInstruction extends AbstractInstruction implements IConstantPoolReference {
 	
 	private int cpEntryIndex = -1;
-	private AbstractConstantPoolEntry cpEntry = null; 
+	private SymbolReference cpEntryReference = null;
+	protected AbstractConstantPoolEntry cpEntry = null; 
+	
+	private static Map<Short, Class[]> allowedTypes = null;
+	
+	static {
+		allowedTypes = new HashMap<Short, Class[]>();
+		allowedTypes.put(OpCodes.anewarray, new Class[]{ClassInfo.class});
+		allowedTypes.put(OpCodes.checkcast, new Class[]{ClassInfo.class});
+		allowedTypes.put(OpCodes.getfield, new Class[]{FieldrefInfo.class});
+		allowedTypes.put(OpCodes.getstatic, new Class[]{FieldrefInfo.class});
+		allowedTypes.put(OpCodes.instanceof_, new Class[]{ClassInfo.class});
+		allowedTypes.put(OpCodes.invokeinterface, new Class[]{InterfaceMethodrefInfo.class});
+		allowedTypes.put(OpCodes.invokespecial, new Class[]{MethodrefInfo.class});
+		allowedTypes.put(OpCodes.invokestatic, new Class[]{MethodrefInfo.class});
+		allowedTypes.put(OpCodes.invokevirtual, new Class[]{MethodrefInfo.class});
+		allowedTypes.put(OpCodes.ldc_w, new Class[]{StringInfo.class,IntegerInfo.class,FloatInfo.class,ClassInfo.class,MethodHandleInfo.class,MethodTypeInfo.class});
+		allowedTypes.put(OpCodes.ldc2_w, new Class[]{DoubleInfo.class, LongInfo.class});
+		allowedTypes.put(OpCodes.new_, new Class[]{ClassInfo.class});
+		allowedTypes.put(OpCodes.putfield, new Class[]{FieldrefInfo.class});
+		allowedTypes.put(OpCodes.putstatic, new Class[]{FieldrefInfo.class});
+	}
 	
 	
 	
@@ -62,12 +98,22 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		Class[] classes = allowedTypes.get(getOpCode());
+		if (classes == null) {
+			throw new IllegalStateException("No allowed classes registered for "+Integer.toHexString(getOpCode()));
+		}
+		cpEntry = getConstantPool().checkAndLoadFromSymbolTable(classes, cpEntryReference);
 	}
 
 	@Override
 	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{cpEntry};
 	}
+
+	public void setCpEntryReference(SymbolReference cpEntryReference) {
+		this.cpEntryReference = cpEntryReference;
+	}
+	
+	
 
 }

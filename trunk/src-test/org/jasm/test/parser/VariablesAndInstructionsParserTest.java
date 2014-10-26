@@ -4,6 +4,10 @@ import org.jasm.JasmConsts;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Method;
+import org.jasm.item.constantpool.ClassInfo;
+import org.jasm.item.constantpool.FieldrefInfo;
+import org.jasm.item.instructions.ConstantPoolInstruction;
+import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.LocalVariable;
 import org.jasm.item.instructions.LocalVariablesPool;
 import org.jasm.item.instructions.OpCodes;
@@ -62,10 +66,20 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		
+		Assert.assertEquals(7, code.getInstructions().getSize());
+		
 		Assert.assertTrue(code.getInstructions().get(0).getOpCode() == OpCodes.nop);
 		Assert.assertSame(code.getInstructions().get(0), code.getInstructions().checkAndLoadFromSymbolTable(new SymbolReference(0, 0, "label1")));
 		Assert.assertTrue(code.getInstructions().get(1).getOpCode() == OpCodes.nop);
-		Assert.assertTrue(code.getInstructions().get(2).getOpCode() == OpCodes.return_);
+		Assert.assertTrue(code.getInstructions().get(2).getOpCode() == OpCodes.ldc);
+		LdcInstruction ldc = (LdcInstruction)code.getInstructions().get(2);
+		Assert.assertSame(ldc.getConstantReferences()[0],clazz.getConstantPool().checkAndLoadFromSymbolTable(ClassInfo.class, new SymbolReference(0, 0, "classref_0")));
+		Assert.assertTrue(code.getInstructions().get(3).getOpCode() == OpCodes.pop);
+		Assert.assertTrue(code.getInstructions().get(4).getOpCode() == OpCodes.getfield);
+		ConstantPoolInstruction getfield = (ConstantPoolInstruction)code.getInstructions().get(4);
+		Assert.assertSame(getfield.getConstantReferences()[0],clazz.getConstantPool().checkAndLoadFromSymbolTable(FieldrefInfo.class, new SymbolReference(0, 0, "fieldref_13")));
+		Assert.assertTrue(code.getInstructions().get(5).getOpCode() == OpCodes.pop);
+		Assert.assertTrue(code.getInstructions().get(6).getOpCode() == OpCodes.return_);
 		
 	}
 

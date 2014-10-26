@@ -59,6 +59,10 @@ class {
   	//Instructions
   	label1: nop;
   	nop;
+  	label2: ldc classref_0;
+  	pop;
+  	getfield fieldref_13;
+  	pop;
   	return;
   }
 }
