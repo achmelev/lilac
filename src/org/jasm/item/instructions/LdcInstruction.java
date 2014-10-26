@@ -5,12 +5,23 @@ import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.ClassInfo;
+import org.jasm.item.constantpool.DoubleInfo;
+import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
+import org.jasm.item.constantpool.IntegerInfo;
+import org.jasm.item.constantpool.LongInfo;
+import org.jasm.item.constantpool.MethodHandleInfo;
+import org.jasm.item.constantpool.MethodTypeInfo;
+import org.jasm.item.constantpool.StringInfo;
+import org.jasm.parser.literals.SymbolReference;
 
 public class LdcInstruction extends AbstractInstruction implements IConstantPoolReference {
 	
 	private int cpEntryIndex = -1;
+	private SymbolReference cpEntryReference = null;
 	private AbstractConstantPoolEntry cpEntry = null; 
 	
 	
@@ -62,12 +73,18 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		cpEntry = getConstantPool().checkAndLoadFromSymbolTable(new Class[]{StringInfo.class,IntegerInfo.class,FloatInfo.class,ClassInfo.class,MethodHandleInfo.class,MethodTypeInfo.class}, cpEntryReference);
 	}
 
 	@Override
 	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{cpEntry};
 	}
+
+	public void setCpEntryReference(SymbolReference cpEntryReference) {
+		this.cpEntryReference = cpEntryReference;
+	}
+	
+	
 
 }
