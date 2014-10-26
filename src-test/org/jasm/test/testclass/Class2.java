@@ -66,6 +66,7 @@ public abstract class Class2  {
 	public void interfaceCall() {
 		Interface1 intf = new Class3();
 		intf.testMethod(3);
+		intf.testMethodWithoutArgs();
 	}
 	
 	public void switchMethod(int a) {

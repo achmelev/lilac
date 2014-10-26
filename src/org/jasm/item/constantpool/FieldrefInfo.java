@@ -27,18 +27,11 @@ public class FieldrefInfo extends AbstractRefInfo {
 		return  "const fieldref";
 	}
 
+	
+
 	@Override
-	protected boolean verifyReference(int index, SymbolReference ref,
-			AbstractConstantPoolEntry value) {
-		if (index == 1) {
-			NameAndTypeInfo nti = (NameAndTypeInfo)value;
-			if (!IdentifierUtils.isValidIdentifier(nti.getName())) {
-				emitError(ref, "illegal field name: "+nti.getName());
-				return false;
-			}
-		}
-		
-		return true;
+	protected boolean isMethodRef() {
+		return false;
 	}
 
 	

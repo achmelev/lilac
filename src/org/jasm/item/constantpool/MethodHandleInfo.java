@@ -125,12 +125,12 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 
 	@Override
 	public String[] getReferencedDescriptors() {
-		return ((AbstractRefInfo)reference).getReferencedNames();
+		return ((AbstractRefInfo)reference).getReferencedDescriptors();
 	}
 
 	@Override
 	public String[] getReferencedNames() {
-		return ((AbstractRefInfo)reference).getReferencedDescriptors();
+		return ((AbstractRefInfo)reference).getReferencedNames();
 	}
 
 

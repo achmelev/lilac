@@ -9,6 +9,7 @@ public interface Interface1 {
 	public static float  FLOAT_CONSTANT = 10.10f;
 	public static double DOUBLE_CONSTANT = 100.10;
 	
+	public abstract void testMethodWithoutArgs();
 	public abstract void testMethod(int a);
 	
 

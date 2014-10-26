@@ -69,8 +69,15 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 			AbstractConstantPoolEntry value) {
 		String valueStr = ((Utf8Info)value).getValue();
 		if (index == 0) {
-			if (!IdentifierUtils.isValidIdentifier(valueStr) && !(valueStr.equals("<init>") || valueStr.equals("<cinit>"))) {
-				emitError(ref, "malformed method or field name:  "+valueStr);
+			boolean isField = (getParent() instanceof AbstractRefInfo) && ((AbstractRefInfo)getParent()).isMethodRef();
+			if (!isField) {
+				if (!IdentifierUtils.isValidIdentifier(valueStr) && !(valueStr.equals("<init>") || valueStr.equals("<cinit>"))) {
+					emitError(ref, "malformed method name:  "+valueStr);
+				}
+			} else {
+				if (!IdentifierUtils.isValidIdentifier(valueStr)) {
+					emitError(ref, "malformed field name:  "+valueStr);
+				}
 			}
 		} else if (index == 1) {
 			try {
@@ -91,6 +98,15 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 	public boolean isFieldDescriptor() {
 		try {
 			TypeDescriptor desc = new TypeDescriptor(getDescriptor());
+			return true;
+		} catch (IllegalDescriptorException e) {
+			return false;
+		}
+	}
+	
+	public boolean isMethodDescriptor() {
+		try {
+			MethodDescriptor desc = new MethodDescriptor(getDescriptor());
 			return true;
 		} catch (IllegalDescriptorException e) {
 			return false;

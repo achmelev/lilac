@@ -2,6 +2,7 @@ package org.jasm.item.instructions;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.item.constantpool.InterfaceMethodrefInfo;
+import org.jasm.item.descriptor.MethodDescriptor;
 
 public class InvokeInterfaceInstruction extends ConstantPoolInstruction {
 	
@@ -29,11 +30,24 @@ public class InvokeInterfaceInstruction extends ConstantPoolInstruction {
 	}
 	
 	private void calculateCount(InterfaceMethodrefInfo methodRef) {
-		//TODO
+		InterfaceMethodrefInfo iminfo = (InterfaceMethodrefInfo)cpEntry;
+		String descriptor = iminfo.getNameAndTypeReference().getDescriptor();
+		count = (short)(new MethodDescriptor(descriptor).getParameters().size()+1);
+	}
+
+	@Override
+	protected void doResolveAfterParse() {
+		super.doResolveAfterParse();
+		InterfaceMethodrefInfo iminfo = (InterfaceMethodrefInfo)cpEntry;
+		if (iminfo != null) {
+			calculateCount(iminfo);
+		}
+	}
+
+	public short getCount() {
+		return count;
 	}
 	
-	
-
 	
 	
 
