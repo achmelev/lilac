@@ -70,6 +70,14 @@ class {
   	getfield fieldref_13;
   	pop;
   	invokeinterface intfmethodref_92;
+  	aload o1;
+  	astore o1;
+  	normal dload  d1;
+  	normal dstore d1;
+  	wide fload f1;
+  	wide fstore f1;
+  	lload l1;
+  	lstore l1;
   	return;
   }
 }

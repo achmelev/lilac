@@ -269,19 +269,19 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		pool.updateIndexes();
 		//this, super
 		if (thisClassSymbol != null) {
-			thisClass = pool.checkAndLoadFromSymbolTable(ClassInfo.class, thisClassSymbol);
+			thisClass = pool.checkAndLoadFromSymbolTable(this,ClassInfo.class, thisClassSymbol);
 		} else {
 			emitError(null, "missing name statement");
 		}
 		
 		if (superClassSymbol != null) {
-			superClass = pool.checkAndLoadFromSymbolTable(ClassInfo.class, superClassSymbol);
+			superClass = pool.checkAndLoadFromSymbolTable(this,ClassInfo.class, superClassSymbol);
 		}
 		
 		//interfaces
 		if (interfaceSymbols != null) {
 			for (SymbolReference ref: interfaceSymbols) {
-				ClassInfo cl = pool.checkAndLoadFromSymbolTable(ClassInfo.class, ref);
+				ClassInfo cl = pool.checkAndLoadFromSymbolTable(this,ClassInfo.class, ref);
 				if (cl != null) {
 					interfaces.add(cl);
 				}

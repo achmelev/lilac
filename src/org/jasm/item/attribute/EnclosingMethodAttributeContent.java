@@ -113,11 +113,11 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 	
 	@Override
 	protected void doResolveAfterParse() {
-		this.clazz = getConstantPool().checkAndLoadFromSymbolTable(ClassInfo.class, clazzReference);
+		this.clazz = getConstantPool().checkAndLoadFromSymbolTable(this,ClassInfo.class, clazzReference);
 		if (this.clazz == null) {
 			emitError(clazzReference, "unknown class info");
 		}
-		this.method = getConstantPool().checkAndLoadFromSymbolTable(NameAndTypeInfo.class, methodReference);
+		this.method = getConstantPool().checkAndLoadFromSymbolTable(this,NameAndTypeInfo.class, methodReference);
 		if (this.method == null) {
 			emitError(methodReference, "unknown name_and_type info");
 		} else {

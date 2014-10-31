@@ -132,15 +132,15 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 	@Override
 	protected void doResolveAfterParse() {
 		if (this.innerClassReference != null) {
-			this.innerClass = getConstantPool().checkAndLoadFromSymbolTable(ClassInfo.class, innerClassReference);
+			this.innerClass = getConstantPool().checkAndLoadFromSymbolTable(this,ClassInfo.class, innerClassReference);
 		} else {
 			emitError(null, "missing inner statement");
 		}
 		if (this.outerClassReference != null) {
-			this.outerClass = getConstantPool().checkAndLoadFromSymbolTable(ClassInfo.class, outerClassReference);
+			this.outerClass = getConstantPool().checkAndLoadFromSymbolTable(this,ClassInfo.class, outerClassReference);
 		} 
 		if (this.innerNameReference != null) {
-			this.innerName = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, innerNameReference);
+			this.innerName = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, innerNameReference);
 			if (this.innerName != null) {
 				verifyName(innerNameReference, innerName.getValue());
 			}

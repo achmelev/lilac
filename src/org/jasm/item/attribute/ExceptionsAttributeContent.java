@@ -116,7 +116,7 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 		ConstantPool pool = getConstantPool();
 		List<ClassInfo> exceptions = new ArrayList<>();
 		for (SymbolReference ref: exceptionReferences) {
-			ClassInfo cl = pool.checkAndLoadFromSymbolTable(ClassInfo.class, ref);
+			ClassInfo cl = pool.checkAndLoadFromSymbolTable(this,ClassInfo.class, ref);
 			if (cl != null) {
 				exceptions.add(cl);
 			}

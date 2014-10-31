@@ -145,7 +145,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	
 	@Override
 	protected void doResolveAfterParse() {
-		type = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, typeValueReference);
+		type = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, typeValueReference);
 		if (type != null) {
 			if (verifyDescriptor(typeValueReference, type.getValue())) {
 				for (AnnotationElementNameValue value: values) {

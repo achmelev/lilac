@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.parser.literals.SymbolReference;
 
 public class LocalVariablesPool {
@@ -120,18 +121,23 @@ public class LocalVariablesPool {
 		return size;
 	}
 	
-	public LocalVariable checkAndLoad(SymbolReference ref, char type) {
+	public LocalVariable checkAndLoad(AbstractByteCodeItem caller,SymbolReference ref, char type) {
 		if (nameToVar.containsKey(ref.getSymbolName())) {
 			LocalVariable var = nameToVar.get(ref.getSymbolName());
 			if (var.getType() == type) {
 				return var;
 			} else {
-				emitError(ref, "wrong variable type, expected "+LocalVariable.getTypeName(type));
+				if (caller != null) {
+					caller.emitError(ref, "wrong variable type, expected "+LocalVariable.getTypeName(type));
+				}
+				
 				return null;
 			}
 			
 		} else {
-			emitError(ref, "unknown variable: "+ref.getSymbolName());
+			if (caller != null) {
+				caller.emitError(ref, "unknown variable: "+ref.getSymbolName());
+			}
 			return null;
 		}
 	}

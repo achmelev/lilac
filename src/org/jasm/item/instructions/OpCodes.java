@@ -606,7 +606,7 @@ public class OpCodes {
 	public static void main(String[] args) {
 		initialize();
 		StringBuffer buf = new StringBuffer();
-		String argumentLess = null;
+		String instrs = null;
 		buf.append("Argumentlessop: ");
 		int index = 0;
 		for (Short code: argumentLessInstructions) {
@@ -623,9 +623,9 @@ public class OpCodes {
 			}
 		}
 		buf.append(";");
-		argumentLess =buf.toString();
+		instrs =buf.toString();
 		System.out.println("ARGUMENTLESS:");
-		System.out.println(argumentLess);
+		System.out.println(instrs);
 		
 		buf.delete(0, buf.length());
 		buf.append("Constantpoolop: ");
@@ -641,9 +641,30 @@ public class OpCodes {
 			
 		}
 		buf.append(";");
-		argumentLess =buf.toString();
+		instrs =buf.toString();
 		System.out.println("CONSTANTPOOL:");
-		System.out.println(argumentLess);
+		System.out.println(instrs);
+		
+		buf.delete(0, buf.length());
+		buf.append("Localvarop: ");
+		
+		index = 0;
+		for (Short code: localVariableInstructions) {
+				String name = opcodeToName.get(code);
+				if (name == null) {
+					throw new IllegalStateException("Something has gone wrong!");
+				}
+				if (index > 0) {
+					buf.append("|");
+				}
+				buf.append("'"+name+"'");
+				index++;
+			
+		}
+		buf.append(";");
+		instrs =buf.toString();
+		System.out.println("LOCALVAR:");
+		System.out.println(instrs);
 	}
 	
 }

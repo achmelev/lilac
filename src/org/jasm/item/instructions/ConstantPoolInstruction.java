@@ -102,7 +102,7 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 		if (classes == null) {
 			throw new IllegalStateException("No allowed classes registered for "+Integer.toHexString(getOpCode()));
 		}
-		cpEntry = getConstantPool().checkAndLoadFromSymbolTable(classes, cpEntryReference);
+		cpEntry = getConstantPool().checkAndLoadFromSymbolTable(this,classes, cpEntryReference);
 	}
 
 	@Override
