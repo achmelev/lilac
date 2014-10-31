@@ -350,6 +350,19 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		for (AbstractInstruction instr: items) {
 			instr.resolve();
 		}
+		
+		//Replacing local var instructions with short versions
+		for (int i=0;i<items.size(); i++) {
+			AbstractInstruction instr = items.get(i);
+			if (instr instanceof LocalVariableInstruction) {
+				ShortLocalVariableInstruction newInstr = ((LocalVariableInstruction)instr).createShortReplacement();
+				if (newInstr != null) {
+					newInstr.setParent(this);
+					items.set(i, newInstr);
+					newInstr.resolve();
+				}
+			}
+		}
 	}
 
 
@@ -417,13 +430,15 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		return symbolTable;
 	}
 	
-	public AbstractInstruction checkAndLoadFromSymbolTable(SymbolReference ref) {
+	public AbstractInstruction checkAndLoadFromSymbolTable(AbstractByteCodeItem caller, SymbolReference ref) {
 		AbstractInstruction result = null;
 		if (getSymbolTable().contains(ref.getSymbolName())) {
 			ISymbolTableEntry entry = getSymbolTable().get(ref.getSymbolName());
 			result = (AbstractInstruction)entry;
 		} else {
-			emitError(ref, "unknown instruction label "+ref.getSymbolName());
+			if (caller != null) {
+				caller.emitError(ref, "unknown instruction label "+ref.getSymbolName());
+			}
 		}
 		return result;
 	}

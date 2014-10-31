@@ -100,7 +100,7 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 	
 	@Override
 	protected void doResolveAfterParse() {
-		this.name = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, nameReference);
+		this.name = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, nameReference);
 		if (name != null) {
 			if (!IdentifierUtils.isValidIdentifier(name.getValue())) {
 				emitError(nameReference, "malformed identifier: "+name.getValue());

@@ -61,7 +61,7 @@ public class ShortLocalVariableInstruction extends AbstractInstruction implement
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		
 	}
 
 	@Override

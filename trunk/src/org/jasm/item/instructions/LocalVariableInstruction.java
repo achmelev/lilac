@@ -5,10 +5,14 @@ import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.parser.literals.SymbolReference;
 
 public class LocalVariableInstruction extends AbstractInstruction implements ILocalVariableReference {
 	
 	private int localVariableIndex = -1;
+	private LocalVariable localVariable = null;
+	private boolean forceNormal = false;
+	private SymbolReference localVariableReference = null;
 	
 	
 	public LocalVariableInstruction(short opCode,boolean isWide, int localVariableIndex) {
@@ -41,6 +45,22 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 		char type = getPrintName().charAt(0);
 		return type+"_"+localVariableIndex;
 	}
+	
+	
+
+	@Override
+	public String getPrintName() {
+		if (isWide()) {
+			return super.getPrintName();
+		} else {
+			if (localVariableIndex<=3) {
+				return "normal "+super.getPrintName(); 
+			} else {
+				return super.getPrintName();
+			}
+		}
+	}
+
 
 	@Override
 	public String getPrintComment() {
@@ -74,7 +94,13 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		LocalVariablesPool lvPool = ((Instructions)getParent()).getVariablesPool();
+		char type = OpCodes.getNameForOpcode(getOpCode()).charAt(0);
+		LocalVariable var = lvPool.checkAndLoad(this,localVariableReference, type);
+		if (var != null) {
+			this.localVariableIndex = var.getIndex();
+			this.localVariable = var;
+		}
 	}
 
 	@Override
@@ -82,7 +108,40 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 		char type = OpCodes.getNameForOpcode(getOpCode()).charAt(0);
 		return new LocalVariable[]{new LocalVariable(localVariableIndex, type)};
 	}
+
+
+	public void setForceNormal(boolean forceNormal) {
+		this.forceNormal = forceNormal;
+	}
+
+
+	public void setLocalVariableReference(SymbolReference localVariableReference) {
+		this.localVariableReference = localVariableReference;
+	}
+
+
+	public SymbolReference getLocalVariableReference() {
+		return localVariableReference;
+	}
 	
+	public int getLocalVariableIndex() {
+		return localVariableIndex;
+	}
+
+
+	public LocalVariable getLocalVariable() {
+		return localVariable;
+	}
+
+
+	public ShortLocalVariableInstruction createShortReplacement() {
+		if ((localVariableIndex>=0 && localVariableIndex<=3) && !isWide() && !forceNormal) {
+			short code = OpCodes.getOpcodeForName(OpCodes.getNameForOpcode(getOpCode())+"_"+localVariableIndex);
+			return new ShortLocalVariableInstruction(code);
+		} else {
+			return null;
+		}
+	}
 	
 
 }

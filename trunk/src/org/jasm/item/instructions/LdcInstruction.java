@@ -73,7 +73,7 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 	
 	@Override
 	protected void doResolveAfterParse() {
-		cpEntry = getConstantPool().checkAndLoadFromSymbolTable(new Class[]{StringInfo.class,IntegerInfo.class,FloatInfo.class,ClassInfo.class,MethodHandleInfo.class,MethodTypeInfo.class}, cpEntryReference);
+		cpEntry = getConstantPool().checkAndLoadFromSymbolTable(this, new Class[]{StringInfo.class,IntegerInfo.class,FloatInfo.class,ClassInfo.class,MethodHandleInfo.class,MethodTypeInfo.class}, cpEntryReference);
 	}
 
 	@Override

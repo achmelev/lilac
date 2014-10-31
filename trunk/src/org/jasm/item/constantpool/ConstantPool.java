@@ -287,22 +287,26 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		
 	}
 	
-	public <T extends AbstractConstantPoolEntry> T checkAndLoadFromSymbolTable(Class<T> t, SymbolReference ref) {
+	public <T extends AbstractConstantPoolEntry> T checkAndLoadFromSymbolTable(AbstractByteCodeItem caller, Class<T> t, SymbolReference ref) {
 		T result = null;
 		if (getSymbolTable().contains(ref.getSymbolName())) {
 			ISymbolTableEntry entry = getSymbolTable().get(ref.getSymbolName());
 			if (entry.getClass().equals(t)) {
 				result = (T)entry;
 			} else {
-				emitError(ref, "wrong constant pool entry, expected "+getConstLabel(t));
+				if (caller != null) {
+					caller.emitError(ref, "wrong constant pool entry, expected "+getConstLabel(t));
+				}
 			}
 		} else {
-			emitError(ref, "unknown constant "+ref.getSymbolName());
+			if (caller != null) {
+				caller.emitError(ref, "unknown constant "+ref.getSymbolName());
+			}
 		}
 		return result;
 	}
 	
-	public <T extends AbstractConstantPoolEntry> AbstractConstantPoolEntry checkAndLoadFromSymbolTable(Class<T> []t, SymbolReference ref) {
+	public <T extends AbstractConstantPoolEntry> AbstractConstantPoolEntry checkAndLoadFromSymbolTable(AbstractByteCodeItem caller,Class<T> []t, SymbolReference ref) {
 		AbstractConstantPoolEntry result = null;
 		if (getSymbolTable().contains(ref.getSymbolName())) {
 			ISymbolTableEntry entry = getSymbolTable().get(ref.getSymbolName());
@@ -320,11 +324,15 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 					buf.append(getConstLabel(t[i]));
 					
 				}
-				emitError(ref, "wrong constant pool entry, expected one of the following: "+buf.toString());
+				if (caller != null) {
+					caller.emitError(ref, "wrong constant pool entry, expected one of the following: "+buf.toString());
+				}
 			}
 			
 		} else {
-			emitError(ref, "unknown constant "+ref.getSymbolName());
+			if (caller != null) {
+				caller.emitError(ref, "unknown constant "+ref.getSymbolName());
+			}
 		}
 		return result;
 	}

@@ -289,29 +289,29 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 	@Override
 	protected void doResolveAfterParse() { 
 		if (tag == 'B' || tag == 'C' || tag == 'I' || tag == 'S' || tag == 'Z') {
-			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(IntegerInfo.class, primitiveValueReference);
+			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(this,IntegerInfo.class, primitiveValueReference);
 		} else if ( tag == 'F') {
-			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(FloatInfo.class, primitiveValueReference);
+			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(this,FloatInfo.class, primitiveValueReference);
 		} else if ( tag == 'D') {
-			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(DoubleInfo.class, primitiveValueReference);
+			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(this,DoubleInfo.class, primitiveValueReference);
 		} else if ( tag == 'J') {
-			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(LongInfo.class, primitiveValueReference);
+			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(this,LongInfo.class, primitiveValueReference);
 		} else if ( tag == 's') {
-			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, primitiveValueReference);
+			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, primitiveValueReference);
 		} else if ( tag == 's') {
-			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, primitiveValueReference);
+			primitiveValueEntry = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, primitiveValueReference);
 		} else if ( tag == 'c') {
-			classInfo = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, classInfoReference);
+			classInfo = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, classInfoReference);
 			if (classInfo != null) {
 				String value = classInfo.getValue();
 				verifyClassDescriptor(value);
 			}
 		} else if (tag == 'e') {
-			enumTypeName =  getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, enumTypeNameReference);
+			enumTypeName =  getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, enumTypeNameReference);
 			if (enumTypeName != null) {
 				verifyEnumTypeDescriptor(enumTypeName.getValue());
 			}
-			enumConstName = getConstantPool().checkAndLoadFromSymbolTable(Utf8Info.class, enumConstNameReference);
+			enumConstName = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, enumConstNameReference);
 			if (enumConstName != null && !IdentifierUtils.isValidIdentifier(enumConstName.getValue())) {
 				emitError(enumConstNameReference, "malformed identifier: "+enumConstName.getValue());
 			}

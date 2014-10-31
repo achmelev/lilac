@@ -65,6 +65,7 @@ import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.InvokeInterfaceInstruction;
 import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.LocalVariable;
+import org.jasm.item.instructions.LocalVariableInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.JavaAssemblerParser.AnnotationContext;
@@ -127,6 +128,7 @@ import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacemethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacesContext;
+import org.jasm.parser.JavaAssemblerParser.LocalvaropContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodAttributeExceptionsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
@@ -169,6 +171,7 @@ import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 
 
@@ -763,6 +766,27 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			setInstructionLabel(ctx, instr);
 			addInstruction(instr);
 		}
+	}
+	
+	
+
+
+	@Override
+	public void enterLocalvarop(LocalvaropContext ctx) {
+		String name = ctx.Localvarop().getText();
+		
+		boolean wide = (ctx.WideOrNormal() != null) && ctx.WideOrNormal().getText().equals("wide");
+		boolean normal = (ctx.WideOrNormal() != null) && ctx.WideOrNormal().getText().equals("normal");
+		Short code = OpCodes.getOpcodeForName(name);
+		
+		LocalVariableInstruction instr = new LocalVariableInstruction(code, wide, -1);
+		if (normal) {
+			instr.setForceNormal(normal);
+		}
+		instr.setLocalVariableReference(createSymbolReference(ctx.Identifier()));
+		instr.setSourceLocation(createSourceLocation(ctx.Localvarop()));
+		setInstructionLabel(ctx, instr);
+		addInstruction(instr);
 	}
 
 

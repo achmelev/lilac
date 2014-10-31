@@ -78,7 +78,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	@Override
 	public void updateMetadata() {
 		if (!this.resolved) {
-			throw new RuntimeException("updateMetadata can be called only resolve");
+			throw new RuntimeException("updateMetadata can be called only after resolve");
 		}
 		if (log.isDebugEnabled()) {
 			log.debug("update meta data");

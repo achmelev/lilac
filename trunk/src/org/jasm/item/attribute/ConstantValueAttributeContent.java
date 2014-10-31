@@ -102,7 +102,7 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 	
 	@Override
 	protected void doResolveAfterParse() {
-		valueEntry = getConstantPool().checkAndLoadFromSymbolTable(new Class[]{StringInfo.class,IntegerInfo.class,LongInfo.class,FloatInfo.class,DoubleInfo.class}, valueReference);
+		valueEntry = getConstantPool().checkAndLoadFromSymbolTable(this,new Class[]{StringInfo.class,IntegerInfo.class,LongInfo.class,FloatInfo.class,DoubleInfo.class}, valueReference);
 	}
 
 	public AbstractConstantPoolEntry getConstantPoolEntry() {

@@ -38,27 +38,27 @@ public class LocalVariablesPoolTest {
 		pool.resolveAfterParse();
 		Assert.assertEquals(8, pool.calculateSize());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(0, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(2, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(3, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(4, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(6, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		
@@ -95,27 +95,27 @@ public class LocalVariablesPoolTest {
 		pool.resolveAfterParse();
 		Assert.assertEquals(9, pool.calculateSize());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(0, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(3, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(4, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(5, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(8, var.getIndex());
 		
@@ -156,31 +156,31 @@ public class LocalVariablesPoolTest {
 		pool.resolveAfterParse();
 		Assert.assertEquals(9, pool.calculateSize());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(0, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(3, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(4, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(5, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "longVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "longVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(5, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(8, var.getIndex());
 		
@@ -226,36 +226,36 @@ public class LocalVariablesPoolTest {
 		pool.resolveAfterParse();
 		Assert.assertEquals(13, pool.calculateSize());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(0, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(3, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(4, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(5, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "longVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "longVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(5, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "doubleVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "doubleVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(10, var.getIndex());
 		
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(12, var.getIndex());
 		
@@ -309,36 +309,36 @@ public class LocalVariablesPoolTest {
 		pool.resolveAfterParse();
 		Assert.assertEquals(13, pool.calculateSize());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(0, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(3, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(4, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(5, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "longVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "longVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(5, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "doubleVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "doubleVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(10, var.getIndex());
 		
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(12, var.getIndex());
 		
@@ -411,36 +411,36 @@ public class LocalVariablesPoolTest {
 		pool.resolveAfterParse();
 		Assert.assertEquals(13, pool.calculateSize());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(0, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(3, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(4, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(5, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "longVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "longVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(5, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "doubleVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "doubleVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(10, var.getIndex());
 		
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(12, var.getIndex());
 		
@@ -519,36 +519,36 @@ public class LocalVariablesPoolTest {
 		pool.resolveAfterParse();
 		Assert.assertEquals(13, pool.calculateSize());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "doubleVar"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(0, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "floatVar"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(3, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "intVar"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(4, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "longVar"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(5, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "longVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "longVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(5, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "refVar"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "doubleVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "doubleVar2"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(10, var.getIndex());
 		
 		
-		var =  pool.checkAndLoad(new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
+		var =  pool.checkAndLoad(null,new SymbolReference(0, 0, "retVar"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(12, var.getIndex());
 		
