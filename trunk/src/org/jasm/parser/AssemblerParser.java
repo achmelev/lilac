@@ -63,6 +63,7 @@ import org.jasm.item.instructions.AbstractPushInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;
 import org.jasm.item.instructions.BipushInstruction;
 import org.jasm.item.instructions.ConstantPoolInstruction;
+import org.jasm.item.instructions.IincInstruction;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.InvokeInterfaceInstruction;
 import org.jasm.item.instructions.LdcInstruction;
@@ -114,6 +115,7 @@ import org.jasm.parser.JavaAssemblerParser.FieldmodifierVolatileContext;
 import org.jasm.parser.JavaAssemblerParser.FieldnameContext;
 import org.jasm.parser.JavaAssemblerParser.FieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FloatinfoContext;
+import org.jasm.parser.JavaAssemblerParser.IincopContext;
 import org.jasm.parser.JavaAssemblerParser.InnerclassContext;
 import org.jasm.parser.JavaAssemblerParser.Innerclass_innerContext;
 import org.jasm.parser.JavaAssemblerParser.Innerclass_nameContext;
@@ -779,8 +781,8 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void enterLocalvarop(LocalvaropContext ctx) {
 		String name = ctx.Localvarop().getText();
 		
-		boolean wide = (ctx.WideOrNormal() != null) && ctx.WideOrNormal().getText().equals("wide");
-		boolean normal = (ctx.WideOrNormal() != null) && ctx.WideOrNormal().getText().equals("normal");
+		boolean wide = (ctx.wideOrNormal() != null) && ctx.wideOrNormal().getText().equals("wide");
+		boolean normal = (ctx.wideOrNormal() != null) && ctx.wideOrNormal().getText().equals("normal");
 		Short code = OpCodes.getOpcodeForName(name);
 		
 		LocalVariableInstruction instr = new LocalVariableInstruction(code, wide, -1);
@@ -812,7 +814,18 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		setInstructionLabel(ctx, instr);
 		addInstruction(instr);
 	}
-
+	
+	@Override
+	public void enterIincop(IincopContext ctx) {
+		boolean isWide = ctx.WIDE() != null;
+		IincInstruction instr = new IincInstruction(-1, (short)-1, isWide);
+		instr.setValueLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
+		instr.setLocalVariableReference(createSymbolReference(ctx.Identifier()));
+		instr.setSourceLocation(createSourceLocation(ctx.Iincop()));
+		setInstructionLabel(ctx, instr);
+		addInstruction(instr);
+		
+	}
 
 	private void setInstructionLabel(ParserRuleContext context, AbstractInstruction instr) {
 		MethodinstructionContext ctx = (MethodinstructionContext)context.getParent();

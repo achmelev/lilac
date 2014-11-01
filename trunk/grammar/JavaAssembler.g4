@@ -149,8 +149,9 @@ methodinstruction: (label COLON)? instruction SEMI;
 
 instruction: Argumentlessop #argumentlessop
 			 | Constantpoolop Identifier #constantpoolop
-			 | WideOrNormal? Localvarop Identifier #localvarop
+			 | wideOrNormal? Localvarop Identifier #localvarop
 			 | Pushop IntegerLiteral #pushop
+			 | WIDE? Iincop Identifier COMMA IntegerLiteral #iincop
 			 ;
 
 
@@ -225,6 +226,8 @@ arrayannotationelementvalue: ARRAY VALUE LBRACE
 
 label: Identifier;
 
+wideOrNormal : 'wide'|'normal';
+
 //Lexer
 
 //Instructions
@@ -233,8 +236,9 @@ Argumentlessop: 'aaload'|'aastore'|'aconst_null'|'areturn'|'arraylength'|'athrow
 Constantpoolop: 'ldc'|'invokeinterface'|'anewarray'|'checkcast'|'getfield'|'getstatic'|'instanceof'|'invokespecial'|'invokestatic'|'invokevirtual'|'ldc_w'|'ldc2_w'|'new'|'putfield'|'putstatic';
 Localvarop: 'aload'|'astore'|'dload'|'dstore'|'fload'|'fstore'|'iload'|'istore'|'lload'|'lstore';
 Pushop: 'bipush'|'sipush'; 
+Iincop: 'iinc';
 
-WideOrNormal : 'wide'|'normal';
+
 
 // Keywords
 
@@ -301,7 +305,9 @@ ENCLOSING     :  'enclosing';
 OBJECT        :  'object';
 RETURNADRESS  :  'returnadress';
 AT            :  'at';
-VAR            :  'var';
+VAR           :  'var';
+WIDE          :  'wide';
+NORMAL        :  'normal';
 
 
 Plus            :  '+';

@@ -9,13 +9,13 @@ import org.jasm.item.constantpool.FieldrefInfo;
 import org.jasm.item.constantpool.InterfaceMethodrefInfo;
 import org.jasm.item.instructions.BipushInstruction;
 import org.jasm.item.instructions.ConstantPoolInstruction;
+import org.jasm.item.instructions.IincInstruction;
 import org.jasm.item.instructions.InvokeInterfaceInstruction;
 import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.LocalVariable;
 import org.jasm.item.instructions.LocalVariableInstruction;
 import org.jasm.item.instructions.LocalVariablesPool;
 import org.jasm.item.instructions.OpCodes;
-import org.jasm.item.instructions.ShortLocalVariableInstruction;
 import org.jasm.item.instructions.SipushInstruction;
 import org.jasm.parser.literals.SymbolReference;
 import org.junit.Assert;
@@ -74,7 +74,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		
-		Assert.assertEquals(20, code.getInstructions().getSize());
+		Assert.assertEquals(22, code.getInstructions().getSize());
 		
 		Assert.assertTrue(code.getInstructions().get(0).getOpCode() == OpCodes.nop);
 		Assert.assertSame(code.getInstructions().get(0), code.getInstructions().checkAndLoadFromSymbolTable(null,new SymbolReference(0, 0, "label1")));
@@ -126,7 +126,15 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		SipushInstruction sipush = (SipushInstruction)code.getInstructions().get(16);
 		Assert.assertEquals(-260, sipush.getValue());
 		
-		Assert.assertTrue(code.getInstructions().get(19).getOpCode() == OpCodes.return_);
+		Assert.assertEquals(code.getInstructions().get(19).getOpCode(), OpCodes.iinc);
+		IincInstruction iinc = (IincInstruction)code.getInstructions().get(19);
+		Assert.assertEquals(100, iinc.getValue());
+		
+		Assert.assertEquals(code.getInstructions().get(20).getOpCode(), OpCodes.iinc);
+		iinc = (IincInstruction)code.getInstructions().get(20);
+		Assert.assertEquals(-260, iinc.getValue());
+		
+		Assert.assertTrue(code.getInstructions().get(21).getOpCode() == OpCodes.return_);
 		
 	}
 
