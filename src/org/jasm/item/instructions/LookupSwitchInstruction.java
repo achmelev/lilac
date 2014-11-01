@@ -1,12 +1,13 @@
 package org.jasm.item.instructions;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
-public class LookupSwitchInstruction extends AbstractInstruction {
+public class LookupSwitchInstruction extends AbstractSwitchInstruction {
 	
 	private int numberOfPairs = -1;
 	private int defaultOffset = -1;
@@ -106,10 +107,7 @@ public class LookupSwitchInstruction extends AbstractInstruction {
 		}
 	}
 	
-	@Override
-	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
-	}
+	
 	
 	private int calculatePad() {
 		int offset = getOffsetInCode();
@@ -118,5 +116,28 @@ public class LookupSwitchInstruction extends AbstractInstruction {
 		}
 		return 4-(offset+1)%4;
 	}
+
+	@Override
+	protected void setTargets(AbstractInstruction defaultTarget, int[] values,
+			AbstractInstruction[] targets) {
+		this.defaultTarget = defaultTarget;
+		this.values = values;
+		this.targets = targets;
+		
+	}
+
+	public AbstractInstruction getDefaultTarget() {
+		return defaultTarget;
+	}
+
+	public int[] getValues() {
+		return values;
+	}
+
+	public AbstractInstruction[] getTargets() {
+		return targets;
+	}
+
+	
 
 }

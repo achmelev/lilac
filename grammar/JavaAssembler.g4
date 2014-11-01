@@ -154,6 +154,7 @@ instruction: Argumentlessop #argumentlessop
 			 | WIDE? Iincop Identifier COMMA IntegerLiteral #iincop
 			 | Newarrayop arrayType #newarrayop
 			 | Multinewarrayop Identifier COMMA IntegerLiteral #multinewarrayop 
+			 | Switchop switchMember (COMMA switchMember)* #switchop 
 			 ;
 
 
@@ -232,6 +233,9 @@ wideOrNormal : 'wide'|'normal';
 
 arrayType: BOOLEAN|BYTE|CHAR|DOUBLE|FLOAT|INT|LONG|SHORT;
 
+switchSource: DefaultLiteral|IntegerLiteral;
+switchMember: switchSource SwitchPointer Identifier;
+
 //Lexer
 
 //Instructions
@@ -243,7 +247,7 @@ Pushop: 'bipush'|'sipush';
 Iincop: 'iinc';
 Newarrayop: 'newarray';
 Multinewarrayop: 'multinewarray';
-
+Switchop: 'lookupswitch'|'tableswitch';
 
 
 // Keywords
@@ -317,6 +321,7 @@ NORMAL        :  'normal';
 
 
 Plus            :  '+';
+SwitchPointer   : '->';
 
 
 

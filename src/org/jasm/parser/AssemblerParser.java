@@ -60,6 +60,7 @@ import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.AbstractPushInstruction;
+import org.jasm.item.instructions.AbstractSwitchInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;
 import org.jasm.item.instructions.BipushInstruction;
 import org.jasm.item.instructions.ConstantPoolInstruction;
@@ -69,10 +70,12 @@ import org.jasm.item.instructions.InvokeInterfaceInstruction;
 import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.LocalVariable;
 import org.jasm.item.instructions.LocalVariableInstruction;
+import org.jasm.item.instructions.LookupSwitchInstruction;
 import org.jasm.item.instructions.MultianewarrayInstruction;
 import org.jasm.item.instructions.NewarrayInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.SipushInstruction;
+import org.jasm.item.instructions.TableSwitchInstruction;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.JavaAssemblerParser.AnnotationContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationdeclarationContext;
@@ -167,6 +170,8 @@ import org.jasm.parser.JavaAssemblerParser.SignatureattributeContext;
 import org.jasm.parser.JavaAssemblerParser.SimpleannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.StringinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
+import org.jasm.parser.JavaAssemblerParser.SwitchMemberContext;
+import org.jasm.parser.JavaAssemblerParser.SwitchopContext;
 import org.jasm.parser.JavaAssemblerParser.SynteticattributeContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
@@ -850,6 +855,51 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		setInstructionLabel(ctx, instr);
 		addInstruction(instr);
 	}
+	
+	
+
+
+	@Override
+	public void enterSwitchop(SwitchopContext ctx) {
+		String name = ctx.Switchop().getText();
+		short opCode = OpCodes.getOpcodeForName(name);
+		AbstractSwitchInstruction instr = null;
+		if (opCode == OpCodes.lookupswitch) {
+			instr = new LookupSwitchInstruction();
+		} else if (opCode == OpCodes.tableswitch) {
+			instr = new TableSwitchInstruction();
+		}
+		instr.setSourceLocation(createSourceLocation(ctx.Switchop()));
+		setInstructionLabel(ctx, instr);
+		stack.push(instr);
+	}
+	
+	
+
+
+	@Override
+	public void enterSwitchMember(SwitchMemberContext ctx) {
+		TerminalNode defLit = ctx.switchSource().DefaultLiteral();
+		TerminalNode intLit = ctx.switchSource().IntegerLiteral();
+		SymbolReference ref = createSymbolReference(ctx.Identifier());
+		AbstractSwitchInstruction instr = (AbstractSwitchInstruction)stack.peek();
+		if (defLit != null) {
+			instr.setDefaultTargetReference(ref);
+		} else if (intLit != null) {
+			instr.addTargetReference(createIntegerLiteral(intLit), ref);
+		} else {
+			throw new IllegalStateException();
+		}
+		
+	}
+	
+	
+
+
+	@Override
+	public void exitSwitchop(SwitchopContext ctx) {
+		addInstruction((AbstractSwitchInstruction)stack.pop());
+	}
 
 
 	private void setInstructionLabel(ParserRuleContext context, AbstractInstruction instr) {
@@ -857,6 +907,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (ctx.label() != null) {
 			instr.setLabel(createLabel(ctx.label().Identifier()));
 		}
+		
 	}
 
 
@@ -876,7 +927,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			}
 		}
 		
-		content.getInstructions().add(instr);
+		content.getInstructions().addWithoutSetOffsets(instr);
 	}
 
 
