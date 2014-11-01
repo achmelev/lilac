@@ -1,12 +1,16 @@
 package org.jasm.item.instructions;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
-public class TableSwitchInstruction extends AbstractInstruction {
+public class TableSwitchInstruction extends AbstractSwitchInstruction {
 	
 	private int low = -1;
 	private int high = -1;
@@ -106,11 +110,6 @@ public class TableSwitchInstruction extends AbstractInstruction {
 		}
 	}
 	
-	@Override
-	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
-	}
-	
 	private int calculatePad() {
 		int offset = getOffsetInCode();
 		if ((offset+1)%4 == 0) {
@@ -118,5 +117,55 @@ public class TableSwitchInstruction extends AbstractInstruction {
 		}
 		return 4-(offset+1)%4;
 	}
+
+	@Override
+	protected void setTargets(AbstractInstruction defaultTarget, int[] values,
+			AbstractInstruction[] targets) {
+		this.defaultTarget = defaultTarget;
+		if (values.length == 0) {
+			emitError(null, "there has to be at least one non-default target");
+		} else if (values.length==1) {
+			low = values[0];
+			high = values[0];
+			this.targets = targets;
+		} else {
+			Map<Integer, AbstractInstruction> targetsMap = new HashMap<>();
+			List<Integer> valuesList= new ArrayList<>();
+			for (int i=0; i<values.length; i++) {
+				valuesList.add(values[i]);
+				targetsMap.put(values[i], targets[i]);
+			}
+			Collections.sort(valuesList);
+			if (valuesList.size()!=(valuesList.get(valuesList.size()-1)-valuesList.get(0)+1)) {
+				emitError(null, "missing target for at least one value between "+valuesList.get(0)+" and "+valuesList.get(valuesList.size()-1));
+			} else {
+				this.low = valuesList.get(0);
+				this.high = valuesList.get(valuesList.size()-1);
+				this.targets = new AbstractInstruction[valuesList.size()];
+				for (int i=0;i<valuesList.size(); i++) {
+					this.targets[i] = targetsMap.get(valuesList.get(i));
+				}
+			}
+		}
+		
+	}
+
+	public int getLow() {
+		return low;
+	}
+
+	public int getHigh() {
+		return high;
+	}
+
+	public AbstractInstruction[] getTargets() {
+		return targets;
+	}
+
+	public AbstractInstruction getDefaultTarget() {
+		return defaultTarget;
+	}
+	
+	
 
 }

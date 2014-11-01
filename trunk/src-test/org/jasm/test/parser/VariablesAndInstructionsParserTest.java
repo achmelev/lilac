@@ -15,10 +15,12 @@ import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.LocalVariable;
 import org.jasm.item.instructions.LocalVariableInstruction;
 import org.jasm.item.instructions.LocalVariablesPool;
+import org.jasm.item.instructions.LookupSwitchInstruction;
 import org.jasm.item.instructions.MultianewarrayInstruction;
 import org.jasm.item.instructions.NewarrayInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.SipushInstruction;
+import org.jasm.item.instructions.TableSwitchInstruction;
 import org.jasm.parser.literals.SymbolReference;
 import org.junit.Assert;
 import org.junit.Test;
@@ -76,7 +78,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		
-		Assert.assertEquals(46, code.getInstructions().getSize());
+		Assert.assertEquals(49, code.getInstructions().getSize());
 		
 		Assert.assertTrue(code.getInstructions().get(0).getOpCode() == OpCodes.nop);
 		Assert.assertSame(code.getInstructions().get(0), code.getInstructions().checkAndLoadFromSymbolTable(null,new SymbolReference(0, 0, "label1")));
@@ -173,7 +175,30 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertEquals("java/lang/Object", multinewarray.getClassInfo().getClassName());
 		Assert.assertEquals(3, multinewarray.getDimensions());
 		
-		Assert.assertTrue(code.getInstructions().get(45).getOpCode() == OpCodes.return_);
+		Assert.assertEquals(code.getInstructions().get(45).getOpCode(), OpCodes.lookupswitch);
+		LookupSwitchInstruction lookupswitch = (LookupSwitchInstruction)code.getInstructions().get(45);
+		Assert.assertEquals(OpCodes.nop, lookupswitch.getDefaultTarget().getOpCode());
+		Assert.assertEquals(3, lookupswitch.getValues().length);
+		Assert.assertEquals(-1, lookupswitch.getValues()[0]);
+		Assert.assertEquals(10, lookupswitch.getValues()[1]);
+		Assert.assertEquals(3, lookupswitch.getValues()[2]);
+		Assert.assertEquals(3, lookupswitch.getTargets().length);
+		Assert.assertEquals(OpCodes.bipush, lookupswitch.getTargets()[0].getOpCode());
+		Assert.assertEquals(OpCodes.newarray, lookupswitch.getTargets()[1].getOpCode());
+		Assert.assertEquals(OpCodes.multianewarray, lookupswitch.getTargets()[2].getOpCode());
+		
+		Assert.assertEquals(code.getInstructions().get(46).getOpCode(), OpCodes.tableswitch);
+		TableSwitchInstruction tableswitch = (TableSwitchInstruction)code.getInstructions().get(46);
+		Assert.assertEquals(OpCodes.nop, tableswitch.getDefaultTarget().getOpCode());
+		Assert.assertEquals(-1, tableswitch.getLow());
+		Assert.assertEquals(1, tableswitch.getHigh());
+		Assert.assertEquals(3, tableswitch.getTargets().length);
+		Assert.assertEquals(OpCodes.bipush, tableswitch.getTargets()[0].getOpCode());
+		Assert.assertEquals(OpCodes.newarray, tableswitch.getTargets()[1].getOpCode());
+		Assert.assertEquals(OpCodes.multianewarray, tableswitch.getTargets()[2].getOpCode());
+		
+		
+		Assert.assertTrue(code.getInstructions().get(48).getOpCode() == OpCodes.return_);
 		
 	}
 

@@ -105,14 +105,19 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	}
 
 	
-	private void setOffsets() {
+	public void setOffsets() {
 		offsets.clear();
 		for (int i=0;i<items.size(); i++) {
 			AbstractInstruction instruction = items.get(i);
 			offsets.put(instruction.getOffsetInCode(), instruction);
 		}
 	}
-
+	
+	
+	public void addWithoutSetOffsets(AbstractInstruction item) {
+		item.setParent(this);
+		items.add(item);
+	}
 
 
 	public void add(AbstractInstruction item) {
@@ -363,6 +368,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 				}
 			}
 		}
+		
+		setOffsets();
 	}
 
 

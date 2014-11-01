@@ -84,8 +84,8 @@ class {
   	pop;
   	iinc i1,100;
   	wide iinc i1,-260;
-  	bipush 10;
-  	newarray boolean;
+  	label3: bipush 10;
+  	label4: newarray boolean;
   	bipush 10;
   	newarray byte;
   	bipush 10;
@@ -107,7 +107,16 @@ class {
   	pop;
   	pop;
   	pop;
-  	multinewarray classref_2, 3;
+  	label5: multinewarray classref_2, 3;
+  	lookupswitch -1->label3, 
+  				  10->label4,
+  				  3->label5, 
+  				  default->label6;
+  	tableswitch -1->label3, 
+  				  1->label5,
+  				  0->label4, 
+  				  default->label6; 
+  	label6: nop;
   	
   	return;
   }
