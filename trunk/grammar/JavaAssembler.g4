@@ -130,6 +130,7 @@ methodattribute: THROWS Identifier (COMMA Identifier)* SEMI #methodAttributeExce
 				 | synteticattribute #methodAttributeSyntetic
 				 | deprecatedattribute #methodAttributeDeprecated
 				 | annotation #methodAnnotation 
+				 | annotationdefault #methodAnnotationDefault
 				 ;
 
 methodvar: methodvarimplicit #methodvar_implicit
@@ -208,6 +209,9 @@ annotationdeclaration: ANNOTATION  LBRACE
 						 annotationindex?
 						 annotationelement*
 					   RBRACE;
+annotationdefault: ANNOTATION DefaultLiteral LBRACE
+				   	 annotationelementvalue
+				   RBRACE;
 					   
 annotationtype: TYPE Identifier SEMI;
 annotationindex: INDEX IntegerLiteral SEMI;
