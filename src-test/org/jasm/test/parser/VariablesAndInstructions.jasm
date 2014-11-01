@@ -82,6 +82,8 @@ class {
   	sipush -260;
   	pop;
   	pop;
+  	iinc i1,100;
+  	wide iinc i1,-260;
   	return;
   }
 }

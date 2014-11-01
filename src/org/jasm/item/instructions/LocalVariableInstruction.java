@@ -80,7 +80,7 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 	@Override
 	public void write(IByteBuffer target, long offset) {
 		if (this.isWide()) {
-			target.writeUnsignedShort(offset, (short)localVariableIndex);
+			target.writeUnsignedShort(offset, localVariableIndex);
 		} else {
 			target.writeUnsignedByte(offset, (short)localVariableIndex);
 		}
@@ -98,8 +98,12 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 		char type = OpCodes.getNameForOpcode(getOpCode()).charAt(0);
 		LocalVariable var = lvPool.checkAndLoad(this,localVariableReference, type);
 		if (var != null) {
-			this.localVariableIndex = var.getIndex();
-			this.localVariable = var;
+			if (isWide() || var.getIndex()<=255) {
+				this.localVariableIndex = var.getIndex();
+				this.localVariable = var;
+			} else {
+				emitError(localVariableReference, "variable index is too big, consider to use the wide variant");
+			}
 		}
 	}
 
