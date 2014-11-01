@@ -647,7 +647,6 @@ public class OpCodes {
 		
 		buf.delete(0, buf.length());
 		buf.append("Localvarop: ");
-		
 		index = 0;
 		for (Short code: localVariableInstructions) {
 				String name = opcodeToName.get(code);
@@ -664,6 +663,26 @@ public class OpCodes {
 		buf.append(";");
 		instrs =buf.toString();
 		System.out.println("LOCALVAR:");
+		System.out.println(instrs);
+		
+		buf.delete(0, buf.length());
+		buf.append("Branchop: ");
+		index = 0;
+		for (Short code: branchInstructions) {
+				String name = opcodeToName.get(code);
+				if (name == null) {
+					throw new IllegalStateException("Something has gone wrong!");
+				}
+				if (index > 0) {
+					buf.append("|");
+				}
+				buf.append("'"+name+"'");
+				index++;
+			
+		}
+		buf.append(";");
+		instrs =buf.toString();
+		System.out.println("BRANCHOP:");
 		System.out.println(instrs);
 	}
 	

@@ -116,8 +116,9 @@ class {
   				  1->label5,
   				  0->label4, 
   				  default->label6; 
+  	goto label7;
   	label6: nop;
   	
-  	return;
+  	label7: return;
   }
 }

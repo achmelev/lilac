@@ -155,6 +155,7 @@ instruction: Argumentlessop #argumentlessop
 			 | Newarrayop arrayType #newarrayop
 			 | Multinewarrayop Identifier COMMA IntegerLiteral #multinewarrayop 
 			 | Switchop switchMember (COMMA switchMember)* #switchop 
+			 | Branchop Identifier #branchop
 			 ;
 
 
@@ -248,6 +249,7 @@ Iincop: 'iinc';
 Newarrayop: 'newarray';
 Multinewarrayop: 'multinewarray';
 Switchop: 'lookupswitch'|'tableswitch';
+Branchop: 'goto'|'if_acmpeq'|'if_acmpne'|'if_icmpeq'|'if_icmpge'|'if_icmpgt'|'if_icmple'|'if_icmplt'|'if_icmpne'|'ifeq'|'ifge'|'ifgt'|'ifle'|'iflt'|'ifne'|'ifnonnull'|'ifnull'|'jsr';
 
 
 // Keywords

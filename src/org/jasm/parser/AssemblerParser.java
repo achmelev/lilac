@@ -63,6 +63,7 @@ import org.jasm.item.instructions.AbstractPushInstruction;
 import org.jasm.item.instructions.AbstractSwitchInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;
 import org.jasm.item.instructions.BipushInstruction;
+import org.jasm.item.instructions.BranchInstruction;
 import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.IincInstruction;
 import org.jasm.item.instructions.Instructions;
@@ -86,6 +87,7 @@ import org.jasm.parser.JavaAssemblerParser.AnnotationindexContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationtypeContext;
 import org.jasm.parser.JavaAssemblerParser.ArgumentlessopContext;
 import org.jasm.parser.JavaAssemblerParser.ArrayannotationelementvalueContext;
+import org.jasm.parser.JavaAssemblerParser.BranchopContext;
 import org.jasm.parser.JavaAssemblerParser.ClassInnerClassContext;
 import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
 import org.jasm.parser.JavaAssemblerParser.ClassinfoContext;
@@ -894,11 +896,23 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 	
 	
-
-
 	@Override
 	public void exitSwitchop(SwitchopContext ctx) {
 		addInstruction((AbstractSwitchInstruction)stack.pop());
+	}
+	
+	
+
+
+	@Override
+	public void enterBranchop(BranchopContext ctx) {
+		String name = ctx.Branchop().getText();
+		short opCode = OpCodes.getOpcodeForName(name);
+		BranchInstruction instr = new BranchInstruction(opCode, null);
+		instr.setTargetReference(createSymbolReference(ctx.Identifier()));
+		instr.setSourceLocation(createSourceLocation(ctx.Branchop()));
+		setInstructionLabel(ctx, instr);
+		addInstruction(instr);
 	}
 
 
