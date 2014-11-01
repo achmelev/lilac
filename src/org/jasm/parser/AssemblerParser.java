@@ -23,6 +23,7 @@ import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.AbstractAnnotationsAttributeContent;
 import org.jasm.item.attribute.AbstractParameterAnnotationsAttributeContent;
 import org.jasm.item.attribute.Annotation;
+import org.jasm.item.attribute.AnnotationDefaultAttributeContent;
 import org.jasm.item.attribute.AnnotationElementNameValue;
 import org.jasm.item.attribute.AnnotationElementValue;
 import org.jasm.item.attribute.Attribute;
@@ -80,6 +81,7 @@ import org.jasm.item.instructions.TableSwitchInstruction;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.JavaAssemblerParser.AnnotationContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationdeclarationContext;
+import org.jasm.parser.JavaAssemblerParser.AnnotationdefaultContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationelementContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationelementnameContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationelementvalueContext;
@@ -1170,6 +1172,21 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 
 	@Override
+	public void enterAnnotationdefault(AnnotationdefaultContext ctx) {
+		AnnotationDefaultAttributeContent content = new AnnotationDefaultAttributeContent();
+		addAttribute(content, ctx.ANNOTATION());
+		stack.push(content);
+	}
+	
+	
+
+	@Override
+	public void exitAnnotationdefault(AnnotationdefaultContext ctx) {
+		stack.pop();
+	}
+
+
+	@Override
 	public void enterAnnotationtype(AnnotationtypeContext ctx) {
 		Annotation annot = (Annotation)stack.peek();
 		annot.setTypeValueReference(createSymbolReference(ctx.Identifier()));
@@ -1283,6 +1300,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 				throw new IllegalStateException("Unexpected value on the stack: "+arrayValue.getTag());
 			}
 			arrayValue.addArrayMember(value);
+		} else if (stack.peek() instanceof AnnotationDefaultAttributeContent) {
+			AnnotationDefaultAttributeContent content = (AnnotationDefaultAttributeContent)stack.peek();
+			content.setValue(value);
 		} else {
 			throw new IllegalStateException("Unexpected element in the stack");
 		}

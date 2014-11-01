@@ -150,6 +150,8 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 			name = "EnclosingMethod";
 		} else if (content instanceof CodeAttributeContent) {
 			name = "Code";
+		} else if (content instanceof AnnotationDefaultAttributeContent) {
+			name = "AnnotationDefault";
 		} else {
 			throw new IllegalStateException("unknown attribute content type: "+content.getClass());
 		}

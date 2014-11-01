@@ -69,13 +69,11 @@ public class AnnotationDefaultAttributeContent extends
 
 	@Override
 	public String getPrintArgs() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getPrintComment() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -87,7 +85,7 @@ public class AnnotationDefaultAttributeContent extends
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		value.resolve();
 	}
 
 	@Override
@@ -122,6 +120,11 @@ public class AnnotationDefaultAttributeContent extends
 	@Override
 	public int getItemSizeInList(IBytecodeItem item) {
 		return 1;
+	}
+
+	public void setValue(AnnotationElementValue value) {
+		value.setParent(this);
+		this.value = value;
 	}
 	
 	
