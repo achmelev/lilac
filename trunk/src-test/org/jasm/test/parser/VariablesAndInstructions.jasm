@@ -77,13 +77,38 @@ class {
   	wide fload f1;
   	wide fstore f1;
   	lload l1;
-  	lstore l1;
+    lstore l1;
   	bipush 100;
   	sipush -260;
   	pop;
   	pop;
   	iinc i1,100;
   	wide iinc i1,-260;
+  	bipush 10;
+  	newarray boolean;
+  	bipush 10;
+  	newarray byte;
+  	bipush 10;
+  	newarray char;
+  	bipush 10;
+  	newarray double;
+  	bipush 10;
+  	newarray float;
+  	bipush 10;
+  	newarray int;
+  	bipush 10;
+  	newarray long;
+  	bipush 10;
+  	newarray short;
+  	pop;
+  	pop;
+  	pop;
+  	pop;
+  	pop;
+  	pop;
+  	pop;
+  	multinewarray classref_2, 3;
+  	
   	return;
   }
 }
