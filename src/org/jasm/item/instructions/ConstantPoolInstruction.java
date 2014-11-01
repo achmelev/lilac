@@ -47,6 +47,7 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 		allowedTypes.put(OpCodes.new_, new Class[]{ClassInfo.class});
 		allowedTypes.put(OpCodes.putfield, new Class[]{FieldrefInfo.class});
 		allowedTypes.put(OpCodes.putstatic, new Class[]{FieldrefInfo.class});
+		allowedTypes.put(OpCodes.multianewarray, new Class[]{ClassInfo.class});
 	}
 	
 	

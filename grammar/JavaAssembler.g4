@@ -152,6 +152,8 @@ instruction: Argumentlessop #argumentlessop
 			 | wideOrNormal? Localvarop Identifier #localvarop
 			 | Pushop IntegerLiteral #pushop
 			 | WIDE? Iincop Identifier COMMA IntegerLiteral #iincop
+			 | Newarrayop arrayType #newarrayop
+			 | Multinewarrayop Identifier COMMA IntegerLiteral #multinewarrayop 
 			 ;
 
 
@@ -228,6 +230,8 @@ label: Identifier;
 
 wideOrNormal : 'wide'|'normal';
 
+arrayType: BOOLEAN|BYTE|CHAR|DOUBLE|FLOAT|INT|LONG|SHORT;
+
 //Lexer
 
 //Instructions
@@ -237,6 +241,8 @@ Constantpoolop: 'ldc'|'invokeinterface'|'anewarray'|'checkcast'|'getfield'|'gets
 Localvarop: 'aload'|'astore'|'dload'|'dstore'|'fload'|'fstore'|'iload'|'istore'|'lload'|'lstore';
 Pushop: 'bipush'|'sipush'; 
 Iincop: 'iinc';
+Newarrayop: 'newarray';
+Multinewarrayop: 'multinewarray';
 
 
 

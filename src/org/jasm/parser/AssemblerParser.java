@@ -69,6 +69,8 @@ import org.jasm.item.instructions.InvokeInterfaceInstruction;
 import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.LocalVariable;
 import org.jasm.item.instructions.LocalVariableInstruction;
+import org.jasm.item.instructions.MultianewarrayInstruction;
+import org.jasm.item.instructions.NewarrayInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.SipushInstruction;
 import org.jasm.item.modifier.ClassModifier;
@@ -157,7 +159,9 @@ import org.jasm.parser.JavaAssemblerParser.MethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarabsoluteContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarimplicitContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarrelativeContext;
+import org.jasm.parser.JavaAssemblerParser.MultinewarrayopContext;
 import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
+import org.jasm.parser.JavaAssemblerParser.NewarrayopContext;
 import org.jasm.parser.JavaAssemblerParser.PushopContext;
 import org.jasm.parser.JavaAssemblerParser.SignatureattributeContext;
 import org.jasm.parser.JavaAssemblerParser.SimpleannotationelementvalueContext;
@@ -826,6 +830,27 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		addInstruction(instr);
 		
 	}
+	
+	
+
+	@Override
+	public void enterNewarrayop(NewarrayopContext ctx) {
+		NewarrayInstruction instr = new NewarrayInstruction(ctx.arrayType().getText());
+		instr.setSourceLocation(createSourceLocation(ctx.Newarrayop()));
+		setInstructionLabel(ctx, instr);
+		addInstruction(instr);
+	}
+	
+	@Override
+	public void enterMultinewarrayop(MultinewarrayopContext ctx) {
+		MultianewarrayInstruction instr = new MultianewarrayInstruction();
+		instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
+		instr.setDimensionsLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
+		instr.setSourceLocation(createSourceLocation(ctx.Multinewarrayop()));
+		setInstructionLabel(ctx, instr);
+		addInstruction(instr);
+	}
+
 
 	private void setInstructionLabel(ParserRuleContext context, AbstractInstruction instr) {
 		MethodinstructionContext ctx = (MethodinstructionContext)context.getParent();

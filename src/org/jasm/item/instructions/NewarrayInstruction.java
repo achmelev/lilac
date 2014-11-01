@@ -15,11 +15,16 @@ public class NewarrayInstruction extends AbstractInstruction {
 		super(OpCodes.newarray);
 	}
 	
+	public NewarrayInstruction(String typeName) {
+		this(getTypeCode(typeName));
+	}
+	
 	public NewarrayInstruction(short type) {
 		super(OpCodes.newarray);
 		if (type<JasmConsts.ARRAY_TYPE_BOOLEAN || type>JasmConsts.ARRAY_TYPE_LONG) {
 			throw new IllegalArgumentException(type+"");
 		}
+		this.type = type;
 	}
 
 	@Override
@@ -66,7 +71,7 @@ public class NewarrayInstruction extends AbstractInstruction {
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		
 	}
 	
 	private String getTypeName(short type) {
@@ -90,5 +95,33 @@ public class NewarrayInstruction extends AbstractInstruction {
 			throw new IllegalArgumentException(type+"");
 		}
 	}
+	
+	private static short getTypeCode(String typeName) {
+		if (typeName .equals(JasmConsts.TYPENAME_BOOLEAN)) {
+			return JasmConsts.ARRAY_TYPE_BOOLEAN;
+		} else if (typeName .equals(JasmConsts.TYPENAME_BYTE)) {
+			return JasmConsts.ARRAY_TYPE_BYTE;
+		} else if (typeName .equals(JasmConsts.TYPENAME_CHAR)) {
+			return JasmConsts.ARRAY_TYPE_CHAR;
+		} else if (typeName .equals(JasmConsts.TYPENAME_DOUBLE)) {
+			return JasmConsts.ARRAY_TYPE_DOUBLE;
+		} else if (typeName .equals(JasmConsts.TYPENAME_FLOAT)) {
+			return JasmConsts.ARRAY_TYPE_FLOAT;
+		} else if (typeName .equals(JasmConsts.TYPENAME_INT)) {
+			return JasmConsts.ARRAY_TYPE_INT; 
+		} else if (typeName .equals(JasmConsts.TYPENAME_LONG)) {
+			return JasmConsts.ARRAY_TYPE_LONG;
+		} else if (typeName .equals(JasmConsts.TYPENAME_SHORT)) {
+			return JasmConsts.ARRAY_TYPE_SHORT;
+		} else {
+			throw new IllegalArgumentException(typeName+"");
+		}
+	}
+
+	public short getType() {
+		return type;
+	}
+	
+	
 
 }

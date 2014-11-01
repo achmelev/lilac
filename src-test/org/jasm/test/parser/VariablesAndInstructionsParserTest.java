@@ -15,6 +15,8 @@ import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.LocalVariable;
 import org.jasm.item.instructions.LocalVariableInstruction;
 import org.jasm.item.instructions.LocalVariablesPool;
+import org.jasm.item.instructions.MultianewarrayInstruction;
+import org.jasm.item.instructions.NewarrayInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.SipushInstruction;
 import org.jasm.parser.literals.SymbolReference;
@@ -74,7 +76,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		
-		Assert.assertEquals(22, code.getInstructions().getSize());
+		Assert.assertEquals(46, code.getInstructions().getSize());
 		
 		Assert.assertTrue(code.getInstructions().get(0).getOpCode() == OpCodes.nop);
 		Assert.assertSame(code.getInstructions().get(0), code.getInstructions().checkAndLoadFromSymbolTable(null,new SymbolReference(0, 0, "label1")));
@@ -134,7 +136,44 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		iinc = (IincInstruction)code.getInstructions().get(20);
 		Assert.assertEquals(-260, iinc.getValue());
 		
-		Assert.assertTrue(code.getInstructions().get(21).getOpCode() == OpCodes.return_);
+		Assert.assertEquals(code.getInstructions().get(22).getOpCode(), OpCodes.newarray);
+		NewarrayInstruction newarray = (NewarrayInstruction)code.getInstructions().get(22);
+		Assert.assertEquals(JasmConsts.ARRAY_TYPE_BOOLEAN, newarray.getType());
+		
+		Assert.assertEquals(code.getInstructions().get(24).getOpCode(), OpCodes.newarray);
+		newarray = (NewarrayInstruction)code.getInstructions().get(24);
+		Assert.assertEquals(JasmConsts.ARRAY_TYPE_BYTE, newarray.getType());
+		
+		Assert.assertEquals(code.getInstructions().get(26).getOpCode(), OpCodes.newarray);
+		newarray = (NewarrayInstruction)code.getInstructions().get(26);
+		Assert.assertEquals(JasmConsts.ARRAY_TYPE_CHAR, newarray.getType());
+		
+		Assert.assertEquals(code.getInstructions().get(28).getOpCode(), OpCodes.newarray);
+		newarray = (NewarrayInstruction)code.getInstructions().get(28);
+		Assert.assertEquals(JasmConsts.ARRAY_TYPE_DOUBLE, newarray.getType());
+		
+		Assert.assertEquals(code.getInstructions().get(30).getOpCode(), OpCodes.newarray);
+		newarray = (NewarrayInstruction)code.getInstructions().get(30);
+		Assert.assertEquals(JasmConsts.ARRAY_TYPE_FLOAT, newarray.getType());
+		
+		Assert.assertEquals(code.getInstructions().get(32).getOpCode(), OpCodes.newarray);
+		newarray = (NewarrayInstruction)code.getInstructions().get(32);
+		Assert.assertEquals(JasmConsts.ARRAY_TYPE_INT, newarray.getType());
+		
+		Assert.assertEquals(code.getInstructions().get(34).getOpCode(), OpCodes.newarray);
+		newarray = (NewarrayInstruction)code.getInstructions().get(34);
+		Assert.assertEquals(JasmConsts.ARRAY_TYPE_LONG, newarray.getType());
+		
+		Assert.assertEquals(code.getInstructions().get(36).getOpCode(), OpCodes.newarray);
+		newarray = (NewarrayInstruction)code.getInstructions().get(36);
+		Assert.assertEquals(JasmConsts.ARRAY_TYPE_SHORT, newarray.getType());
+		
+		Assert.assertEquals(code.getInstructions().get(44).getOpCode(), OpCodes.multianewarray);
+		MultianewarrayInstruction multinewarray = (MultianewarrayInstruction)code.getInstructions().get(44);
+		Assert.assertEquals("java/lang/Object", multinewarray.getClassInfo().getClassName());
+		Assert.assertEquals(3, multinewarray.getDimensions());
+		
+		Assert.assertTrue(code.getInstructions().get(45).getOpCode() == OpCodes.return_);
 		
 	}
 
