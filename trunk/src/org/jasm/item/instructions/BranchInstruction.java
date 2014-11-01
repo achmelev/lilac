@@ -5,11 +5,13 @@ import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.parser.literals.SymbolReference;
 
 public class BranchInstruction extends AbstractInstruction implements IInstructionReference {
 	
 	
 	private int targetOffset = -1;
+	private SymbolReference targetReference;
 	private AbstractInstruction targetInst = null;
 	
 	
@@ -66,7 +68,18 @@ public class BranchInstruction extends AbstractInstruction implements IInstructi
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		Instructions instrs = (Instructions)getParent();
+		this.targetInst = instrs.checkAndLoadFromSymbolTable(this, targetReference);
 	}
+
+	public void setTargetReference(SymbolReference targetReference) {
+		this.targetReference = targetReference;
+	}
+
+	public AbstractInstruction getTargetInst() {
+		return targetInst;
+	}
+	
+	
 
 }

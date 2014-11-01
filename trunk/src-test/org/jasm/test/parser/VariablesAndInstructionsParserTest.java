@@ -8,6 +8,7 @@ import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.FieldrefInfo;
 import org.jasm.item.constantpool.InterfaceMethodrefInfo;
 import org.jasm.item.instructions.BipushInstruction;
+import org.jasm.item.instructions.BranchInstruction;
 import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.IincInstruction;
 import org.jasm.item.instructions.InvokeInterfaceInstruction;
@@ -78,7 +79,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		
-		Assert.assertEquals(49, code.getInstructions().getSize());
+		Assert.assertEquals(50, code.getInstructions().getSize());
 		
 		Assert.assertTrue(code.getInstructions().get(0).getOpCode() == OpCodes.nop);
 		Assert.assertSame(code.getInstructions().get(0), code.getInstructions().checkAndLoadFromSymbolTable(null,new SymbolReference(0, 0, "label1")));
@@ -197,8 +198,12 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertEquals(OpCodes.newarray, tableswitch.getTargets()[1].getOpCode());
 		Assert.assertEquals(OpCodes.multianewarray, tableswitch.getTargets()[2].getOpCode());
 		
+		Assert.assertEquals(code.getInstructions().get(47).getOpCode(), OpCodes.goto_);
+		BranchInstruction goto_ = (BranchInstruction)code.getInstructions().get(47);
+		Assert.assertEquals(OpCodes.return_, goto_.getTargetInst().getOpCode());
 		
-		Assert.assertTrue(code.getInstructions().get(48).getOpCode() == OpCodes.return_);
+		
+		Assert.assertTrue(code.getInstructions().get(49).getOpCode() == OpCodes.return_);
 		
 	}
 
