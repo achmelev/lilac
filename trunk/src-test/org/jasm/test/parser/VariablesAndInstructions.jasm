@@ -78,6 +78,10 @@ class {
   	wide fstore f1;
   	lload l1;
   	lstore l1;
+  	bipush 100;
+  	sipush -260;
+  	pop;
+  	pop;
   	return;
   }
 }

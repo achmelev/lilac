@@ -2,11 +2,10 @@ package org.jasm.item.instructions;
 
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
-public class SipushInstruction extends AbstractInstruction {
+public class SipushInstruction extends AbstractPushInstruction {
 	
 	private short value = -1;
 	
@@ -54,9 +53,28 @@ public class SipushInstruction extends AbstractInstruction {
 	protected void doResolve() {
 
 	}
-	
+
 	@Override
-	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+	protected void setInValue(int ivalue) {
+		value = (short)ivalue;
+		
 	}
+
+	@Override
+	protected int getMinInValue() {
+		return Short.MIN_VALUE;
+	}
+
+	@Override
+	protected int getMaxInValue() {
+		return Short.MAX_VALUE;
+	}
+
+	public short getValue() {
+		return value;
+	}
+	
+	
+	
+	
 }

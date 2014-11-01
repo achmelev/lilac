@@ -5,10 +5,12 @@ import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.parser.literals.IntegerLiteral;
 
-public class BipushInstruction extends AbstractInstruction {
+public class BipushInstruction extends AbstractPushInstruction {
 	
 	private byte value = -1;
+	private IntegerLiteral valueLiteral;
 	
 	public BipushInstruction(byte value) {
 		super(OpCodes.bipush);
@@ -55,9 +57,31 @@ public class BipushInstruction extends AbstractInstruction {
 
 	}
 	
-	@Override
-	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+
+	public void setValue(byte value) {
+		this.value = value;
 	}
+	
+	@Override
+	protected void setInValue(int ivalue) {
+		value = (byte)ivalue;
+		
+	}
+
+	@Override
+	protected int getMinInValue() {
+		return Byte.MIN_VALUE;
+	}
+
+	@Override
+	protected int getMaxInValue() {
+		return Byte.MAX_VALUE;
+	}
+
+	public byte getValue() {
+		return value;
+	}
+	
+	
 
 }

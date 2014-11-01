@@ -59,7 +59,9 @@ import org.jasm.item.constantpool.NameAndTypeInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.AbstractPushInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;
+import org.jasm.item.instructions.BipushInstruction;
 import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.InvokeInterfaceInstruction;
@@ -67,6 +69,7 @@ import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.LocalVariable;
 import org.jasm.item.instructions.LocalVariableInstruction;
 import org.jasm.item.instructions.OpCodes;
+import org.jasm.item.instructions.SipushInstruction;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.JavaAssemblerParser.AnnotationContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationdeclarationContext;
@@ -153,6 +156,7 @@ import org.jasm.parser.JavaAssemblerParser.MethodvarabsoluteContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarimplicitContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarrelativeContext;
 import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
+import org.jasm.parser.JavaAssemblerParser.PushopContext;
 import org.jasm.parser.JavaAssemblerParser.SignatureattributeContext;
 import org.jasm.parser.JavaAssemblerParser.SimpleannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.StringinfoContext;
@@ -785,6 +789,26 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 		instr.setLocalVariableReference(createSymbolReference(ctx.Identifier()));
 		instr.setSourceLocation(createSourceLocation(ctx.Localvarop()));
+		setInstructionLabel(ctx, instr);
+		addInstruction(instr);
+	}
+	
+	
+
+
+	@Override
+	public void enterPushop(PushopContext ctx) {
+		AbstractPushInstruction instr = null;
+		String name = ctx.Pushop().getText();
+		if (name.equals(OpCodes.getNameForOpcode(OpCodes.bipush))) {
+			instr = new BipushInstruction((byte)-1);
+		} else if (name.equals(OpCodes.getNameForOpcode(OpCodes.sipush))) {
+			instr = new SipushInstruction((short)-1);
+		} else {
+			throw new IllegalStateException("unexpected insruction name: "+name);
+		}
+		instr.setValueLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
+		instr.setSourceLocation(createSourceLocation(ctx.Pushop()));
 		setInstructionLabel(ctx, instr);
 		addInstruction(instr);
 	}
