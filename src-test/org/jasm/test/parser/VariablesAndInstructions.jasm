@@ -37,6 +37,8 @@ class {
   const nameandtype nameandtype_95 utf8_96, utf8_39; // name=testMethod type=(I)V
   const utf8 utf8_96 "testMethod";
   const utf8 utf8_39 "(I)V";
+  const utf8 utf_ex  "java/lang/RuntimeException";
+  const classref classref_ex utf_ex; // java/lang/RuntimeException
    //Attributes
   source file utf8_25; // AbstractGenericClass.java
   signature utf8_26; // <T:Ljava/lang/Object;>Ljava/lang/Object;
@@ -120,5 +122,9 @@ class {
   	label6: nop;
   	
   	label7: return;
+  	
+  	//Exception handlers
+  	try label2->label3 catch classref_ex go to label6;
+  	try label1->label6 catch all go to label7;
   }
 }

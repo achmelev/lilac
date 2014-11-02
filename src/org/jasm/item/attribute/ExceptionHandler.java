@@ -13,6 +13,7 @@ import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.Instructions;
+import org.jasm.parser.literals.SymbolReference;
 
 public class ExceptionHandler extends AbstractByteCodeItem implements IConstantPoolReference, IInstructionReference {
 	
@@ -20,12 +21,16 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 	private int endPC = -1;
 	private int handlerPC = -1;
 	
+	private SymbolReference startSymbolReference;
 	private AbstractInstruction startInstruction;
+	private SymbolReference endSymbolReference;
 	private AbstractInstruction endInstruction;
+	private SymbolReference handlerSymbolReference;
 	private AbstractInstruction handlerInstruction;
 	
 	
 	private int catchTypeIndex = -1;
+	private SymbolReference catchTypeReference;
 	private ClassInfo catchType = null;
 	
 	public ExceptionHandler() {
@@ -82,7 +87,7 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 
 	@Override
 	public String getPrintName() {
-		return "exception handler";
+		return "try";
 	}
 	
 	@Override
@@ -92,7 +97,8 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 
 	@Override
 	public String getPrintArgs() {
-		return startInstruction.getPrintLabel()+", "+endInstruction.getPrintLabel()+", "+handlerInstruction.getPrintLabel()+", "+(catchType==null?JasmConsts.NIL:catchType.getSymbolName());
+		return startInstruction.getPrintLabel()+"->"+endInstruction.getPrintLabel()+" catch "+(catchType==null?JasmConsts.ALL:catchType.getSymbolName())+" go to "+handlerInstruction.getLabel();
+		
 	}
 
 	@Override
@@ -118,7 +124,18 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		Instructions instrs = getAncestor(CodeAttributeContent.class).getInstructions();
+		startInstruction = instrs.checkAndLoadFromSymbolTable(this, startSymbolReference);
+		endInstruction = instrs.checkAndLoadFromSymbolTable(this, endSymbolReference);
+		if (startInstruction != null && endInstruction != null) {
+			if (instrs.indexOf(endInstruction)<instrs.indexOf(startInstruction)) {
+				emitError(null, "the  end instruction has to lie after the start instruction");
+			}
+		}
+		handlerInstruction = instrs.checkAndLoadFromSymbolTable(this, handlerSymbolReference);
+		if (catchTypeReference != null) {
+			catchType = getConstantPool().checkAndLoadFromSymbolTable(this, ClassInfo.class, catchTypeReference);
+		}
 	}
 
 	@Override
@@ -135,5 +152,41 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 	public AbstractInstruction[] getInstructionReferences() {
 		return new AbstractInstruction[]{startInstruction,endInstruction,handlerInstruction};
 	}
+
+	public void setStartSymbolReference(SymbolReference startSymbolReference) {
+		this.startSymbolReference = startSymbolReference;
+	}
+
+	public void setEndSymbolReference(SymbolReference endSymbolReference) {
+		this.endSymbolReference = endSymbolReference;
+	}
+
+	public void setHandlerSymbolReference(SymbolReference handlerSymbolReference) {
+		this.handlerSymbolReference = handlerSymbolReference;
+	}
+
+	public void setCatchTypeReference(SymbolReference catchTypeReference) {
+		this.catchTypeReference = catchTypeReference;
+	}
+
+	public ClassInfo getCatchType() {
+		return catchType;
+	}
+
+	public AbstractInstruction getStartInstruction() {
+		return startInstruction;
+	}
+
+	public AbstractInstruction getEndInstruction() {
+		return endInstruction;
+	}
+
+	public AbstractInstruction getHandlerInstruction() {
+		return handlerInstruction;
+	}
+
+	
+	
+	
 
 }
