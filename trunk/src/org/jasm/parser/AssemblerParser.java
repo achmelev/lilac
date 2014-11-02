@@ -19,6 +19,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.jasm.JasmConsts;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.AbstractAnnotationsAttributeContent;
 import org.jasm.item.attribute.AbstractParameterAnnotationsAttributeContent;
@@ -31,6 +32,7 @@ import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
 import org.jasm.item.attribute.DeprecatedAttributeContent;
 import org.jasm.item.attribute.EnclosingMethodAttributeContent;
+import org.jasm.item.attribute.ExceptionHandler;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
 import org.jasm.item.attribute.IAttributeContent;
 import org.jasm.item.attribute.InnerClass;
@@ -147,6 +149,7 @@ import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodAttributeExceptionsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
+import org.jasm.parser.JavaAssemblerParser.MethodexceptionhandlerContext;
 import org.jasm.parser.JavaAssemblerParser.MethodinstructionContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierAbstractContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierBridgeContext;
@@ -190,6 +193,7 @@ import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 
 
@@ -883,7 +887,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 
 	@Override
 	public void enterSwitchMember(SwitchMemberContext ctx) {
-		TerminalNode defLit = ctx.switchSource().DefaultLiteral();
+		TerminalNode defLit = ctx.switchSource().DEFAULT();
 		TerminalNode intLit = ctx.switchSource().IntegerLiteral();
 		SymbolReference ref = createSymbolReference(ctx.Identifier());
 		AbstractSwitchInstruction instr = (AbstractSwitchInstruction)stack.peek();
@@ -916,6 +920,10 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		setInstructionLabel(ctx, instr);
 		addInstruction(instr);
 	}
+	
+	//Exception handler
+	
+	
 
 
 	private void setInstructionLabel(ParserRuleContext context, AbstractInstruction instr) {
@@ -925,6 +933,24 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 		
 	}
+	
+	
+	
+
+	@Override
+	public void enterMethodexceptionhandler(MethodexceptionhandlerContext ctx) {
+		ExceptionHandler handler = new ExceptionHandler();
+		handler.setStartSymbolReference(createSymbolReference(ctx.Identifier(0)));
+		handler.setEndSymbolReference(createSymbolReference(ctx.Identifier(1)));
+		handler.setHandlerSymbolReference(createSymbolReference(ctx.Identifier(2)));
+		
+		if (ctx.identifierOrAll().Identifier() != null) {
+			handler.setCatchTypeReference(createSymbolReference(ctx.identifierOrAll().Identifier()));
+		}
+		
+		handler.setSourceLocation(createSourceLocation(ctx.TRY()));
+		addExceptionHandler(handler);
+	}
 
 
 	private void addVar(LocalVariable var) {
@@ -932,6 +958,14 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		content.getInstructions().getVariablesPool().addVariable(var);
 	}
 	
+	
+	
+	private void addExceptionHandler(ExceptionHandler handler) {
+		CodeAttributeContent content = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+		content.getExceptionTable().add(handler);
+	}
+
+
 	private void addInstruction(AbstractInstruction instr) {
 		CodeAttributeContent content = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
 		Instructions instrs = content.getInstructions();

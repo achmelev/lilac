@@ -2,6 +2,7 @@ package org.jasm.test.parser;
 
 import org.jasm.JasmConsts;
 import org.jasm.item.attribute.CodeAttributeContent;
+import org.jasm.item.attribute.ExceptionHandler;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.ClassInfo;
@@ -25,9 +26,6 @@ import org.jasm.item.instructions.TableSwitchInstruction;
 import org.jasm.parser.literals.SymbolReference;
 import org.junit.Assert;
 import org.junit.Test;
-
-
-
 
 
 public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
@@ -202,9 +200,21 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		BranchInstruction goto_ = (BranchInstruction)code.getInstructions().get(47);
 		Assert.assertEquals(OpCodes.return_, goto_.getTargetInst().getOpCode());
 		
-		
 		Assert.assertTrue(code.getInstructions().get(49).getOpCode() == OpCodes.return_);
 		
+		Assert.assertEquals(2, code.getExceptionTable().getSize());
+		ExceptionHandler handler = code.getExceptionTable().get(0);
+		
+		Assert.assertEquals(OpCodes.ldc, handler.getStartInstruction().getOpCode());
+		Assert.assertEquals(OpCodes.bipush, handler.getEndInstruction().getOpCode());
+		Assert.assertEquals(OpCodes.nop, handler.getHandlerInstruction().getOpCode());
+		Assert.assertEquals("java/lang/RuntimeException", handler.getCatchType().getClassName());
+		
+		handler = code.getExceptionTable().get(1);
+		Assert.assertEquals(OpCodes.nop, handler.getStartInstruction().getOpCode());
+		Assert.assertEquals(OpCodes.nop, handler.getEndInstruction().getOpCode());
+		Assert.assertEquals(OpCodes.return_, handler.getHandlerInstruction().getOpCode());
+		Assert.assertNull(handler.getCatchType());
 	}
 
 }

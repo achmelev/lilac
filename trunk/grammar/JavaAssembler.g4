@@ -103,6 +103,7 @@ methodmember: methodname SEMI
 			  | methodattribute
 			  | methodvar
 			  | methodinstruction
+			  | methodexceptionhandler
 			  ;
 				  
 methodname: NAME Identifier;
@@ -148,6 +149,8 @@ methodvarabsolute: VAR methodvartype Identifier AT IntegerLiteral SEMI;
 
 methodinstruction: (label COLON)? instruction SEMI;
 
+methodexceptionhandler: TRY Identifier Pointer Identifier CATCH identifierOrAll GO TO Identifier SEMI;
+
 instruction: Argumentlessop #argumentlessop
 			 | Constantpoolop Identifier #constantpoolop
 			 | wideOrNormal? Localvarop Identifier #localvarop
@@ -179,7 +182,7 @@ fielddescriptor: DESCRIPTOR Identifier;
 fieldmodifier: MODIFIER fieldmodifierlabel (COMMA  fieldmodifierlabel)*;
 				  
 
-fieldmodifierlabel:  PUBLIC 		# fieldmodifierPublic
+fieldmodifierlabel:   PUBLIC 		# fieldmodifierPublic
 					| PRIVATE  		# fieldmodifierPrivate
 					| PROTECTED  	# fieldmodifierProtected
 					| STATIC 		# fieldmodifierStatic
@@ -209,7 +212,7 @@ annotationdeclaration: ANNOTATION  LBRACE
 						 annotationindex?
 						 annotationelement*
 					   RBRACE;
-annotationdefault: ANNOTATION DefaultLiteral LBRACE
+annotationdefault: ANNOTATION DEFAULT LBRACE
 				   	 annotationelementvalue
 				   RBRACE;
 					   
@@ -234,12 +237,14 @@ arrayannotationelementvalue: ARRAY VALUE LBRACE
 
 label: Identifier;
 
-wideOrNormal : 'wide'|'normal';
+wideOrNormal : WIDE|NORMAL;
 
 arrayType: BOOLEAN|BYTE|CHAR|DOUBLE|FLOAT|INT|LONG|SHORT;
 
-switchSource: DefaultLiteral|IntegerLiteral;
-switchMember: switchSource SwitchPointer Identifier;
+switchSource: DEFAULT|IntegerLiteral;
+switchMember: switchSource Pointer Identifier;
+
+identifierOrAll: ALL|Identifier;
 
 //Lexer
 
@@ -324,10 +329,15 @@ AT            :  'at';
 VAR           :  'var';
 WIDE          :  'wide';
 NORMAL        :  'normal';
-
+ALL        	  :  'all';
+GO        	  :  'go';
+TO       	  :  'to';
+TRY        	  :  'try';
+CATCH      	  :  'catch';
+DEFAULT       :  'default';
 
 Plus            :  '+';
-SwitchPointer   : '->';
+Pointer   : '->';
 
 
 
@@ -522,17 +532,6 @@ fragment
 ZeroToThree
     :   [0-3]
     ;
-
-
-DefaultLiteral
-    :   'default'
-    ;
-
-
-NullLiteral
-    :   'nil'
-    ;
-
 
 // Separators
 LBRACE          : '{';

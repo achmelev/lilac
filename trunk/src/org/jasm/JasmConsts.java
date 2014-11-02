@@ -3,6 +3,7 @@ package org.jasm;
 public class JasmConsts {
 	public static String DEFAULT = "default";
 	public static String NIL= "nil";
+	public static String ALL= "all";
 	
 	public static char LOCAL_VARIABLE_TYPE_REFERENCE= 'a';
 	public static char LOCAL_VARIABLE_TYPE_INT = 'i';
