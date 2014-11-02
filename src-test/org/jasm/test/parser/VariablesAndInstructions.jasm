@@ -40,6 +40,7 @@ class {
   const utf8 utf_ex  "java/lang/RuntimeException";
   const classref classref_ex utf_ex; // java/lang/RuntimeException
   const utf8 myattr  "MyAttr";
+  const utf8 STACKMAP  "StackMapTable";
    //Attributes
   source file utf8_25; // AbstractGenericClass.java
   signature utf8_26; // <T:Ljava/lang/Object;>Ljava/lang/Object;
@@ -64,6 +65,7 @@ class {
     
     //Code attributes
     unknown code attribute myattr,[TWVpbiBBdHRyaWJ1dA==];
+    stackmap [TWVpbiBBdHRyaWJ1dA==];
     
     //Variables
 	var object o1;

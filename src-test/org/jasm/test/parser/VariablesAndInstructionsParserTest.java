@@ -3,6 +3,7 @@ package org.jasm.test.parser;
 import org.jasm.JasmConsts;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.ExceptionHandler;
+import org.jasm.item.attribute.StackMapAttributeContent;
 import org.jasm.item.attribute.UnknownAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Method;
@@ -59,6 +60,8 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		data = ((UnknownAttributeContent)code.getAttributes().get(0).getContent()).getData();
 		Assert.assertEquals("Mein Attribut",new String(data));
 		Assert.assertEquals("MyAttr",code.getAttributes().get(0).getName().getValue());
+		
+		Assert.assertTrue(code.getAttributes().get(1).getContent() instanceof StackMapAttributeContent);
 		
 		LocalVariablesPool pool = code.getInstructions().getVariablesPool();
 		

@@ -43,6 +43,7 @@ import org.jasm.item.attribute.RuntimeVisibleAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeVisibleParameterAnnotationsAttributeContent;
 import org.jasm.item.attribute.SignatureAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
+import org.jasm.item.attribute.StackMapAttributeContent;
 import org.jasm.item.attribute.SynteticAttributeContent;
 import org.jasm.item.attribute.UnknownAttributeContent;
 import org.jasm.item.clazz.Clazz;
@@ -176,6 +177,7 @@ import org.jasm.parser.JavaAssemblerParser.NewarrayopContext;
 import org.jasm.parser.JavaAssemblerParser.PushopContext;
 import org.jasm.parser.JavaAssemblerParser.SignatureattributeContext;
 import org.jasm.parser.JavaAssemblerParser.SimpleannotationelementvalueContext;
+import org.jasm.parser.JavaAssemblerParser.StackmapattributeContext;
 import org.jasm.parser.JavaAssemblerParser.StringinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
 import org.jasm.parser.JavaAssemblerParser.SwitchMemberContext;
@@ -196,6 +198,8 @@ import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.sun.org.apache.bcel.internal.classfile.StackMap;
 
 
 
@@ -1523,6 +1527,17 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 		
 		attr.setNameReference(createSymbolReference(ctx.Identifier()));
+	}
+	
+	
+	@Override
+	public void enterStackmapattribute(StackmapattributeContext ctx) {
+		StackMapAttributeContent content = new StackMapAttributeContent();
+		content.setDataLiteral(createBase64Literal(ctx.Base64Literal()));
+		CodeAttributeContent content2 = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+		stack.push(content2);
+		addAttribute(content, ctx.STACKMAP());
+		stack.pop();
 	}
 
 

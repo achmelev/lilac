@@ -23,6 +23,7 @@ public interface IBytecodeItem {
 	
 	//Source
 	public SourceLocation getNextSourceLocation();
+	public SourceLocation getSourceLocation();
 	
 
 }

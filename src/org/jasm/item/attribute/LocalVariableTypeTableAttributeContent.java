@@ -8,7 +8,7 @@ public class LocalVariableTypeTableAttributeContent extends
 
 	@Override
 	public String getPrintName() {
-		return "local variable type table";
+		return "debug variable types";
 	}
 	
 	@Override
