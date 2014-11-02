@@ -97,7 +97,7 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 
 	@Override
 	public String getPrintArgs() {
-		return startInstruction.getPrintLabel()+"->"+endInstruction.getPrintLabel()+" catch "+(catchType==null?JasmConsts.ALL:catchType.getSymbolName())+" go to "+handlerInstruction.getLabel();
+		return startInstruction.getPrintLabel()+"->"+endInstruction.getPrintLabel()+" catch "+(catchType==null?JasmConsts.ALL:catchType.getSymbolName())+" go to "+handlerInstruction.getPrintLabel();
 		
 	}
 
