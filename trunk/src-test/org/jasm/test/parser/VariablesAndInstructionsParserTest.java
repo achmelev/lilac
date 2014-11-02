@@ -3,6 +3,7 @@ package org.jasm.test.parser;
 import org.jasm.JasmConsts;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.ExceptionHandler;
+import org.jasm.item.attribute.UnknownAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.ClassInfo;
@@ -48,7 +49,17 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Method m = clazz.getMethods().getMethod("method", "()Ljava/lang/Object;");
 		Assert.assertNotNull(m);
 		
-		CodeAttributeContent code = (CodeAttributeContent)m.getAttributes().get(1).getContent();
+		byte [] data = ((UnknownAttributeContent)m.getAttributes().get(0).getContent()).getData();
+		Assert.assertEquals("Mein Attribut",new String(data));
+		Assert.assertEquals("MyAttr",m.getAttributes().get(0).getName().getValue());
+		
+		
+		CodeAttributeContent code = (CodeAttributeContent)m.getAttributes().get(2).getContent();
+		
+		data = ((UnknownAttributeContent)code.getAttributes().get(0).getContent()).getData();
+		Assert.assertEquals("Mein Attribut",new String(data));
+		Assert.assertEquals("MyAttr",code.getAttributes().get(0).getName().getValue());
+		
 		LocalVariablesPool pool = code.getInstructions().getVariablesPool();
 		
 		Assert.assertEquals(8, pool.calculateSize());

@@ -3,12 +3,13 @@ package org.jasm.item.attribute;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.parser.literals.Base64Literal;
 
 public abstract class AbstractBinaryAttributeContent extends AbstractSimpleAttributeContent {
 	
+	private Base64Literal dataLiteral;
 	private byte [] data = null;
 	
 	protected AbstractBinaryAttributeContent() {
@@ -62,11 +63,18 @@ public abstract class AbstractBinaryAttributeContent extends AbstractSimpleAttri
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		data = dataLiteral.getValue();
+		if (data == null) {
+			emitError(dataLiteral, "invalid base64 literal");
+		}
 	}
 
 	public byte[] getData() {
 		return data;
+	}
+
+	public void setDataLiteral(Base64Literal dataLiteral) {
+		this.dataLiteral = dataLiteral;
 	}
 	 
 	

@@ -63,6 +63,7 @@ classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile
 			   | annotation #classAnnotation 
 			   | innerclass #classInnerClass
 			   | enclosingmethod #classEnclosingMethod
+			   | unknownattribute #classUnknownattribute
 			   ;
 			   
 innerclass: INNER CLASS LBRACE 
@@ -132,6 +133,7 @@ methodattribute: THROWS Identifier (COMMA Identifier)* SEMI #methodAttributeExce
 				 | deprecatedattribute #methodAttributeDeprecated
 				 | annotation #methodAnnotation 
 				 | annotationdefault #methodAnnotationDefault
+				 | unknownattribute #methodUnknownattribute
 				 ;
 
 methodvar: methodvarimplicit #methodvar_implicit
@@ -197,7 +199,8 @@ fieldattribute : CONSTANT VALUE Identifier SEMI #fieldattributeConstantValue
 				  | signatureattribute #fieldAttributeSignature
 				  | synteticattribute #fieldAttributeSyntetic
 				  | deprecatedattribute #fieldAttributeDeprecated
-				  | annotation #fieldAnnotation 
+				  | annotation #fieldAnnotation
+				  | unknownattribute #fieldUnknownattribute 
 				 ;
 
 
@@ -246,6 +249,8 @@ switchMember: switchSource Pointer Identifier;
 
 identifierOrAll: ALL|Identifier;
 
+unknownattribute: UNKNOWN CODE? ATTRIBUTE Identifier COMMA Base64Literal SEMI;
+
 //Lexer
 
 //Instructions
@@ -285,7 +290,7 @@ FIELDREFINFO  :  'fieldref';
 METHODREFINFO :  'methodref';
 INTERFACEMETHODREFINFO : 'intfmethodref';
 NAMEANDTYPEINFO :  'nameandtype';
-ATTRIBUTES    :  'attributes';
+ATTRIBUTE     :  'attribute';
 SOURCE        :  'source';
 FILE          :  'file';
 METHOD        :  'method';
@@ -335,6 +340,9 @@ TO       	  :  'to';
 TRY        	  :  'try';
 CATCH      	  :  'catch';
 DEFAULT       :  'default';
+UNKNOWN       :  'unknown';
+CODE          :  'code';
+
 
 Plus            :  '+';
 Pointer   : '->';
@@ -569,7 +577,9 @@ JavaLetterOrDigit
         {Character.isJavaIdentifierPart(Character.toCodePoint((char)_input.LA(-2), (char)_input.LA(-1)))}?
     ;
 
+//Base64
 
+Base64Literal: '[' [A-Za-z0-9+/=]+ ']';
 
 //
 // Whitespace and comments

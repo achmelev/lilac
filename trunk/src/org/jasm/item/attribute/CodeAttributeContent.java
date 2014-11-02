@@ -12,11 +12,12 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.item.clazz.IAttributesContainer;
 import org.jasm.item.instructions.Instructions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CodeAttributeContent extends AbstractSimpleAttributeContent implements IContainerBytecodeItem<IBytecodeItem> {
+public class CodeAttributeContent extends AbstractSimpleAttributeContent implements IContainerBytecodeItem<IBytecodeItem>, IAttributesContainer {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	

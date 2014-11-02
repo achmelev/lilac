@@ -11,6 +11,7 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.parser.SourceLocation;
+import org.jasm.parser.literals.SymbolReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,7 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
+	private SymbolReference nameReference = null;
 	private Utf8Info name = null;
 	private IAttributeContent content = null;
 	
@@ -75,8 +77,14 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 	
 	@Override
 	protected void doResolveAfterParse() {
-		this.name = selectNameEntry();
-		this.content.resolve();
+		if (this.nameReference != null) {
+			name = getConstantPool().checkAndLoadFromSymbolTable(this, Utf8Info.class, nameReference);
+		} else {
+			this.name = selectNameEntry();
+		}
+		if (name != null) {
+			this.content.resolve();
+		}
 	}
 	
 	private IAttributeContent selectContent() {
@@ -152,6 +160,8 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 			name = "Code";
 		} else if (content instanceof AnnotationDefaultAttributeContent) {
 			name = "AnnotationDefault";
+		} else if (content instanceof UnknownAttributeContent) {
+			return getConstantPool().checkAndLoadFromSymbolTable(this, Utf8Info.class, nameReference);
 		} else {
 			throw new IllegalStateException("unknown attribute content type: "+content.getClass());
 		}
@@ -284,6 +294,10 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 	@Override
 	public SourceLocation getNextSourceLocation() {
 		return getContent().getNextSourceLocation();
+	}
+
+	public void setNameReference(SymbolReference nameReference) {
+		this.nameReference = nameReference;
 	}
 	
 	
