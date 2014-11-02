@@ -59,7 +59,7 @@ public class LineNumber extends AbstractByteCodeItem implements IInstructionRefe
 
 	@Override
 	public String getPrintName() {
-		return "line number";
+		return "line";
 	}
 	
 	@Override

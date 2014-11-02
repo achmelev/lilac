@@ -75,7 +75,7 @@ public class LocalVariable extends AbstractByteCodeItem implements IConstantPool
 
 	@Override
 	public String getPrintName() {
-		return "local variable";
+		return "variable";
 	}
 	
 	@Override

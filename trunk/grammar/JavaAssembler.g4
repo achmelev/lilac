@@ -134,6 +134,7 @@ methodattribute: THROWS Identifier (COMMA Identifier)* SEMI #methodAttributeExce
 				 | annotation #methodAnnotation 
 				 | annotationdefault #methodAnnotationDefault
 				 | unknownattribute #methodUnknownattribute
+				 | stackmapattribute #methodStackmapattribute
 				 ;
 
 methodvar: methodvarimplicit #methodvar_implicit
@@ -251,6 +252,8 @@ identifierOrAll: ALL|Identifier;
 
 unknownattribute: UNKNOWN CODE? ATTRIBUTE Identifier COMMA Base64Literal SEMI;
 
+stackmapattribute: STACKMAP Base64Literal SEMI;
+
 //Lexer
 
 //Instructions
@@ -342,6 +345,7 @@ CATCH      	  :  'catch';
 DEFAULT       :  'default';
 UNKNOWN       :  'unknown';
 CODE          :  'code';
+STACKMAP      :  'stackmap';
 
 
 Plus            :  '+';

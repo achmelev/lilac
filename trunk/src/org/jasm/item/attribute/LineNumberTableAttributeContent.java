@@ -8,7 +8,7 @@ public class LineNumberTableAttributeContent extends
 
 	@Override
 	public String getPrintName() {
-		return "line number table";
+		return "line numbers";
 	}
 	
 	@Override
