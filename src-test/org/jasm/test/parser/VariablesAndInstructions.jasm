@@ -39,6 +39,7 @@ class {
   const utf8 utf8_39 "(I)V";
   const utf8 utf_ex  "java/lang/RuntimeException";
   const classref classref_ex utf_ex; // java/lang/RuntimeException
+  const utf8 myattr  "MyAttr";
    //Attributes
   source file utf8_25; // AbstractGenericClass.java
   signature utf8_26; // <T:Ljava/lang/Object;>Ljava/lang/Object;
@@ -55,8 +56,15 @@ class {
     name utf8_21; // method
     descriptor utf8_22; // ()Ljava/lang/Object;
     modifier public;
-     //Attributes
+    
+    //Method Attributes
+    
+    unknown attribute myattr,[TWVpbiBBdHRyaWJ1dA==];
     signature utf8_23; // ()TT;
+    
+    //Code attributes
+    unknown code attribute myattr,[TWVpbiBBdHRyaWJ1dA==];
+    
     //Variables
 	var object o1;
     var double d1;

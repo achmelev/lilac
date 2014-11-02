@@ -1,9 +1,5 @@
 package org.jasm.item.attribute;
 
-import org.apache.commons.codec.binary.Hex;
-
-
-
 public class UnknownAttributeContent extends AbstractBinaryAttributeContent {
 
 	
@@ -36,7 +32,7 @@ public class UnknownAttributeContent extends AbstractBinaryAttributeContent {
 		StringBuffer buf = new StringBuffer();
 		buf.append(((Attribute)getParent()).getName().getSymbolName());
 		buf.append(", ");
-		buf.append("0x"+new String(Hex.encodeHex(getData())));
+		buf.append(super.getPrintArgs());
 		return buf.toString();
 	}
 	

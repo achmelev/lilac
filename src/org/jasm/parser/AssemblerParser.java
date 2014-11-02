@@ -44,6 +44,7 @@ import org.jasm.item.attribute.RuntimeVisibleParameterAnnotationsAttributeConten
 import org.jasm.item.attribute.SignatureAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.attribute.SynteticAttributeContent;
+import org.jasm.item.attribute.UnknownAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Field;
 import org.jasm.item.clazz.IAttributesContainer;
@@ -180,8 +181,10 @@ import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
 import org.jasm.parser.JavaAssemblerParser.SwitchMemberContext;
 import org.jasm.parser.JavaAssemblerParser.SwitchopContext;
 import org.jasm.parser.JavaAssemblerParser.SynteticattributeContext;
+import org.jasm.parser.JavaAssemblerParser.UnknownattributeContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
+import org.jasm.parser.literals.Base64Literal;
 import org.jasm.parser.literals.DoubleLiteral;
 import org.jasm.parser.literals.FloatLiteral;
 import org.jasm.parser.literals.IntegerLiteral;
@@ -921,11 +924,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		addInstruction(instr);
 	}
 	
-	//Exception handler
-	
-	
-
-
 	private void setInstructionLabel(ParserRuleContext context, AbstractInstruction instr) {
 		MethodinstructionContext ctx = (MethodinstructionContext)context.getParent();
 		if (ctx.label() != null) {
@@ -1505,6 +1503,27 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void exitClassInnerClass(ClassInnerClassContext ctx) {
 		stack.pop();
 	}
+	
+	
+
+	@Override
+	public void enterUnknownattribute(UnknownattributeContext ctx) {
+		UnknownAttributeContent content = new UnknownAttributeContent();
+		content.setDataLiteral(createBase64Literal(ctx.Base64Literal()));
+		
+		boolean onCode = (ctx.CODE() != null);
+		Attribute attr = null;
+		if (onCode) {
+			CodeAttributeContent content2 = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+			stack.push(content2);
+			attr = addAttribute(content, ctx.UNKNOWN());
+			stack.pop();
+		} else {
+			attr = addAttribute(content, ctx.UNKNOWN());
+		}
+		
+		attr.setNameReference(createSymbolReference(ctx.Identifier()));
+	}
 
 
 	public void emitError(TerminalNode node, String message) {
@@ -1563,9 +1582,13 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		return new VersionLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
 	}
 	
+	private Base64Literal createBase64Literal(TerminalNode node) {
+		return new Base64Literal(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
 	
 	
-	private void addAttribute(IAttributeContent content, TerminalNode node) {
+	
+	private Attribute addAttribute(IAttributeContent content, TerminalNode node) {
 		IAttributesContainer container = (IAttributesContainer)stack.peek();
 		Attribute attr = new Attribute();
 		if (node != null) {
@@ -1573,6 +1596,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 		container.getAttributes().add(attr);
 		attr.setContent(content);
+		return attr;
 	}
 	
 	private <T extends IAttributeContent> T getAttributeContentCreatingIfNecessary(Class<T> clazz) {
