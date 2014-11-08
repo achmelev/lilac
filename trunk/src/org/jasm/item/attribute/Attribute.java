@@ -160,6 +160,8 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 			name = "Code";
 		} else if (content instanceof AnnotationDefaultAttributeContent) {
 			name = "AnnotationDefault";
+		} else if (content instanceof LineNumberTableAttributeContent) {
+			name = "LineNumberTable";
 		} else if (content instanceof StackMapAttributeContent) {
 			name = "StackMapTable";
 		} else if (content instanceof UnknownAttributeContent) {

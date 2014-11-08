@@ -9,11 +9,15 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.Instructions;
+import org.jasm.parser.literals.IntegerLiteral;
+import org.jasm.parser.literals.SymbolReference;
 
 public class LineNumber extends AbstractByteCodeItem implements IInstructionReference {
 	
 	private int startPC = -1;
+	private SymbolReference startInstructionLabel;
 	AbstractInstruction startInstruction = null;
+	private IntegerLiteral lineNumberLiteral;
 	private int lineNumber = -1;
 	
 	public LineNumber() {
@@ -85,12 +89,39 @@ public class LineNumber extends AbstractByteCodeItem implements IInstructionRefe
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		CodeAttributeContent code = getAncestor(CodeAttributeContent.class);
+		startInstruction = code.getInstructions().checkAndLoadFromSymbolTable(this, startInstructionLabel);
+		Integer oI = lineNumberLiteral.checkAndLoadValue(this);
+		if (oI != null && oI>0 && oI<65536) {
+			lineNumber = oI;
+		} else {
+			emitError(lineNumberLiteral, "line number out of bounds");
+		}
 	}
 
 	@Override
 	public AbstractInstruction[] getInstructionReferences() {
 		return new AbstractInstruction[]{startInstruction};
 	}
+
+	public void setStartInstructionLabel(SymbolReference startInstructionLabel) {
+		this.startInstructionLabel = startInstructionLabel;
+	}
+
+	public void setLineNumberLiteral(IntegerLiteral lineNumberLiteral) {
+		this.lineNumberLiteral = lineNumberLiteral;
+	}
+
+	public AbstractInstruction getStartInstruction() {
+		return startInstruction;
+	}
+
+	public int getLineNumber() {
+		return lineNumber;
+	}
+
+	
+	
+	
 
 }

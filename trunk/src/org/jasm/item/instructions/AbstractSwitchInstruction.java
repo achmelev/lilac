@@ -51,20 +51,16 @@ public abstract class AbstractSwitchInstruction extends AbstractInstruction {
 		List<Integer> values = new ArrayList<>();
 		Map<Integer, AbstractInstruction> targets = new HashMap<>();
 		for (IntegerLiteral lit: intLiterals) {
-			if (lit.isValid()) {
-				Integer value = lit.getValue();
-				if (values.contains(value)) {
-					emitError(lit, "multiple target declarations for "+value);
-				} else {
-					SymbolReference ref = targetReferences.get(lit);
-					AbstractInstruction instr = instrs.checkAndLoadFromSymbolTable(this, ref);
-					if (instr != null) {
-						values.add(value);
-						targets.put(value, instr);
-					}
-				}
+			Integer value = lit.checkAndLoadValue(this);
+			if (values.contains(value)) {
+				emitError(lit, "multiple target declarations for "+value);
 			} else {
-				emitError(lit, "malformed integer or integer out of bounds");
+				SymbolReference ref = targetReferences.get(lit);
+				AbstractInstruction instr = instrs.checkAndLoadFromSymbolTable(this, ref);
+				if (instr != null) {
+					values.add(value);
+					targets.put(value, instr);
+				}
 			}
 		}
 		

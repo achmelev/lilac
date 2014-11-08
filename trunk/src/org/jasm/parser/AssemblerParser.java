@@ -19,7 +19,6 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.jasm.JasmConsts;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.AbstractAnnotationsAttributeContent;
 import org.jasm.item.attribute.AbstractParameterAnnotationsAttributeContent;
@@ -37,6 +36,8 @@ import org.jasm.item.attribute.ExceptionsAttributeContent;
 import org.jasm.item.attribute.IAttributeContent;
 import org.jasm.item.attribute.InnerClass;
 import org.jasm.item.attribute.InnerClassesAttributeContent;
+import org.jasm.item.attribute.LineNumber;
+import org.jasm.item.attribute.LineNumberTableAttributeContent;
 import org.jasm.item.attribute.RuntimeInvisibleAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeInvisibleParameterAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeVisibleAnnotationsAttributeContent;
@@ -146,6 +147,7 @@ import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacemethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacesContext;
+import org.jasm.parser.JavaAssemblerParser.LinenumberContext;
 import org.jasm.parser.JavaAssemblerParser.LocalvaropContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodAttributeExceptionsContext;
@@ -153,6 +155,7 @@ import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.MethodexceptionhandlerContext;
 import org.jasm.parser.JavaAssemblerParser.MethodinstructionContext;
+import org.jasm.parser.JavaAssemblerParser.MethodlinenumbertableContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierAbstractContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierBridgeContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierContext;
@@ -199,7 +202,6 @@ import org.jasm.parser.literals.VersionLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sun.org.apache.bcel.internal.classfile.StackMap;
 
 
 
@@ -760,7 +762,35 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 	}
 	
+
+	@Override
+	public void enterMethodlinenumbertable(MethodlinenumbertableContext ctx) {
+		LineNumberTableAttributeContent content = new LineNumberTableAttributeContent();
+		CodeAttributeContent code = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+		stack.push(code);
+		addAttribute(content, ctx.LINE());
+		stack.pop();
+		stack.push(content);
+		
+	}
 	
+	@Override
+	public void enterLinenumber(LinenumberContext ctx) {
+		LineNumberTableAttributeContent content = (LineNumberTableAttributeContent)stack.peek();
+		LineNumber line = new LineNumber();
+		line.setLineNumberLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
+		line.setStartInstructionLabel(createSymbolReference(ctx.Identifier()));
+		content.add(line);
+	}
+
+
+
+
+
+	@Override
+	public void exitMethodlinenumbertable(MethodlinenumbertableContext ctx) {
+		stack.pop();
+	}
 
 
 	@Override

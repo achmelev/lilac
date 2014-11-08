@@ -67,6 +67,11 @@ class {
     unknown code attribute myattr,[TWVpbiBBdHRyaWJ1dA==];
     stackmap [TWVpbiBBdHRyaWJ1dA==];
     
+    line numbers {
+    	line label1, 10;
+    	line label2, 20;
+    }
+    
     //Variables
 	var object o1;
     var double d1;

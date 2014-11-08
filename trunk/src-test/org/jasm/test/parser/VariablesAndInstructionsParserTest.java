@@ -3,6 +3,8 @@ package org.jasm.test.parser;
 import org.jasm.JasmConsts;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.ExceptionHandler;
+import org.jasm.item.attribute.LineNumber;
+import org.jasm.item.attribute.LineNumberTableAttributeContent;
 import org.jasm.item.attribute.StackMapAttributeContent;
 import org.jasm.item.attribute.UnknownAttributeContent;
 import org.jasm.item.clazz.Clazz;
@@ -229,6 +231,17 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertEquals(OpCodes.nop, handler.getEndInstruction().getOpCode());
 		Assert.assertEquals(OpCodes.return_, handler.getHandlerInstruction().getOpCode());
 		Assert.assertNull(handler.getCatchType());
+		
+		LineNumberTableAttributeContent linenumbers = (LineNumberTableAttributeContent)code.getAttributes().get(2).getContent();
+		Assert.assertEquals(2, linenumbers.getSize());
+		
+		LineNumber line1 = linenumbers.get(0);
+		Assert.assertEquals(10, line1.getLineNumber());
+		Assert.assertEquals(OpCodes.nop, line1.getStartInstruction().getOpCode());
+		
+		line1 = linenumbers.get(1);
+		Assert.assertEquals(20, line1.getLineNumber());
+		Assert.assertEquals(OpCodes.ldc, line1.getStartInstruction().getOpCode());
 	}
 
 }

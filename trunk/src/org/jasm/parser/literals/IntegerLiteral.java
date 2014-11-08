@@ -1,5 +1,7 @@
 package org.jasm.parser.literals;
 
+import org.jasm.item.AbstractByteCodeItem;
+
 
 public class IntegerLiteral extends AbstractLiteral {
 	
@@ -43,6 +45,15 @@ public class IntegerLiteral extends AbstractLiteral {
 		}
 		
 		return result;
+	}
+	
+	public Integer checkAndLoadValue(AbstractByteCodeItem source) {
+		if (isValid()) {
+			return getValue();
+		} else {
+			source.emitError(this, "malformed integer or integer out of bounds");
+			return null;
+		}
 	}
 
 }
