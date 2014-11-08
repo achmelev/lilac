@@ -13,16 +13,16 @@ public abstract class AbstractPushInstruction extends AbstractInstruction {
 	
 	@Override
 	protected void doResolveAfterParse() {
-		if (!valueLiteral.isValid()) {
-			emitError(valueLiteral, "malformed integer or integer out of bounds");
-		} else {
-			int iValue = valueLiteral.getValue();
+		Integer oI = valueLiteral.checkAndLoadValue(this);
+		if (oI != null) {
+			int iValue = oI.intValue();
 			if (iValue<getMinInValue() || iValue>getMaxInValue()) {
 				emitError(valueLiteral, "value out of bounds");
 			} else {
 				setInValue(iValue);
 			}
 		}
+		
 	}
 	
 	protected abstract void setInValue(int value);

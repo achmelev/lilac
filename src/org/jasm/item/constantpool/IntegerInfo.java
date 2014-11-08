@@ -34,11 +34,7 @@ public class IntegerInfo extends AbstractConstantPoolEntry implements IPrimitive
 	
 	@Override
 	protected void doResolveAfterParse() {
-		if (valueLiteral.isValid()) {
-			value = new Integer(valueLiteral.getValue());
-		} else {
-			emitError(valueLiteral, "malformed integer or integer out of bounds");
-		}
+		value = valueLiteral.checkAndLoadValue(this);
 	}
 
 	@Override
@@ -78,8 +74,6 @@ public class IntegerInfo extends AbstractConstantPoolEntry implements IPrimitive
 
 	public void setValueLiteral(IntegerLiteral valueLiteral) {
 		this.valueLiteral = valueLiteral;
-	}
-	
-	
+	}	
 
 }

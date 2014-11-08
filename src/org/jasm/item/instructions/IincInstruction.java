@@ -97,16 +97,17 @@ public class IincInstruction extends AbstractInstruction implements ILocalVariab
 				emitError(localVariableReference, "variable index is too big, consider to use the wide variant");
 			}
 		}
-		if (!valueLiteral.isValid()) {
-			emitError(valueLiteral, "malformed integer or integer out of bounds");
-		} else {
-			int iValue = valueLiteral.getValue();
+		
+		Integer oI = valueLiteral.checkAndLoadValue(this);
+		if (oI != null) {
+			int iValue = oI.intValue();
 			if (iValue<minValue || iValue>maxValue) {
 				emitError(valueLiteral, "value out of bounds");
 			} else {
 				value = (short)iValue;
 			}
 		}
+		
 	}
 
 	@Override

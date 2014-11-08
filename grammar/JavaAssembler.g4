@@ -105,6 +105,7 @@ methodmember: methodname SEMI
 			  | methodvar
 			  | methodinstruction
 			  | methodexceptionhandler
+			  | methodlinenumbertable
 			  ;
 				  
 methodname: NAME Identifier;
@@ -153,6 +154,12 @@ methodvarabsolute: VAR methodvartype Identifier AT IntegerLiteral SEMI;
 methodinstruction: (label COLON)? instruction SEMI;
 
 methodexceptionhandler: TRY Identifier Pointer Identifier CATCH identifierOrAll GO TO Identifier SEMI;
+
+methodlinenumbertable: LINE NUMBERS LBRACE
+					   	  linenumber+
+					   RBRACE;
+
+linenumber: LINE Identifier COMMA IntegerLiteral SEMI;
 
 instruction: Argumentlessop #argumentlessop
 			 | Constantpoolop Identifier #constantpoolop
@@ -346,6 +353,9 @@ DEFAULT       :  'default';
 UNKNOWN       :  'unknown';
 CODE          :  'code';
 STACKMAP      :  'stackmap';
+LINE          :  'line';
+NUMBERS       :  'numbers';
+
 
 
 Plus            :  '+';
