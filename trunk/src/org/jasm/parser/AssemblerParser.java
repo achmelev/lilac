@@ -29,6 +29,7 @@ import org.jasm.item.attribute.AnnotationElementValue;
 import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
+import org.jasm.item.attribute.DebugLocalVariable;
 import org.jasm.item.attribute.DeprecatedAttributeContent;
 import org.jasm.item.attribute.EnclosingMethodAttributeContent;
 import org.jasm.item.attribute.ExceptionHandler;
@@ -38,6 +39,7 @@ import org.jasm.item.attribute.InnerClass;
 import org.jasm.item.attribute.InnerClassesAttributeContent;
 import org.jasm.item.attribute.LineNumber;
 import org.jasm.item.attribute.LineNumberTableAttributeContent;
+import org.jasm.item.attribute.LocalVariableTableAttributeContent;
 import org.jasm.item.attribute.RuntimeInvisibleAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeInvisibleParameterAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeVisibleAnnotationsAttributeContent;
@@ -110,6 +112,7 @@ import org.jasm.parser.JavaAssemblerParser.ClassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
 import org.jasm.parser.JavaAssemblerParser.ConstantpoolopContext;
+import org.jasm.parser.JavaAssemblerParser.DebugvarContext;
 import org.jasm.parser.JavaAssemblerParser.DeprecatedattributeContext;
 import org.jasm.parser.JavaAssemblerParser.DoubleinfoContext;
 import org.jasm.parser.JavaAssemblerParser.EnclosingmethodContext;
@@ -172,6 +175,7 @@ import org.jasm.parser.JavaAssemblerParser.MethodmodifierVarargsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodnameContext;
 import org.jasm.parser.JavaAssemblerParser.MethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarabsoluteContext;
+import org.jasm.parser.JavaAssemblerParser.MethodvariabletableContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarimplicitContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarrelativeContext;
 import org.jasm.parser.JavaAssemblerParser.MultinewarrayopContext;
@@ -783,13 +787,45 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		content.add(line);
 	}
 
-
-
-
-
 	@Override
 	public void exitMethodlinenumbertable(MethodlinenumbertableContext ctx) {
 		stack.pop();
+	}
+	
+	
+
+
+	@Override
+	public void enterMethodvariabletable(MethodvariabletableContext ctx) {
+		LocalVariableTableAttributeContent content = new LocalVariableTableAttributeContent();
+		CodeAttributeContent code = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+		stack.push(code);
+		addAttribute(content, ctx.DEBUG());
+		stack.pop();
+		stack.push(content);
+	}
+
+
+	@Override
+	public void exitMethodvariabletable(MethodvariabletableContext ctx) {
+		stack.pop();
+	}
+
+
+	@Override
+	public void enterDebugvar(DebugvarContext ctx) {
+		LocalVariableTableAttributeContent content = (LocalVariableTableAttributeContent)stack.peek();
+		DebugLocalVariable var = new DebugLocalVariable();
+		var.setVariableReference(createSymbolReference(ctx.Identifier(0)));
+		var.setStartInstructionReference(createSymbolReference(ctx.Identifier(1)));
+		int index = 2;
+		if (ctx.Identifier().size() == 5) {
+			var.setEndInstructionReference(createSymbolReference(ctx.Identifier(2)));
+			index = 3;
+		}
+		var.setNameReference(createSymbolReference(ctx.Identifier(index)));
+		var.setDescriptorReference(createSymbolReference(ctx.Identifier(index+1)));
+		content.add(var);
 	}
 
 

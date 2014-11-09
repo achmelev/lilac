@@ -110,7 +110,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 		if (this.nameReference != null) {
 			this.name = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, nameReference);
 			if (this.name != null) {
-				verifyName(nameReference, name.getValue());
+				verifyName(nameReference, name);
 			}
 		} else {
 			emitError(null, "missing name statement");
@@ -219,7 +219,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 		return modifierLiterals;
 	}
 	
-	protected abstract void verifyName(SymbolReference ref, String name);
+	protected abstract void verifyName(SymbolReference ref, Utf8Info name);
 	protected abstract void verifyDescriptor(SymbolReference ref, String descriptor);
 	
 	

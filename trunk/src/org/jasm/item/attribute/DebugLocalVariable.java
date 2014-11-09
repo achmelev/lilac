@@ -8,6 +8,7 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.descriptor.IllegalDescriptorException;
@@ -15,17 +16,27 @@ import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.ILocalVariableReference;
 import org.jasm.item.instructions.Instructions;
+import org.jasm.item.instructions.LocalVariable;
+import org.jasm.item.utils.IdentifierUtils;
+import org.jasm.parser.literals.SymbolReference;
 
-public class LocalVariable extends AbstractByteCodeItem implements IConstantPoolReference, ILocalVariableReference {
+
+public class DebugLocalVariable extends AbstractByteCodeItem implements IConstantPoolReference, ILocalVariableReference {
 	
 	private int startPC = -1;
+	private SymbolReference startInstructionReference;
 	private AbstractInstruction startInstruction = null;
 	private int length = -1;
+	private SymbolReference endInstructionReference;
 	private AbstractInstruction endIndsruction = null;
+	private SymbolReference nameReference;
 	private int nameIndex = -1;
 	private Utf8Info name = null;
+	private SymbolReference descriptorReference;
 	private int descriptorIndex = -1;
 	private Utf8Info descriptor = null;
+	private SymbolReference variableReference;
+	private LocalVariable variable;
 	private int index = -1;
 
 	@Override
@@ -75,7 +86,7 @@ public class LocalVariable extends AbstractByteCodeItem implements IConstantPool
 
 	@Override
 	public String getPrintName() {
-		return "variable";
+		return "var";
 	}
 	
 	@Override
@@ -85,7 +96,7 @@ public class LocalVariable extends AbstractByteCodeItem implements IConstantPool
 
 	@Override
 	public String getPrintArgs() {
-		return startInstruction.getPrintLabel()+", "+((endIndsruction==null)?JasmConsts.NIL:endIndsruction.getPrintLabel())+", "+name.getSymbolName()+", "+descriptor.getSymbolName()+", "+getVariableType()+"_"+index;
+		return getVariableType()+"_"+index+", "+startInstruction.getPrintLabel()+((endIndsruction==null)?"":(", "+endIndsruction.getPrintLabel()))+", "+name.getSymbolName()+", "+descriptor.getSymbolName();
 	}
 
 	@Override
@@ -109,7 +120,32 @@ public class LocalVariable extends AbstractByteCodeItem implements IConstantPool
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		Instructions instr = ((CodeAttributeContent)getParent().getParent().getParent().getParent()).getInstructions();
+		ConstantPool cp = getConstantPool();
+		
+		startInstruction = instr.checkAndLoadFromSymbolTable(this, startInstructionReference);
+		if (endInstructionReference != null) {
+			endIndsruction = instr.checkAndLoadFromSymbolTable(this, endInstructionReference);
+		}
+		
+		name = cp.checkAndLoadFromSymbolTable(this, Utf8Info.class, nameReference);
+		descriptor = cp.checkAndLoadFromSymbolTable(this, Utf8Info.class, descriptorReference);
+		
+		
+		if (name != null) {
+			IdentifierUtils.checkIdentifier(this, nameReference, name);
+		}
+		
+		if (descriptor != null) {
+			try {
+				TypeDescriptor d = new TypeDescriptor(descriptor.getValue());
+				variable = instr.getVariablesPool().checkAndLoad(this, variableReference, getVariableType());
+				index = variable.getIndex();
+			} catch (IllegalDescriptorException e) {
+				emitError(descriptorReference, "malformed type descriptor "+descriptor.getValue());
+			}
+		}
+		
 	}
 
 	@Override
@@ -144,5 +180,50 @@ public class LocalVariable extends AbstractByteCodeItem implements IConstantPool
 	public org.jasm.item.instructions.LocalVariable[] getLocalVariableReferences() {
 		return new org.jasm.item.instructions.LocalVariable[]{new org.jasm.item.instructions.LocalVariable(index,getVariableType())};
 	}
+
+	public void setStartInstructionReference(
+			SymbolReference startInstructionReference) {
+		this.startInstructionReference = startInstructionReference;
+	}
+
+	public void setEndInstructionReference(SymbolReference endInstructionReference) {
+		this.endInstructionReference = endInstructionReference;
+	}
+
+	public void setNameReference(SymbolReference nameReference) {
+		this.nameReference = nameReference;
+	}
+
+	public void setDescriptorReference(SymbolReference descriptorReference) {
+		this.descriptorReference = descriptorReference;
+	}
+
+	public void setVariableReference(SymbolReference variableReference) {
+		this.variableReference = variableReference;
+	}
+
+	public AbstractInstruction getStartInstruction() {
+		return startInstruction;
+	}
+
+	public AbstractInstruction getEndIndsruction() {
+		return endIndsruction;
+	}
+
+	public Utf8Info getName() {
+		return name;
+	}
+
+	public Utf8Info getDescriptor() {
+		return descriptor;
+	}
+
+	public LocalVariable getVariable() {
+		return variable;
+	}
+	
+	
+	
+	
 
 }

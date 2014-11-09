@@ -4,11 +4,11 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.item.AbstractBytecodeItemList;
 
 public class LocalVariableTableAttributeContent extends
-		AbstractBytecodeItemList<LocalVariable> implements IAttributeContent {
+		AbstractBytecodeItemList<DebugLocalVariable> implements IAttributeContent {
 
 	@Override
 	public String getPrintName() {
-		return "debug variables";
+		return "debug vars";
 	}
 	
 	@Override
@@ -22,8 +22,8 @@ public class LocalVariableTableAttributeContent extends
 	}
 
 	@Override
-	protected LocalVariable createEmptyItem(IByteBuffer source, long offset) {
-		return new LocalVariable();
+	protected DebugLocalVariable createEmptyItem(IByteBuffer source, long offset) {
+		return new DebugLocalVariable();
 	}
 
 }

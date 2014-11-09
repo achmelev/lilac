@@ -4,7 +4,7 @@ import org.jasm.JasmConsts;
 import org.jasm.item.descriptor.IllegalDescriptorException;
 
 
-public class LocalVariableType extends LocalVariable {
+public class LocalVariableType extends DebugLocalVariable {
 
 	@Override
 	protected char getVariableType() throws IllegalDescriptorException {

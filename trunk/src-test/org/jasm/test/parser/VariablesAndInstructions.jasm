@@ -41,6 +41,8 @@ class {
   const classref classref_ex utf_ex; // java/lang/RuntimeException
   const utf8 myattr  "MyAttr";
   const utf8 STACKMAP  "StackMapTable";
+  const utf8 double_name  "doubleVar";
+  const utf8 double_type  "D";
    //Attributes
   source file utf8_25; // AbstractGenericClass.java
   signature utf8_26; // <T:Ljava/lang/Object;>Ljava/lang/Object;
@@ -70,6 +72,11 @@ class {
     line numbers {
     	line label1, 10;
     	line label2, 20;
+    }
+    
+    debug vars {
+    	var  o1, label1, utf8_17, utf8_18;
+    	var  d1, label1->label7, double_name, double_type;
     }
     
     //Variables
