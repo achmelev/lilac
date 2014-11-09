@@ -23,7 +23,7 @@ public class MultianewarrayInstruction extends ConstantPoolInstruction {
 
 	@Override
 	public String getPrintArgs() {
-		return super.getPrintArgs();
+		return super.getPrintArgs()+", "+dimensions;
 	}
 
 	@Override

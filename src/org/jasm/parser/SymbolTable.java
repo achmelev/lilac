@@ -1,7 +1,9 @@
 package org.jasm.parser;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class SymbolTable {
 	private SymbolTable parent = null;
@@ -17,6 +19,18 @@ public class SymbolTable {
 		}
 		
 		symbols.put(entry.getSymbolName(), entry);
+	}
+	
+	public void replace(ISymbolTableEntry old, ISymbolTableEntry new_) {
+		Set<String> keys = new HashSet<String>();
+		keys.addAll(symbols.keySet());
+		for (String key:keys) {
+			if (symbols.get(key) == old) {
+				symbols.put(key, new_);
+				break;
+			}
+		}
+		
 	}
 	
 	public boolean contains(String name) {

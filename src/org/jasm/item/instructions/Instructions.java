@@ -364,6 +364,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 				if (newInstr != null) {
 					newInstr.setParent(this);
 					items.set(i, newInstr);
+					symbolTable.replace(instr, newInstr);
 					newInstr.resolve();
 				}
 			}

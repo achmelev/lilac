@@ -107,6 +107,8 @@ methodmember: methodname SEMI
 			  | methodexceptionhandler
 			  | methodlinenumbertable
 			  | methodvariabletable
+			  | methodmaxstack
+			  | methodmaxlocals
 			  ;
 				  
 methodname: NAME Identifier;
@@ -168,6 +170,7 @@ methodvariabletable: DEBUG VARS LBRACE
 
 debugvar: VAR Identifier COMMA Identifier (Pointer Identifier)? COMMA Identifier COMMA Identifier  SEMI;
 
+
 instruction: Argumentlessop #argumentlessop
 			 | Constantpoolop Identifier #constantpoolop
 			 | wideOrNormal? Localvarop Identifier #localvarop
@@ -179,7 +182,8 @@ instruction: Argumentlessop #argumentlessop
 			 | Branchop Identifier #branchop
 			 ;
 
-
+methodmaxstack: MAXSTACK IntegerLiteral SEMI;
+methodmaxlocals: MAXLOCALS IntegerLiteral SEMI;
 
 
 
@@ -278,7 +282,7 @@ Localvarop: 'aload'|'astore'|'dload'|'dstore'|'fload'|'fstore'|'iload'|'istore'|
 Pushop: 'bipush'|'sipush'; 
 Iincop: 'iinc';
 Newarrayop: 'newarray';
-Multinewarrayop: 'multinewarray';
+Multinewarrayop: 'multianewarray';
 Switchop: 'lookupswitch'|'tableswitch';
 Branchop: 'goto'|'if_acmpeq'|'if_acmpne'|'if_icmpeq'|'if_icmpge'|'if_icmpgt'|'if_icmple'|'if_icmplt'|'if_icmpne'|'ifeq'|'ifge'|'ifgt'|'ifle'|'iflt'|'ifne'|'ifnonnull'|'ifnull'|'jsr';
 
@@ -364,6 +368,8 @@ STACKMAP      :  'stackmap';
 LINE          :  'line';
 NUMBERS       :  'numbers';
 DEBUG         :  'debug';
+MAXSTACK      :  'maxstack';
+MAXLOCALS     :  'maxlocals';
 
 
 

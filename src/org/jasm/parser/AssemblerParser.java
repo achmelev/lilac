@@ -159,6 +159,8 @@ import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.MethodexceptionhandlerContext;
 import org.jasm.parser.JavaAssemblerParser.MethodinstructionContext;
 import org.jasm.parser.JavaAssemblerParser.MethodlinenumbertableContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmaxlocalsContext;
+import org.jasm.parser.JavaAssemblerParser.MethodmaxstackContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierAbstractContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierBridgeContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierContext;
@@ -712,6 +714,8 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			emitError(ctx.NAME(), "multiple method name statements within the same method statement");
 		}
 	}
+	
+	
 
 	@Override
 	public void enterMethodAttributeExceptions(
@@ -766,6 +770,21 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 	}
 	
+	
+
+	@Override
+	public void enterMethodmaxlocals(MethodmaxlocalsContext ctx) {
+		CodeAttributeContent code = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+		code.setMaxLocalsLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
+	}
+
+
+	@Override
+	public void enterMethodmaxstack(MethodmaxstackContext ctx) {
+		CodeAttributeContent code = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+		code.setMaxStackLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
+	}
+
 
 	@Override
 	public void enterMethodlinenumbertable(MethodlinenumbertableContext ctx) {

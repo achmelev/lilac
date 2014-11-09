@@ -4,7 +4,7 @@ public class StackMapAttributeContent extends AbstractBinaryAttributeContent {
 
 	@Override
 	public String getPrintName() {
-		return "stack map";
+		return "stackmap";
 	}
 
 	@Override

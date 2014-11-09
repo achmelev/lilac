@@ -96,7 +96,7 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IConstan
 
 	@Override
 	public String getPrintArgs() {
-		return getVariableType()+"_"+index+", "+startInstruction.getPrintLabel()+((endIndsruction==null)?"":(", "+endIndsruction.getPrintLabel()))+", "+name.getSymbolName()+", "+descriptor.getSymbolName();
+		return getVariableType()+"_"+index+", "+startInstruction.getPrintLabel()+((endIndsruction==null)?"":("->"+endIndsruction.getPrintLabel()))+", "+name.getSymbolName()+", "+descriptor.getSymbolName();
 	}
 
 	@Override
