@@ -2,7 +2,6 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
@@ -117,7 +116,12 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 		
 		Instructions instr = ((CodeAttributeContent)getParent().getParent()).getInstructions();
 		startInstruction = instr.getInstructionAtOffset(startPC);
-		endInstruction = instr.getInstructionAtOffset(endPC);
+		if (endPC == instr.getCodeLength()) {
+			endInstruction = instr.get(instr.getSize());
+		} else {
+			endInstruction = instr.getInstructionAtOffset(endPC);
+			endInstruction = instr.get(instr.indexOf(endInstruction)-1);
+		}
 		handlerInstruction = instr.getInstructionAtOffset(handlerPC);
 
 	}
@@ -135,6 +139,16 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 		handlerInstruction = instrs.checkAndLoadFromSymbolTable(this, handlerSymbolReference);
 		if (catchTypeReference != null) {
 			catchType = getConstantPool().checkAndLoadFromSymbolTable(this, ClassInfo.class, catchTypeReference);
+		}
+		
+		if (startInstruction != null) {
+			startPC = startInstruction.getOffsetInCode();
+		}
+		if (endInstruction != null) {
+			endPC = endInstruction.getOffsetInCode()+endInstruction.getLength();
+		}
+		if (handlerInstruction != null) {
+			handlerPC = handlerInstruction.getOffsetInCode();
 		}
 	}
 

@@ -14,6 +14,7 @@ import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.descriptor.IllegalDescriptorException;
 import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.ILocalVariableReference;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.LocalVariable;
@@ -21,14 +22,14 @@ import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 
 
-public class DebugLocalVariable extends AbstractByteCodeItem implements IConstantPoolReference, ILocalVariableReference {
+public class DebugLocalVariable extends AbstractByteCodeItem implements IConstantPoolReference, ILocalVariableReference, IInstructionReference {
 	
 	private int startPC = -1;
 	private SymbolReference startInstructionReference;
 	private AbstractInstruction startInstruction = null;
 	private int length = -1;
 	private SymbolReference endInstructionReference;
-	private AbstractInstruction endIndsruction = null;
+	private AbstractInstruction endInstruction = null;
 	private SymbolReference nameReference;
 	private int nameIndex = -1;
 	private Utf8Info name = null;
@@ -53,10 +54,10 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IConstan
 		target.writeUnsignedShort(offset, startInstruction.getOffsetInCode());
 		Instructions instr = ((CodeAttributeContent)getParent().getParent().getParent().getParent()).getInstructions();
 		int length = 0;
-		if (endIndsruction == null) {
+		if (endInstruction == null) {
 			length = instr.getCodeLength()-startInstruction.getOffsetInCode();
 		} else {
-			length = endIndsruction.getOffsetInCode()-startInstruction.getOffsetInCode();
+			length = endInstruction.getOffsetInCode()-startInstruction.getOffsetInCode();
 		}
 		target.writeUnsignedShort(offset+2, length);
 		target.writeUnsignedShort(offset+4, name.getIndexInPool());
@@ -96,7 +97,7 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IConstan
 
 	@Override
 	public String getPrintArgs() {
-		return getVariableType()+"_"+index+", "+startInstruction.getPrintLabel()+((endIndsruction==null)?"":("->"+endIndsruction.getPrintLabel()))+", "+name.getSymbolName()+", "+descriptor.getSymbolName();
+		return getVariableType()+"_"+index+", "+startInstruction.getPrintLabel()+((endInstruction==null)?"":("->"+endInstruction.getPrintLabel()))+", "+name.getSymbolName()+", "+descriptor.getSymbolName();
 	}
 
 	@Override
@@ -113,7 +114,7 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IConstan
 		if (startPC+length == instr.getCodeLength()) {
 			
 		} else {
-			endIndsruction = instr.getInstructionAtOffset(startPC+length);
+			endInstruction = instr.getInstructionAtOffset(startPC+length);
 		}
 
 	}
@@ -125,7 +126,7 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IConstan
 		
 		startInstruction = instr.checkAndLoadFromSymbolTable(this, startInstructionReference);
 		if (endInstructionReference != null) {
-			endIndsruction = instr.checkAndLoadFromSymbolTable(this, endInstructionReference);
+			endInstruction = instr.checkAndLoadFromSymbolTable(this, endInstructionReference);
 		}
 		
 		name = cp.checkAndLoadFromSymbolTable(this, Utf8Info.class, nameReference);
@@ -207,7 +208,7 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IConstan
 	}
 
 	public AbstractInstruction getEndIndsruction() {
-		return endIndsruction;
+		return endInstruction;
 	}
 
 	public Utf8Info getName() {
@@ -220,6 +221,16 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IConstan
 
 	public LocalVariable getVariable() {
 		return variable;
+	}
+
+	@Override
+	public AbstractInstruction[] getInstructionReferences() {
+		if (endInstruction == null) {
+			return new AbstractInstruction[]{startInstruction};
+		} else {
+			return new AbstractInstruction[]{startInstruction, endInstruction};
+		}
+		
 	}
 	
 	

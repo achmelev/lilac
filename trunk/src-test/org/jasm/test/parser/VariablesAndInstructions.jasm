@@ -131,7 +131,7 @@ class {
   	pop;
   	pop;
   	pop;
-  	label5: multinewarray classref_2, 3;
+  	label5: multianewarray classref_2, 3;
   	lookupswitch -1->label3, 
   				  10->label4,
   				  3->label5, 
