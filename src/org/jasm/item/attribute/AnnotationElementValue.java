@@ -312,8 +312,8 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 				verifyEnumTypeDescriptor(enumTypeName.getValue());
 			}
 			enumConstName = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, enumConstNameReference);
-			if (enumConstName != null && !IdentifierUtils.isValidIdentifier(enumConstName.getValue())) {
-				emitError(enumConstNameReference, "malformed identifier: "+enumConstName.getValue());
+			if (enumConstName != null) {
+				IdentifierUtils.checkIdentifier(this, enumConstNameReference, enumConstName);
 			}
 		} else if (tag == '@') {
 			nestedAnnotation.resolve();

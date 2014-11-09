@@ -106,6 +106,7 @@ methodmember: methodname SEMI
 			  | methodinstruction
 			  | methodexceptionhandler
 			  | methodlinenumbertable
+			  | methodvariabletable
 			  ;
 				  
 methodname: NAME Identifier;
@@ -160,6 +161,12 @@ methodlinenumbertable: LINE NUMBERS LBRACE
 					   RBRACE;
 
 linenumber: LINE Identifier COMMA IntegerLiteral SEMI;
+
+methodvariabletable: DEBUG VARS LBRACE
+					   	  debugvar+
+					  RBRACE;
+
+debugvar: VAR Identifier COMMA Identifier (Pointer Identifier)? COMMA Identifier COMMA Identifier  SEMI;
 
 instruction: Argumentlessop #argumentlessop
 			 | Constantpoolop Identifier #constantpoolop
@@ -342,6 +349,7 @@ OBJECT        :  'object';
 RETURNADRESS  :  'returnadress';
 AT            :  'at';
 VAR           :  'var';
+VARS          :  'vars';
 WIDE          :  'wide';
 NORMAL        :  'normal';
 ALL        	  :  'all';
@@ -355,6 +363,7 @@ CODE          :  'code';
 STACKMAP      :  'stackmap';
 LINE          :  'line';
 NUMBERS       :  'numbers';
+DEBUG         :  'debug';
 
 
 

@@ -1,5 +1,9 @@
 package org.jasm.item.utils;
 
+import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.parser.literals.SymbolReference;
+
 public class IdentifierUtils {
 	
 	public static boolean isValidIdentifier(String value) {
@@ -65,6 +69,24 @@ public class IdentifierUtils {
 			throw new IllegalArgumentException("malformed java class name:"+name);
 		}
 		return name.replace('.', '/');
+	}
+	
+	public static boolean checkIdentifier(AbstractByteCodeItem source, SymbolReference ref, Utf8Info value) {
+		if (!IdentifierUtils.isValidIdentifier(value.getValue())) {
+			source.emitError(ref, "malformed identifier: "+value.getValue());
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public static boolean checkMethodName(AbstractByteCodeItem source, SymbolReference ref, Utf8Info value) {
+		if (!IdentifierUtils.isValidIdentifier(value.getValue()) && !(value.getValue().equals("<init>") || value.getValue().equals("<clinit>"))) {
+			source.emitError(ref, "invalid method name: "+value.getValue());
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 }

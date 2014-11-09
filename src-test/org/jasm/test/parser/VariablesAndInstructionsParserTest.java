@@ -2,9 +2,11 @@ package org.jasm.test.parser;
 
 import org.jasm.JasmConsts;
 import org.jasm.item.attribute.CodeAttributeContent;
+import org.jasm.item.attribute.DebugLocalVariable;
 import org.jasm.item.attribute.ExceptionHandler;
 import org.jasm.item.attribute.LineNumber;
 import org.jasm.item.attribute.LineNumberTableAttributeContent;
+import org.jasm.item.attribute.LocalVariableTableAttributeContent;
 import org.jasm.item.attribute.StackMapAttributeContent;
 import org.jasm.item.attribute.UnknownAttributeContent;
 import org.jasm.item.clazz.Clazz;
@@ -242,6 +244,22 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		line1 = linenumbers.get(1);
 		Assert.assertEquals(20, line1.getLineNumber());
 		Assert.assertEquals(OpCodes.ldc, line1.getStartInstruction().getOpCode());
+		
+		LocalVariableTableAttributeContent debugvars = (LocalVariableTableAttributeContent)code.getAttributes().get(3).getContent();
+		Assert.assertEquals(2, debugvars.getSize());
+		DebugLocalVariable dvar = debugvars.get(0);
+		Assert.assertEquals("o1",dvar.getVariable().getName().getContent());
+		Assert.assertEquals(OpCodes.nop,dvar.getStartInstruction().getOpCode());
+		Assert.assertNull(dvar.getEndIndsruction());
+		Assert.assertEquals("this",dvar.getName().getValue());
+		Assert.assertEquals("Lorg/jasm/test/testclass/AbstractGenericClass;",dvar.getDescriptor().getValue());
+		
+		dvar = debugvars.get(1);
+		Assert.assertEquals("d1",dvar.getVariable().getName().getContent());
+		Assert.assertEquals(OpCodes.nop,dvar.getStartInstruction().getOpCode());
+		Assert.assertEquals(OpCodes.return_,dvar.getEndIndsruction().getOpCode());
+		Assert.assertEquals("doubleVar",dvar.getName().getValue());
+		Assert.assertEquals("D",dvar.getDescriptor().getValue());
 	}
 
 }

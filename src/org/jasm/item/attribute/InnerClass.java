@@ -142,7 +142,7 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 		if (this.innerNameReference != null) {
 			this.innerName = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, innerNameReference);
 			if (this.innerName != null) {
-				verifyName(innerNameReference, innerName.getValue());
+				verifyName(innerNameReference, innerName);
 			}
 		}
 		
@@ -237,11 +237,8 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 		return innerNameReference;
 	}
 	
-	private void verifyName(SymbolReference ref, String name) {
-		if (!IdentifierUtils.isValidIdentifier(name)) {
-			emitError(ref, "malformed inner class name");
-		}
-		
+	private void verifyName(SymbolReference ref,Utf8Info name) {
+		IdentifierUtils.checkIdentifier(this, ref, name);
 	}
 	
 	

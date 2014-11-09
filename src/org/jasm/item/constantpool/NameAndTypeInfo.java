@@ -71,13 +71,10 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 		if (index == 0) {
 			boolean isField = (getParent() instanceof AbstractRefInfo) && ((AbstractRefInfo)getParent()).isMethodRef();
 			if (!isField) {
-				if (!IdentifierUtils.isValidIdentifier(valueStr) && !(valueStr.equals("<init>") || valueStr.equals("<cinit>"))) {
-					emitError(ref, "malformed method name:  "+valueStr);
-				}
+				IdentifierUtils.checkMethodName(this, ref, (Utf8Info)value);
 			} else {
-				if (!IdentifierUtils.isValidIdentifier(valueStr)) {
-					emitError(ref, "malformed field name:  "+valueStr);
-				}
+				IdentifierUtils.checkIdentifier(this, ref, (Utf8Info)value);
+				
 			}
 		} else if (index == 1) {
 			try {
