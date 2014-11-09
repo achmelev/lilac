@@ -14,6 +14,8 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 	private boolean forceNormal = false;
 	private SymbolReference localVariableReference = null;
 	
+	private ShortLocalVariableInstruction shortReplacement = null;
+	
 	
 	public LocalVariableInstruction(short opCode,boolean isWide, int localVariableIndex) {
 		super(opCode, isWide);
@@ -42,7 +44,7 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 
 	@Override
 	public String getPrintArgs() {
-		char type = getPrintName().charAt(0);
+		char type = getTypeLabel().charAt(0);
 		return type+"_"+localVariableIndex;
 	}
 	
@@ -139,12 +141,18 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 
 
 	public ShortLocalVariableInstruction createShortReplacement() {
-		if ((localVariableIndex>=0 && localVariableIndex<=3) && !isWide() && !forceNormal) {
-			short code = OpCodes.getOpcodeForName(OpCodes.getNameForOpcode(getOpCode())+"_"+localVariableIndex);
-			return new ShortLocalVariableInstruction(code);
+		if (shortReplacement != null) {
+			return shortReplacement;
 		} else {
-			return null;
+			if ((localVariableIndex>=0 && localVariableIndex<=3) && !isWide() && !forceNormal) {
+				short code = OpCodes.getOpcodeForName(OpCodes.getNameForOpcode(getOpCode())+"_"+localVariableIndex);
+				shortReplacement = new ShortLocalVariableInstruction(code);
+				return  shortReplacement;
+			} else {
+				return null;
+			}
 		}
+		
 	}
 	
 

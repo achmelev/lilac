@@ -80,6 +80,16 @@ public class BranchInstruction extends AbstractInstruction implements IInstructi
 		return targetInst;
 	}
 	
+	public void replaceLocalVarInstructonsWithShortVersions() {
+		if (targetInst instanceof LocalVariableInstruction) {
+			LocalVariableInstruction localVarInstr = (LocalVariableInstruction)targetInst;
+			ShortLocalVariableInstruction shortV = localVarInstr.createShortReplacement();
+			if (shortV != null) {
+				targetInst = shortV;
+			}
+		}
+	}
+	
 	
 
 }
