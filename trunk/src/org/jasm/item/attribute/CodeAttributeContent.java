@@ -14,6 +14,7 @@ import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.clazz.IAttributesContainer;
 import org.jasm.item.instructions.Instructions;
+import org.jasm.parser.literals.IntegerLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +22,9 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
+	private IntegerLiteral maxStackLiteral;
 	private int maxStack;
+	private IntegerLiteral maxLocalsLiteral;
 	private int maxLocals;
 	private Instructions instructions;
 	private ExceptionHandlerTable exceptionTable;
@@ -135,6 +138,30 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 		exceptionTable.resolve();
 		attributes.resolve();
 		
+		if (!hasResolveErrors()) {
+			if (maxStackLiteral != null) {
+				Integer value = maxStackLiteral.checkAndLoadValue(this);
+				if (value != null && value>=0 && value < 65536) {
+					maxStack = value;
+				} else {
+					emitError(maxStackLiteral, "max stack out of bounds");
+				}
+			} else {
+				//TODO - maxStack berechnen
+			}
+			
+			if (maxLocalsLiteral != null) {
+				Integer value = maxLocalsLiteral.checkAndLoadValue(this);
+				if (value != null && value>=0 && value < 65536) {
+					maxLocals = value;
+				} else {
+					emitError(maxStackLiteral, "max stack out of bounds");
+				}
+			} else {
+				//TODO - maxStack berechnen
+			}
+		}
+		
 	}
 
 	@Override
@@ -192,6 +219,14 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 
 	public Attributes getAttributes() {
 		return attributes;
+	}
+
+	public void setMaxStackLiteral(IntegerLiteral maxStackLiteral) {
+		this.maxStackLiteral = maxStackLiteral;
+	}
+
+	public void setMaxLocalsLiteral(IntegerLiteral maxLocalsLiteral) {
+		this.maxLocalsLiteral = maxLocalsLiteral;
 	}
 	
 	
