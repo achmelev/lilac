@@ -36,11 +36,14 @@ public class PrettyPrinter {
 	
 	public void printItem(IPrintable item) {
 		
-		if (item.isStructure() && item.getStructureParts().size() == 0) {
+		/*if (item.isStructure() && item.getStructureParts().size() == 0) {
 			return;
-		}
+		}*/
 		
 		StringBuffer buf = new StringBuffer();
+		if (item == null) {
+			System.out.println("here!");
+		}
 		if (item.getPrintLabel() != null) {
 			buf.append(item.getPrintLabel()+": ");
 		}

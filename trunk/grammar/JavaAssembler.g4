@@ -159,13 +159,13 @@ methodinstruction: (label COLON)? instruction SEMI;
 methodexceptionhandler: TRY Identifier Pointer Identifier CATCH identifierOrAll GO TO Identifier SEMI;
 
 methodlinenumbertable: LINE NUMBERS LBRACE
-					   	  linenumber+
+					   	  linenumber*
 					   RBRACE;
 
 linenumber: LINE Identifier COMMA IntegerLiteral SEMI;
 
 methodvariabletable: DEBUG VARS LBRACE
-					   	  debugvar+
+					   	  debugvar*
 					  RBRACE;
 
 debugvar: VAR Identifier COMMA Identifier (Pointer Identifier)? COMMA Identifier COMMA Identifier  SEMI;
