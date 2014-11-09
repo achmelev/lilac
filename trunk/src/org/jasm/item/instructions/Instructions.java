@@ -367,6 +367,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 					symbolTable.replace(instr, newInstr);
 					newInstr.resolve();
 				}
+			} else if (instr instanceof BranchInstruction) {
+				((BranchInstruction)instr).replaceLocalVarInstructonsWithShortVersions();
 			}
 		}
 		

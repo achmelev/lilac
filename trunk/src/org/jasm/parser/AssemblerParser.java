@@ -760,14 +760,22 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void enterMethodvarrelative(MethodvarrelativeContext ctx) {
 		LocalVariable var = new LocalVariable(LocalVariable.getTypeCode(ctx.methodvartype().getText()));
 		var.setName(createSymbolReference(ctx.Identifier(0)));
-		IntegerLiteral lit = createIntegerLiteral(ctx.IntegerLiteral());
-		if (lit.getValue()<0) {
-			emitError(ctx.IntegerLiteral(), "an offset must be positive");
+		
+		int offset = -1;
+		if (ctx.IntegerLiteral() != null) {
+			IntegerLiteral lit = createIntegerLiteral(ctx.IntegerLiteral());
+			if (lit.getValue()<0) {
+				emitError(ctx.IntegerLiteral(), "an offset must be positive");
+			} else {
+				offset = lit.getValue();
+			}
 		} else {
-			var.setOffset(lit.getValue());
-			var.setParentName(createSymbolReference(ctx.Identifier(1)));
-			addVar(var);
+			offset = 0;
 		}
+		
+		var.setOffset(offset);
+		var.setParentName(createSymbolReference(ctx.Identifier(1)));
+		addVar(var);
 	}
 	
 	
