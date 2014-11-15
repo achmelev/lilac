@@ -263,9 +263,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		//Parse
 		ParseTree tree = parser.clazz();
 		
-		if (log.isDebugEnabled()) {
+		/*if (log.isDebugEnabled()) {
 			log.debug("tree: "+tree.toStringTree());
-		}
+		}*/
 		
 		if (errorMessages.size() == 0) {
 			//Walk tree an create class
@@ -1271,7 +1271,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void enterEnclosingmethod(EnclosingmethodContext ctx) {
 		EnclosingMethodAttributeContent content = new EnclosingMethodAttributeContent();
 		content.setClazzReference(createSymbolReference(ctx.Identifier(0)));
-		content.setMethodReference(createSymbolReference(ctx.Identifier(1)));
+		if (ctx.Identifier().size()==2) {
+			content.setMethodReference(createSymbolReference(ctx.Identifier(1)));
+		}
 		addAttribute(content, ctx.ENCLOSING());
 	}
 	

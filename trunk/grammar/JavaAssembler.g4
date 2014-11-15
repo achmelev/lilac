@@ -92,7 +92,7 @@ innerclassmodifierlabel: PUBLIC #innerclassmodifierPublic
 						|ENUM #innerclassmodifierEnum
 						; 
 
-enclosingmethod: ENCLOSING METHOD Identifier COMMA Identifier SEMI;
+enclosingmethod: ENCLOSING METHOD Identifier (COMMA Identifier)? SEMI;
 
 method  : METHOD  LBRACE
 					methodmember*
