@@ -200,7 +200,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertEquals(10, lookupswitch.getValues()[1]);
 		Assert.assertEquals(3, lookupswitch.getValues()[2]);
 		Assert.assertEquals(3, lookupswitch.getTargets().length);
-		Assert.assertEquals(OpCodes.bipush, lookupswitch.getTargets()[0].getOpCode());
+		Assert.assertEquals(OpCodes.aload_0, lookupswitch.getTargets()[0].getOpCode());
 		Assert.assertEquals(OpCodes.newarray, lookupswitch.getTargets()[1].getOpCode());
 		Assert.assertEquals(OpCodes.multianewarray, lookupswitch.getTargets()[2].getOpCode());
 		
@@ -210,7 +210,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertEquals(-1, tableswitch.getLow());
 		Assert.assertEquals(1, tableswitch.getHigh());
 		Assert.assertEquals(3, tableswitch.getTargets().length);
-		Assert.assertEquals(OpCodes.bipush, tableswitch.getTargets()[0].getOpCode());
+		Assert.assertEquals(OpCodes.aload_0, tableswitch.getTargets()[0].getOpCode());
 		Assert.assertEquals(OpCodes.newarray, tableswitch.getTargets()[1].getOpCode());
 		Assert.assertEquals(OpCodes.multianewarray, tableswitch.getTargets()[2].getOpCode());
 		

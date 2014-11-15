@@ -10,9 +10,10 @@ import org.jasm.parser.literals.SymbolReference;
 
 
 
-public abstract class AbstractSwitchInstruction extends AbstractInstruction {
+public abstract class AbstractSwitchInstruction extends AbstractInstruction implements IReferencingInstruction {
 	
-	
+	protected AbstractInstruction defaultTarget = null;
+	protected AbstractInstruction[] targets = null;
 	
 	
 	public AbstractSwitchInstruction(short opCode) {
@@ -78,7 +79,50 @@ public abstract class AbstractSwitchInstruction extends AbstractInstruction {
 		
 	}
 	
+	@Override
+	public AbstractInstruction[] getInstructionReferences() {
+		AbstractInstruction[] refs = new AbstractInstruction[targets.length+1];
+		refs[0] = defaultTarget;
+		if (targets.length > 0) {
+			System.arraycopy(targets, 0, refs, 1, targets.length);
+		}
+		return refs;
+	}
+	
+	@Override
+	public void replaceLocalVarInstructonsWithShortVersions() {
+		if (defaultTarget instanceof LocalVariableInstruction) {
+			LocalVariableInstruction localVarInstr = (LocalVariableInstruction)defaultTarget;
+			ShortLocalVariableInstruction shortV = localVarInstr.createShortReplacement();
+			if (shortV != null) {
+				defaultTarget = shortV;
+			}
+		}
+		
+		for (int i=0;i<targets.length; i++) {
+			if (targets[i] instanceof LocalVariableInstruction) {
+				LocalVariableInstruction localVarInstr = (LocalVariableInstruction)targets[i];
+				ShortLocalVariableInstruction shortV = localVarInstr.createShortReplacement();
+				if (shortV != null) {
+					targets[i] = shortV;
+				}
+			}
+		}
+		
+	}
+	
 	protected abstract void setTargets(AbstractInstruction defaultTarget, int[] values, AbstractInstruction[] targets);
+	
+	public AbstractInstruction[] getTargets() {
+		return targets;
+	}
+
+	public AbstractInstruction getDefaultTarget() {
+		return defaultTarget;
+	}
+	
+	
+
 	
 	
 	

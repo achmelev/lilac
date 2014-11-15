@@ -94,7 +94,7 @@ class {
   	getfield fieldref_13;
   	pop;
   	invokeinterface intfmethodref_92;
-  	aload o1;
+  	label2_1: aload o1;
   	astore o1;
   	normal dload  d1;
   	normal dstore d1;
@@ -132,11 +132,11 @@ class {
   	pop;
   	pop;
   	label5: multianewarray classref_2, 3;
-  	lookupswitch -1->label3, 
+  	lookupswitch -1->label2_1, 
   				  10->label4,
   				  3->label5, 
   				  default->label6;
-  	tableswitch -1->label3, 
+  	tableswitch -1->label2_1, 
   				  1->label5,
   				  0->label4, 
   				  default->label6; 

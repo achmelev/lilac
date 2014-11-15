@@ -7,7 +7,7 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.parser.literals.SymbolReference;
 
-public class BranchInstruction extends AbstractInstruction implements IInstructionReference {
+public class BranchInstruction extends AbstractInstruction implements IReferencingInstruction {
 	
 	
 	private int targetOffset = -1;

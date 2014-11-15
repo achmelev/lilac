@@ -11,10 +11,8 @@ public class LookupSwitchInstruction extends AbstractSwitchInstruction {
 	
 	private int numberOfPairs = -1;
 	private int defaultOffset = -1;
-	private AbstractInstruction defaultTarget = null;
 	private int[] values = null;
 	private int[] targetOffsets = null;
-	private AbstractInstruction[] targets = null;
 	
 	public LookupSwitchInstruction() {
 		super(OpCodes.lookupswitch);
@@ -126,17 +124,10 @@ public class LookupSwitchInstruction extends AbstractSwitchInstruction {
 		
 	}
 
-	public AbstractInstruction getDefaultTarget() {
-		return defaultTarget;
-	}
-
 	public int[] getValues() {
 		return values;
 	}
 
-	public AbstractInstruction[] getTargets() {
-		return targets;
-	}
 
 	
 
