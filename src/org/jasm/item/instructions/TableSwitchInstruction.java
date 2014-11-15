@@ -14,9 +14,7 @@ public class TableSwitchInstruction extends AbstractSwitchInstruction {
 	private int low = -1;
 	private int high = -1;
 	private int defaultOffset = -1;
-	private AbstractInstruction defaultTarget = null;
 	private int[] targetOffsets = null;
-	private AbstractInstruction[] targets = null;
 	
 	public TableSwitchInstruction() {
 		super(OpCodes.tableswitch);
@@ -148,7 +146,7 @@ public class TableSwitchInstruction extends AbstractSwitchInstruction {
 		}
 		
 	}
-
+	
 	public int getLow() {
 		return low;
 	}
@@ -157,14 +155,5 @@ public class TableSwitchInstruction extends AbstractSwitchInstruction {
 		return high;
 	}
 
-	public AbstractInstruction[] getTargets() {
-		return targets;
-	}
-
-	public AbstractInstruction getDefaultTarget() {
-		return defaultTarget;
-	}
-	
-	
 
 }
