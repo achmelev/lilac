@@ -53,6 +53,16 @@ public class Method extends AbstractClassMember<MethodModifier> {
 	public MethodDescriptor getMethodDescriptor() {
 		return methodDescriptor;
 	}
+
+	@Override
+	public String toString() {
+		if (getName() != null && methodDescriptor != null) {
+			return super.toString()+"_"+getName().getValue();
+		} else {
+			return super.toString();
+		}
+		
+	}
 	
 	
 

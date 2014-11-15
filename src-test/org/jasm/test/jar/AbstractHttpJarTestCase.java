@@ -36,7 +36,7 @@ public abstract class AbstractHttpJarTestCase {
 			int counter = 0;
 			while (entries.hasMoreElements()) {
 				JarEntry entry = entries.nextElement();
-				if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
+				if (!entry.isDirectory() && entry.getName().endsWith(".class") && filter(entry.getName())) {
 					InputStream data = jar.getInputStream(entry);
 					try {
 						testClass(IOUtils.toByteArray(data));
@@ -95,5 +95,9 @@ public abstract class AbstractHttpJarTestCase {
 	protected abstract void testClass(byte[] data);
 	
 	protected abstract String getURL();
+	
+	protected boolean filter(String name) {
+		return true;
+	}
 
 }

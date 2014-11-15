@@ -19,7 +19,7 @@ public class InnerClassModifier extends AbstractModifier {
 	private static int ABSTRACT_BIT=0x0400;
 	private static String ABSTRACT_LABEL="abstract";
 	private static int SYNTETIC_BIT=0x1000;
-	private static String SYNTETIC_LABEL="syntetic";
+	private static String SYNTETIC_LABEL="synthetic";
 	private static int ANNOTATION_BIT=0x2000;
 	private static String ANNOTATION_LABEL="annotation";
 	private static int ENUM_BIT=0x4000;
@@ -52,11 +52,11 @@ public class InnerClassModifier extends AbstractModifier {
 	
 	
 	public boolean isInterface() {
-		return (this.value & 0x0200) !=0;
+		return (this.value & INTERFACE_BIT) !=0;
 	}
 	
 	public boolean isAbstract() {
-		return (this.value & INTERFACE_BIT) !=0;
+		return (this.value & ABSTRACT_BIT) !=0;
 	}
 	
 	public boolean isSyntetic() {

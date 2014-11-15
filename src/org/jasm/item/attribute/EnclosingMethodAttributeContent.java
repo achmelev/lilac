@@ -86,8 +86,10 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 	public String getPrintArgs() {
 		StringBuffer buf = new StringBuffer();
 		buf.append(clazz.getSymbolName());
-		buf.append(", ");
-		buf.append(method.getSymbolName());
+		if (method != null) {
+			buf.append(", ");
+			buf.append(method.getSymbolName());
+		}
 		return buf.toString();
 	}
 
@@ -95,8 +97,10 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 	public String getPrintComment() {
 		StringBuffer buf = new StringBuffer();
 		buf.append(clazz.getClassName());
-		buf.append(", ");
-		buf.append(method.getName()+" "+method.getDescriptor());
+		if (method != null) {
+			buf.append(", ");
+			buf.append(method.getName()+" "+method.getDescriptor());
+		}
 		return buf.toString();
 	}
 
@@ -117,14 +121,16 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 		if (this.clazz == null) {
 			emitError(clazzReference, "unknown class info");
 		}
-		this.method = getConstantPool().checkAndLoadFromSymbolTable(this,NameAndTypeInfo.class, methodReference);
-		if (this.method == null) {
-			emitError(methodReference, "unknown name_and_type info");
-		} else {
-			try {
-				MethodDescriptor desc = new MethodDescriptor(method.getDescriptor());
-			} catch (IllegalDescriptorException e) {
-				emitError(methodReference, "expected method but got type descriptor");
+		if (this.methodReference != null) {
+			this.method = getConstantPool().checkAndLoadFromSymbolTable(this,NameAndTypeInfo.class, methodReference);
+			if (this.method == null) {
+				emitError(methodReference, "unknown name_and_type info");
+			} else {
+				try {
+					MethodDescriptor desc = new MethodDescriptor(method.getDescriptor());
+				} catch (IllegalDescriptorException e) {
+					emitError(methodReference, "expected method but got type descriptor");
+				}
 			}
 		}
 	}

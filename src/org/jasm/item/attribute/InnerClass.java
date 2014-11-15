@@ -146,7 +146,6 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 			}
 		}
 		
-		
 		if (!this.hasResolveErrors()) {
 			modifier = new InnerClassModifier(0);
 			for (Keyword kw: modifierLiterals) {

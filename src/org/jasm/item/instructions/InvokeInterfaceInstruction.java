@@ -3,6 +3,7 @@ package org.jasm.item.instructions;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.item.constantpool.InterfaceMethodrefInfo;
 import org.jasm.item.descriptor.MethodDescriptor;
+import org.jasm.item.descriptor.TypeDescriptor;
 
 public class InvokeInterfaceInstruction extends ConstantPoolInstruction {
 	
@@ -27,12 +28,20 @@ public class InvokeInterfaceInstruction extends ConstantPoolInstruction {
 	public void write(IByteBuffer target, long offset) {
 		super.write(target, offset);
 		target.writeUnsignedByte(offset+2, count);
+		target.writeUnsignedByte(offset+3, (short)0);
 	}
 	
 	private void calculateCount(InterfaceMethodrefInfo methodRef) {
 		InterfaceMethodrefInfo iminfo = (InterfaceMethodrefInfo)cpEntry;
 		String descriptor = iminfo.getNameAndTypeReference().getDescriptor();
-		count = (short)(new MethodDescriptor(descriptor).getParameters().size()+1);
+		count = 1;
+		for (TypeDescriptor t: new MethodDescriptor(descriptor).getParameters()) {
+			if (t.isLong() || t.isDouble()) {
+				count+=2;
+			} else {
+				count++;
+			}
+		}
 	}
 
 	@Override
