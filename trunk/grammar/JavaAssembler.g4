@@ -107,6 +107,7 @@ methodmember: methodname SEMI
 			  | methodexceptionhandler
 			  | methodlinenumbertable
 			  | methodvariabletable
+			  | methodvariabletypetable
 			  | methodmaxstack
 			  | methodmaxlocals
 			  ;
@@ -170,6 +171,12 @@ methodvariabletable: DEBUG VARS LBRACE
 
 debugvar: VAR Identifier COMMA Identifier (Pointer Identifier)? COMMA Identifier COMMA Identifier  SEMI;
 
+
+methodvariabletypetable: DEBUG VAR TYPES LBRACE
+					   	 	 debugvartype*
+					  	 RBRACE;
+
+debugvartype: VAR Identifier COMMA Identifier (Pointer Identifier)? COMMA Identifier COMMA Identifier  SEMI;
 
 instruction: Argumentlessop #argumentlessop
 			 | Constantpoolop Identifier #constantpoolop
@@ -333,6 +340,7 @@ SIGNATURE     :  'signature';
 DEPRECATED    :  'deprecated';
 INVISIBLE     :  'invisible';
 TYPE          :  'type';
+TYPES         :  'types';
 ELEMENT       :  'element';
 BYTE          :  'byte';
 CHAR          :  'char';

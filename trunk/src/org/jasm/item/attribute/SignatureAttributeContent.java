@@ -24,4 +24,12 @@ public class SignatureAttributeContent extends AbstractStringAttributeContent {
 		return  getPrintName();
 	}
 
+	@Override
+	protected void doResolveAfterParse() {
+		super.doResolveAfterParse();
+		//TODO - checking signatures
+	}
+	
+	
+
 }
