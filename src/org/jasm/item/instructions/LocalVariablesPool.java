@@ -124,7 +124,7 @@ public class LocalVariablesPool {
 	public LocalVariable checkAndLoad(AbstractByteCodeItem caller,SymbolReference ref, char type) {
 		if (nameToVar.containsKey(ref.getSymbolName())) {
 			LocalVariable var = nameToVar.get(ref.getSymbolName());
-			if (var.getType() == type) {
+			if (var.getType() == type || type == 0) {
 				return var;
 			} else {
 				if (caller != null) {

@@ -9,7 +9,7 @@ public class GenericClassAssembleDisassembleTest extends AbstractDisassembleAsse
 		return "org/jasm/test/testclass/GenericClass.class";
 	}
 	
-	//@Test
+	@Test
 	public void test() {
 		doTest();
 	}

@@ -36,9 +36,9 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IConstan
 	private SymbolReference descriptorReference;
 	private int descriptorIndex = -1;
 	private Utf8Info descriptor = null;
-	private SymbolReference variableReference;
-	private LocalVariable variable;
-	private int index = -1;
+	protected SymbolReference variableReference;
+	protected LocalVariable variable;
+	protected int index = -1;
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
@@ -137,15 +137,7 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IConstan
 			IdentifierUtils.checkIdentifier(this, nameReference, name);
 		}
 		
-		if (descriptor != null) {
-			try {
-				TypeDescriptor d = new TypeDescriptor(descriptor.getValue());
-				variable = instr.getVariablesPool().checkAndLoad(this, variableReference, getVariableType());
-				index = variable.getIndex();
-			} catch (IllegalDescriptorException e) {
-				emitError(descriptorReference, "malformed type descriptor "+descriptor.getValue());
-			}
-		}
+		checkDescriptor();
 		
 	}
 
@@ -234,7 +226,20 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IConstan
 	}
 	
 	
-	
+	protected void checkDescriptor() {
+		Instructions instr = ((CodeAttributeContent)getParent().getParent().getParent().getParent()).getInstructions();
+		if (descriptor != null) {
+			try {
+				TypeDescriptor d = new TypeDescriptor(descriptor.getValue());
+				variable = instr.getVariablesPool().checkAndLoad(this, variableReference, getVariableType());
+				if (variable != null) {
+					index = variable.getIndex();
+				}
+			} catch (IllegalDescriptorException e) {
+				emitError(descriptorReference, "malformed type descriptor "+descriptor.getValue());
+			}
+		}
+	}
 	
 
 }
