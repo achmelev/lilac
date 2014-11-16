@@ -1,9 +1,6 @@
 package org.jasm.test.parser;
 
 
-
-import org.jasm.item.attribute.InnerClass;
-import org.jasm.item.attribute.InnerClassesAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.junit.Assert;
 import org.junit.Test;

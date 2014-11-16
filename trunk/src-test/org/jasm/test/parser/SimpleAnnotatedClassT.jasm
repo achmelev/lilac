@@ -1,0 +1,50 @@
+class {
+  version 51_0;
+  name classref_0; // org/jasm/test/testclass/SimpleAnnotatedClassT
+  extends classref_2; // java/lang/Object
+  modifier public, super;
+   //Constants
+  const classref classref_0 utf8_1; // org/jasm/test/testclass/SimpleAnnotatedClassT
+  const utf8 utf8_1 "org/jasm/test/testclass/SimpleAnnotatedClassT";
+  const classref classref_2 utf8_3; // java/lang/Object
+  const utf8 utf8_3 "java/lang/Object";
+  const utf8 utf8_4 "<init>";
+  const utf8 utf8_5 "()V";
+  const utf8 utf8_6 "Code";
+  const methodref methodref_7 classref_2, nameandtype_8; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype nameandtype_8 utf8_4, utf8_5; // name=<init> type=()V
+  const utf8 utf8_9 "LineNumberTable";
+  const utf8 utf8_10 "LocalVariableTable";
+  const utf8 utf8_11 "this";
+  const utf8 utf8_12 "Lorg/jasm/test/testclass/SimpleAnnotatedClassT;";
+  const utf8 utf8_13 "SourceFile";
+  const utf8 utf8_14 "SimpleAnnotatedClassT.java";
+  const utf8 utf8_15 "RuntimeVisibleAnnotations";
+  //const utf8 utf8_16 "Lorg/jasm/test/testclass/EmptyAnnotation;";
+  const utf8 utf8_16 "Lorg/jasm/test/testclass/EmptyAnnotationT;";
+  source file utf8_14; // SimpleAnnotatedClassT.java
+  annotation {
+    type utf8_16; // Lorg/jasm/test/testclass/EmptyAnnotation;
+  }
+   //Fields
+   //Methods
+  method {
+    name utf8_4; // <init>
+    descriptor utf8_5; // ()V
+    modifier public;
+    line numbers {
+      line ir0, 4;
+    }
+    debug vars {
+      var a_0, ir0, utf8_11, utf8_12; // name=this,  descriptor=Lorg/jasm/test/testclass/SimpleAnnotatedClassT;
+    }
+    maxstack 1;
+    maxlocals 1;
+    //Variables
+    var object a_0;
+    //Instructions
+    ir0: aload a_0;
+    invokespecial methodref_7; // class=java/lang/Object, name=<init>, descriptor=()V
+    return;
+  }
+}
