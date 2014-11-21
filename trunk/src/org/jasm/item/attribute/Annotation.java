@@ -214,6 +214,8 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 			return new EmptyAnnotationTarget();
 		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RETURN_TYPE) {
 			return new EmptyAnnotationTarget();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RECEIVER_TYPE) {
+			return new EmptyAnnotationTarget();
 		} else {
 			throw new IllegalArgumentException("unknown target type: "+Integer.toHexString(targetType));
 		}

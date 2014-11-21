@@ -2,6 +2,7 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
+import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
@@ -27,7 +28,19 @@ public class EmptyAnnotationTarget extends AbstractAnnotationTarget {
 
 	@Override
 	public String getTypeLabel() {
-		return "targets field";
+		StringBuffer buf = new StringBuffer();
+		buf.append("targets ");
+		if (targetType == JasmConsts.ANNOTATION_TARGET_FIELD) {
+			buf.append("field type");
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RECEIVER_TYPE) {
+			buf.append("receiver type");
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RETURN_TYPE) {
+			buf.append("return type");
+		} else {
+			throw new IllegalStateException("Unknown target type: "+Integer.toHexString(targetType));
+		}
+		
+		return buf.toString();
 	}
 
 	@Override

@@ -26,14 +26,14 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TypedAnnotationClassTest {
+public class TypeAnnotationClassTest {
 	
     private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Test
 	public void test() {
 		ClassLoader cl = this.getClass().getClassLoader();
-		InputStream stream = cl.getResourceAsStream("org/jasm/test/testclass/TypedAnnotationClass.class");
+		InputStream stream = cl.getResourceAsStream("org/jasm/test/testclass/TypeAnnotationClass.class");
 		ByteArrayOutputStream bo = new ByteArrayOutputStream();
 		byte [] buf = new byte[1024];
 		try {
