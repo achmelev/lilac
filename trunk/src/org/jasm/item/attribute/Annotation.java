@@ -3,6 +3,7 @@ package org.jasm.item.attribute;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
@@ -18,12 +19,15 @@ import org.jasm.parser.literals.SymbolReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Annotation extends AbstractByteCodeItem implements IContainerBytecodeItem<AnnotationElementNameValue>, IConstantPoolReference {
+public class Annotation extends AbstractByteCodeItem implements IContainerBytecodeItem<AbstractByteCodeItem>, IConstantPoolReference {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	private boolean parameterIndexSet= false;
 	private int parameterIndex = -1;
+	
+	private boolean isTypeAnnotation = false;
+	private AbstractAnnotationTarget target = null;
 	
 	private int typeIndex = -1;
 	private SymbolReference typeValueReference;
@@ -36,9 +40,20 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		if (log.isDebugEnabled()) {
 			log.debug("read annotation, offset="+offset);
 		}
-		typeIndex = source.readUnsignedShort(offset);
-		numberOfValues = source.readUnsignedShort(offset+2);
-		long currentOffset = offset+4;
+		long currentOffset = offset;
+		if (isTypeAnnotation) {
+			short targetType = source.readUnsignedByte(currentOffset);
+			target = createAnnotationTarget(targetType);
+			target.setParent(this);
+			target.read(source, currentOffset);
+			currentOffset+=target.getLength();
+			//TODO - Path length;
+			currentOffset+=1;
+		}
+		
+		typeIndex = source.readUnsignedShort(currentOffset);
+		numberOfValues = source.readUnsignedShort(currentOffset+2);
+		currentOffset = currentOffset+4;
 		for (int i=0;i<numberOfValues; i++) {
 			AnnotationElementNameValue value = new AnnotationElementNameValue();
 			if (log.isDebugEnabled()) {
@@ -54,9 +69,19 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
-		target.writeUnsignedShort(offset, type.getIndexInPool());
-		target.writeUnsignedShort(offset+2, values.size());
-		long currentOffset = offset+4;
+		long currentOffset=offset;
+		
+		if (isTypeAnnotation) {
+			this.target.write(target, currentOffset);
+			currentOffset+=this.target.getLength();
+			//TODO - Target path
+			target.writeUnsignedShort(currentOffset, 0);
+			currentOffset+=1;
+		}
+		
+		target.writeUnsignedShort(currentOffset, type.getIndexInPool());
+		target.writeUnsignedShort(currentOffset+2, values.size());
+		currentOffset += 4;
 		int counter = 0;
 		for (AnnotationElementNameValue value: values) {
 			if (log.isDebugEnabled()) {
@@ -73,6 +98,10 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	@Override
 	public int getLength() {
 		int result = 4;
+		if (isTypeAnnotation) {
+			//TODO - Target Path
+			result+=target.getLength()+1;
+		}
 		for (AnnotationElementNameValue value: values) {
 			result+=value.getLength();
 		}
@@ -93,6 +122,9 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 			int index = greatParent.indexOf((ParameterAnnotations)getParent());
 			result.add(new SimplePrintable(null, "index", index+"", null));
 		}
+		if (isTypeAnnotation) {
+			result.add(target);
+		}
 		result.addAll(values);
 		return result;
 	}
@@ -105,11 +137,16 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	@Override
 	public String getPrintName() {
 		StringBuffer buf = new StringBuffer();
-		if ((this.getParent() instanceof RuntimeInvisibleAnnotationsAttributeContent) || getParent().getParent() instanceof RuntimeInvisibleParameterAnnotationsAttributeContent) {
+		if ((this.getParent() instanceof RuntimeInvisibleAnnotationsAttributeContent) 
+			|| getParent().getParent() instanceof RuntimeInvisibleParameterAnnotationsAttributeContent
+			|| getParent() instanceof RuntimeInvisibleTypeAnnotationsAttributeContent) {
 			buf.append("invisible ");
 		} 
 		if (this.getParent() instanceof ParameterAnnotations) {
 			buf.append("parameter ");
+		}
+		if (isTypeAnnotation) {
+			buf.append("type ");
 		}
 		buf.append("annotation");
 		return buf.toString();
@@ -137,6 +174,9 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	@Override
 	protected void doResolve() {
 		type = (Utf8Info)getConstantPool().get(typeIndex-1);
+		if (isTypeAnnotation) {
+			target.resolve();
+		}
 		for (AnnotationElementNameValue value: values) {
 			value.resolve();
 		}
@@ -148,6 +188,9 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		type = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, typeValueReference);
 		if (type != null) {
 			if (verifyDescriptor(typeValueReference, type.getValue())) {
+				if (isTypeAnnotation) {
+					target.resolve();
+				}
 				for (AnnotationElementNameValue value: values) {
 					value.resolve();
 				}
@@ -165,20 +208,52 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		
 		return true;
 	}
+	
+	private AbstractAnnotationTarget createAnnotationTarget(short targetType) {
+		if (targetType == JasmConsts.ANNOTATION_TARGET_FIELD) {
+			return new EmptyAnnotationTarget();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RETURN_TYPE) {
+			return new EmptyAnnotationTarget();
+		} else {
+			throw new IllegalArgumentException("unknown target type: "+Integer.toHexString(targetType));
+		}
+	}
 
 	@Override
 	public int getSize() {
-		return values.size();
+		if (isTypeAnnotation) {
+			return 1+values.size();
+		} else {
+			return values.size();
+		}
+		
 	}
 
 	@Override
-	public AnnotationElementNameValue get(int index) {
-		return values.get(index);
+	public AbstractByteCodeItem get(int index) {
+		if (isTypeAnnotation) {
+			if (index == 0) {
+				return target;
+			} else {
+				return values.get(index-1);
+			}
+		} else {
+			return values.get(index);
+		}
 	}
 
 	@Override
-	public int indexOf(AnnotationElementNameValue item) {
-		return values.indexOf(item);
+	public int indexOf(AbstractByteCodeItem item) {
+		if (isTypeAnnotation) {
+			if (item instanceof AbstractAnnotationTarget) {
+				return (target == item)?0:-1;
+			} else {
+				return values.indexOf(item);
+			}
+		} else {
+			return values.indexOf(item);
+		}
+		
 	}
 
 	public Utf8Info getType() {
@@ -223,6 +298,14 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 
 	public boolean isParameterIndexSet() {
 		return parameterIndexSet;
+	}
+
+	public boolean isTypeAnnotation() {
+		return isTypeAnnotation;
+	}
+
+	public void setTypeAnnotation(boolean isTypedAnnotation) {
+		this.isTypeAnnotation = isTypedAnnotation;
 	}
 	
 	

@@ -106,8 +106,12 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		    return new DeprecatedAttributeContent();
 		} else if (name.getValue().equals("RuntimeInvisibleAnnotations")) {
 		    return new RuntimeInvisibleAnnotationsAttributeContent();
+		} else if (name.getValue().equals("RuntimeInvisibleTypeAnnotations")) {
+		    return new RuntimeInvisibleTypeAnnotationsAttributeContent();
 		} else if (name.getValue().equals("RuntimeVisibleAnnotations")) {
 		    return new RuntimeVisibleAnnotationsAttributeContent();
+		} else if (name.getValue().equals("RuntimeVisibleTypeAnnotations")) {
+		    return new RuntimeVisibleTypeAnnotationsAttributeContent();
 		} else if (name.getValue().equals("RuntimeInvisibleParameterAnnotations")) {
 		    return new RuntimeInvisibleParameterAnnotationsAttributeContent();
 		} else if (name.getValue().equals("RuntimeVisibleParameterAnnotations")) {
