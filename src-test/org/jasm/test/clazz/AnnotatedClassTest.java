@@ -76,43 +76,43 @@ public class AnnotatedClassTest {
 		assertEquals("Lorg/jasm/test/testclass/TestAnnotation;",ann.getTypeValue());
 		assertEquals(10, ann.getValues().size());
 		
-		AnnotationElementNameValue anmv = ann.get(0);
+		AnnotationElementNameValue anmv = (AnnotationElementNameValue)ann.get(0);
 		assertEquals("booleanValue", anmv.getNameValue());
 		assertEquals(0, anmv.getValue().getPrimitiveValue());
 		
-		anmv = ann.get(1);
+		anmv = (AnnotationElementNameValue)ann.get(1);
 		assertEquals("byteValue", anmv.getNameValue());
 		assertEquals(1, anmv.getValue().getPrimitiveValue());
 		
-		anmv = ann.get(2);
+		anmv = (AnnotationElementNameValue)ann.get(2);
 		assertEquals("charValue", anmv.getNameValue());
 		assertEquals(2, anmv.getValue().getPrimitiveValue());
 		
-		anmv = ann.get(3);
+		anmv = (AnnotationElementNameValue)ann.get(3);
 		assertEquals("enumValue", anmv.getNameValue());
 		assertEquals("MONDAY", anmv.getValue().getEnumConstNameValue());
 		assertEquals("Lorg/jasm/test/testclass/Days;", anmv.getValue().getEnumTypeNameValue());
 		
-		anmv = ann.get(4);
+		anmv = (AnnotationElementNameValue)ann.get(4);
 		assertEquals("clazzValue", anmv.getNameValue());
 		assertEquals("Ljava/lang/Void;", anmv.getValue().getClassName());
 		
-		anmv = ann.get(5);
+		anmv = (AnnotationElementNameValue)ann.get(5);
 		assertEquals("intValue", anmv.getNameValue());
 		assertEquals(5, anmv.getValue().getPrimitiveValue());
 		
-		anmv = ann.get(6);
+		anmv = (AnnotationElementNameValue)ann.get(6);
 		assertEquals("longValue", anmv.getNameValue());
 		assertEquals(new Long(6), anmv.getValue().getPrimitiveValue());
 		
-		anmv = ann.get(7);
+		anmv = (AnnotationElementNameValue)ann.get(7);
 		assertEquals("shortValue", anmv.getNameValue());
 		assertEquals(7, anmv.getValue().getPrimitiveValue());
 		
-		anmv = ann.get(8);
+		anmv = (AnnotationElementNameValue)ann.get(8);
 		assertEquals("Lorg/jasm/test/testclass/NestedAnnotation;", anmv.getValue().getNestedAnnotation().getTypeValue());
 		
-		anmv = ann.get(9);
+		anmv = (AnnotationElementNameValue)ann.get(9);
 		List<AnnotationElementValue> array =  anmv.getValue().getArrayMembers();
 		assertEquals(3, array.size());
 		assertEquals(2,array.get(0).getPrimitiveValue());
@@ -132,43 +132,43 @@ public class AnnotatedClassTest {
 		assertEquals("Lorg/jasm/test/testclass/TestAnnotation;",ann.getTypeValue());
 		assertEquals(10, ann.getValues().size());
 		
-		anmv = ann.get(0);
+		anmv = (AnnotationElementNameValue)ann.get(0);
 		assertEquals("booleanValue", anmv.getNameValue());
 		assertEquals(0, anmv.getValue().getPrimitiveValue());
 		
-		anmv = ann.get(1);
+		anmv = (AnnotationElementNameValue)ann.get(1);
 		assertEquals("byteValue", anmv.getNameValue());
 		assertEquals(1, anmv.getValue().getPrimitiveValue());
 		
-		anmv = ann.get(2);
+		anmv = (AnnotationElementNameValue)ann.get(2);
 		assertEquals("charValue", anmv.getNameValue());
 		assertEquals(2, anmv.getValue().getPrimitiveValue());
 		
-		anmv = ann.get(3);
+		anmv = (AnnotationElementNameValue)ann.get(3);
 		assertEquals("enumValue", anmv.getNameValue());
 		assertEquals("TUESDAY", anmv.getValue().getEnumConstNameValue());
 		assertEquals("Lorg/jasm/test/testclass/Days;", anmv.getValue().getEnumTypeNameValue());
 		
-		anmv = ann.get(4);
+		anmv = (AnnotationElementNameValue)ann.get(4);
 		assertEquals("clazzValue", anmv.getNameValue());
 		assertEquals("Ljava/lang/Void;", anmv.getValue().getClassName());
 		
-		anmv = ann.get(5);
+		anmv = (AnnotationElementNameValue)ann.get(5);
 		assertEquals("intValue", anmv.getNameValue());
 		assertEquals(5, anmv.getValue().getPrimitiveValue());
 		
-		anmv = ann.get(6);
+		anmv = (AnnotationElementNameValue)ann.get(6);
 		assertEquals("longValue", anmv.getNameValue());
 		assertEquals(new Long(6), anmv.getValue().getPrimitiveValue());
 		
-		anmv = ann.get(7);
+		anmv = (AnnotationElementNameValue)ann.get(7);
 		assertEquals("shortValue", anmv.getNameValue());
 		assertEquals(7, anmv.getValue().getPrimitiveValue());
 		
-		anmv = ann.get(8);
+		anmv = (AnnotationElementNameValue)ann.get(8);
 		assertEquals("Lorg/jasm/test/testclass/NestedAnnotation;", anmv.getValue().getNestedAnnotation().getTypeValue());
 		
-		anmv = ann.get(9);
+		anmv = (AnnotationElementNameValue)ann.get(9);
 		array =  anmv.getValue().getArrayMembers();
 		assertEquals(3, array.size());
 		assertEquals(2,array.get(0).getPrimitiveValue());
