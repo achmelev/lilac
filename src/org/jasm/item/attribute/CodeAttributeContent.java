@@ -3,10 +3,6 @@ package org.jasm.item.attribute;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.smartcardio.ATR;
-
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
