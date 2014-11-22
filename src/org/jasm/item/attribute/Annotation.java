@@ -27,7 +27,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	private int parameterIndex = -1;
 	
 	private boolean isTypeAnnotation = false;
-	private AbstractAnnotationTarget target = null;
+	private AbstractAnnotationTargetType target = null;
 	
 	private int typeIndex = -1;
 	private SymbolReference typeValueReference;
@@ -209,13 +209,27 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		return true;
 	}
 	
-	private AbstractAnnotationTarget createAnnotationTarget(short targetType) {
+	private AbstractAnnotationTargetType createAnnotationTarget(short targetType) {
 		if (targetType == JasmConsts.ANNOTATION_TARGET_FIELD) {
-			return new EmptyAnnotationTarget();
+			return new EmptyAnnotationTargetType();
 		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RETURN_TYPE) {
-			return new EmptyAnnotationTarget();
+			return new EmptyAnnotationTargetType();
 		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RECEIVER_TYPE) {
-			return new EmptyAnnotationTarget();
+			return new EmptyAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_CLASS_TYPE_PARAMETER) {
+			return new TypeParameterAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_PARAMETER) {
+			return new TypeParameterAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_CLASS_TYPE_PARAMETER_BOUND) {
+			return new TypeParameterBoundAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_PARAMETER_BOUND) {
+			return new TypeParameterBoundAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_SUPERTYPE) {
+			return new SupertypeAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_FORMAL_PARAMETER) {
+			return new FormalParameterAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_THROWS) {
+			return new ExceptionAnnotationTargetType();
 		} else {
 			throw new IllegalArgumentException("unknown target type: "+Integer.toHexString(targetType));
 		}
@@ -247,7 +261,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	@Override
 	public int indexOf(AbstractByteCodeItem item) {
 		if (isTypeAnnotation) {
-			if (item instanceof AbstractAnnotationTarget) {
+			if (item instanceof AbstractAnnotationTargetType) {
 				return (target == item)?0:-1;
 			} else {
 				return values.indexOf(item);
