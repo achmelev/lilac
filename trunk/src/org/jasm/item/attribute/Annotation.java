@@ -229,7 +229,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		} else if (targetType == JasmConsts.ANNOTATION_TARGET_FORMAL_PARAMETER) {
 			return new FormalParameterAnnotationTargetType();
 		} else if (targetType == JasmConsts.ANNOTATION_TARGET_THROWS) {
-			return new ExceptionAnnotationTargetType();
+			return new ThrowsAnnotationTargetType();
 		} else {
 			throw new IllegalArgumentException("unknown target type: "+Integer.toHexString(targetType));
 		}

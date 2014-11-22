@@ -1,10 +1,14 @@
 package org.jasm.item.attribute;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.IBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
@@ -15,6 +19,7 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 	
 	private int [] indexes = null; 
 	private List<SymbolReference> exceptionReferences;
+	private Set<Integer> referencedThrowsDeclarations = new HashSet<Integer>();
 	private ClassInfo[] classInfos = null;
 	
 	public ExceptionsAttributeContent(ClassInfo[] classInfos) {
@@ -79,11 +84,13 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 	public String getPrintArgs() {
 		StringBuffer buf = new StringBuffer();
 		int index = 0;
-		for (ClassInfo cli: classInfos) {
+		for (int i=0;i<classInfos.length; i++) {
+			ClassInfo cli = classInfos[i];
 			if (index >0) {
 				buf.append(", ");
 			}
-			buf.append(cli.getSymbolName());
+			boolean hasLabel = referencedThrowsDeclarations.contains(i);
+			buf.append((hasLabel?("throwsref_"+i+":"):"")+cli.getSymbolName());
 			index++;
 		}
 		return buf.toString();
@@ -146,6 +153,19 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 
 	public void setExceptionReferences(List<SymbolReference> exceptionReferences) {
 		this.exceptionReferences = exceptionReferences;
+	}
+
+	@Override
+	protected void doUpdateMetadata() {
+		referencedThrowsDeclarations.clear();
+		List<IBytecodeItem> items = ((AbstractByteCodeItem)getParent().getParent()).getAllItemsFromHere();
+		for (IBytecodeItem item: items) {
+			if (item instanceof IThrowsDeclarationsReference) {
+				for (int index: ((IThrowsDeclarationsReference)item).getIndexes()) {
+					referencedThrowsDeclarations.add(index);
+				}
+			}
+		}
 	}
 	
 	
