@@ -120,6 +120,7 @@ import org.jasm.parser.JavaAssemblerParser.DeprecatedattributeContext;
 import org.jasm.parser.JavaAssemblerParser.DoubleinfoContext;
 import org.jasm.parser.JavaAssemblerParser.EnclosingmethodContext;
 import org.jasm.parser.JavaAssemblerParser.EnumannotationelementvalueContext;
+import org.jasm.parser.JavaAssemblerParser.ExceptionsattributeContext;
 import org.jasm.parser.JavaAssemblerParser.FieldContext;
 import org.jasm.parser.JavaAssemblerParser.FieldattributeConstantValueContext;
 import org.jasm.parser.JavaAssemblerParser.FielddescriptorContext;
@@ -153,6 +154,7 @@ import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacemethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacesContext;
+import org.jasm.parser.JavaAssemblerParser.LabeledIdentifierContext;
 import org.jasm.parser.JavaAssemblerParser.LinenumberContext;
 import org.jasm.parser.JavaAssemblerParser.LocalvaropContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
@@ -360,9 +362,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void enterInterfaces(InterfacesContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
 		if (clazz.getInterfaceSymbols() == null) {
-			List<TerminalNode> nodes = ctx.Identifier();
+			List<LabeledIdentifierContext> nodes = ctx.labeledIdentifier();
 			List<SymbolReference> symbols = new ArrayList<>();
-			for (TerminalNode node: nodes) {
+			for (LabeledIdentifierContext node: nodes) {
 				symbols.add(createSymbolReference(node));
 			}
 			clazz.setInterfaceSymbols(symbols);
@@ -720,21 +722,24 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 	
 	
+	
+	
 
 	@Override
-	public void enterMethodAttributeExceptions(
-			MethodAttributeExceptionsContext ctx) {
+	public void enterExceptionsattribute(ExceptionsattributeContext ctx) {
 		ExceptionsAttributeContent content = new ExceptionsAttributeContent();
 		
-		List<TerminalNode> nodes = ctx.Identifier();
+		
+		List<LabeledIdentifierContext> nodes = ctx.labeledIdentifier();
 		List<SymbolReference> symbols = new ArrayList<>();
-		for (TerminalNode node: nodes) {
+		for (LabeledIdentifierContext node: nodes) {
 			symbols.add(createSymbolReference(node));
 		}
 		
 		content.setExceptionReferences(symbols);
 		addAttribute(content, ctx.THROWS());
 	}
+
 
 	@Override
 	public void enterMethodvarimplicit(MethodvarimplicitContext ctx) {
@@ -1698,6 +1703,15 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private SymbolReference createSymbolReference(TerminalNode node) {
 		return new SymbolReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private SymbolReference createSymbolReference(LabeledIdentifierContext lic) {
+		TerminalNode node = lic.Identifier();
+		SymbolReference result =  new SymbolReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+		if (lic.label() != null) {
+			result.setReferenceLabel(lic.label().getText());
+		}
+		return result;
 	}
 	
 	private Label createLabel(TerminalNode node) {

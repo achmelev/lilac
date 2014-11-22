@@ -26,7 +26,7 @@ classname: NAME Identifier;
 
 superclass: EXTENDS Identifier;
 
-interfaces: IMPLEMENTS Identifier ( COMMA Identifier)*;
+interfaces: IMPLEMENTS labeledIdentifier (COMMA labeledIdentifier)*;
 
 classmodifier: MODIFIER classmodifierlabel (COMMA  classmodifierlabel)*;
 
@@ -132,7 +132,7 @@ methodmodifierlabel:  PUBLIC 		# methodmodifierPublic
 					| SYNTETIC 	    # methodmodifierSyntetic
 					;
 
-methodattribute: THROWS Identifier (COMMA Identifier)* SEMI #methodAttributeExceptions
+methodattribute:   exceptionsattribute #methodAttributeExceptions
 				 | signatureattribute #methodAttributeSignature
 				 | synteticattribute #methodAttributeSyntetic
 				 | deprecatedattribute #methodAttributeDeprecated
@@ -141,6 +141,8 @@ methodattribute: THROWS Identifier (COMMA Identifier)* SEMI #methodAttributeExce
 				 | unknownattribute #methodUnknownattribute
 				 | stackmapattribute #methodStackmapattribute
 				 ;
+
+exceptionsattribute: THROWS labeledIdentifier (COMMA labeledIdentifier)* SEMI;
 
 methodvar: methodvarimplicit #methodvar_implicit
 		   | methodvarrelative #methodvar_relative
@@ -265,6 +267,8 @@ arrayannotationelementvalue: ARRAY VALUE LBRACE
 
 
 label: Identifier;
+labeledIdentifier: (label COLON)? Identifier;
+
 
 wideOrNormal : WIDE|NORMAL;
 
