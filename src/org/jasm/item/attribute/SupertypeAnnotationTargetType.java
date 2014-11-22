@@ -5,9 +5,8 @@ import java.util.List;
 import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
-import org.jasm.item.clazz.IImplementsDeclarationsReference;
 
-public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType implements IImplementsDeclarationsReference {
+public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType implements IThrowsDeclarationsReference {
 	
 	private int index = -1;
 

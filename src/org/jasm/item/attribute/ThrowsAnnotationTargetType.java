@@ -6,15 +6,15 @@ import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
-public class ExceptionAnnotationTargetType extends AbstractAnnotationTargetType {
+public class ThrowsAnnotationTargetType extends AbstractAnnotationTargetType implements IThrowsDeclarationsReference {
 	
 	private int index = -1;
 
-	public ExceptionAnnotationTargetType() {
+	public ThrowsAnnotationTargetType() {
 		super();
 	}
 
-	public ExceptionAnnotationTargetType(short targetType, short index) {
+	public ThrowsAnnotationTargetType(short targetType, short index) {
 		super(targetType);
 		this.index = index;
 		if (index>=0 && index<=65535) {
@@ -72,7 +72,7 @@ public class ExceptionAnnotationTargetType extends AbstractAnnotationTargetType 
 	@Override
 	public String getPrintArgs() {
 		if (index != JasmConsts.ANNOTATION_TARGET_SUPERTYPE_CLASSINDEX) {
-			return ""+index;
+			return "throwsref_"+index;
 		} else {
 			return null;
 		}
@@ -92,6 +92,11 @@ public class ExceptionAnnotationTargetType extends AbstractAnnotationTargetType 
 	@Override
 	protected void doResolveAfterParse() {
 		
+	}
+
+	@Override
+	public int[] getIndexes() {
+		return new int[]{index};
 	}
 	
 
