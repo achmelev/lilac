@@ -6,40 +6,46 @@ import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
-public class EmptyAnnotationTarget extends AbstractAnnotationTarget {
+public class ExceptionAnnotationTargetType extends AbstractAnnotationTargetType {
 	
-	private short targetType = -1;
+	private int index = -1;
+
+	public ExceptionAnnotationTargetType() {
+		super();
+	}
+
+	public ExceptionAnnotationTargetType(short targetType, short index) {
+		super(targetType);
+		this.index = index;
+		if (index>=0 && index<=65535) {
+			//OK
+		} else {
+			throw new IllegalArgumentException("index out of bounds: "+index);
+		}
+	}
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
 		targetType = source.readUnsignedByte(offset);
+		index = source.readUnsignedShort(offset+1);
 	}
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
 		target.writeUnsignedByte(offset, targetType);
+		target.writeUnsignedShort(offset+1, index);
 		
 	}
 
 	@Override
 	public int getLength() {
-		return 1;
+		return 3;
 	}
 
 	@Override
 	public String getTypeLabel() {
 		StringBuffer buf = new StringBuffer();
-		buf.append("targets ");
-		if (targetType == JasmConsts.ANNOTATION_TARGET_FIELD) {
-			buf.append("field type");
-		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RECEIVER_TYPE) {
-			buf.append("receiver type");
-		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RETURN_TYPE) {
-			buf.append("return type");
-		} else {
-			throw new IllegalStateException("Unknown target type: "+Integer.toHexString(targetType));
-		}
-		
+		buf.append("targets exception");
 		return buf.toString();
 	}
 
@@ -65,7 +71,11 @@ public class EmptyAnnotationTarget extends AbstractAnnotationTarget {
 
 	@Override
 	public String getPrintArgs() {
-		return null;
+		if (index != JasmConsts.ANNOTATION_TARGET_SUPERTYPE_CLASSINDEX) {
+			return ""+index;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
