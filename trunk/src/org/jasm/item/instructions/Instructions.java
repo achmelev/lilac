@@ -388,6 +388,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	protected void doUpdateMetadata() {
 		instructionReferences.clear();
 		localVariableReferences.clear();
+		
 
 		List<IBytecodeItem> allItems = ((AbstractByteCodeItem)getParent()).getAllItemsFromHere();
 		for (IBytecodeItem item: allItems) {
