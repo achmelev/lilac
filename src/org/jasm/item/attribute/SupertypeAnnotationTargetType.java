@@ -5,8 +5,9 @@ import java.util.List;
 import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.item.clazz.IImplementsDeclarationsReference;
 
-public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType {
+public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType implements IImplementsDeclarationsReference {
 	
 	private int index = -1;
 
@@ -72,7 +73,7 @@ public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType 
 	@Override
 	public String getPrintArgs() {
 		if (index != JasmConsts.ANNOTATION_TARGET_SUPERTYPE_CLASSINDEX) {
-			return ""+index;
+			return "implref_"+index;
 		} else {
 			return null;
 		}
@@ -92,6 +93,15 @@ public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType 
 	@Override
 	protected void doResolveAfterParse() {
 		
+	}
+
+	@Override
+	public int[] getIndexes() {
+		if (index != JasmConsts.ANNOTATION_TARGET_SUPERTYPE_CLASSINDEX) {
+			return new int[]{index};
+		} else {
+			return new int[]{};
+		}
 	}
 	
 

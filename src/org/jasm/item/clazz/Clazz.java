@@ -1,7 +1,9 @@
 package org.jasm.item.clazz;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
@@ -44,6 +46,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	private List<SymbolReference> interfaceSymbols;
 	private List<ClassInfo> interfaces;
 	private List<Integer> interfacesIndexes = null;
+	private Set<Integer> referencedImplementsDeclarations = null;
 	private Fields fields = null;
 	private Methods methods = null;
 	private Attributes attributes = null;
@@ -77,6 +80,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		children.add(attributes);
 		modifierLiterals= new ArrayList<>();
 		interfaces = new ArrayList<>();
+		referencedImplementsDeclarations = new HashSet<Integer>();
+		
 		
 	}
 
@@ -189,7 +194,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			String [] comment = new String[interfaces.size()];
 			String[] args = new String[interfaces.size()];
 			for (int i=0;i<interfaces.size(); i++) {
-				args[i] = interfaces.get(i).getSymbolName();
+				boolean hasLabel = referencedImplementsDeclarations.contains(i);
+				args[i] = (hasLabel?"implref_"+i+":":"")+interfaces.get(i).getSymbolName();
 				comment[i] = interfaces.get(i).getClassName();
 		
 			}
@@ -313,6 +319,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		fields.updateMetadata();
 		methods.updateMetadata();
 		attributes.updateMetadata();
+		doUpdateMetadata();
 	}
 
 	@Override
@@ -452,6 +459,18 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 
 	public void setInterfaceSymbols(List<SymbolReference> interfaceSymbols) {
 		this.interfaceSymbols = interfaceSymbols;
+	}
+
+	@Override
+	protected void doUpdateMetadata() {
+		List<IBytecodeItem> items = getAllItemsFromHere();
+		for (IBytecodeItem item: items) {
+			if (item instanceof IImplementsDeclarationsReference) {
+				for (int index: ((IImplementsDeclarationsReference)item).getIndexes()) {
+					referencedImplementsDeclarations.add(index);
+				}
+			}
+		}
 	}
 
 	
