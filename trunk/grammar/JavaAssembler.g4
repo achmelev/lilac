@@ -159,7 +159,7 @@ methodvarabsolute: VAR methodvartype Identifier AT IntegerLiteral SEMI;
 
 methodinstruction: (label COLON)? instruction SEMI;
 
-methodexceptionhandler: TRY Identifier Pointer Identifier CATCH identifierOrAll GO TO Identifier SEMI;
+methodexceptionhandler: (label COLON)? TRY Identifier Pointer Identifier CATCH identifierOrAll GO TO Identifier SEMI;
 
 methodlinenumbertable: LINE NUMBERS LBRACE
 					   	  linenumber*
