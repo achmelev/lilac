@@ -19,7 +19,11 @@ public class TypeAnnotationClass<Q, @EmptyInvisibleTypeAnnotation @EmptyVisibleT
 	@Override
 	public void run() {
 		
-		
+		try {
+			new Integer("123x");
+		} catch (@EmptyInvisibleTypeAnnotation @EmptyVisibleTypeAnnotation IllegalArgumentException e) {
+			System.err.println("Hallo");
+		}
 	}
 
 	@Override

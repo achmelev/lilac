@@ -81,7 +81,13 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 
 	@Override
 	public String getPrintLabel() {
-		return null;
+		ExceptionHandlerTable table = (ExceptionHandlerTable)getParent();
+		if (table.isReferenced(this)) {
+			return "try_"+table.getHandlerIndex(this);
+		} else {
+			return null;
+		}
+		
 	}
 
 	@Override
@@ -199,7 +205,10 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 		return handlerInstruction;
 	}
 
-	
+	public int getIndex() {
+		ExceptionHandlerTable table = (ExceptionHandlerTable)getParent();
+		return table.indexOf(this);
+	}
 	
 	
 
