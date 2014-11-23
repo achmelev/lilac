@@ -5,35 +5,35 @@ import java.util.List;
 import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.IInstructionReference;
+import org.jasm.item.instructions.Instructions;
 
-public class ThrowsAnnotationTargetType extends AbstractAnnotationTargetType implements IThrowsDeclarationsReference {
+public class CatchAnnotationTargetType extends AbstractAnnotationTargetType implements IExceptionHandlerReference {
 	
-	private int index = -1;
+	private int handlerIndex = -1;
+	private ExceptionHandler handler;
 
-	public ThrowsAnnotationTargetType() {
+	public CatchAnnotationTargetType() {
 		super();
 	}
 
-	public ThrowsAnnotationTargetType(short targetType, short index) {
-		super(targetType);
-		this.index = index;
-		if (index>=0 && index<=65535) {
-			//OK
-		} else {
-			throw new IllegalArgumentException("index out of bounds: "+index);
-		}
+	public CatchAnnotationTargetType(ExceptionHandler handler) {
+		super(JasmConsts.ANNOTATION_TARGET_CATCH);
+		this.handler = handler;
 	}
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
 		targetType = source.readUnsignedByte(offset);
-		index = source.readUnsignedShort(offset+1);
+		handlerIndex = source.readUnsignedShort(offset+1);
+		
 	}
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
 		target.writeUnsignedByte(offset, targetType);
-		target.writeUnsignedShort(offset+1, index);
+		target.writeUnsignedShort(offset+1, handler.getIndex());
 		
 	}
 
@@ -44,9 +44,7 @@ public class ThrowsAnnotationTargetType extends AbstractAnnotationTargetType imp
 
 	@Override
 	public String getTypeLabel() {
-		StringBuffer buf = new StringBuffer();
-		buf.append("targets throws type");
-		return buf.toString();
+		return "targets catch type";
 	}
 
 	@Override
@@ -71,11 +69,7 @@ public class ThrowsAnnotationTargetType extends AbstractAnnotationTargetType imp
 
 	@Override
 	public String getPrintArgs() {
-		if (index != JasmConsts.ANNOTATION_TARGET_SUPERTYPE_CLASSINDEX) {
-			return "throwsref_"+index;
-		} else {
-			return null;
-		}
+		return handler.getPrintLabel();
 	}
 
 	@Override
@@ -85,8 +79,8 @@ public class ThrowsAnnotationTargetType extends AbstractAnnotationTargetType imp
 
 	@Override
 	protected void doResolve() {
-
-		
+		CodeAttributeContent code = (CodeAttributeContent)getAncestor(CodeAttributeContent.class);
+		handler = code.getExceptionTable().get(handlerIndex);
 	}
 
 	@Override
@@ -95,9 +89,10 @@ public class ThrowsAnnotationTargetType extends AbstractAnnotationTargetType imp
 	}
 
 	@Override
-	public int[] getIndexes() {
-		return new int[]{index};
+	public ExceptionHandler[] getExceptionHandlerReferences() {
+		return new ExceptionHandler[]{handler};
 	}
+
 	
 
 }

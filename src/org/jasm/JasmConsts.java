@@ -44,7 +44,7 @@ public class JasmConsts {
 	public static short ANNOTATION_TARGET_THROWS=0x17;
 	public static short ANNOTATION_TARGET_LOCAL_VAR=0x40;
 	public static short ANNOTATION_TARGET_RESOURCE_VAR=0x41;
-	public static short ANNOTATION_TARGET_EXCEPTION_PARAMETER=0x42;
+	public static short ANNOTATION_TARGET_CATCH=0x42;
 	public static short ANNOTATION_TARGET_INSTANCEOF=0x43;
 	public static short ANNOTATION_TARGET_NEW=0x44;
 	public static short ANNOTATION_TARGET_METHOD_REF_NEW=0x45;
