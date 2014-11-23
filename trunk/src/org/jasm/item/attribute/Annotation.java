@@ -28,6 +28,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	
 	private boolean isTypeAnnotation = false;
 	private AbstractAnnotationTargetType target = null;
+	private AnnotationTargetTypePath targetPath = null;
 	
 	private int typeIndex = -1;
 	private SymbolReference typeValueReference;
@@ -46,9 +47,18 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 			target = createAnnotationTarget(targetType);
 			target.setParent(this);
 			target.read(source, currentOffset);
+			if (log.isDebugEnabled()) {
+				log.debug("read target "+this.target+" at offset "+currentOffset);
+			}
 			currentOffset+=target.getLength();
-			//TODO - Path length;
-			currentOffset+=1;
+			
+			targetPath = new AnnotationTargetTypePath();
+			targetPath.setParent(this);
+			targetPath.read(source, currentOffset);
+			if (log.isDebugEnabled()) {
+				log.debug("read target path at offset "+currentOffset);
+			}
+			currentOffset+=targetPath.getLength();
 		}
 		
 		typeIndex = source.readUnsignedShort(currentOffset);
@@ -73,10 +83,16 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		
 		if (isTypeAnnotation) {
 			this.target.write(target, currentOffset);
+			if (log.isDebugEnabled()) {
+				log.debug("wrote target "+this.target+" at offset "+currentOffset);
+			}
 			currentOffset+=this.target.getLength();
-			//TODO - Target path
-			target.writeUnsignedShort(currentOffset, 0);
-			currentOffset+=1;
+			
+			targetPath.write(target, currentOffset);
+			if (log.isDebugEnabled()) {
+				log.debug("wrote target path at offset "+currentOffset);
+			}
+			currentOffset+=targetPath.getLength();
 		}
 		
 		target.writeUnsignedShort(currentOffset, type.getIndexInPool());
@@ -99,8 +115,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	public int getLength() {
 		int result = 4;
 		if (isTypeAnnotation) {
-			//TODO - Target Path
-			result+=target.getLength()+1;
+			result+=target.getLength()+targetPath.getLength();
 		}
 		for (AnnotationElementNameValue value: values) {
 			result+=value.getLength();
@@ -124,6 +139,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		}
 		if (isTypeAnnotation) {
 			result.add(target);
+			result.add(targetPath);
 		}
 		result.addAll(values);
 		return result;
@@ -161,13 +177,11 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 
 	@Override
 	public String getPrintArgs() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getPrintComment() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -176,6 +190,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		type = (Utf8Info)getConstantPool().get(typeIndex-1);
 		if (isTypeAnnotation) {
 			target.resolve();
+			targetPath.resolve();
 		}
 		for (AnnotationElementNameValue value: values) {
 			value.resolve();
@@ -190,6 +205,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 			if (verifyDescriptor(typeValueReference, type.getValue())) {
 				if (isTypeAnnotation) {
 					target.resolve();
+					targetPath.resolve();
 				}
 				for (AnnotationElementNameValue value: values) {
 					value.resolve();
@@ -230,6 +246,24 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 			return new FormalParameterAnnotationTargetType();
 		} else if (targetType == JasmConsts.ANNOTATION_TARGET_THROWS) {
 			return new ThrowsAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_CAST) {
+			return new TypeArgumentAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_CONSTRUCTOR_TYPE_ARGUMENT) {
+			return new TypeArgumentAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_CONSTRUCTOR_TYPE_ARGUMENT_IN_METHOD_REF) {
+			return new TypeArgumentAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_ARGUMENT) {
+			return new TypeArgumentAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_ARGUMENT_IN_METHOD_REF) {
+			return new TypeArgumentAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_INSTANCEOF) {
+			return new OffsetAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_NEW) {
+			return new OffsetAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_METHOD_REF_ID) {
+			return new OffsetAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_METHOD_REF_NEW) {
+			return new OffsetAnnotationTargetType();
 		} else {
 			throw new IllegalArgumentException("unknown target type: "+Integer.toHexString(targetType));
 		}
@@ -238,7 +272,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	@Override
 	public int getSize() {
 		if (isTypeAnnotation) {
-			return 1+values.size();
+			return 2+values.size();
 		} else {
 			return values.size();
 		}
@@ -250,8 +284,10 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		if (isTypeAnnotation) {
 			if (index == 0) {
 				return target;
+			} else if (index == 1) {
+				return targetPath;
 			} else {
-				return values.get(index-1);
+				return values.get(index-2);
 			}
 		} else {
 			return values.get(index);
@@ -263,6 +299,8 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		if (isTypeAnnotation) {
 			if (item instanceof AbstractAnnotationTargetType) {
 				return (target == item)?0:-1;
+			} else if (item instanceof AnnotationTargetTypePath) {
+					return (targetPath == item)?1:-1;
 			} else {
 				return values.indexOf(item);
 			}
