@@ -266,6 +266,10 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 			return new OffsetAnnotationTargetType();
 		} else if (targetType == JasmConsts.ANNOTATION_TARGET_CATCH) {
 			return new CatchAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_LOCAL_VAR) {
+			return new LocalVariableAnnotationTargetType();
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RESOURCE_VAR) {
+			return new LocalVariableAnnotationTargetType();
 		} else {
 			throw new IllegalArgumentException("unknown target type: "+Integer.toHexString(targetType));
 		}

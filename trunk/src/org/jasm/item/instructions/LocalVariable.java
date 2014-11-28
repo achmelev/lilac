@@ -19,6 +19,8 @@ public class LocalVariable implements Comparable<LocalVariable> {
 	
 	private boolean resolving = false;
 	
+	private AbstractInstruction referencingInstruction;
+	
 	public LocalVariable(int index, char type) {
 		this.index = index;
 		this.type = type;
@@ -239,6 +241,18 @@ public class LocalVariable implements Comparable<LocalVariable> {
 		}
 		
 		return type;
+	}
+
+	public AbstractInstruction getReferencingInstruction() {
+		return referencingInstruction;
+	}
+
+	public void setReferencingInstruction(AbstractInstruction referencingInstruction) {
+		this.referencingInstruction = referencingInstruction;
+	}
+
+	public void setType(char type) {
+		this.type = type;
 	}
 	
 	

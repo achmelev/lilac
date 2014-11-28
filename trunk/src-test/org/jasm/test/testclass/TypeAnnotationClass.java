@@ -1,5 +1,9 @@
 package org.jasm.test.testclass;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -40,7 +44,7 @@ public class TypeAnnotationClass<Q, @EmptyInvisibleTypeAnnotation @EmptyVisibleT
 	}
 	
 	public void send2(Integer a, @EmptyVisibleTypeAnnotation @EmptyInvisibleTypeAnnotation Double b) throws RuntimeException, @EmptyVisibleTypeAnnotation @EmptyInvisibleTypeAnnotation IllegalArgumentException {
-		Object o = a;
+		@EmptyVisibleTypeAnnotation @EmptyInvisibleTypeAnnotation Object o = a;
 		Integer i = (@EmptyVisibleTypeAnnotation @EmptyInvisibleTypeAnnotation Integer)o;
 		
 		TypeAnnotationInterface3 arg = null;
@@ -49,7 +53,15 @@ public class TypeAnnotationClass<Q, @EmptyInvisibleTypeAnnotation @EmptyVisibleT
 		TypeAnnotationClass.<String, @EmptyVisibleTypeAnnotation @EmptyInvisibleTypeAnnotation TypeAnnotationInterface3>doSend(arg);
 		
 		TypeAnnotationClass<String, TypeAnnotationInterface3> inst2 = new  <@EmptyVisibleTypeAnnotation @EmptyInvisibleTypeAnnotation TypeAnnotationInterface3>TypeAnnotationClass< String, TypeAnnotationInterface3>(arg);
-	
+		
+		String path = "";
+		try (@EmptyVisibleTypeAnnotation @EmptyInvisibleTypeAnnotation BufferedReader br =
+                new BufferedReader(new FileReader(path))) {
+				br.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static <R, @EmptyVisibleTypeAnnotation @EmptyInvisibleTypeAnnotation S extends TypeAnnotationInterface1 & @EmptyVisibleTypeAnnotation @EmptyInvisibleTypeAnnotation TypeAnnotationInterface2> void doSend(S arg) {

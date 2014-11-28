@@ -35,6 +35,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	
 	private Set<LocalVariable> localVariableReferences;
 	
+	private KeyToListMap<LocalVariable, AbstractInstruction> instructionsReferencingVariables = new KeyToListMap<LocalVariable, AbstractInstruction>();
+	
 	private LocalVariablesPool variablesPool;
 	
 	private SymbolTable symbolTable = new SymbolTable(null);
@@ -404,10 +406,26 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			if (item instanceof ILocalVariableReference) {
 				ILocalVariableReference lref = (ILocalVariableReference)item;
 				for (LocalVariable l: lref.getLocalVariableReferences()) {
+					if (lref instanceof AbstractInstruction) {
+						instructionsReferencingVariables.addToList(l, (AbstractInstruction)lref);
+					}
 					localVariableReferences.add(l);
 				}
 			}
 		}
+		
+		for (IBytecodeItem item: allItems) {
+			if (item instanceof IUnknownVariableReference) {
+				IUnknownVariableReference lref = (IUnknownVariableReference)item;
+				for (int i=0;i<lref.getVariableIndexes().length; i++) {
+					List<LocalVariable> matching = findMatchingLocalVariable(lref.getStartOffsets()[i], lref.getEndOffsets()[i], lref.getVariableIndexes()[i]);
+					if (matching.size() == 1) {
+						lref.setLocalVariable(matching.get(0));
+					}
+				}
+			}
+		}
+		
 		
 				
 	}
@@ -451,6 +469,29 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			}
 		}
 		return result;
+	}
+	
+	public List<LocalVariable>  findMatchingLocalVariable(int startInstructionOffset, int endInstructionOffset, int varIndex) {
+		List<LocalVariable> vars = new ArrayList<LocalVariable>();
+		for (LocalVariable l: localVariableReferences) {
+			List<AbstractInstruction> instrs = instructionsReferencingVariables.get(l);
+			if (instrs.size() > 0 && l.getIndex() == varIndex) {
+				List<Integer> instrOffsets = new ArrayList<Integer>();
+				for (AbstractInstruction instr: instrs) {
+					instrOffsets.add(instr.getOffsetInCode());
+				}
+				Collections.sort(instrOffsets);
+				int minOffset = instrOffsets.get(0);
+				int maxOffset = instrOffsets.get(instrOffsets.size()-1);
+				boolean matches = ((minOffset+4)>= startInstructionOffset && maxOffset <= endInstructionOffset);
+				
+				if (matches) {
+					vars.add(l);
+				}
+			}
+		}
+		return vars;
+		
 	}
 	
 
