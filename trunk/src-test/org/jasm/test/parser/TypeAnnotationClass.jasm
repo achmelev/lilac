@@ -2,7 +2,7 @@ class {
   version 52_0;
   name classref_0; // org/jasm/test/testclass/TypeAnnotationClass
   extends classref_2; // java/util/HashMap
-  implements classref_4, classref_6; // java/lang/Runnable, java/lang/Appendable
+  implements classref_4, implref_1:classref_6; // java/lang/Runnable, java/lang/Appendable
   modifier public, super;
    //Constants
   const classref classref_0 utf8_1; // org/jasm/test/testclass/TypeAnnotationClass
@@ -161,16 +161,16 @@ class {
   const utf8 utf8_153 "<Q:Ljava/lang/Object;T::Lorg/jasm/test/testclass/TypeAnnotationInterface1;:Lorg/jasm/test/testclass/TypeAnnotationInterface2;>Ljava/util/HashMap;Ljava/lang/Runnable;Ljava/lang/Appendable;";
   source file utf8_152; // TypeAnnotationClass.java
   signature utf8_153; // <Q:Ljava/lang/Object;T::Lorg/jasm/test/testclass/TypeAnnotationInterface1;:Lorg/jasm/test/testclass/TypeAnnotationInterface2;>Ljava/util/HashMap;Ljava/lang/Runnable;Ljava/lang/Appendable;
-  /**invisible type annotation {
+  invisible type annotation {
     type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
     targets supertype;
     
-  }*/
-  /**invisible type annotation {
+  }
+  invisible type annotation {
     type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
     targets supertype implref_1;
     
-  }*/
+  }
   invisible type annotation {
     type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
     targets type parameter 1;
@@ -181,16 +181,16 @@ class {
     targets type parameter bound 1, 1;
     
   }
-  /**type annotation {
+  type annotation {
     type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
     targets supertype;
     
-  }*/
-  /**type annotation {
+  }
+  type annotation {
     type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
     targets supertype implref_1;
     
-  }*/
+  }
   type annotation {
     type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
     targets type parameter 1;

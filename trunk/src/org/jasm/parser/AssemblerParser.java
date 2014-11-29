@@ -56,6 +56,7 @@ import org.jasm.item.attribute.RuntimeVisibleTypeAnnotationsAttributeContent;
 import org.jasm.item.attribute.SignatureAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.attribute.StackMapAttributeContent;
+import org.jasm.item.attribute.SupertypeAnnotationTargetType;
 import org.jasm.item.attribute.SynteticAttributeContent;
 import org.jasm.item.attribute.TypeParameterAnnotationTargetType;
 import org.jasm.item.attribute.TypeParameterBoundAnnotationTargetType;
@@ -210,6 +211,7 @@ import org.jasm.parser.JavaAssemblerParser.SimpleannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.StackmapattributeContext;
 import org.jasm.parser.JavaAssemblerParser.StringinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
+import org.jasm.parser.JavaAssemblerParser.SupertypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.SwitchMemberContext;
 import org.jasm.parser.JavaAssemblerParser.SwitchopContext;
 import org.jasm.parser.JavaAssemblerParser.SynteticattributeContext;
@@ -1476,12 +1478,27 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 
 
 	@Override
-	public void exitParameterTypeBoundTargetType(
+	public void enterParameterTypeBoundTargetType(
 			ParameterTypeBoundTargetTypeContext ctx) {
 		Annotation annot = (Annotation)stack.peek();
 		TypeParameterBoundAnnotationTargetType target = new TypeParameterBoundAnnotationTargetType();
 		target.setParameterIndexLiteral(createIntegerLiteral(ctx.IntegerLiteral(0)));
 		target.setBoundIndexLiteral(createIntegerLiteral(ctx.IntegerLiteral(1)));
+		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		annot.setTarget(target);
+	}
+	
+	
+
+
+	@Override
+	public void enterSupertypeTargetType(SupertypeTargetTypeContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		SupertypeAnnotationTargetType target = new SupertypeAnnotationTargetType();
+		target.setTargetType(JasmConsts.ANNOTATION_TARGET_SUPERTYPE);
+		if (ctx.Identifier() != null) {
+			target.setIndexSymbolReference(createSymbolReference(ctx.Identifier()));
+		}
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
 		annot.setTarget(target);
 	}
