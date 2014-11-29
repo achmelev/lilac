@@ -10,14 +10,12 @@ import java.util.Stack;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.DiagnosticErrorListener;
 import org.antlr.v4.runtime.NoViableAltException;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
-import org.antlr.v4.runtime.atn.PredictionMode;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -40,6 +38,7 @@ import org.jasm.item.attribute.EmptyAnnotationTargetType;
 import org.jasm.item.attribute.EnclosingMethodAttributeContent;
 import org.jasm.item.attribute.ExceptionHandler;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
+import org.jasm.item.attribute.FormalParameterAnnotationTargetType;
 import org.jasm.item.attribute.IAttributeContent;
 import org.jasm.item.attribute.InnerClass;
 import org.jasm.item.attribute.InnerClassesAttributeContent;
@@ -58,6 +57,7 @@ import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.attribute.StackMapAttributeContent;
 import org.jasm.item.attribute.SupertypeAnnotationTargetType;
 import org.jasm.item.attribute.SynteticAttributeContent;
+import org.jasm.item.attribute.ThrowsAnnotationTargetType;
 import org.jasm.item.attribute.TypeParameterAnnotationTargetType;
 import org.jasm.item.attribute.TypeParameterBoundAnnotationTargetType;
 import org.jasm.item.attribute.UnknownAttributeContent;
@@ -149,6 +149,7 @@ import org.jasm.parser.JavaAssemblerParser.FieldmodifierVolatileContext;
 import org.jasm.parser.JavaAssemblerParser.FieldnameContext;
 import org.jasm.parser.JavaAssemblerParser.FieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FloatinfoContext;
+import org.jasm.parser.JavaAssemblerParser.FormalparametertypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.IincopContext;
 import org.jasm.parser.JavaAssemblerParser.InnerclassContext;
 import org.jasm.parser.JavaAssemblerParser.Innerclass_innerContext;
@@ -171,7 +172,6 @@ import org.jasm.parser.JavaAssemblerParser.LabeledIdentifierContext;
 import org.jasm.parser.JavaAssemblerParser.LinenumberContext;
 import org.jasm.parser.JavaAssemblerParser.LocalvaropContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
-import org.jasm.parser.JavaAssemblerParser.MethodAttributeExceptionsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.MethodexceptionhandlerContext;
@@ -215,8 +215,8 @@ import org.jasm.parser.JavaAssemblerParser.SupertypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.SwitchMemberContext;
 import org.jasm.parser.JavaAssemblerParser.SwitchopContext;
 import org.jasm.parser.JavaAssemblerParser.SynteticattributeContext;
+import org.jasm.parser.JavaAssemblerParser.ThrowstypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.TypeannotationContext;
-import org.jasm.parser.JavaAssemblerParser.TypeannotationdeclarationContext;
 import org.jasm.parser.JavaAssemblerParser.UnknownattributeContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
@@ -232,8 +232,6 @@ import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.corba.se.impl.orb.ParserTable;
 
 
 
@@ -756,6 +754,10 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		List<LabeledIdentifierContext> nodes = ctx.labeledIdentifier();
 		List<SymbolReference> symbols = new ArrayList<>();
 		for (LabeledIdentifierContext node: nodes) {
+			SymbolReference ref = createSymbolReference(node);
+			if (node.label() != null) {
+				ref.setReferenceLabel(node.label().getText());
+			}
 			symbols.add(createSymbolReference(node));
 		}
 		
@@ -1499,6 +1501,32 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (ctx.Identifier() != null) {
 			target.setIndexSymbolReference(createSymbolReference(ctx.Identifier()));
 		}
+		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		annot.setTarget(target);
+	}
+	
+	
+
+
+	@Override
+	public void enterThrowstypeTargetType(ThrowstypeTargetTypeContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		ThrowsAnnotationTargetType target = new ThrowsAnnotationTargetType();
+		target.setTargetType(JasmConsts.ANNOTATION_TARGET_THROWS);
+		target.setIndexSymbolReference(createSymbolReference(ctx.Identifier()));
+		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		annot.setTarget(target);
+	}
+	
+	
+
+
+	@Override
+	public void enterFormalparametertypeTargetType(FormalparametertypeTargetTypeContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		FormalParameterAnnotationTargetType target = new FormalParameterAnnotationTargetType();
+		target.setTargetType(JasmConsts.ANNOTATION_TARGET_FORMAL_PARAMETER);
+		target.setIndexLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
 		annot.setTarget(target);
 	}

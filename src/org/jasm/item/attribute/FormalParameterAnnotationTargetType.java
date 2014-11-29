@@ -2,11 +2,14 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
+import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.parser.literals.IntegerLiteral;
 
 public class FormalParameterAnnotationTargetType extends AbstractAnnotationTargetType {
 	
+	private IntegerLiteral indexLiteral; 
 	private short index = -1;
 
 	public FormalParameterAnnotationTargetType() {
@@ -44,7 +47,7 @@ public class FormalParameterAnnotationTargetType extends AbstractAnnotationTarge
 	@Override
 	public String getTypeLabel() {
 		StringBuffer buf = new StringBuffer();
-		buf.append("targets formal parameter");
+		buf.append("targets parameter type");
 		return buf.toString();
 	}
 
@@ -86,8 +89,20 @@ public class FormalParameterAnnotationTargetType extends AbstractAnnotationTarge
 
 	@Override
 	protected void doResolveAfterParse() {
-		
+		if (!isInMethod()) {
+			emitIllegalInContextError();
+		}
+		int iValue = indexLiteral.getValue();
+		if (iValue<0 || iValue>255) {
+			emitError(indexLiteral, "parameter index out of bounds!");
+		} else {
+			index = (short)iValue;
+		}
+	}
+
+	public void setIndexLiteral(IntegerLiteral indexLiteral) {
+		this.indexLiteral = indexLiteral;
 	}
 	
-
+	
 }
