@@ -171,11 +171,11 @@ class {
     targets supertype implref_1;
     
   }*/
-  /**invisible type annotation {
+  invisible type annotation {
     type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
-    targets parameter type 1;
+    targets type parameter 1;
     
-  }*/
+  }
   /**invisible type annotation {
     type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
     targets parameter type bound 1, 1;
@@ -191,11 +191,11 @@ class {
     targets supertype implref_1;
     
   }*/
-  /**type annotation {
+  type annotation {
     type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
-    targets parameter type 1;
+    targets type parameter 1;
     
-  }*/
+  }
   /**type annotation {
     type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
     targets parameter type bound 1, 1;
@@ -671,21 +671,21 @@ class {
     invokeinterface intfmethodref_136; // class=org/jasm/test/testclass/TypeAnnotationInterface2, name=doSend2, descriptor=()V
     ir15: return;
     
-    /**invisible type annotation {
+    invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
-      targets parameter type 1;
+      targets type parameter 1;
       
-    }*/
+    }
     /**invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets parameter type bound 1, 2;
       
     }*/
-    /**type annotation {
+    type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
-      targets parameter type 1;
+      targets type parameter 1;
       
-    }*/
+    }
     /**type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets parameter type bound 1, 2;
