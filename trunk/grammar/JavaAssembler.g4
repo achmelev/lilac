@@ -1,5 +1,6 @@
 grammar JavaAssembler;
 
+
 //Parser
 
 clazz:
@@ -61,6 +62,7 @@ classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile
 			   | synteticattribute #classAttributeSyntetic
 			   | deprecatedattribute #classAttributeDeprecated
 			   | annotation #classAnnotation 
+			   | typeannotation #classTypeAnnotation 
 			   | innerclass #classInnerClass
 			   | enclosingmethod #classEnclosingMethod
 			   | unknownattribute #classUnknownattribute
@@ -136,7 +138,9 @@ methodattribute:   exceptionsattribute #methodAttributeExceptions
 				 | signatureattribute #methodAttributeSignature
 				 | synteticattribute #methodAttributeSyntetic
 				 | deprecatedattribute #methodAttributeDeprecated
-				 | annotation #methodAnnotation 
+				 | annotation #methodAnnotation
+				 | parameterannotation #methodParameterAnnotation 
+				 | typeannotation #methodTypeAnnotation 
 				 | annotationdefault #methodAnnotationDefault
 				 | unknownattribute #methodUnknownattribute
 				 | stackmapattribute #methodStackmapattribute
@@ -180,7 +184,7 @@ methodvariabletypetable: DEBUG VAR TYPES LBRACE
 
 debugvartype: VAR Identifier COMMA Identifier (Pointer Identifier)? COMMA Identifier COMMA Identifier  SEMI;
 
-instruction: Argumentlessop #argumentlessop
+instruction: (Argumentlessop|RETURN) #argumentlessop
 			 | Constantpoolop Identifier #constantpoolop
 			 | wideOrNormal? Localvarop Identifier #localvarop
 			 | Pushop IntegerLiteral #pushop
@@ -228,6 +232,7 @@ fieldattribute : CONSTANT VALUE Identifier SEMI #fieldattributeConstantValue
 				  | synteticattribute #fieldAttributeSyntetic
 				  | deprecatedattribute #fieldAttributeDeprecated
 				  | annotation #fieldAnnotation
+				  | typeannotation #fieldTypeAnnotation
 				  | unknownattribute #fieldUnknownattribute 
 				 ;
 
@@ -236,19 +241,51 @@ signatureattribute: SIGNATURE Identifier SEMI;
 synteticattribute: SYNTETIC SEMI;
 deprecatedattribute: DEPRECATED SEMI;
 
-annotation: INVISIBLE? PARAMETER? annotationdeclaration;
+
+annotation: INVISIBLE? annotationdeclaration;
 
 annotationdeclaration: ANNOTATION  LBRACE
 						 annotationtype
-						 annotationindex?
 						 annotationelement*
 					   RBRACE;
+					   
+parameterannotation: INVISIBLE? PARAMETER parameterannotationdeclaration;
+
+parameterannotationdeclaration: ANNOTATION  LBRACE
+						 			annotationtype
+						 			annotationparameterindex
+						 			annotationelement*
+					   			RBRACE;
+					   			
+typeannotation: INVISIBLE? TYPE typeannotationdeclaration;
+
+typeannotationdeclaration:ANNOTATION  LBRACE
+					 			annotationtype
+					 			annotationtarget
+					 			annotationtargetpath?
+					 			annotationelement*
+					   	  RBRACE;
+
+annotationtarget: TARGETS RETURN TYPE SEMI #emptyTargetReturnType
+				  |TARGETS RECEIVER TYPE SEMI #emptyTargetReceiverType
+				  |TARGETS FIELD TYPE SEMI #emptyTargetFieldType
+				  ;
+
+			 
+
+annotationtargetpath: TARGET PATH annotationtargetpath_arg (COMMA annotationtargetpath_arg) SEMI;
+annotationtargetpath_arg: ARRAY #targetPathArray
+						  |NESTED #targetPathNested
+						  |TYPE ARGUMENT BOUND #targetPathTypeArgumentBound
+						  |TYPE ARGUMENT IntegerLiteral #targetPathTypeArgument;
+
+					   
 annotationdefault: ANNOTATION DEFAULT LBRACE
 				   	 annotationelementvalue
 				   RBRACE;
 					   
 annotationtype: TYPE Identifier SEMI;
-annotationindex: INDEX IntegerLiteral SEMI;
+annotationparameterindex: INDEX IntegerLiteral SEMI;
 
 annotationelement: ELEMENT LBRACE
 					 annotationelementname SEMI
@@ -287,7 +324,7 @@ stackmapattribute: STACKMAP Base64Literal SEMI;
 
 //Instructions
 
-Argumentlessop: 'aaload'|'aastore'|'aconst_null'|'areturn'|'arraylength'|'athrow'|'baload'|'bastore'|'caload'|'castore'|'d2f'|'d2i'|'d2l'|'dadd'|'daload'|'dastore'|'dcmpg'|'dcmpl'|'dconst_0'|'dconst_1'|'ddiv'|'dmul'|'dneg'|'drem'|'dreturn'|'dsub'|'dup'|'dup_x1'|'dup_x2'|'dup2'|'dup2_x1'|'dup2_x2'|'f2d'|'f2i'|'f2l'|'fadd'|'faload'|'fastore'|'fcmpg'|'fcmpl'|'fconst_0'|'fconst_1'|'fconst_2'|'fdiv'|'fmul'|'fneg'|'frem'|'freturn'|'fsub'|'i2b'|'i2c'|'i2d'|'i2f'|'i2l'|'i2s'|'iadd'|'iaload'|'iand'|'iastore'|'iconst_m1'|'iconst_0'|'iconst_1'|'iconst_2'|'iconst_3'|'iconst_4'|'iconst_5'|'idiv'|'imul'|'ineg'|'ior'|'irem'|'ireturn'|'ishl'|'ishr'|'isub'|'iushr'|'ixor'|'l2d'|'l2f'|'l2i'|'ladd'|'laload'|'land'|'lastore'|'lcmp'|'lconst_0'|'lconst_1'|'ldiv'|'lmul'|'lneg'|'lor'|'lrem'|'lreturn'|'lshl'|'lshr'|'lsub'|'lushr'|'lxor'|'monitorenter'|'monitorexit'|'nop'|'pop'|'pop2'|'ret'|'return'|'saload'|'sastore'|'swap';
+Argumentlessop: 'aaload'|'aastore'|'aconst_null'|'areturn'|'arraylength'|'athrow'|'baload'|'bastore'|'caload'|'castore'|'d2f'|'d2i'|'d2l'|'dadd'|'daload'|'dastore'|'dcmpg'|'dcmpl'|'dconst_0'|'dconst_1'|'ddiv'|'dmul'|'dneg'|'drem'|'dreturn'|'dsub'|'dup'|'dup_x1'|'dup_x2'|'dup2'|'dup2_x1'|'dup2_x2'|'f2d'|'f2i'|'f2l'|'fadd'|'faload'|'fastore'|'fcmpg'|'fcmpl'|'fconst_0'|'fconst_1'|'fconst_2'|'fdiv'|'fmul'|'fneg'|'frem'|'freturn'|'fsub'|'i2b'|'i2c'|'i2d'|'i2f'|'i2l'|'i2s'|'iadd'|'iaload'|'iand'|'iastore'|'iconst_m1'|'iconst_0'|'iconst_1'|'iconst_2'|'iconst_3'|'iconst_4'|'iconst_5'|'idiv'|'imul'|'ineg'|'ior'|'irem'|'ireturn'|'ishl'|'ishr'|'isub'|'iushr'|'ixor'|'l2d'|'l2f'|'l2i'|'ladd'|'laload'|'land'|'lastore'|'lcmp'|'lconst_0'|'lconst_1'|'ldiv'|'lmul'|'lneg'|'lor'|'lrem'|'lreturn'|'lshl'|'lshr'|'lsub'|'lushr'|'lxor'|'monitorenter'|'monitorexit'|'nop'|'pop'|'pop2'|'ret'|'saload'|'sastore'|'swap';
 Constantpoolop: 'ldc'|'invokeinterface'|'anewarray'|'checkcast'|'getfield'|'getstatic'|'instanceof'|'invokespecial'|'invokestatic'|'invokevirtual'|'ldc_w'|'ldc2_w'|'new'|'putfield'|'putstatic';
 Localvarop: 'aload'|'astore'|'dload'|'dstore'|'fload'|'fstore'|'iload'|'istore'|'lload'|'lstore';
 Pushop: 'bipush'|'sipush'; 
@@ -382,6 +419,15 @@ NUMBERS       :  'numbers';
 DEBUG         :  'debug';
 MAXSTACK      :  'maxstack';
 MAXLOCALS     :  'maxlocals';
+TARGET        :  'target';
+TARGETS       :  'targets';
+RETURN        :  'return';
+RET           :  'ret';
+RECEIVER      :  'receiver';
+NESTED        :  'nested';
+ARGUMENT      :  'argument';
+BOUND         :  'bound';
+PATH          :  'path';
 
 
 

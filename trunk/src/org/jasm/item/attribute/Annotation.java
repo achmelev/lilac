@@ -35,6 +35,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	private Utf8Info type = null;
 	private int numberOfValues = -1;
 	private List<AnnotationElementNameValue> values = new ArrayList<>();
+	
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
@@ -205,6 +206,10 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 			if (verifyDescriptor(typeValueReference, type.getValue())) {
 				if (isTypeAnnotation) {
 					target.resolve();
+					if (targetPath == null) {
+						targetPath = new AnnotationTargetTypePath(new short[]{}, new short[]{});
+						targetPath.setParent(this);
+					}
 					targetPath.resolve();
 				}
 				for (AnnotationElementNameValue value: values) {
@@ -367,6 +372,29 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	public void setTypeAnnotation(boolean isTypedAnnotation) {
 		this.isTypeAnnotation = isTypedAnnotation;
 	}
+	
+	public boolean isNested() {
+		return getParent() instanceof AnnotationElementValue;
+	}
+
+	public void setTargetPath(AnnotationTargetTypePath targetPath) {
+		this.targetPath = targetPath;
+		this.targetPath.setParent(this);
+	}
+	
+	public AnnotationTargetTypePath getTargetPath() {
+		return targetPath;
+	}
+
+	public AbstractAnnotationTargetType getTarget() {
+		return target;
+	}
+
+	public void setTarget(AbstractAnnotationTargetType target) {
+		this.target = target;
+		this.target.setParent(this);
+	}
+
 	
 	
 	

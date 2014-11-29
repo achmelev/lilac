@@ -156,6 +156,10 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 			name = "RuntimeVisibleParameterAnnotations";
 		} else if (content instanceof RuntimeInvisibleParameterAnnotationsAttributeContent) {
 			name = "RuntimeInvisibleParameterAnnotations";
+		} else if (content instanceof RuntimeVisibleTypeAnnotationsAttributeContent) {
+			name = "RuntimeVisibleTypeAnnotations";
+		} else if (content instanceof RuntimeInvisibleTypeAnnotationsAttributeContent) {
+			name = "RuntimeInvisibleTypeAnnotations";
 		} else if (content instanceof InnerClassesAttributeContent) {
 			name = "InnerClasses";
 		} else if (content instanceof EnclosingMethodAttributeContent) {

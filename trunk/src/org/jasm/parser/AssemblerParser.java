@@ -10,15 +10,19 @@ import java.util.Stack;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.DiagnosticErrorListener;
+import org.antlr.v4.runtime.NoViableAltException;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
+import org.antlr.v4.runtime.atn.PredictionMode;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.jasm.JasmConsts;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.AbstractAnnotationsAttributeContent;
 import org.jasm.item.attribute.AbstractParameterAnnotationsAttributeContent;
@@ -32,6 +36,7 @@ import org.jasm.item.attribute.ConstantValueAttributeContent;
 import org.jasm.item.attribute.DebugLocalVariable;
 import org.jasm.item.attribute.DebugLocalVariableType;
 import org.jasm.item.attribute.DeprecatedAttributeContent;
+import org.jasm.item.attribute.EmptyAnnotationTargetType;
 import org.jasm.item.attribute.EnclosingMethodAttributeContent;
 import org.jasm.item.attribute.ExceptionHandler;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
@@ -44,8 +49,10 @@ import org.jasm.item.attribute.LocalVariableTableAttributeContent;
 import org.jasm.item.attribute.LocalVariableTypeTableAttributeContent;
 import org.jasm.item.attribute.RuntimeInvisibleAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeInvisibleParameterAnnotationsAttributeContent;
+import org.jasm.item.attribute.RuntimeInvisibleTypeAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeVisibleAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeVisibleParameterAnnotationsAttributeContent;
+import org.jasm.item.attribute.RuntimeVisibleTypeAnnotationsAttributeContent;
 import org.jasm.item.attribute.SignatureAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.attribute.StackMapAttributeContent;
@@ -94,7 +101,7 @@ import org.jasm.parser.JavaAssemblerParser.AnnotationdefaultContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationelementContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationelementnameContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationelementvalueContext;
-import org.jasm.parser.JavaAssemblerParser.AnnotationindexContext;
+import org.jasm.parser.JavaAssemblerParser.AnnotationparameterindexContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationtypeContext;
 import org.jasm.parser.JavaAssemblerParser.ArgumentlessopContext;
 import org.jasm.parser.JavaAssemblerParser.ArrayannotationelementvalueContext;
@@ -118,6 +125,9 @@ import org.jasm.parser.JavaAssemblerParser.DebugvarContext;
 import org.jasm.parser.JavaAssemblerParser.DebugvartypeContext;
 import org.jasm.parser.JavaAssemblerParser.DeprecatedattributeContext;
 import org.jasm.parser.JavaAssemblerParser.DoubleinfoContext;
+import org.jasm.parser.JavaAssemblerParser.EmptyTargetFieldTypeContext;
+import org.jasm.parser.JavaAssemblerParser.EmptyTargetReceiverTypeContext;
+import org.jasm.parser.JavaAssemblerParser.EmptyTargetReturnTypeContext;
 import org.jasm.parser.JavaAssemblerParser.EnclosingmethodContext;
 import org.jasm.parser.JavaAssemblerParser.EnumannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.ExceptionsattributeContext;
@@ -189,6 +199,7 @@ import org.jasm.parser.JavaAssemblerParser.MethodvarrelativeContext;
 import org.jasm.parser.JavaAssemblerParser.MultinewarrayopContext;
 import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
 import org.jasm.parser.JavaAssemblerParser.NewarrayopContext;
+import org.jasm.parser.JavaAssemblerParser.ParameterannotationContext;
 import org.jasm.parser.JavaAssemblerParser.PushopContext;
 import org.jasm.parser.JavaAssemblerParser.SignatureattributeContext;
 import org.jasm.parser.JavaAssemblerParser.SimpleannotationelementvalueContext;
@@ -198,6 +209,8 @@ import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
 import org.jasm.parser.JavaAssemblerParser.SwitchMemberContext;
 import org.jasm.parser.JavaAssemblerParser.SwitchopContext;
 import org.jasm.parser.JavaAssemblerParser.SynteticattributeContext;
+import org.jasm.parser.JavaAssemblerParser.TypeannotationContext;
+import org.jasm.parser.JavaAssemblerParser.TypeannotationdeclarationContext;
 import org.jasm.parser.JavaAssemblerParser.UnknownattributeContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
@@ -258,8 +271,10 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		JavaAssemblerParser parser = new JavaAssemblerParser(tokens);
 		parser.removeErrorListeners();
 		parser.addErrorListener(errorListener);
+		//parser.getInterpreter().setPredictionMode(PredictionMode.LL_EXACT_AMBIG_DETECTION);
 		if (log.isDebugEnabled()) {
 			//parser.setTrace(true);
+			
 		}
 		
 		//Parse
@@ -903,10 +918,20 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 
 	@Override
 	public void enterArgumentlessop(ArgumentlessopContext ctx) {
-		String name = ctx.Argumentlessop().getText();
+		String name = null;
+		if (ctx.RETURN() != null) {
+			name = "return";
+		} else {
+			name = ctx.Argumentlessop().getText();
+		}
 		Short code = OpCodes.getOpcodeForName(name);
 		ArgumentLessInstruction instr = new ArgumentLessInstruction(code);
-		instr.setSourceLocation(createSourceLocation(ctx.Argumentlessop()));
+		if (ctx.RETURN() != null) {
+			instr.setSourceLocation(createSourceLocation(ctx.RETURN()));
+		} else {
+			instr.setSourceLocation(createSourceLocation(ctx.Argumentlessop()));
+		}
+		
 		setInstructionLabel(ctx, instr);
 		addInstruction(instr);
 	}
@@ -1296,41 +1321,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		boolean nestedAnnotation = (ctx.getParent() instanceof AnnotationelementvalueContext);
 		Annotation annot = new Annotation();
 		if (rootAnnotation) {
-			boolean invisible = ((AnnotationContext)ctx.getParent()).INVISIBLE() != null;
-			boolean parameter = ((AnnotationContext)ctx.getParent()).PARAMETER() != null;
-			IAttributeContent content = null;
-			if (parameter) {
-				if (invisible) {
-					content = getAttributeContentCreatingIfNecessary(RuntimeInvisibleParameterAnnotationsAttributeContent.class);
-				} else {
-					content = getAttributeContentCreatingIfNecessary(RuntimeVisibleParameterAnnotationsAttributeContent.class);
-				}
-				((AbstractParameterAnnotationsAttributeContent)content).addAnnotation(annot);
-				if (invisible) {
-					annot.setSourceLocation(createSourceLocation(((AnnotationContext)ctx.getParent()).INVISIBLE()));
-				} else {
-					annot.setSourceLocation(createSourceLocation(ctx.ANNOTATION()));
-				}
-				if (((AbstractParameterAnnotationsAttributeContent)content).getSourceLocation() == null) {
-					((AbstractParameterAnnotationsAttributeContent)content).setSourceLocation(annot.getSourceLocation());
-				}
-				
-			} else {
-				if (invisible) {
-					content = getAttributeContentCreatingIfNecessary(RuntimeInvisibleAnnotationsAttributeContent.class);
-				} else {
-					content = getAttributeContentCreatingIfNecessary(RuntimeVisibleAnnotationsAttributeContent.class);
-				}
-				((AbstractAnnotationsAttributeContent)content).add(annot);
-				if (invisible) {
-					annot.setSourceLocation(createSourceLocation(((AnnotationContext)ctx.getParent()).INVISIBLE()));
-				} else {
-					annot.setSourceLocation(createSourceLocation(ctx.ANNOTATION()));
-				}
-				if (((AbstractAnnotationsAttributeContent)content).getSourceLocation() == null) {
-					((AbstractAnnotationsAttributeContent)content).setSourceLocation(annot.getSourceLocation());
-				}
-			}
 			
 			
 		} else if (nestedAnnotation){
@@ -1346,6 +1336,118 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		stack.push(annot);
 	}
 	
+
+
+	@Override
+	public void exitAnnotation(AnnotationContext ctx) {
+		boolean invisible = ctx.INVISIBLE() != null;
+		Annotation annot = (Annotation)stack.peek();
+		stack.pop();
+		IAttributeContent content = null;
+		if (invisible) {
+			content = getAttributeContentCreatingIfNecessary(RuntimeInvisibleAnnotationsAttributeContent.class);
+		} else {
+			content = getAttributeContentCreatingIfNecessary(RuntimeVisibleAnnotationsAttributeContent.class);
+		}
+		((AbstractAnnotationsAttributeContent)content).add(annot);
+		if (invisible) {
+			annot.setSourceLocation(createSourceLocation(ctx.INVISIBLE()));
+		} else {
+			annot.setSourceLocation(createSourceLocation(ctx.annotationdeclaration().ANNOTATION()));
+		}
+		if (((AbstractAnnotationsAttributeContent)content).getSourceLocation() == null) {
+			((AbstractAnnotationsAttributeContent)content).setSourceLocation(annot.getSourceLocation());
+		}
+	}
+	
+	
+
+
+	@Override
+	public void enterParameterannotation(ParameterannotationContext ctx) {
+		Annotation annot = new Annotation();
+		boolean invisible = ctx.INVISIBLE() != null;
+		IAttributeContent content = null;
+		if (invisible) {
+			content = getAttributeContentCreatingIfNecessary(RuntimeInvisibleParameterAnnotationsAttributeContent.class);
+		} else {
+			content = getAttributeContentCreatingIfNecessary(RuntimeVisibleParameterAnnotationsAttributeContent.class);
+		}
+		((AbstractParameterAnnotationsAttributeContent)content).addAnnotation(annot);
+		if (invisible) {
+			annot.setSourceLocation(createSourceLocation(ctx.INVISIBLE()));
+		} else {
+			annot.setSourceLocation(createSourceLocation(ctx.parameterannotationdeclaration().ANNOTATION()));
+		}
+		if (((AbstractParameterAnnotationsAttributeContent)content).getSourceLocation() == null) {
+			((AbstractParameterAnnotationsAttributeContent)content).setSourceLocation(annot.getSourceLocation());
+		}
+		stack.push(annot);
+	}
+	
+
+	@Override
+	public void exitParameterannotation(ParameterannotationContext ctx) {
+		stack.pop();
+	}
+	
+	
+	
+
+
+	@Override
+	public void enterTypeannotation(TypeannotationContext ctx) {
+		Annotation annot = new Annotation();
+		annot.setTypeAnnotation(true);
+		stack.push(annot);
+	}
+	
+	
+
+
+	@Override
+	public void exitTypeannotation(TypeannotationContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		stack.pop();
+		boolean invisible = ctx.INVISIBLE() != null;
+		IAttributeContent content = null;
+		if (invisible) {
+			content = getAttributeContentCreatingIfNecessary(RuntimeInvisibleTypeAnnotationsAttributeContent.class);
+		} else {
+			content = getAttributeContentCreatingIfNecessary(RuntimeVisibleTypeAnnotationsAttributeContent.class);
+		}
+		((AbstractAnnotationsAttributeContent)content).add(annot);
+		if (invisible) {
+			annot.setSourceLocation(createSourceLocation(ctx.INVISIBLE()));
+		} else {
+			annot.setSourceLocation(createSourceLocation(ctx.typeannotationdeclaration().ANNOTATION()));
+		}
+		if (((AbstractAnnotationsAttributeContent)content).getSourceLocation() == null) {
+			((AbstractAnnotationsAttributeContent)content).setSourceLocation(annot.getSourceLocation());
+		}
+	}
+	
+
+	@Override
+	public void enterEmptyTargetReceiverType(EmptyTargetReceiverTypeContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		annot.setTarget(new EmptyAnnotationTargetType(JasmConsts.ANNOTATION_TARGET_FIELD));
+	}
+
+
+	@Override
+	public void enterEmptyTargetReturnType(EmptyTargetReturnTypeContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		annot.setTarget(new EmptyAnnotationTargetType(JasmConsts.ANNOTATION_TARGET_RECEIVER_TYPE));
+	}
+
+
+	@Override
+	public void enterEmptyTargetFieldType(EmptyTargetFieldTypeContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		annot.setTarget(new EmptyAnnotationTargetType(JasmConsts.ANNOTATION_TARGET_RECEIVER_TYPE));
+	}
+
 
 	@Override
 	public void enterAnnotationdefault(AnnotationdefaultContext ctx) {
@@ -1373,7 +1475,8 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 
 	@Override
-	public void enterAnnotationindex(AnnotationindexContext ctx) {
+	public void enterAnnotationparameterindex(
+			AnnotationparameterindexContext ctx) {
 		Annotation annot = (Annotation)stack.peek();
 		IntegerLiteral lit = createIntegerLiteral(ctx.IntegerLiteral());
 		if (lit.isValid()) {
@@ -1381,7 +1484,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		} else {
 			emitError(ctx.IntegerLiteral(), "malformed integer or integer out of bounds");
 		}
-		
 	}
 
 
@@ -1493,7 +1595,10 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 
 	@Override
 	public void exitAnnotationdeclaration(AnnotationdeclarationContext ctx) {
-		stack.pop();
+		Annotation annot = (Annotation)stack.peek();
+		if (annot.isNested()) {
+			stack.pop();
+		}
 	}
 	
 
@@ -1805,6 +1910,11 @@ class SyntaxErrorListener extends BaseErrorListener {
 		parent.getErrorMessages().add(new ErrorMessage(line, charPositionInLine, msg));
 		if (log.isDebugEnabled()) {
 			log.debug("offending symbol: "+offendingSymbol);
+			if (e instanceof NoViableAltException) {
+				NoViableAltException e1 = (NoViableAltException)e;
+				log.debug(e1.getOffendingState()+"");
+				log.debug(e1.getDeadEndConfigs().toString());
+			}
 		}
 		
 	}
@@ -1822,17 +1932,17 @@ class SyntaxErrorListener extends BaseErrorListener {
 	public void reportAttemptingFullContext(Parser recognizer, DFA dfa,
 			int startIndex, int stopIndex, BitSet conflictingAlts,
 			ATNConfigSet configs) {
-		// TODO Auto-generated method stub
-		super.reportAttemptingFullContext(recognizer, dfa, startIndex, stopIndex,
-				conflictingAlts, configs);
+		if (log.isDebugEnabled()) {
+			log.debug("AttemptingFullContext");
+		}
 	}
 
 	@Override
 	public void reportContextSensitivity(Parser recognizer, DFA dfa,
 			int startIndex, int stopIndex, int prediction, ATNConfigSet configs) {
-		// TODO Auto-generated method stub
-		super.reportContextSensitivity(recognizer, dfa, startIndex, stopIndex,
-				prediction, configs);
+		if (log.isDebugEnabled()) {
+			log.debug("ContextSensitivity");
+		}
 	}
 	
 	
