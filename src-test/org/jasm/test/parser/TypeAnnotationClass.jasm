@@ -176,11 +176,11 @@ class {
     targets type parameter 1;
     
   }
-  /**invisible type annotation {
+  invisible type annotation {
     type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
-    targets parameter type bound 1, 1;
+    targets type parameter bound 1, 1;
     
-  }*/
+  }
   /**type annotation {
     type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
     targets supertype;
@@ -196,11 +196,11 @@ class {
     targets type parameter 1;
     
   }
-  /**type annotation {
+  type annotation {
     type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
-    targets parameter type bound 1, 1;
+    targets type parameter bound 1, 1;
     
-  }*/
+  }
    //Fields
   field {
     name utf8_8; // text
@@ -676,21 +676,21 @@ class {
       targets type parameter 1;
       
     }
-    /**invisible type annotation {
+    invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
-      targets parameter type bound 1, 2;
+      targets type parameter bound 1, 2;
       
-    }*/
+    }
     type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets type parameter 1;
       
     }
-    /**type annotation {
+    type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
-      targets parameter type bound 1, 2;
+      targets type parameter bound 1, 2;
       
-    }*/
+    }
   }
   method {
     name utf8_140; // append

@@ -58,6 +58,7 @@ import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.attribute.StackMapAttributeContent;
 import org.jasm.item.attribute.SynteticAttributeContent;
 import org.jasm.item.attribute.TypeParameterAnnotationTargetType;
+import org.jasm.item.attribute.TypeParameterBoundAnnotationTargetType;
 import org.jasm.item.attribute.UnknownAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Field;
@@ -200,6 +201,7 @@ import org.jasm.parser.JavaAssemblerParser.MethodvarrelativeContext;
 import org.jasm.parser.JavaAssemblerParser.MultinewarrayopContext;
 import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
 import org.jasm.parser.JavaAssemblerParser.NewarrayopContext;
+import org.jasm.parser.JavaAssemblerParser.ParameterTypeBoundTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.ParameterTypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.ParameterannotationContext;
 import org.jasm.parser.JavaAssemblerParser.PushopContext;
@@ -1466,6 +1468,20 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		Annotation annot = (Annotation)stack.peek();
 		TypeParameterAnnotationTargetType target = new TypeParameterAnnotationTargetType();
 		target.setIndexLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
+		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		annot.setTarget(target);
+	}
+	
+	
+
+
+	@Override
+	public void exitParameterTypeBoundTargetType(
+			ParameterTypeBoundTargetTypeContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		TypeParameterBoundAnnotationTargetType target = new TypeParameterBoundAnnotationTargetType();
+		target.setParameterIndexLiteral(createIntegerLiteral(ctx.IntegerLiteral(0)));
+		target.setBoundIndexLiteral(createIntegerLiteral(ctx.IntegerLiteral(1)));
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
 		annot.setTarget(target);
 	}

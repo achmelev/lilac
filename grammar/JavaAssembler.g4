@@ -270,6 +270,7 @@ annotationtarget: TARGETS RETURN TYPE SEMI #emptyTargetReturnType
 				  |TARGETS RECEIVER TYPE SEMI #emptyTargetReceiverType
 				  |TARGETS FIELD TYPE SEMI #emptyTargetFieldType
 				  |TARGETS TYPE PARAMETER IntegerLiteral SEMI #parameterTypeTargetType
+				  |TARGETS TYPE PARAMETER BOUND IntegerLiteral COMMA IntegerLiteral SEMI #parameterTypeBoundTargetType
 				  ;
 
 			 
