@@ -1,8 +1,10 @@
 package org.jasm.item.clazz;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jasm.bytebuffer.IByteBuffer;
@@ -18,6 +20,7 @@ import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.AssemblerParser;
+import org.jasm.parser.SymbolTable;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
@@ -52,6 +55,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	private Attributes attributes = null;
 	
 	private List<IBytecodeItem> children = new ArrayList<>();
+	
+	private Map<String, Integer> interfaceIndexesLabelTable =  new HashMap<String, Integer>();
 	
 	
 	public Clazz() {
@@ -290,6 +295,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 				ClassInfo cl = pool.checkAndLoadFromSymbolTable(this,ClassInfo.class, ref);
 				if (cl != null) {
 					interfaces.add(cl);
+					addIntefaceIndexLabel(ref, interfaces.size()-1);
 				}
 			}
 		}
@@ -472,7 +478,25 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			}
 		}
 	}
-
+	
+	public void addIntefaceIndexLabel(SymbolReference ref, int index) {
+		if (ref.getReferenceLabel() != null) {
+			if (interfaceIndexesLabelTable.containsKey(ref.getReferenceLabel())) {
+				emitError(ref, "dublicate implements label");
+			} else {
+				interfaceIndexesLabelTable.put(ref.getReferenceLabel(), index);
+			}
+		}
+	}
+	
+	public Integer checkAndLoadInterfaceIndex(AbstractByteCodeItem caller, SymbolReference ref) {
+		if (!interfaceIndexesLabelTable.containsKey(ref.getSymbolName())) {
+			caller.emitError(ref, "unknown implements label");
+			return null;
+		} else {
+			return interfaceIndexesLabelTable.get(ref.getSymbolName());
+		}
+	}
 	
 	
 	

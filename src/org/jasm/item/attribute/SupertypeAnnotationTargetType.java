@@ -5,9 +5,13 @@ import java.util.List;
 import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.item.clazz.Clazz;
+import org.jasm.item.clazz.IImplementsDeclarationsReference;
+import org.jasm.parser.literals.SymbolReference;
 
-public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType implements IThrowsDeclarationsReference {
+public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType implements IImplementsDeclarationsReference {
 	
+	private SymbolReference indexSymbolReference;
 	private int index = -1;
 
 	public SupertypeAnnotationTargetType() {
@@ -92,6 +96,20 @@ public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType 
 	@Override
 	protected void doResolveAfterParse() {
 		
+		if (!isInClass()) {
+			emitIllegalInContextError();
+		}
+		
+		if (indexSymbolReference == null) {
+			index = JasmConsts.ANNOTATION_TARGET_SUPERTYPE_CLASSINDEX;
+		} else {
+			Clazz clazz = getAncestor(Clazz.class);
+			Integer i = clazz.checkAndLoadInterfaceIndex(this, indexSymbolReference);
+			if (i != null) {
+				index = i;
+			}
+		}
+		
 	}
 
 	@Override
@@ -102,6 +120,11 @@ public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType 
 			return new int[]{};
 		}
 	}
+
+	public void setIndexSymbolReference(SymbolReference indexSymbolReference) {
+		this.indexSymbolReference = indexSymbolReference;
+	}
+	
 	
 
 }
