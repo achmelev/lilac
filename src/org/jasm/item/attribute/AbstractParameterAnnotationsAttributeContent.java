@@ -36,9 +36,8 @@ public abstract class AbstractParameterAnnotationsAttributeContent extends Abstr
 		for (Annotation annot: annotations) {
 			int index = annot.getParameterIndex();
 			if (!annot.isParameterIndexSet()) {
-				emitErrorOnLocation(annot.getSourceLocation(), "no index declared");
+				throw new IllegalStateException("no parameter index set");
 			} else if (index> getSize()-1 || index < 0) {
-				SourceLocation loc = annot.getSourceLocation();
 				emitErrorOnLocation(annot.getSourceLocation(), "index out of bounds");
 			} else {
 				getItems().get(index).add(annot);
