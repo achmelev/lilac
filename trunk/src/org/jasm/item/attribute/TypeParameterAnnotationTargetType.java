@@ -90,19 +90,21 @@ public class TypeParameterAnnotationTargetType extends AbstractAnnotationTargetT
 
 	@Override
 	protected void doResolveAfterParse() {
+		if (isInMethod()) {
+			setTargetType(JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_PARAMETER);
+		} else if (isInClass()) {
+			setTargetType(JasmConsts.ANNOTATION_TARGET_GENERIC_CLASS_TYPE_PARAMETER);
+		} else {
+			emitIllegalInContextError();
+		}
+		
 		int iValue = indexLiteral.getValue();
 		if (iValue<0 || iValue>255) {
 			emitError(indexLiteral, "parameter index out of bounds!");
 		} else {
 			index = (short)iValue;
-			if (isInMethod()) {
-				setTargetType(JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_PARAMETER);
-			} else if (isInClass()) {
-				setTargetType(JasmConsts.ANNOTATION_TARGET_GENERIC_CLASS_TYPE_PARAMETER);
-			} else {
-				emitIllegalInContextError();
-			}
 		}
+		
 	}
 
 	public void setIndexLiteral(IntegerLiteral indexLiteral) {

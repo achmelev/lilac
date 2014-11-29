@@ -2,12 +2,16 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
+import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.parser.literals.IntegerLiteral;
 
 public class TypeParameterBoundAnnotationTargetType extends AbstractAnnotationTargetType {
 	
+	private IntegerLiteral parameterIndexLiteral;
 	private short parameterIndex = -1;
+	private IntegerLiteral boundIndexLiteral;
 	private short boundIndex = -1;
 
 	public TypeParameterBoundAnnotationTargetType() {
@@ -53,7 +57,7 @@ public class TypeParameterBoundAnnotationTargetType extends AbstractAnnotationTa
 	@Override
 	public String getTypeLabel() {
 		StringBuffer buf = new StringBuffer();
-		buf.append("targets parameter type bound");
+		buf.append("targets type parameter bound");
 		return buf.toString();
 	}
 
@@ -96,7 +100,36 @@ public class TypeParameterBoundAnnotationTargetType extends AbstractAnnotationTa
 	@Override
 	protected void doResolveAfterParse() {
 		
+		if (isInMethod()) {
+			setTargetType(JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_PARAMETER_BOUND);
+		} else if (isInClass()) {
+			setTargetType(JasmConsts.ANNOTATION_TARGET_GENERIC_CLASS_TYPE_PARAMETER_BOUND);
+		} else {
+			emitIllegalInContextError();
+		}
+		
+		int iValue = parameterIndexLiteral.getValue();
+		if (iValue<0 || iValue>255) {
+			emitError(parameterIndexLiteral, "parameter index out of bounds!");
+		} else {
+			parameterIndex = (short)iValue;
+		}
+		iValue = boundIndexLiteral.getValue();
+		if (iValue<0 || iValue>255) {
+			emitError(boundIndexLiteral, "bound index out of bounds!");
+		} else {
+			boundIndex = (short)iValue;
+		}
 	}
-	
 
+	public void setParameterIndexLiteral(IntegerLiteral parameterIndexLiteral) {
+		this.parameterIndexLiteral = parameterIndexLiteral;
+	}
+
+	public void setBoundIndexLiteral(IntegerLiteral boundIndexLiteral) {
+		this.boundIndexLiteral = boundIndexLiteral;
+	}
+
+	
+	
 }
