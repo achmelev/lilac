@@ -8,9 +8,11 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.Instructions;
+import org.jasm.parser.literals.SymbolReference;
 
 public class OffsetAnnotationTargetType extends AbstractAnnotationTargetType implements IInstructionReference {
 	
+	private SymbolReference instructionReference;
 	private int instructionIndex = -1;
 	private AbstractInstruction instruction;
 
@@ -97,7 +99,13 @@ public class OffsetAnnotationTargetType extends AbstractAnnotationTargetType imp
 
 	@Override
 	protected void doResolveAfterParse() {
-		
+		if (isInCode()) {
+			CodeAttributeContent content = getAncestor(CodeAttributeContent.class);
+			instruction = content.getInstructions().checkAndLoadFromSymbolTable(this, instructionReference);
+			
+		} else {
+			emitIllegalInContextError();
+		}
 	}
 
 	@Override
@@ -105,6 +113,11 @@ public class OffsetAnnotationTargetType extends AbstractAnnotationTargetType imp
 		return new AbstractInstruction[]{instruction};
 	}
 
+	public void setInstructionReference(SymbolReference instructionReference) {
+		this.instructionReference = instructionReference;
+	}
+	
+	
 	
 
 }
