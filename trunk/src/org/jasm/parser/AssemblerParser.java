@@ -59,6 +59,7 @@ import org.jasm.item.attribute.StackMapAttributeContent;
 import org.jasm.item.attribute.SupertypeAnnotationTargetType;
 import org.jasm.item.attribute.SynteticAttributeContent;
 import org.jasm.item.attribute.ThrowsAnnotationTargetType;
+import org.jasm.item.attribute.TypeArgumentAnnotationTargetType;
 import org.jasm.item.attribute.TypeParameterAnnotationTargetType;
 import org.jasm.item.attribute.TypeParameterBoundAnnotationTargetType;
 import org.jasm.item.attribute.UnknownAttributeContent;
@@ -110,6 +111,7 @@ import org.jasm.parser.JavaAssemblerParser.AnnotationtypeContext;
 import org.jasm.parser.JavaAssemblerParser.ArgumentlessopContext;
 import org.jasm.parser.JavaAssemblerParser.ArrayannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.BranchopContext;
+import org.jasm.parser.JavaAssemblerParser.CasttypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.ClassInnerClassContext;
 import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
 import org.jasm.parser.JavaAssemblerParser.ClassinfoContext;
@@ -126,6 +128,8 @@ import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
 import org.jasm.parser.JavaAssemblerParser.ConstantpoolopContext;
 import org.jasm.parser.JavaAssemblerParser.ConstructorreferencetypeTargetTypeContext;
+import org.jasm.parser.JavaAssemblerParser.ConstructorreferencetypeargumentTargetTypeContext;
+import org.jasm.parser.JavaAssemblerParser.ConstructortypeargumentTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.DebugvarContext;
 import org.jasm.parser.JavaAssemblerParser.DebugvartypeContext;
 import org.jasm.parser.JavaAssemblerParser.DeprecatedattributeContext;
@@ -197,7 +201,9 @@ import org.jasm.parser.JavaAssemblerParser.MethodmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierVarargsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodnameContext;
 import org.jasm.parser.JavaAssemblerParser.MethodreferencetypeTargetTypeContext;
+import org.jasm.parser.JavaAssemblerParser.MethodreferencetypeargumentTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.MethodrefinfoContext;
+import org.jasm.parser.JavaAssemblerParser.MethodtypeargumentTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarabsoluteContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvariabletableContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvariabletypetableContext;
@@ -1588,6 +1594,54 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		target.setSourceLocation(createSourceLocation(beginNode));
 		annot.setTarget(target);
 	}
+	
+	
+	
+	@Override
+	public void enterMethodtypeargumentTargetType(
+			MethodtypeargumentTargetTypeContext ctx) {
+		createTypeArgumentTargetType(ctx.TARGETS(), ctx.Identifier(), ctx.IntegerLiteral(), JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_ARGUMENT);
+	}
+
+
+	@Override
+	public void enterConstructorreferencetypeargumentTargetType(
+			ConstructorreferencetypeargumentTargetTypeContext ctx) {
+		createTypeArgumentTargetType(ctx.TARGETS(), ctx.Identifier(), ctx.IntegerLiteral(), JasmConsts.ANNOTATION_TARGET_GENERIC_CONSTRUCTOR_TYPE_ARGUMENT_IN_METHOD_REF);
+	}
+
+
+	@Override
+	public void enterConstructortypeargumentTargetType(
+			ConstructortypeargumentTargetTypeContext ctx) {
+		createTypeArgumentTargetType(ctx.TARGETS(), ctx.Identifier(), ctx.IntegerLiteral(), JasmConsts.ANNOTATION_TARGET_GENERIC_CONSTRUCTOR_TYPE_ARGUMENT);
+	}
+
+
+	@Override
+	public void enterCasttypeTargetType(CasttypeTargetTypeContext ctx) {
+		createTypeArgumentTargetType(ctx.TARGETS(), ctx.Identifier(), ctx.IntegerLiteral(), JasmConsts.ANNOTATION_TARGET_CAST);
+	}
+
+
+	@Override
+	public void enterMethodreferencetypeargumentTargetType(
+			MethodreferencetypeargumentTargetTypeContext ctx) {
+		createTypeArgumentTargetType(ctx.TARGETS(), ctx.Identifier(), ctx.IntegerLiteral(), JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_ARGUMENT_IN_METHOD_REF);
+	}
+
+
+	private void createTypeArgumentTargetType(TerminalNode beginNode, TerminalNode idNode,TerminalNode indexNode, short targetType) {
+		Annotation annot = (Annotation)stack.peek();
+		TypeArgumentAnnotationTargetType target = new TypeArgumentAnnotationTargetType();
+		target.setTargetType(targetType);
+		target.setInstructionReference(createSymbolReference(idNode));
+		target.setParameterIndexLiteral(createIntegerLiteral(indexNode));
+		target.setSourceLocation(createSourceLocation(beginNode));
+		annot.setTarget(target);
+	}
+	
+	
 
 
 	@Override
