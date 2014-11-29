@@ -379,16 +379,16 @@ class {
     debug var types {
       var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<TQ;TT;>;
     }
-    /**invisible type annotation {
+    invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets instanceof type ir1;
       
-    }*/
-    /**type annotation {
+    }
+    type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets instanceof type ir1;
       
-    }*/
+    }
     maxstack 1;
     maxlocals 2;
     //Variables
@@ -464,16 +464,16 @@ class {
       targets cast type ir3, 0;
       
     }*/
-    /**invisible type annotation {
+    invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets new type ir11;
       
-    }*/
-    /**invisible type annotation {
+    }
+    invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets new type ir11;
-      target path type argument [1]; // target path
-    }*/
+      /**target path type argument [1];**/ 
+    }
     /**invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets method type argument ir22, 1;
@@ -503,16 +503,16 @@ class {
       targets cast type ir3, 0;
       
     }*/
-    /**type annotation {
+    type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets new type ir11;
       
-    }*/
-    /**type annotation {
+    }
+    type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets new type ir11;
-      target path type argument [1]; // target path
-    }*/
+      /**target path type argument [1]; **/ 
+    }
     /**type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets method type argument ir22, 1;

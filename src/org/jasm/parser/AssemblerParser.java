@@ -46,6 +46,7 @@ import org.jasm.item.attribute.LineNumber;
 import org.jasm.item.attribute.LineNumberTableAttributeContent;
 import org.jasm.item.attribute.LocalVariableTableAttributeContent;
 import org.jasm.item.attribute.LocalVariableTypeTableAttributeContent;
+import org.jasm.item.attribute.OffsetAnnotationTargetType;
 import org.jasm.item.attribute.RuntimeInvisibleAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeInvisibleParameterAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeInvisibleTypeAnnotationsAttributeContent;
@@ -124,6 +125,7 @@ import org.jasm.parser.JavaAssemblerParser.ClassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassnameContext;
 import org.jasm.parser.JavaAssemblerParser.ClazzContext;
 import org.jasm.parser.JavaAssemblerParser.ConstantpoolopContext;
+import org.jasm.parser.JavaAssemblerParser.ConstructorreferencetypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.DebugvarContext;
 import org.jasm.parser.JavaAssemblerParser.DebugvartypeContext;
 import org.jasm.parser.JavaAssemblerParser.DeprecatedattributeContext;
@@ -165,6 +167,7 @@ import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierProtectedContext;
 import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierPublicContext;
 import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierStaticContext;
 import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierSynteticContext;
+import org.jasm.parser.JavaAssemblerParser.InstanceoftypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacemethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacesContext;
@@ -193,6 +196,7 @@ import org.jasm.parser.JavaAssemblerParser.MethodmodifierSynchronizedContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmodifierVarargsContext;
 import org.jasm.parser.JavaAssemblerParser.MethodnameContext;
+import org.jasm.parser.JavaAssemblerParser.MethodreferencetypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.MethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarabsoluteContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvariabletableContext;
@@ -202,6 +206,7 @@ import org.jasm.parser.JavaAssemblerParser.MethodvarrelativeContext;
 import org.jasm.parser.JavaAssemblerParser.MultinewarrayopContext;
 import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
 import org.jasm.parser.JavaAssemblerParser.NewarrayopContext;
+import org.jasm.parser.JavaAssemblerParser.NewtypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.ParameterTypeBoundTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.ParameterTypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.ParameterannotationContext;
@@ -948,24 +953,33 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	@Override
 	public void enterConstantpoolop(ConstantpoolopContext ctx) {
-		String name = ctx.Constantpoolop().getText();
+		TerminalNode nameNode = null;
+		if (ctx.INSTANCEOF() != null) {
+			nameNode = ctx.INSTANCEOF();
+		} else if (ctx.NEW() != null) {
+			nameNode = ctx.NEW();
+		} else {
+			nameNode = ctx.Constantpoolop();
+		}
+		
+		String name = nameNode.getText();
 		if (name.equals("ldc")) {
 			LdcInstruction instr = new LdcInstruction(null);
 			instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
-			instr.setSourceLocation(createSourceLocation(ctx.Constantpoolop()));
+			instr.setSourceLocation(createSourceLocation(nameNode));
 			setInstructionLabel(ctx, instr);
 			addInstruction(instr);
 		} else if (name.equals("invokeinterface")) {
 			InvokeInterfaceInstruction instr = new InvokeInterfaceInstruction(OpCodes.invokeinterface, null);
 			instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
-			instr.setSourceLocation(createSourceLocation(ctx.Constantpoolop()));
+			instr.setSourceLocation(createSourceLocation(nameNode));
 			setInstructionLabel(ctx, instr);
 			addInstruction(instr);
 		} else {
 			Short code = OpCodes.getOpcodeForName(name);
 			ConstantPoolInstruction instr = new ConstantPoolInstruction(code, null);
 			instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
-			instr.setSourceLocation(createSourceLocation(ctx.Constantpoolop()));
+			instr.setSourceLocation(createSourceLocation(nameNode));
 			setInstructionLabel(ctx, instr);
 			addInstruction(instr);
 		}
@@ -1353,12 +1367,14 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		boolean invisible = ctx.INVISIBLE() != null;
 		Annotation annot = (Annotation)stack.peek();
 		stack.pop();
+		
 		IAttributeContent content = null;
 		if (invisible) {
 			content = getAttributeContentCreatingIfNecessary(RuntimeInvisibleAnnotationsAttributeContent.class);
 		} else {
 			content = getAttributeContentCreatingIfNecessary(RuntimeVisibleAnnotationsAttributeContent.class);
 		}
+		
 		((AbstractAnnotationsAttributeContent)content).add(annot);
 		if (invisible) {
 			annot.setSourceLocation(createSourceLocation(ctx.INVISIBLE()));
@@ -1370,9 +1386,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 	}
 	
-	
-
-
 	@Override
 	public void enterParameterannotation(ParameterannotationContext ctx) {
 		Annotation annot = new Annotation();
@@ -1421,11 +1434,24 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		stack.pop();
 		boolean invisible = ctx.INVISIBLE() != null;
 		IAttributeContent content = null;
+		
+		boolean isCode = isCodeTypeAnnotation(annot) && (stack.peek() instanceof Method);
+		if (isCode) {
+			CodeAttributeContent code = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+			stack.push(code);
+		}
+		
 		if (invisible) {
 			content = getAttributeContentCreatingIfNecessary(RuntimeInvisibleTypeAnnotationsAttributeContent.class);
 		} else {
 			content = getAttributeContentCreatingIfNecessary(RuntimeVisibleTypeAnnotationsAttributeContent.class);
 		}
+		
+		if (isCode) {
+			stack.pop();
+		}
+		
+		
 		((AbstractAnnotationsAttributeContent)content).add(annot);
 		if (invisible) {
 			annot.setSourceLocation(createSourceLocation(ctx.INVISIBLE()));
@@ -1435,6 +1461,11 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (((AbstractAnnotationsAttributeContent)content).getSourceLocation() == null) {
 			((AbstractAnnotationsAttributeContent)content).setSourceLocation(annot.getSourceLocation());
 		}
+	}
+	
+	private boolean isCodeTypeAnnotation(Annotation annot) {
+		return  (annot.getTarget().getTargetType()>=JasmConsts.ANNOTATION_TARGET_LOCAL_VAR)
+				&& (annot.getTarget().getTargetType()<=JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_ARGUMENT_IN_METHOD_REF);
 	}
 	
 
@@ -1519,6 +1550,44 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 	
 	
+	
+	
+
+
+	@Override
+	public void enterMethodreferencetypeTargetType(
+			MethodreferencetypeTargetTypeContext ctx) {
+		createOffsetTargetType(ctx.TARGETS(), ctx.Identifier(), JasmConsts.ANNOTATION_TARGET_METHOD_REF_ID);
+	}
+
+
+	@Override
+	public void enterConstructorreferencetypeTargetType(
+			ConstructorreferencetypeTargetTypeContext ctx) {
+		createOffsetTargetType(ctx.TARGETS(), ctx.Identifier(), JasmConsts.ANNOTATION_TARGET_METHOD_REF_NEW);
+	}
+
+
+	@Override
+	public void enterInstanceoftypeTargetType(
+			InstanceoftypeTargetTypeContext ctx) {
+		createOffsetTargetType(ctx.TARGETS(), ctx.Identifier(), JasmConsts.ANNOTATION_TARGET_INSTANCEOF);
+	}
+
+
+	@Override
+	public void enterNewtypeTargetType(NewtypeTargetTypeContext ctx) {
+		createOffsetTargetType(ctx.TARGETS(), ctx.Identifier(), JasmConsts.ANNOTATION_TARGET_NEW);
+	}
+	
+	private void createOffsetTargetType(TerminalNode beginNode, TerminalNode idNode, short targetType) {
+		Annotation annot = (Annotation)stack.peek();
+		OffsetAnnotationTargetType target = new OffsetAnnotationTargetType();
+		target.setTargetType(targetType);
+		target.setInstructionReference(createSymbolReference(idNode));
+		target.setSourceLocation(createSourceLocation(beginNode));
+		annot.setTarget(target);
+	}
 
 
 	@Override

@@ -185,7 +185,7 @@ methodvariabletypetable: DEBUG VAR TYPES LBRACE
 debugvartype: VAR Identifier COMMA Identifier (Pointer Identifier)? COMMA Identifier COMMA Identifier  SEMI;
 
 instruction: (Argumentlessop|RETURN) #argumentlessop
-			 | Constantpoolop Identifier #constantpoolop
+			 | (Constantpoolop|INSTANCEOF|NEW) Identifier #constantpoolop
 			 | wideOrNormal? Localvarop Identifier #localvarop
 			 | Pushop IntegerLiteral #pushop
 			 | WIDE? Iincop Identifier COMMA IntegerLiteral #iincop
@@ -274,6 +274,10 @@ annotationtarget: TARGETS RETURN TYPE SEMI #emptyTargetReturnType
 				  |TARGETS SUPERTYPE Identifier? SEMI #supertypeTargetType
 				  |TARGETS THROWS TYPE Identifier SEMI #throwstypeTargetType
 				  |TARGETS PARAMETER TYPE IntegerLiteral SEMI #formalparametertypeTargetType
+				  |TARGETS NEW TYPE Identifier SEMI #newtypeTargetType
+				  |TARGETS INSTANCEOF TYPE Identifier SEMI #instanceoftypeTargetType
+				  |TARGETS METHOD REFERENCE TYPE Identifier SEMI #methodreferencetypeTargetType
+				  |TARGETS CONSTRUCTOR REFERENCE TYPE Identifier SEMI #constructorreferencetypeTargetType
 				  ;
 
 			 
@@ -330,7 +334,7 @@ stackmapattribute: STACKMAP Base64Literal SEMI;
 //Instructions
 
 Argumentlessop: 'aaload'|'aastore'|'aconst_null'|'areturn'|'arraylength'|'athrow'|'baload'|'bastore'|'caload'|'castore'|'d2f'|'d2i'|'d2l'|'dadd'|'daload'|'dastore'|'dcmpg'|'dcmpl'|'dconst_0'|'dconst_1'|'ddiv'|'dmul'|'dneg'|'drem'|'dreturn'|'dsub'|'dup'|'dup_x1'|'dup_x2'|'dup2'|'dup2_x1'|'dup2_x2'|'f2d'|'f2i'|'f2l'|'fadd'|'faload'|'fastore'|'fcmpg'|'fcmpl'|'fconst_0'|'fconst_1'|'fconst_2'|'fdiv'|'fmul'|'fneg'|'frem'|'freturn'|'fsub'|'i2b'|'i2c'|'i2d'|'i2f'|'i2l'|'i2s'|'iadd'|'iaload'|'iand'|'iastore'|'iconst_m1'|'iconst_0'|'iconst_1'|'iconst_2'|'iconst_3'|'iconst_4'|'iconst_5'|'idiv'|'imul'|'ineg'|'ior'|'irem'|'ireturn'|'ishl'|'ishr'|'isub'|'iushr'|'ixor'|'l2d'|'l2f'|'l2i'|'ladd'|'laload'|'land'|'lastore'|'lcmp'|'lconst_0'|'lconst_1'|'ldiv'|'lmul'|'lneg'|'lor'|'lrem'|'lreturn'|'lshl'|'lshr'|'lsub'|'lushr'|'lxor'|'monitorenter'|'monitorexit'|'nop'|'pop'|'pop2'|'ret'|'saload'|'sastore'|'swap';
-Constantpoolop: 'ldc'|'invokeinterface'|'anewarray'|'checkcast'|'getfield'|'getstatic'|'instanceof'|'invokespecial'|'invokestatic'|'invokevirtual'|'ldc_w'|'ldc2_w'|'new'|'putfield'|'putstatic';
+Constantpoolop: 'ldc'|'invokeinterface'|'anewarray'|'checkcast'|'getfield'|'getstatic'|'invokespecial'|'invokestatic'|'invokevirtual'|'ldc_w'|'ldc2_w'|'putfield'|'putstatic';
 Localvarop: 'aload'|'astore'|'dload'|'dstore'|'fload'|'fstore'|'iload'|'istore'|'lload'|'lstore';
 Pushop: 'bipush'|'sipush'; 
 Iincop: 'iinc';
@@ -435,6 +439,10 @@ BOUND         :  'bound';
 PATH          :  'path';
 SUPERTYPE     :  'supertype';
 FORMAL        :  'formal';
+NEW           :  'new';
+INSTANCEOF    :  'instanceof';
+REFERENCE     :  'reference';
+CONSTRUCTOR   :  'constructor';
 
 
 

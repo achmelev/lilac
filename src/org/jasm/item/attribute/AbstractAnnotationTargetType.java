@@ -26,6 +26,12 @@ public abstract class AbstractAnnotationTargetType extends AbstractByteCodeItem 
 			throw new IllegalArgumentException("Unknown target type: "+Integer.toHexString(targetType));
 		}
 	}
+	
+	
+
+	public short getTargetType() {
+		return targetType;
+	}
 
 	public void setTargetType(short targetType) {
 		this.targetType = targetType;
