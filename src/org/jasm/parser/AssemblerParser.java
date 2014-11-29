@@ -57,6 +57,7 @@ import org.jasm.item.attribute.SignatureAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
 import org.jasm.item.attribute.StackMapAttributeContent;
 import org.jasm.item.attribute.SynteticAttributeContent;
+import org.jasm.item.attribute.TypeParameterAnnotationTargetType;
 import org.jasm.item.attribute.UnknownAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Field;
@@ -199,6 +200,7 @@ import org.jasm.parser.JavaAssemblerParser.MethodvarrelativeContext;
 import org.jasm.parser.JavaAssemblerParser.MultinewarrayopContext;
 import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
 import org.jasm.parser.JavaAssemblerParser.NewarrayopContext;
+import org.jasm.parser.JavaAssemblerParser.ParameterTypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.ParameterannotationContext;
 import org.jasm.parser.JavaAssemblerParser.PushopContext;
 import org.jasm.parser.JavaAssemblerParser.SignatureattributeContext;
@@ -226,6 +228,8 @@ import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.sun.corba.se.impl.orb.ParserTable;
 
 
 
@@ -1431,21 +1435,39 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterEmptyTargetReceiverType(EmptyTargetReceiverTypeContext ctx) {
 		Annotation annot = (Annotation)stack.peek();
-		annot.setTarget(new EmptyAnnotationTargetType(JasmConsts.ANNOTATION_TARGET_FIELD));
+		EmptyAnnotationTargetType target = new EmptyAnnotationTargetType(JasmConsts.ANNOTATION_TARGET_RECEIVER_TYPE);
+		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		annot.setTarget(target);
 	}
 
 
 	@Override
 	public void enterEmptyTargetReturnType(EmptyTargetReturnTypeContext ctx) {
 		Annotation annot = (Annotation)stack.peek();
-		annot.setTarget(new EmptyAnnotationTargetType(JasmConsts.ANNOTATION_TARGET_RECEIVER_TYPE));
+		EmptyAnnotationTargetType target = new EmptyAnnotationTargetType(JasmConsts.ANNOTATION_TARGET_RETURN_TYPE);
+		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		annot.setTarget(target);
 	}
 
 
 	@Override
 	public void enterEmptyTargetFieldType(EmptyTargetFieldTypeContext ctx) {
 		Annotation annot = (Annotation)stack.peek();
-		annot.setTarget(new EmptyAnnotationTargetType(JasmConsts.ANNOTATION_TARGET_RECEIVER_TYPE));
+		EmptyAnnotationTargetType target = new EmptyAnnotationTargetType(JasmConsts.ANNOTATION_TARGET_FIELD);
+		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		annot.setTarget(target);
+	}
+	
+	
+
+
+	@Override
+	public void enterParameterTypeTargetType(ParameterTypeTargetTypeContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		TypeParameterAnnotationTargetType target = new TypeParameterAnnotationTargetType();
+		target.setIndexLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
+		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		annot.setTarget(target);
 	}
 
 
@@ -1790,6 +1812,14 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		errorMessages.add(new ErrorMessage(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), message));
 	}
 	
+	private <T extends ParserRuleContext> T getAncestor(ParserRuleContext context, Class<T> clazz) {
+		T result = (T)context.getParent();
+		while (result != null && !result.getClass().equals(clazz)) {
+			result = (T)result.getParent();
+		}
+		return result;
+	}
+	
 	
 	private void addConstantPoolEntry(AbstractConstantPoolEntry entry) {
 		ConstantPool pool = ((Clazz)stack.peek()).getConstantPool();
@@ -1945,7 +1975,7 @@ class SyntaxErrorListener extends BaseErrorListener {
 		}
 	}
 	
-	
+
 	
 	
 	

@@ -2,12 +2,16 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
+import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.parser.literals.IntegerLiteral;
 
 public class TypeParameterAnnotationTargetType extends AbstractAnnotationTargetType {
 	
+	private IntegerLiteral indexLiteral; 
 	private short index = -1;
+	
 
 	public TypeParameterAnnotationTargetType() {
 		super();
@@ -44,7 +48,7 @@ public class TypeParameterAnnotationTargetType extends AbstractAnnotationTargetT
 	@Override
 	public String getTypeLabel() {
 		StringBuffer buf = new StringBuffer();
-		buf.append("targets parameter type");
+		buf.append("targets type parameter");
 		return buf.toString();
 	}
 
@@ -86,8 +90,26 @@ public class TypeParameterAnnotationTargetType extends AbstractAnnotationTargetT
 
 	@Override
 	protected void doResolveAfterParse() {
-		
+		int iValue = indexLiteral.getValue();
+		if (iValue<0 || iValue>255) {
+			emitError(indexLiteral, "parameter index out of bounds!");
+		} else {
+			index = (short)iValue;
+			if (isInMethod()) {
+				setTargetType(JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_PARAMETER);
+			} else if (isInClass()) {
+				setTargetType(JasmConsts.ANNOTATION_TARGET_GENERIC_CLASS_TYPE_PARAMETER);
+			} else {
+				emitIllegalInContextError();
+			}
+		}
+	}
+
+	public void setIndexLiteral(IntegerLiteral indexLiteral) {
+		this.indexLiteral = indexLiteral;
 	}
 	
-
+	
+	
+	
 }

@@ -89,7 +89,16 @@ public class EmptyAnnotationTargetType extends AbstractAnnotationTargetType {
 
 	@Override
 	protected void doResolveAfterParse() {
-		
+		if (!
+				(
+						(isInMethod() && 
+								(JasmConsts.ANNOTATION_TARGET_RETURN_TYPE==targetType
+								|| JasmConsts.ANNOTATION_TARGET_RECEIVER_TYPE==targetType))
+				|| (isInField() && JasmConsts.ANNOTATION_TARGET_FIELD==targetType)
+				)
+			) {
+			emitIllegalInContextError();
+		}
 	}
 	
 
