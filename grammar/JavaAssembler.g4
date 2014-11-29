@@ -278,6 +278,11 @@ annotationtarget: TARGETS RETURN TYPE SEMI #emptyTargetReturnType
 				  |TARGETS INSTANCEOF TYPE Identifier SEMI #instanceoftypeTargetType
 				  |TARGETS METHOD REFERENCE TYPE Identifier SEMI #methodreferencetypeTargetType
 				  |TARGETS CONSTRUCTOR REFERENCE TYPE Identifier SEMI #constructorreferencetypeTargetType
+				  |TARGETS CAST TYPE Identifier COMMA IntegerLiteral SEMI #casttypeTargetType
+				  |TARGETS CONSTRUCTOR TYPE ARGUMENT Identifier COMMA IntegerLiteral SEMI #constructortypeargumentTargetType
+				  |TARGETS CONSTRUCTOR REFERENCE TYPE ARGUMENT Identifier COMMA IntegerLiteral SEMI #constructorreferencetypeargumentTargetType
+				  |TARGETS METHOD TYPE ARGUMENT Identifier COMMA IntegerLiteral SEMI #methodtypeargumentTargetType
+				  |TARGETS METHOD REFERENCE TYPE ARGUMENT Identifier COMMA IntegerLiteral SEMI #methodreferencetypeargumentTargetType
 				  ;
 
 			 
@@ -443,6 +448,7 @@ NEW           :  'new';
 INSTANCEOF    :  'instanceof';
 REFERENCE     :  'reference';
 CONSTRUCTOR   :  'constructor';
+CAST          :  'cast';
 
 
 

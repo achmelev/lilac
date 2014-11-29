@@ -8,11 +8,15 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.Instructions;
+import org.jasm.parser.literals.IntegerLiteral;
+import org.jasm.parser.literals.SymbolReference;
 
 public class TypeArgumentAnnotationTargetType extends AbstractAnnotationTargetType implements IInstructionReference {
 	
+	private SymbolReference instructionReference;
 	private int instructionIndex = -1;
 	private AbstractInstruction instruction;
+	private IntegerLiteral parameterIndexLiteral;
 	private short parameterIndex = -1;
 
 	public TypeArgumentAnnotationTargetType() {
@@ -108,12 +112,35 @@ public class TypeArgumentAnnotationTargetType extends AbstractAnnotationTargetTy
 
 	@Override
 	protected void doResolveAfterParse() {
+		if (isInCode()) {
+			
+			CodeAttributeContent content = getAncestor(CodeAttributeContent.class);
+			instruction = content.getInstructions().checkAndLoadFromSymbolTable(this, instructionReference);
+			
+			int iValue = parameterIndexLiteral.getValue();
+			if (iValue<0 || iValue>255) {
+				emitError(parameterIndexLiteral, "parameter index out of bounds!");
+			} else {
+				parameterIndex = (short)iValue;
+			}
+			
+		} else {
+			emitIllegalInContextError();
+		}
 		
 	}
 
 	@Override
 	public AbstractInstruction[] getInstructionReferences() {
 		return new AbstractInstruction[]{instruction};
+	}
+
+	public void setInstructionReference(SymbolReference instructionReference) {
+		this.instructionReference = instructionReference;
+	}
+
+	public void setParameterIndexLiteral(IntegerLiteral parameterIndexLiteral) {
+		this.parameterIndexLiteral = parameterIndexLiteral;
 	}
 
 	

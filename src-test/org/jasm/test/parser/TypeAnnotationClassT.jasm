@@ -459,11 +459,11 @@ class {
       var a_7, ir36, utf8_119, utf8_124; // name=inst2,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<Ljava/lang/String;Lorg/jasm/test/testclass/TypeAnnotationInterface3;>;
     }
     stackmap [AAf/AFMADAcAAQcAKAcAfgcAgAcAKAcAggcAAQcAAQcAhAcAZgcAZgcAVwABBwBm+gALQgcAZg0N/wACAAkHAAEHACgHAH4HAIAHACgHAIIHAAEHAAEHAIQAAQcAbAY=];
-    /**invisible type annotation {
+    invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets cast type ir3, 0;
       
-    }*/
+    }
     invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets new type ir11;
@@ -474,16 +474,16 @@ class {
       targets new type ir11;
       /**target path type argument [1];**/ 
     }
-    /**invisible type annotation {
+    invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets method type argument ir22, 1;
       
-    }*/
-    /**invisible type annotation {
+    }
+    invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets constructor type argument ir31, 0;
       
-    }*/
+    }
     /**invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets var types {
@@ -498,11 +498,11 @@ class {
       }
       
     }*/
-    /**type annotation {
+    type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets cast type ir3, 0;
       
-    }*/
+    }
     type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets new type ir11;
@@ -513,16 +513,16 @@ class {
       targets new type ir11;
       /**target path type argument [1]; **/ 
     }
-    /**type annotation {
+    type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets method type argument ir22, 1;
       
-    }*/
-    /**type annotation {
+    }
+    type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets constructor type argument ir31, 0;
       
-    }*/
+    }
     /** type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets var types {
