@@ -98,15 +98,16 @@ public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType 
 		
 		if (!isInClass()) {
 			emitIllegalInContextError();
-		}
-		
-		if (indexSymbolReference == null) {
-			index = JasmConsts.ANNOTATION_TARGET_SUPERTYPE_CLASSINDEX;
 		} else {
-			Clazz clazz = getAncestor(Clazz.class);
-			Integer i = clazz.checkAndLoadInterfaceIndex(this, indexSymbolReference);
-			if (i != null) {
-				index = i;
+		
+			if (indexSymbolReference == null) {
+				index = JasmConsts.ANNOTATION_TARGET_SUPERTYPE_CLASSINDEX;
+			} else {
+				Clazz clazz = getAncestor(Clazz.class);
+				Integer i = clazz.checkAndLoadInterfaceIndex(this, indexSymbolReference);
+				if (i != null) {
+					index = i;
+				}
 			}
 		}
 		

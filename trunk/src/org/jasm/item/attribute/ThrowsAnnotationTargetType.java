@@ -5,13 +5,17 @@ import java.util.List;
 import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.item.clazz.Method;
+import org.jasm.parser.literals.SymbolReference;
+
 
 public class ThrowsAnnotationTargetType extends AbstractAnnotationTargetType implements IThrowsDeclarationsReference {
 	
+	private SymbolReference indexSymbolReference;
 	private int index = -1;
 
 	public ThrowsAnnotationTargetType() {
-		super();
+		
 	}
 
 	public ThrowsAnnotationTargetType(short targetType, short index) {
@@ -92,12 +96,37 @@ public class ThrowsAnnotationTargetType extends AbstractAnnotationTargetType imp
 	@Override
 	protected void doResolveAfterParse() {
 		
+		if (!isInMethod()) {
+			emitIllegalInContextError();
+		} else {
+			Method m = getAncestor(Method.class);
+			List<Attribute> attrs = m.getAttributes().getAttributesByContentType(ExceptionsAttributeContent.class);
+			ExceptionsAttributeContent content = null;
+			if (attrs.size() > 0) {
+				content = (ExceptionsAttributeContent)attrs.get(0).getContent();
+			}
+			if (content != null) {
+				Integer i = content.checkAndLoadInterfaceIndex(this, indexSymbolReference);
+				if (i!=null) {
+					index = i;
+				}
+			} else {
+				emitError(indexSymbolReference, "unknown throws label");
+			}
+		}
+		
 	}
 
 	@Override
 	public int[] getIndexes() {
 		return new int[]{index};
 	}
+
+	public void setIndexSymbolReference(SymbolReference indexSymbolReference) {
+		this.indexSymbolReference = indexSymbolReference;
+	}
+	
+	
 	
 
 }

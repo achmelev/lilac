@@ -1,12 +1,12 @@
 class {
   version 52_0;
-  name classref_0; // org/jasm/test/testclass/TypeAnnotationClass
+  name classref_0; // org/jasm/test/testclass/TypeAnnotationClassT
   extends classref_2; // java/util/HashMap
   implements classref_4, implref_1:classref_6; // java/lang/Runnable, java/lang/Appendable
   modifier public, super;
    //Constants
-  const classref classref_0 utf8_1; // org/jasm/test/testclass/TypeAnnotationClass
-  const utf8 utf8_1 "org/jasm/test/testclass/TypeAnnotationClass";
+  const classref classref_0 utf8_1; // org/jasm/test/testclass/TypeAnnotationClassT
+  const utf8 utf8_1 "org/jasm/test/testclass/TypeAnnotationClassT";
   const classref classref_2 utf8_3; // java/util/HashMap
   const utf8 utf8_3 "java/util/HashMap";
   const classref classref_4 utf8_5; // java/lang/Runnable
@@ -29,9 +29,9 @@ class {
   const utf8 utf8_21 "LineNumberTable";
   const utf8 utf8_22 "LocalVariableTable";
   const utf8 utf8_23 "this";
-  const utf8 utf8_24 "Lorg/jasm/test/testclass/TypeAnnotationClass;";
+  const utf8 utf8_24 "Lorg/jasm/test/testclass/TypeAnnotationClassT;";
   const utf8 utf8_25 "LocalVariableTypeTable";
-  const utf8 utf8_26 "Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;";
+  const utf8 utf8_26 "Lorg/jasm/test/testclass/TypeAnnotationClassT<TQ;TT;>;";
   const utf8 utf8_27 "(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V";
   const utf8 utf8_28 "Signature";
   const utf8 utf8_29 "<F::Lorg/jasm/test/testclass/TypeAnnotationInterface1;:Lorg/jasm/test/testclass/TypeAnnotationInterface2;>(TF;)V";
@@ -83,11 +83,11 @@ class {
   const utf8 utf8_75 "java/lang/RuntimeException";
   const utf8 utf8_76 "RuntimeInvisibleParameterAnnotations";
   const utf8 utf8_77 "RuntimeVisibleParameterAnnotations";
-  const methodref methodref_78 classref_0, nameandtype_20; // class=org/jasm/test/testclass/TypeAnnotationClass, name=<init>, descriptor=()V
-  const methodref methodref_79 classref_0, nameandtype_80; // class=org/jasm/test/testclass/TypeAnnotationClass, name=doSend, descriptor=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
+  const methodref methodref_78 classref_0, nameandtype_20; // class=org/jasm/test/testclass/TypeAnnotationClassT, name=<init>, descriptor=()V
+  const methodref methodref_79 classref_0, nameandtype_80; // class=org/jasm/test/testclass/TypeAnnotationClassT, name=doSend, descriptor=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
   const nameandtype nameandtype_80 utf8_81, utf8_27; // name=doSend type=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
   const utf8 utf8_81 "doSend";
-  const methodref methodref_82 classref_0, nameandtype_83; // class=org/jasm/test/testclass/TypeAnnotationClass, name=<init>, descriptor=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
+  const methodref methodref_82 classref_0, nameandtype_83; // class=org/jasm/test/testclass/TypeAnnotationClassT, name=<init>, descriptor=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
   const nameandtype nameandtype_83 utf8_16, utf8_27; // name=<init> type=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
   const string string_84 utf8_85; // ""
   const utf8 utf8_85 "";
@@ -129,7 +129,7 @@ class {
   const utf8 utf8_121 "br";
   const utf8 utf8_122 "Ljava/io/BufferedReader;";
   const utf8 utf8_123 "Ljava/io/IOException;";
-  const utf8 utf8_124 "Lorg/jasm/test/testclass/TypeAnnotationClass<Ljava/lang/String;Lorg/jasm/test/testclass/TypeAnnotationInterface3;>;";
+  const utf8 utf8_124 "Lorg/jasm/test/testclass/TypeAnnotationClassT<Ljava/lang/String;Lorg/jasm/test/testclass/TypeAnnotationInterface3;>;";
   const classref classref_125 utf8_126; // java/lang/Double
   const utf8 utf8_126 "java/lang/Double";
   const classref classref_127 utf8_128; // java/lang/Object
@@ -233,10 +233,10 @@ class {
       line ir4, 16;
     }
     debug vars {
-      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT;
     }
     debug var types {
-      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<TQ;TT;>;
     }
     maxstack 1;
     maxlocals 1;
@@ -259,11 +259,11 @@ class {
       line ir16, 21;
     }
     debug vars {
-      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT;
       var a_1, ir0, utf8_35, utf8_36; // name=arg,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationInterface1;
     }
     debug var types {
-      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<TQ;TT;>;
       var a_1, ir0, utf8_35, utf8_37; // name=arg,  descriptor=TF;
     }
     maxstack 1;
@@ -291,11 +291,11 @@ class {
       line ir20, 31;
     }
     debug vars {
-      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT;
       var a_1, ir12->ir20, utf8_61, utf8_62; // name=e,  descriptor=Ljava/lang/IllegalArgumentException;
     }
     debug var types {
-      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<TQ;TT;>;
     }
     stackmap [AAJLBwA8CA==];
     /**invisible type annotation {
@@ -339,10 +339,10 @@ class {
       line ir0, 36;
     }
     debug vars {
-      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT;
     }
     debug var types {
-      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<TQ;TT;>;
     }
     maxstack 1;
     maxlocals 1;
@@ -373,11 +373,11 @@ class {
       line ir5, 44;
     }
     debug vars {
-      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT;
       var a_1, ir0, utf8_35, utf8_70; // name=arg,  descriptor=Ljava/lang/Object;
     }
     debug var types {
-      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<TQ;TT;>;
     }
     /**invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
@@ -441,22 +441,22 @@ class {
       line ir136, 65;
     }
     debug vars {
-      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT;
       var a_1, ir0, utf8_111, utf8_112; // name=a,  descriptor=Ljava/lang/Integer;
       var a_2, ir0, utf8_113, utf8_114; // name=b,  descriptor=Ljava/lang/Double;
       var a_3, ir2, utf8_115, utf8_70; // name=o,  descriptor=Ljava/lang/Object;
       var a_4, ir8, utf8_116, utf8_112; // name=i,  descriptor=Ljava/lang/Integer;
       var a_5, ir11, utf8_35, utf8_117; // name=arg,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationInterface3;
-      var a_6, ir20, utf8_118, utf8_24; // name=inst,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
-      var a_7, ir36, utf8_119, utf8_24; // name=inst2,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var a_6, ir20, utf8_118, utf8_24; // name=inst,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT;
+      var a_7, ir36, utf8_119, utf8_24; // name=inst2,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT;
       var a_8, ir40, utf8_120, utf8_9; // name=path,  descriptor=Ljava/lang/String;
       var a_11, ir64->ir95, utf8_121, utf8_122; // name=br,  descriptor=Ljava/io/BufferedReader;
       var a_9, ir131->ir136, utf8_61, utf8_123; // name=e,  descriptor=Ljava/io/IOException;
     }
     debug var types {
-      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
-      var a_6, ir20, utf8_118, utf8_124; // name=inst,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<Ljava/lang/String;Lorg/jasm/test/testclass/TypeAnnotationInterface3;>;
-      var a_7, ir36, utf8_119, utf8_124; // name=inst2,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<Ljava/lang/String;Lorg/jasm/test/testclass/TypeAnnotationInterface3;>;
+      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<TQ;TT;>;
+      var a_6, ir20, utf8_118, utf8_124; // name=inst,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<Ljava/lang/String;Lorg/jasm/test/testclass/TypeAnnotationInterface3;>;
+      var a_7, ir36, utf8_119, utf8_124; // name=inst2,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<Ljava/lang/String;Lorg/jasm/test/testclass/TypeAnnotationInterface3;>;
     }
     stackmap [AAf/AFMADAcAAQcAKAcAfgcAgAcAKAcAggcAAQcAAQcAhAcAZgcAZgcAVwABBwBm+gALQgcAZg0N/wACAAkHAAEHACgHAH4HAIAHACgHAIIHAAEHAAEHAIQAAQcAbAY=];
     /**invisible type annotation {
@@ -563,16 +563,16 @@ class {
     astore a_4;
     ir8: aconst_null;
     astore a_5;
-    ir11: new classref_0; // org/jasm/test/testclass/TypeAnnotationClass
+    ir11: new classref_0; // org/jasm/test/testclass/TypeAnnotationClassT
     dup;
-    invokespecial methodref_78; // class=org/jasm/test/testclass/TypeAnnotationClass, name=<init>, descriptor=()V
+    invokespecial methodref_78; // class=org/jasm/test/testclass/TypeAnnotationClassT, name=<init>, descriptor=()V
     astore a_6;
     ir20: aload a_5;
-    ir22: invokestatic methodref_79; // class=org/jasm/test/testclass/TypeAnnotationClass, name=doSend, descriptor=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
-    ir25: new classref_0; // org/jasm/test/testclass/TypeAnnotationClass
+    ir22: invokestatic methodref_79; // class=org/jasm/test/testclass/TypeAnnotationClassT, name=doSend, descriptor=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
+    ir25: new classref_0; // org/jasm/test/testclass/TypeAnnotationClassT
     dup;
     aload a_5;
-    ir31: invokespecial methodref_82; // class=org/jasm/test/testclass/TypeAnnotationClass, name=<init>, descriptor=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
+    ir31: invokespecial methodref_82; // class=org/jasm/test/testclass/TypeAnnotationClassT, name=<init>, descriptor=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
     astore a_7;
     ir36: ldc string_84; // ""
     astore a_8;
@@ -622,26 +622,26 @@ class {
     invokevirtual methodref_106; // class=java/io/IOException, name=printStackTrace, descriptor=()V
     ir136: return;
     
-    /**invisible type annotation {
+    invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
-      targets formal parameter 1;
+      targets parameter type 1;
       
-    }*/
-    /**invisible type annotation {
+    }
+    invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets throws type throwsref_1;
       
-    }*/
-    /**type annotation {
+    }
+    type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
-      targets formal parameter 1;
+      targets parameter type 1;
       
-    }*/
-    /**type annotation {
+    }
+    type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets throws type throwsref_1;
       
-    }*/
+    }
   }
   method {
     name utf8_81; // doSend
@@ -701,11 +701,11 @@ class {
       line ir0, 75;
     }
     debug vars {
-      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT;
       var a_1, ir0, utf8_142, utf8_143; // name=csq,  descriptor=Ljava/lang/CharSequence;
     }
     debug var types {
-      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<TQ;TT;>;
     }
     maxstack 1;
     maxlocals 2;
@@ -725,13 +725,13 @@ class {
       line ir0, 82;
     }
     debug vars {
-      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT;
       var a_1, ir0, utf8_142, utf8_143; // name=csq,  descriptor=Ljava/lang/CharSequence;
       var i_2, ir0, utf8_145, utf8_146; // name=start,  descriptor=I
       var i_3, ir0, utf8_147, utf8_146; // name=end,  descriptor=I
     }
     debug var types {
-      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<TQ;TT;>;
     }
     maxstack 1;
     maxlocals 4;
@@ -753,11 +753,11 @@ class {
       line ir0, 88;
     }
     debug vars {
-      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var a_0, ir0, utf8_23, utf8_24; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT;
       var i_1, ir0, utf8_149, utf8_150; // name=c,  descriptor=C
     }
     debug var types {
-      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+      var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<TQ;TT;>;
     }
     maxstack 1;
     maxlocals 2;

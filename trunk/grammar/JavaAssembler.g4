@@ -272,6 +272,8 @@ annotationtarget: TARGETS RETURN TYPE SEMI #emptyTargetReturnType
 				  |TARGETS TYPE PARAMETER IntegerLiteral SEMI #parameterTypeTargetType
 				  |TARGETS TYPE PARAMETER BOUND IntegerLiteral COMMA IntegerLiteral SEMI #parameterTypeBoundTargetType
 				  |TARGETS SUPERTYPE Identifier? SEMI #supertypeTargetType
+				  |TARGETS THROWS TYPE Identifier SEMI #throwstypeTargetType
+				  |TARGETS PARAMETER TYPE IntegerLiteral SEMI #formalparametertypeTargetType
 				  ;
 
 			 
@@ -432,6 +434,7 @@ ARGUMENT      :  'argument';
 BOUND         :  'bound';
 PATH          :  'path';
 SUPERTYPE     :  'supertype';
+FORMAL        :  'formal';
 
 
 

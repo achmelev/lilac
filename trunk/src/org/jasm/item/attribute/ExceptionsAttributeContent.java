@@ -1,8 +1,10 @@
 package org.jasm.item.attribute;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jasm.bytebuffer.IByteBuffer;
@@ -21,6 +23,8 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 	private List<SymbolReference> exceptionReferences;
 	private Set<Integer> referencedThrowsDeclarations = new HashSet<Integer>();
 	private ClassInfo[] classInfos = null;
+	
+	private Map<String, Integer> exceptionIndexesLabelTable =  new HashMap<String, Integer>();
 	
 	public ExceptionsAttributeContent(ClassInfo[] classInfos) {
 		this.classInfos = classInfos;
@@ -130,6 +134,10 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 		}
 		classInfos = new ClassInfo[exceptions.size()];
 		classInfos = exceptions.toArray(classInfos);
+		
+		for (int i=0;i<exceptionReferences.size(); i++) {
+			addExceptionIndexLabel(exceptionReferences.get(i), i);
+		}
 	}
 
 	
@@ -165,6 +173,25 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 					referencedThrowsDeclarations.add(index);
 				}
 			}
+		}
+	}
+	
+	public void addExceptionIndexLabel(SymbolReference ref, int index) {
+		if (ref.getReferenceLabel() != null) {
+			if (exceptionIndexesLabelTable.containsKey(ref.getReferenceLabel())) {
+				emitError(ref, "dublicate throws label");
+			} else {
+				exceptionIndexesLabelTable.put(ref.getReferenceLabel(), index);
+			}
+		}
+	}
+	
+	public Integer checkAndLoadInterfaceIndex(AbstractByteCodeItem caller, SymbolReference ref) {
+		if (!exceptionIndexesLabelTable.containsKey(ref.getSymbolName())) {
+			caller.emitError(ref, "unknown throws label");
+			return null;
+		} else {
+			return exceptionIndexesLabelTable.get(ref.getSymbolName());
 		}
 	}
 	
