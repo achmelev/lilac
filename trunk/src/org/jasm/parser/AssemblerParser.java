@@ -28,6 +28,7 @@ import org.jasm.item.attribute.Annotation;
 import org.jasm.item.attribute.AnnotationDefaultAttributeContent;
 import org.jasm.item.attribute.AnnotationElementNameValue;
 import org.jasm.item.attribute.AnnotationElementValue;
+import org.jasm.item.attribute.AnnotationTargetTypePath;
 import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.CatchAnnotationTargetType;
 import org.jasm.item.attribute.CodeAttributeContent;
@@ -110,6 +111,7 @@ import org.jasm.parser.JavaAssemblerParser.AnnotationelementContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationelementnameContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationparameterindexContext;
+import org.jasm.parser.JavaAssemblerParser.AnnotationtargetpathContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationtypeContext;
 import org.jasm.parser.JavaAssemblerParser.ArgumentlessopContext;
 import org.jasm.parser.JavaAssemblerParser.ArrayannotationelementvalueContext;
@@ -232,6 +234,10 @@ import org.jasm.parser.JavaAssemblerParser.SupertypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.SwitchMemberContext;
 import org.jasm.parser.JavaAssemblerParser.SwitchopContext;
 import org.jasm.parser.JavaAssemblerParser.SynteticattributeContext;
+import org.jasm.parser.JavaAssemblerParser.TargetPathArrayContext;
+import org.jasm.parser.JavaAssemblerParser.TargetPathNestedContext;
+import org.jasm.parser.JavaAssemblerParser.TargetPathTypeArgumentBoundContext;
+import org.jasm.parser.JavaAssemblerParser.TargetPathTypeArgumentContext;
 import org.jasm.parser.JavaAssemblerParser.ThrowstypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.TypeannotationContext;
 import org.jasm.parser.JavaAssemblerParser.UnknownattributeContext;
@@ -1669,8 +1675,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		annot.setTarget(target);
 		
 	}
-	
-	
 
 
 	@Override
@@ -1686,9 +1690,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		annot.setTarget(target);
 	}
 	
-	
-
-
 	@Override
 	public void enterLocalvartypemember(LocalvartypememberContext ctx) {
 		Annotation annot = (Annotation)stack.peek();
@@ -1706,6 +1707,50 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			throw new IllegalStateException();
 		}
 		target.addMember(member);
+	}
+	
+	
+
+
+	@Override
+	public void enterAnnotationtargetpath(AnnotationtargetpathContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		AnnotationTargetTypePath path = new AnnotationTargetTypePath(new short[ctx.annotationtargetpath_arg().size()], new short[ctx.annotationtargetpath_arg().size()]);
+		path.setSourceLocation(createSourceLocation(ctx.TARGET()));
+		annot.setTargetPath(path);
+	}
+	
+
+	@Override
+	public void enterTargetPathTypeArgumentBound(
+			TargetPathTypeArgumentBoundContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		AnnotationTargetTypePath path = (AnnotationTargetTypePath)annot.getTargetPath();
+		path.setArgument(JasmConsts.ANNOTATION_TARGET_TYPE_PATHKIND_TYPE_ARGUMENT, null);
+	}
+
+
+	@Override
+	public void enterTargetPathTypeArgument(TargetPathTypeArgumentContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		AnnotationTargetTypePath path = (AnnotationTargetTypePath)annot.getTargetPath();
+		path.setArgument(JasmConsts.ANNOTATION_TARGET_TYPE_PATHKIND_TYPE_ARGUMENT, createIntegerLiteral(ctx.IntegerLiteral()));
+	}
+
+
+	@Override
+	public void enterTargetPathNested(TargetPathNestedContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		AnnotationTargetTypePath path = (AnnotationTargetTypePath)annot.getTargetPath();
+		path.setArgument(JasmConsts.ANNOTATION_TARGET_TYPE_PATHKIND_NESTED, null);
+	}
+
+
+	@Override
+	public void enterTargetPathArray(TargetPathArrayContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		AnnotationTargetTypePath path = (AnnotationTargetTypePath)annot.getTargetPath();
+		path.setArgument(JasmConsts.ANNOTATION_TARGET_TYPE_PATHKIND_ARRAY, null);
 	}
 
 
