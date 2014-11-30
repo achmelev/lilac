@@ -87,8 +87,12 @@ public class CatchAnnotationTargetType extends AbstractAnnotationTargetType impl
 
 	@Override
 	protected void doResolveAfterParse() {
-		CodeAttributeContent code = (CodeAttributeContent)getAncestor(CodeAttributeContent.class);
-		handler = code.getExceptionTable().checkAndLoadFromSymbolTable(this, handlerReference);
+		if (isInCode()) {
+			CodeAttributeContent code = (CodeAttributeContent)getAncestor(CodeAttributeContent.class);
+			handler = code.getExceptionTable().checkAndLoadFromSymbolTable(this, handlerReference);
+		} else {
+			emitIllegalInContextError();
+		}
 	}
 
 	@Override

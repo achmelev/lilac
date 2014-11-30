@@ -107,8 +107,12 @@ public class LocalVariableAnnotationTargetType extends AbstractAnnotationTargetT
 
 	@Override
 	protected void doResolveAfterParse() {
-		for (LocalVariableAnnotationTargetTypeMember member: members) {
-			member.resolve();
+		if (isInCode()) {
+			for (LocalVariableAnnotationTargetTypeMember member: members) {
+				member.resolve();
+			}
+		} else {
+			emitIllegalInContextError();
 		}
 		
 	}
@@ -134,6 +138,7 @@ public class LocalVariableAnnotationTargetType extends AbstractAnnotationTargetT
 	}
 	
 	public void addMember(LocalVariableAnnotationTargetTypeMember lvm) {
+		lvm.setParent(this);
 		members.add(lvm);
 	}
 

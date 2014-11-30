@@ -484,20 +484,20 @@ class {
       targets constructor type argument ir31, 0;
       
     }
-    /**invisible type annotation {
+    invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets var types {
         targeted var a_3, ir2;
       }
       
-    }*/
-    /**invisible type annotation {
+    }
+    invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets resource var types {
         targeted var a_11, ir64->ir95;
       }
       
-    }*/
+    }
     type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets cast type ir3, 0;
@@ -523,20 +523,20 @@ class {
       targets constructor type argument ir31, 0;
       
     }
-    /** type annotation {
+    type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets var types {
         targeted var a_3, ir2;
       }
       
-    }*/
-    /**type annotation {
+    }
+    type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets resource var types {
         targeted var a_11, ir64->ir95;
       }
       
-    }*/
+    }
     maxstack 5;
     maxlocals 12;
     try ir64->ir69 catch all go to ir83;

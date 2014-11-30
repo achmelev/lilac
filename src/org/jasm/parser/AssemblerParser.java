@@ -45,6 +45,8 @@ import org.jasm.item.attribute.InnerClass;
 import org.jasm.item.attribute.InnerClassesAttributeContent;
 import org.jasm.item.attribute.LineNumber;
 import org.jasm.item.attribute.LineNumberTableAttributeContent;
+import org.jasm.item.attribute.LocalVariableAnnotationTargetType;
+import org.jasm.item.attribute.LocalVariableAnnotationTargetTypeMember;
 import org.jasm.item.attribute.LocalVariableTableAttributeContent;
 import org.jasm.item.attribute.LocalVariableTypeTableAttributeContent;
 import org.jasm.item.attribute.OffsetAnnotationTargetType;
@@ -180,6 +182,8 @@ import org.jasm.parser.JavaAssemblerParser.InterfacesContext;
 import org.jasm.parser.JavaAssemblerParser.LabeledIdentifierContext;
 import org.jasm.parser.JavaAssemblerParser.LinenumberContext;
 import org.jasm.parser.JavaAssemblerParser.LocalvaropContext;
+import org.jasm.parser.JavaAssemblerParser.LocalvartypeTargetTypeContext;
+import org.jasm.parser.JavaAssemblerParser.LocalvartypememberContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
@@ -1664,6 +1668,44 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
 		annot.setTarget(target);
 		
+	}
+	
+	
+
+
+	@Override
+	public void enterLocalvartypeTargetType(LocalvartypeTargetTypeContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		LocalVariableAnnotationTargetType target = new LocalVariableAnnotationTargetType();
+		if (ctx.RESOURCE() !=null) {
+			target.setTargetType(JasmConsts.ANNOTATION_TARGET_RESOURCE_VAR);
+		} else {
+			target.setTargetType(JasmConsts.ANNOTATION_TARGET_LOCAL_VAR);
+		}
+		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		annot.setTarget(target);
+	}
+	
+	
+
+
+	@Override
+	public void enterLocalvartypemember(LocalvartypememberContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		LocalVariableAnnotationTargetType target = (LocalVariableAnnotationTargetType)annot.getTarget();
+		LocalVariableAnnotationTargetTypeMember member = new LocalVariableAnnotationTargetTypeMember();
+		member.setStartInstructionReference(createSymbolReference(ctx.Identifier(0)));
+		if (ctx.Identifier().size() == 2) {
+			member.setEndInstructionReference(createSymbolReference(ctx.Identifier(1)));
+		}
+		if (ctx.localvartypemember_vararg().IntegerLiteral() != null) {
+			member.setVariableLiteral(createIntegerLiteral(ctx.localvartypemember_vararg().IntegerLiteral()));
+		} else if (ctx.localvartypemember_vararg().Identifier() != null) {
+			member.setVariableReference(createSymbolReference(ctx.localvartypemember_vararg().Identifier()));
+		} else {
+			throw new IllegalStateException();
+		}
+		target.addMember(member);
 	}
 
 
