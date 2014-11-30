@@ -103,7 +103,7 @@ public class AnnotationTargetTypePath extends AbstractByteCodeItem {
 				} else if (pathKinds[i] == JasmConsts.ANNOTATION_TARGET_TYPE_PATHKIND_NESTED) {
 					buf.append("nested");
 				} else if (pathKinds[i] == JasmConsts.ANNOTATION_TARGET_TYPE_PATHKIND_TYPE_ARGUMENT) {
-					buf.append("type argument ["+argumentIndexes[i]+"]");
+					buf.append("type argument("+argumentIndexes[i]+")");
 				} else if (pathKinds[i] == JasmConsts.ANNOTATION_TARGET_TYPE_PATHKIND_TYPE_ARGUMENT_BOUND) {
 					buf.append("type argument bound");
 				} else {
