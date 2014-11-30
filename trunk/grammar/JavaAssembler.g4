@@ -283,6 +283,7 @@ annotationtarget: TARGETS RETURN TYPE SEMI #emptyTargetReturnType
 				  |TARGETS CONSTRUCTOR REFERENCE TYPE ARGUMENT Identifier COMMA IntegerLiteral SEMI #constructorreferencetypeargumentTargetType
 				  |TARGETS METHOD TYPE ARGUMENT Identifier COMMA IntegerLiteral SEMI #methodtypeargumentTargetType
 				  |TARGETS METHOD REFERENCE TYPE ARGUMENT Identifier COMMA IntegerLiteral SEMI #methodreferencetypeargumentTargetType
+				  |TARGETS CATCH TYPE  Identifier SEMI #catchtypeTargetType
 				  ;
 
 			 
