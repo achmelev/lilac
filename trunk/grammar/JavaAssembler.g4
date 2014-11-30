@@ -284,7 +284,11 @@ annotationtarget: TARGETS RETURN TYPE SEMI #emptyTargetReturnType
 				  |TARGETS METHOD TYPE ARGUMENT Identifier COMMA IntegerLiteral SEMI #methodtypeargumentTargetType
 				  |TARGETS METHOD REFERENCE TYPE ARGUMENT Identifier COMMA IntegerLiteral SEMI #methodreferencetypeargumentTargetType
 				  |TARGETS CATCH TYPE  Identifier SEMI #catchtypeTargetType
+				  |TARGETS (RESOURCE)? VAR TYPES LBRACE (localvartypemember)* RBRACE #localvartypeTargetType
 				  ;
+
+localvartypemember: TARGETED VAR localvartypemember_vararg COMMA Identifier (Pointer Identifier)? SEMI;
+localvartypemember_vararg: IntegerLiteral|Identifier;
 
 			 
 
@@ -436,6 +440,7 @@ MAXSTACK      :  'maxstack';
 MAXLOCALS     :  'maxlocals';
 TARGET        :  'target';
 TARGETS       :  'targets';
+TARGETED      :  'targeted';
 RETURN        :  'return';
 RET           :  'ret';
 RECEIVER      :  'receiver';
@@ -450,6 +455,7 @@ INSTANCEOF    :  'instanceof';
 REFERENCE     :  'reference';
 CONSTRUCTOR   :  'constructor';
 CAST          :  'cast';
+RESOURCE      :  'resource';
 
 
 

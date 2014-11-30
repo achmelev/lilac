@@ -10,14 +10,20 @@ import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.IUnknownVariableReference;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.LocalVariable;
+import org.jasm.parser.literals.IntegerLiteral;
+import org.jasm.parser.literals.SymbolReference;
 
 public class LocalVariableAnnotationTargetTypeMember extends AbstractByteCodeItem implements IUnknownVariableReference, IInstructionReference {
 	
+	private SymbolReference startInstructionReference;
 	private int startPC = -1;
 	private AbstractInstruction startInstruction = null;
 	private int length = -1;
+	private SymbolReference endInstructionReference;
 	private AbstractInstruction endInstruction = null;
 	private int index = -1;
+	private SymbolReference variableReference;
+	private IntegerLiteral variableLiteral;
 	private LocalVariable variable;
 	
 	@Override
@@ -101,7 +107,24 @@ public class LocalVariableAnnotationTargetTypeMember extends AbstractByteCodeIte
 
 	@Override
 	protected void doResolveAfterParse() {
-		
+		CodeAttributeContent code = getAncestor(CodeAttributeContent.class);
+		startInstruction = code.getInstructions().checkAndLoadFromSymbolTable(this, startInstructionReference);
+		if (endInstructionReference != null) {
+			endInstruction = code.getInstructions().checkAndLoadFromSymbolTable(this, endInstructionReference);
+		}
+		if (variableReference != null) {
+			variable = code.getInstructions().getVariablesPool().checkAndLoad(this, variableReference, (char)0);
+			if (variable != null) {
+				index = variable.getIndex();
+			}
+		} else {
+			int iValue = variableLiteral.getValue();
+			if (iValue<0 || iValue>65535) {
+				emitError(variableLiteral, "variable offset out of bounds!");
+			} else {
+				index = (short)iValue;
+			}
+		}
 	}
 
 	public void setIndex(int index) {
@@ -136,6 +159,23 @@ public class LocalVariableAnnotationTargetTypeMember extends AbstractByteCodeIte
 		} else {
 			return new AbstractInstruction[]{startInstruction, endInstruction};
 		}
+	}
+
+	public void setStartInstructionReference(
+			SymbolReference startInstructionReference) {
+		this.startInstructionReference = startInstructionReference;
+	}
+
+	public void setEndInstructionReference(SymbolReference endInstructionReference) {
+		this.endInstructionReference = endInstructionReference;
+	}
+
+	public void setVariableReference(SymbolReference variableReference) {
+		this.variableReference = variableReference;
+	}
+
+	public void setVariableLiteral(IntegerLiteral variableLiteral) {
+		this.variableLiteral = variableLiteral;
 	}
 	
 	
