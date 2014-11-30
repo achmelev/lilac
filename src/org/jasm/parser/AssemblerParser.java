@@ -29,6 +29,7 @@ import org.jasm.item.attribute.AnnotationDefaultAttributeContent;
 import org.jasm.item.attribute.AnnotationElementNameValue;
 import org.jasm.item.attribute.AnnotationElementValue;
 import org.jasm.item.attribute.Attribute;
+import org.jasm.item.attribute.CatchAnnotationTargetType;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
 import org.jasm.item.attribute.DebugLocalVariable;
@@ -112,6 +113,7 @@ import org.jasm.parser.JavaAssemblerParser.ArgumentlessopContext;
 import org.jasm.parser.JavaAssemblerParser.ArrayannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.BranchopContext;
 import org.jasm.parser.JavaAssemblerParser.CasttypeTargetTypeContext;
+import org.jasm.parser.JavaAssemblerParser.CatchtypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.ClassInnerClassContext;
 import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
 import org.jasm.parser.JavaAssemblerParser.ClassinfoContext;
@@ -1140,7 +1142,12 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		handler.setHandlerSymbolReference(createSymbolReference(ctx.Identifier(2)));
 		
 		if (ctx.identifierOrAll().Identifier() != null) {
-			handler.setCatchTypeReference(createSymbolReference(ctx.identifierOrAll().Identifier()));
+			SymbolReference ref = createSymbolReference(ctx.identifierOrAll().Identifier());
+			handler.setCatchTypeReference(ref);
+		}
+		
+		if (ctx.label() != null) {
+			handler.setLabel(ctx.label().getText());
 		}
 		
 		handler.setSourceLocation(createSourceLocation(ctx.TRY()));
@@ -1158,6 +1165,13 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	private void addExceptionHandler(ExceptionHandler handler) {
 		CodeAttributeContent content = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
 		content.getExceptionTable().add(handler);
+		if (handler.getSymbolName() != null) {
+			if (!content.getExceptionTable().getSymbolTable().contains(handler.getSymbolName())) {
+				content.getExceptionTable().getSymbolTable().add(handler);
+			} else {
+				emitError(handler.getSourceLocation().getLine(), handler.getSourceLocation().getCharPosition(), "dublicate exception handler label "+handler.getSymbolName());
+			}
+		}
 	}
 
 
@@ -1555,11 +1569,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		annot.setTarget(target);
 	}
 	
-	
-	
-	
-
-
 	@Override
 	public void enterMethodreferencetypeTargetType(
 			MethodreferencetypeTargetTypeContext ctx) {
@@ -1580,7 +1589,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		createOffsetTargetType(ctx.TARGETS(), ctx.Identifier(), JasmConsts.ANNOTATION_TARGET_INSTANCEOF);
 	}
 
-
 	@Override
 	public void enterNewtypeTargetType(NewtypeTargetTypeContext ctx) {
 		createOffsetTargetType(ctx.TARGETS(), ctx.Identifier(), JasmConsts.ANNOTATION_TARGET_NEW);
@@ -1595,14 +1603,11 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		annot.setTarget(target);
 	}
 	
-	
-	
 	@Override
 	public void enterMethodtypeargumentTargetType(
 			MethodtypeargumentTargetTypeContext ctx) {
 		createTypeArgumentTargetType(ctx.TARGETS(), ctx.Identifier(), ctx.IntegerLiteral(), JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_ARGUMENT);
 	}
-
 
 	@Override
 	public void enterConstructorreferencetypeargumentTargetType(
@@ -1610,13 +1615,11 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		createTypeArgumentTargetType(ctx.TARGETS(), ctx.Identifier(), ctx.IntegerLiteral(), JasmConsts.ANNOTATION_TARGET_GENERIC_CONSTRUCTOR_TYPE_ARGUMENT_IN_METHOD_REF);
 	}
 
-
 	@Override
 	public void enterConstructortypeargumentTargetType(
 			ConstructortypeargumentTargetTypeContext ctx) {
 		createTypeArgumentTargetType(ctx.TARGETS(), ctx.Identifier(), ctx.IntegerLiteral(), JasmConsts.ANNOTATION_TARGET_GENERIC_CONSTRUCTOR_TYPE_ARGUMENT);
 	}
-
 
 	@Override
 	public void enterCasttypeTargetType(CasttypeTargetTypeContext ctx) {
@@ -1630,7 +1633,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		createTypeArgumentTargetType(ctx.TARGETS(), ctx.Identifier(), ctx.IntegerLiteral(), JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_ARGUMENT_IN_METHOD_REF);
 	}
 
-
 	private void createTypeArgumentTargetType(TerminalNode beginNode, TerminalNode idNode,TerminalNode indexNode, short targetType) {
 		Annotation annot = (Annotation)stack.peek();
 		TypeArgumentAnnotationTargetType target = new TypeArgumentAnnotationTargetType();
@@ -1641,9 +1643,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		annot.setTarget(target);
 	}
 	
-	
-
-
 	@Override
 	public void enterFormalparametertypeTargetType(FormalparametertypeTargetTypeContext ctx) {
 		Annotation annot = (Annotation)stack.peek();
@@ -1652,6 +1651,19 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		target.setIndexLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
 		annot.setTarget(target);
+	}
+	
+	
+
+	@Override
+	public void enterCatchtypeTargetType(CatchtypeTargetTypeContext ctx) {
+		Annotation annot = (Annotation)stack.peek();
+		CatchAnnotationTargetType target = new CatchAnnotationTargetType();
+		target.setTargetType(JasmConsts.ANNOTATION_TARGET_CATCH);
+		target.setHandlerReference(createSymbolReference(ctx.Identifier()));
+		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		annot.setTarget(target);
+		
 	}
 
 

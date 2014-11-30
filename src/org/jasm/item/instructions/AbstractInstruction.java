@@ -116,10 +116,6 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem implement
 		
 	}
 
-	@Override
-	public String getSymbolTypeLabel() {
-		return getTypeLabel();
-	}
 
 	private String createInstructionLabel() {
 		Instructions instr = (Instructions)getParent();

@@ -8,9 +8,11 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.Instructions;
+import org.jasm.parser.literals.SymbolReference;
 
 public class CatchAnnotationTargetType extends AbstractAnnotationTargetType implements IExceptionHandlerReference {
 	
+	private SymbolReference handlerReference;
 	private int handlerIndex = -1;
 	private ExceptionHandler handler;
 
@@ -85,12 +87,17 @@ public class CatchAnnotationTargetType extends AbstractAnnotationTargetType impl
 
 	@Override
 	protected void doResolveAfterParse() {
-		
+		CodeAttributeContent code = (CodeAttributeContent)getAncestor(CodeAttributeContent.class);
+		handler = code.getExceptionTable().checkAndLoadFromSymbolTable(this, handlerReference);
 	}
 
 	@Override
 	public ExceptionHandler[] getExceptionHandlerReferences() {
 		return new ExceptionHandler[]{handler};
+	}
+
+	public void setHandlerReference(SymbolReference handlerReference) {
+		this.handlerReference = handlerReference;
 	}
 
 	

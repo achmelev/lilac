@@ -35,14 +35,7 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 
 	public int getIndexInPool() {
 		return getParent().indexOf(this)+1;
-	}
-
-	@Override
-	public String getSymbolTypeLabel() {
-		return getTypeLabel();
-	}
-	
-	
+	}	
 
 	@Override
 	public String getSymbolName() {

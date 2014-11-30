@@ -298,16 +298,16 @@ class {
       var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<TQ;TT;>;
     }
     stackmap [AAJLBwA8CA==];
-    /**invisible type annotation {
+    invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets catch type try_0;
       
-    }*/
-    /**type annotation {
+    }
+    type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets catch type try_0;
       
-    }*/
+    }
     maxstack 2;
     maxlocals 2;
     try_0: try ir0->ir5 catch classref_59 go to ir11; // java/lang/IllegalArgumentException

@@ -12,9 +12,13 @@ import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.Instructions;
+import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.literals.SymbolReference;
 
-public class ExceptionHandler extends AbstractByteCodeItem implements IConstantPoolReference, IInstructionReference {
+public class ExceptionHandler extends AbstractByteCodeItem implements IConstantPoolReference, IInstructionReference, ISymbolTableEntry {
+	
+	
+	private String label;
 	
 	private int startPC = -1;
 	private int endPC = -1;
@@ -208,6 +212,16 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 	public int getIndex() {
 		ExceptionHandlerTable table = (ExceptionHandlerTable)getParent();
 		return table.indexOf(this);
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+
+	@Override
+	public String getSymbolName() {
+		return label;
 	}
 	
 	
