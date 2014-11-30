@@ -472,7 +472,7 @@ class {
     invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets new type ir11;
-      /**target path type argument [1];**/ 
+      target path type argument(1);
     }
     invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
@@ -511,7 +511,7 @@ class {
     type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
       targets new type ir11;
-      /**target path type argument [1]; **/ 
+      target path type argument(1);  
     }
     type annotation {
       type utf8_13; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;

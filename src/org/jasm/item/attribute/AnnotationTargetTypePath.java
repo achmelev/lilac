@@ -6,11 +6,15 @@ import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.parser.literals.IntegerLiteral;
 
 public class AnnotationTargetTypePath extends AbstractByteCodeItem {
 	
 	private short [] pathKinds = null;
+	private IntegerLiteral[] argumentIndexLiterals;
 	private short [] argumentIndexes = null;
+	
+	private int currentIndex = 0;
 	
 	public AnnotationTargetTypePath() {
 		
@@ -19,6 +23,7 @@ public class AnnotationTargetTypePath extends AbstractByteCodeItem {
 	public AnnotationTargetTypePath (short [] pathKinds, short [] argumentIndexes) {
 		this.pathKinds = pathKinds;
 		this.argumentIndexes = argumentIndexes;
+		argumentIndexLiterals = new IntegerLiteral[argumentIndexes.length];
 	}
 	
 
@@ -99,7 +104,7 @@ public class AnnotationTargetTypePath extends AbstractByteCodeItem {
 					buf.append("nested");
 				} else if (pathKinds[i] == JasmConsts.ANNOTATION_TARGET_TYPE_PATHKIND_TYPE_ARGUMENT) {
 					buf.append("type argument ["+argumentIndexes[i]+"]");
-				} else if (pathKinds[i] == JasmConsts.ANNOTATION_TARGET_TYPE_PATHKIND_TYPE_BOUND) {
+				} else if (pathKinds[i] == JasmConsts.ANNOTATION_TARGET_TYPE_PATHKIND_TYPE_ARGUMENT_BOUND) {
 					buf.append("type argument bound");
 				} else {
 					throw new IllegalArgumentException("unknown bound: "+pathKinds[i]);
@@ -125,7 +130,23 @@ public class AnnotationTargetTypePath extends AbstractByteCodeItem {
 
 	@Override
 	protected void doResolveAfterParse() {
-		
+		for (int i=0;i<argumentIndexLiterals.length; i++) {
+			if (argumentIndexLiterals[i] == null) {
+				argumentIndexes[i] = 0;
+			} else {
+				int iValue = argumentIndexLiterals[i].getValue();
+				if (iValue<0 || iValue>255) {
+					emitError(argumentIndexLiterals[i], "type argument index out of bounds!");
+				} else {
+					argumentIndexes[i] = (short)iValue;
+				}
+			}
+		}
+	}
+	
+	public void setArgument(short pathKind, IntegerLiteral argumentIndexLiteral ) {
+		pathKinds[currentIndex] = pathKind;
+		argumentIndexLiterals[currentIndex] = argumentIndexLiteral;
 	}
 
 }
