@@ -3,6 +3,7 @@ package org.jasm.item.instructions;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -605,9 +606,21 @@ public class OpCodes {
 
 	public static void main(String[] args) {
 		initialize();
+		
+		System.out.println("//Instructions");
+		List<String> opNames = new ArrayList<String>();
+		opNames.addAll(opcodeToName.values());
+		Collections.sort(opNames);
+		for (String n: opNames) {
+			if (!shortLocalVariableInstructions.contains(nameToOpcode.get(n))) {
+				System.out.println(n.toUpperCase()+": '"+n+"';");
+			}
+		}
+		
+		
 		StringBuffer buf = new StringBuffer();
 		String instrs = null;
-		buf.append("Argumentlessop: ");
+		buf.append("argumentlessop: ");
 		int index = 0;
 		for (Short code: argumentLessInstructions) {
 			if (!shortLocalVariableInstructions.contains(code)) {
@@ -618,35 +631,34 @@ public class OpCodes {
 				if (index > 0) {
 					buf.append("|");
 				}
-				buf.append("'"+name+"'");
+				buf.append(name.toUpperCase());
 				index++;
 			}
 		}
 		buf.append(";");
 		instrs =buf.toString();
-		System.out.println("ARGUMENTLESS:");
+		System.out.println();
 		System.out.println(instrs);
 		
 		buf.delete(0, buf.length());
-		buf.append("Constantpoolop: ");
-		buf.append("'"+opcodeToName.get(OpCodes.ldc)+"'");
+		buf.append("constantpoolop: ");
+		buf.append(opcodeToName.get(OpCodes.ldc).toUpperCase());
 		for (Short code: constantPoolInstructions) {
 				String name = opcodeToName.get(code);
 				if (name == null) {
 					throw new IllegalStateException("Something has gone wrong!");
 				}
 				buf.append("|");
-				buf.append("'"+name+"'");
+				buf.append(name.toUpperCase());
 				index++;
 			
 		}
 		buf.append(";");
 		instrs =buf.toString();
-		System.out.println("CONSTANTPOOL:");
 		System.out.println(instrs);
 		
 		buf.delete(0, buf.length());
-		buf.append("Localvarop: ");
+		buf.append("localvarop: ");
 		index = 0;
 		for (Short code: localVariableInstructions) {
 				String name = opcodeToName.get(code);
@@ -656,17 +668,16 @@ public class OpCodes {
 				if (index > 0) {
 					buf.append("|");
 				}
-				buf.append("'"+name+"'");
+				buf.append(name.toUpperCase());
 				index++;
 			
 		}
 		buf.append(";");
 		instrs =buf.toString();
-		System.out.println("LOCALVAR:");
 		System.out.println(instrs);
 		
 		buf.delete(0, buf.length());
-		buf.append("Branchop: ");
+		buf.append("branchop: ");
 		index = 0;
 		for (Short code: branchInstructions) {
 				String name = opcodeToName.get(code);
@@ -676,13 +687,12 @@ public class OpCodes {
 				if (index > 0) {
 					buf.append("|");
 				}
-				buf.append("'"+name+"'");
+				buf.append(name.toUpperCase());
 				index++;
 			
 		}
 		buf.append(";");
 		instrs =buf.toString();
-		System.out.println("BRANCHOP:");
 		System.out.println(instrs);
 	}
 	

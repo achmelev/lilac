@@ -184,15 +184,15 @@ methodvariabletypetable: DEBUG VAR TYPES LBRACE
 
 debugvartype: VAR Identifier COMMA Identifier (Pointer Identifier)? COMMA Identifier COMMA Identifier  SEMI;
 
-instruction: (Argumentlessop|RETURN) #argumentlessop
-			 | (Constantpoolop|INSTANCEOF|NEW) Identifier #constantpoolop
-			 | wideOrNormal? Localvarop Identifier #localvarop
-			 | Pushop IntegerLiteral #pushop
-			 | WIDE? Iincop Identifier COMMA IntegerLiteral #iincop
-			 | Newarrayop arrayType #newarrayop
-			 | Multinewarrayop Identifier COMMA IntegerLiteral #multinewarrayop 
-			 | Switchop switchMember (COMMA switchMember)* #switchop 
-			 | Branchop Identifier #branchop
+instruction: argumentlessop_keyword #argumentlessop
+			 | constantpoolop_keyword Identifier #constantpoolop
+			 | wideOrNormal? localvarop_keyword Identifier #localvarop
+			 | pushop_keyword IntegerLiteral #pushop
+			 | WIDE? iincop_keyword Identifier COMMA IntegerLiteral #iincop
+			 | newarrayop_keyword arrayType #newarrayop
+			 | multinewarrayop_keyword Identifier COMMA IntegerLiteral #multinewarrayop 
+			 | switchop_keyword switchMember (COMMA switchMember)* #switchop 
+			 | branchop_keyword Identifier #branchop
 			 ;
 
 methodmaxstack: MAXSTACK IntegerLiteral SEMI;
@@ -339,20 +339,19 @@ unknownattribute: UNKNOWN CODE? ATTRIBUTE Identifier COMMA Base64Literal SEMI;
 
 stackmapattribute: STACKMAP Base64Literal SEMI;
 
+//Instruction Rules
+
+argumentlessop_keyword: AALOAD|AASTORE|ACONST_NULL|ARETURN|ARRAYLENGTH|ATHROW|BALOAD|BASTORE|CALOAD|CASTORE|D2F|D2I|D2L|DADD|DALOAD|DASTORE|DCMPG|DCMPL|DCONST_0|DCONST_1|DDIV|DMUL|DNEG|DREM|DRETURN|DSUB|DUP|DUP_X1|DUP_X2|DUP2|DUP2_X1|DUP2_X2|F2D|F2I|F2L|FADD|FALOAD|FASTORE|FCMPG|FCMPL|FCONST_0|FCONST_1|FCONST_2|FDIV|FMUL|FNEG|FREM|FRETURN|FSUB|I2B|I2C|I2D|I2F|I2L|I2S|IADD|IALOAD|IAND|IASTORE|ICONST_M1|ICONST_0|ICONST_1|ICONST_2|ICONST_3|ICONST_4|ICONST_5|IDIV|IMUL|INEG|IOR|IREM|IRETURN|ISHL|ISHR|ISUB|IUSHR|IXOR|L2D|L2F|L2I|LADD|LALOAD|LAND|LASTORE|LCMP|LCONST_0|LCONST_1|LDIV|LMUL|LNEG|LOR|LREM|LRETURN|LSHL|LSHR|LSUB|LUSHR|LXOR|MONITORENTER|MONITOREXIT|NOP|POP|POP2|RET|RETURN|SALOAD|SASTORE|SWAP;
+constantpoolop_keyword: INVOKEINTERFACE|LDC|ANEWARRAY|CHECKCAST|GETFIELD|GETSTATIC|INSTANCEOF|INVOKESPECIAL|INVOKESTATIC|INVOKEVIRTUAL|LDC_W|LDC2_W|NEW|PUTFIELD|PUTSTATIC;
+localvarop_keyword: ALOAD|ASTORE|DLOAD|DSTORE|FLOAD|FSTORE|ILOAD|ISTORE|LLOAD|LSTORE;
+branchop_keyword: GOTO|IF_ACMPEQ|IF_ACMPNE|IF_ICMPEQ|IF_ICMPGE|IF_ICMPGT|IF_ICMPLE|IF_ICMPLT|IF_ICMPNE|IFEQ|IFGE|IFGT|IFLE|IFLT|IFNE|IFNONNULL|IFNULL|JSR;
+pushop_keyword: BIPUSH|SIPUSH; 
+iincop_keyword: IINC;
+newarrayop_keyword: NEWARRAY;
+multinewarrayop_keyword: MULTIANEWARRAY;
+switchop_keyword: LOOKUPSWITCH|TABLESWITCH;
+
 //Lexer
-
-//Instructions
-
-Argumentlessop: 'aaload'|'aastore'|'aconst_null'|'areturn'|'arraylength'|'athrow'|'baload'|'bastore'|'caload'|'castore'|'d2f'|'d2i'|'d2l'|'dadd'|'daload'|'dastore'|'dcmpg'|'dcmpl'|'dconst_0'|'dconst_1'|'ddiv'|'dmul'|'dneg'|'drem'|'dreturn'|'dsub'|'dup'|'dup_x1'|'dup_x2'|'dup2'|'dup2_x1'|'dup2_x2'|'f2d'|'f2i'|'f2l'|'fadd'|'faload'|'fastore'|'fcmpg'|'fcmpl'|'fconst_0'|'fconst_1'|'fconst_2'|'fdiv'|'fmul'|'fneg'|'frem'|'freturn'|'fsub'|'i2b'|'i2c'|'i2d'|'i2f'|'i2l'|'i2s'|'iadd'|'iaload'|'iand'|'iastore'|'iconst_m1'|'iconst_0'|'iconst_1'|'iconst_2'|'iconst_3'|'iconst_4'|'iconst_5'|'idiv'|'imul'|'ineg'|'ior'|'irem'|'ireturn'|'ishl'|'ishr'|'isub'|'iushr'|'ixor'|'l2d'|'l2f'|'l2i'|'ladd'|'laload'|'land'|'lastore'|'lcmp'|'lconst_0'|'lconst_1'|'ldiv'|'lmul'|'lneg'|'lor'|'lrem'|'lreturn'|'lshl'|'lshr'|'lsub'|'lushr'|'lxor'|'monitorenter'|'monitorexit'|'nop'|'pop'|'pop2'|'ret'|'saload'|'sastore'|'swap';
-Constantpoolop: 'ldc'|'invokeinterface'|'anewarray'|'checkcast'|'getfield'|'getstatic'|'invokespecial'|'invokestatic'|'invokevirtual'|'ldc_w'|'ldc2_w'|'putfield'|'putstatic';
-Localvarop: 'aload'|'astore'|'dload'|'dstore'|'fload'|'fstore'|'iload'|'istore'|'lload'|'lstore';
-Pushop: 'bipush'|'sipush'; 
-Iincop: 'iinc';
-Newarrayop: 'newarray';
-Multinewarrayop: 'multianewarray';
-Switchop: 'lookupswitch'|'tableswitch';
-Branchop: 'goto'|'if_acmpeq'|'if_acmpne'|'if_icmpeq'|'if_icmpge'|'if_icmpgt'|'if_icmple'|'if_icmplt'|'if_icmpne'|'ifeq'|'ifge'|'ifgt'|'ifle'|'iflt'|'ifne'|'ifnonnull'|'ifnull'|'jsr';
-
 
 // Keywords
 
@@ -422,7 +421,6 @@ RETURNADRESS  :  'returnadress';
 AT            :  'at';
 VAR           :  'var';
 VARS          :  'vars';
-WIDE          :  'wide';
 NORMAL        :  'normal';
 ALL        	  :  'all';
 GO        	  :  'go';
@@ -441,8 +439,6 @@ MAXLOCALS     :  'maxlocals';
 TARGET        :  'target';
 TARGETS       :  'targets';
 TARGETED      :  'targeted';
-RETURN        :  'return';
-RET           :  'ret';
 RECEIVER      :  'receiver';
 NESTED        :  'nested';
 ARGUMENT      :  'argument';
@@ -450,12 +446,175 @@ BOUND         :  'bound';
 PATH          :  'path';
 SUPERTYPE     :  'supertype';
 FORMAL        :  'formal';
-NEW           :  'new';
-INSTANCEOF    :  'instanceof';
 REFERENCE     :  'reference';
 CONSTRUCTOR   :  'constructor';
 CAST          :  'cast';
 RESOURCE      :  'resource';
+
+//Instructions (some used also as keywords)
+
+AALOAD: 'aaload';
+AASTORE: 'aastore';
+ACONST_NULL: 'aconst_null';
+ALOAD: 'aload';
+ANEWARRAY: 'anewarray';
+ARETURN: 'areturn';
+ARRAYLENGTH: 'arraylength';
+ASTORE: 'astore';
+ATHROW: 'athrow';
+BALOAD: 'baload';
+BASTORE: 'bastore';
+BIPUSH: 'bipush';
+CALOAD: 'caload';
+CASTORE: 'castore';
+CHECKCAST: 'checkcast';
+D2F: 'd2f';
+D2I: 'd2i';
+D2L: 'd2l';
+DADD: 'dadd';
+DALOAD: 'daload';
+DASTORE: 'dastore';
+DCMPG: 'dcmpg';
+DCMPL: 'dcmpl';
+DCONST_0: 'dconst_0';
+DCONST_1: 'dconst_1';
+DDIV: 'ddiv';
+DLOAD: 'dload';
+DMUL: 'dmul';
+DNEG: 'dneg';
+DREM: 'drem';
+DRETURN: 'dreturn';
+DSTORE: 'dstore';
+DSUB: 'dsub';
+DUP: 'dup';
+DUP2: 'dup2';
+DUP2_X1: 'dup2_x1';
+DUP2_X2: 'dup2_x2';
+DUP_X1: 'dup_x1';
+DUP_X2: 'dup_x2';
+F2D: 'f2d';
+F2I: 'f2i';
+F2L: 'f2l';
+FADD: 'fadd';
+FALOAD: 'faload';
+FASTORE: 'fastore';
+FCMPG: 'fcmpg';
+FCMPL: 'fcmpl';
+FCONST_0: 'fconst_0';
+FCONST_1: 'fconst_1';
+FCONST_2: 'fconst_2';
+FDIV: 'fdiv';
+FLOAD: 'fload';
+FMUL: 'fmul';
+FNEG: 'fneg';
+FREM: 'frem';
+FRETURN: 'freturn';
+FSTORE: 'fstore';
+FSUB: 'fsub';
+GETFIELD: 'getfield';
+GETSTATIC: 'getstatic';
+GOTO: 'goto';
+GOTO_W: 'goto_w';
+I2B: 'i2b';
+I2C: 'i2c';
+I2D: 'i2d';
+I2F: 'i2f';
+I2L: 'i2l';
+I2S: 'i2s';
+IADD: 'iadd';
+IALOAD: 'iaload';
+IAND: 'iand';
+IASTORE: 'iastore';
+ICONST_0: 'iconst_0';
+ICONST_1: 'iconst_1';
+ICONST_2: 'iconst_2';
+ICONST_3: 'iconst_3';
+ICONST_4: 'iconst_4';
+ICONST_5: 'iconst_5';
+ICONST_M1: 'iconst_m1';
+IDIV: 'idiv';
+IF_ACMPEQ: 'if_acmpeq';
+IF_ACMPNE: 'if_acmpne';
+IF_ICMPEQ: 'if_icmpeq';
+IF_ICMPGE: 'if_icmpge';
+IF_ICMPGT: 'if_icmpgt';
+IF_ICMPLE: 'if_icmple';
+IF_ICMPLT: 'if_icmplt';
+IF_ICMPNE: 'if_icmpne';
+IFEQ: 'ifeq';
+IFGE: 'ifge';
+IFGT: 'ifgt';
+IFLE: 'ifle';
+IFLT: 'iflt';
+IFNE: 'ifne';
+IFNONNULL: 'ifnonnull';
+IFNULL: 'ifnull';
+IINC: 'iinc';
+ILOAD: 'iload';
+IMUL: 'imul';
+INEG: 'ineg';
+INSTANCEOF: 'instanceof';
+INVOKEDYNAMIC: 'invokedynamic';
+INVOKEINTERFACE: 'invokeinterface';
+INVOKESPECIAL: 'invokespecial';
+INVOKESTATIC: 'invokestatic';
+INVOKEVIRTUAL: 'invokevirtual';
+IOR: 'ior';
+IREM: 'irem';
+IRETURN: 'ireturn';
+ISHL: 'ishl';
+ISHR: 'ishr';
+ISTORE: 'istore';
+ISUB: 'isub';
+IUSHR: 'iushr';
+IXOR: 'ixor';
+JSR: 'jsr';
+JSR_W: 'jsr_w';
+L2D: 'l2d';
+L2F: 'l2f';
+L2I: 'l2i';
+LADD: 'ladd';
+LALOAD: 'laload';
+LAND: 'land';
+LASTORE: 'lastore';
+LCMP: 'lcmp';
+LCONST_0: 'lconst_0';
+LCONST_1: 'lconst_1';
+LDC: 'ldc';
+LDC2_W: 'ldc2_w';
+LDC_W: 'ldc_w';
+LDIV: 'ldiv';
+LLOAD: 'lload';
+LMUL: 'lmul';
+LNEG: 'lneg';
+LOOKUPSWITCH: 'lookupswitch';
+LOR: 'lor';
+LREM: 'lrem';
+LRETURN: 'lreturn';
+LSHL: 'lshl';
+LSHR: 'lshr';
+LSTORE: 'lstore';
+LSUB: 'lsub';
+LUSHR: 'lushr';
+LXOR: 'lxor';
+MONITORENTER: 'monitorenter';
+MONITOREXIT: 'monitorexit';
+MULTIANEWARRAY: 'multianewarray';
+NEW: 'new';
+NEWARRAY: 'newarray';
+NOP: 'nop';
+POP: 'pop';
+POP2: 'pop2';
+PUTFIELD: 'putfield';
+PUTSTATIC: 'putstatic';
+RET: 'ret';
+RETURN: 'return';
+SALOAD: 'saload';
+SASTORE: 'sastore';
+SIPUSH: 'sipush';
+SWAP: 'swap';
+TABLESWITCH: 'tableswitch';
+WIDE: 'wide';
 
 
 

@@ -952,18 +952,13 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterArgumentlessop(ArgumentlessopContext ctx) {
 		String name = null;
-		if (ctx.RETURN() != null) {
-			name = "return";
-		} else {
-			name = ctx.Argumentlessop().getText();
-		}
+		
+		name = ctx.argumentlessop_keyword().getText();
+		
 		Short code = OpCodes.getOpcodeForName(name);
 		ArgumentLessInstruction instr = new ArgumentLessInstruction(code);
-		if (ctx.RETURN() != null) {
-			instr.setSourceLocation(createSourceLocation(ctx.RETURN()));
-		} else {
-			instr.setSourceLocation(createSourceLocation(ctx.Argumentlessop()));
-		}
+		instr.setSourceLocation(createSourceLocation((TerminalNode)ctx.argumentlessop_keyword().getChild(0)));
+		
 		
 		setInstructionLabel(ctx, instr);
 		addInstruction(instr);
@@ -972,13 +967,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterConstantpoolop(ConstantpoolopContext ctx) {
 		TerminalNode nameNode = null;
-		if (ctx.INSTANCEOF() != null) {
-			nameNode = ctx.INSTANCEOF();
-		} else if (ctx.NEW() != null) {
-			nameNode = ctx.NEW();
-		} else {
-			nameNode = ctx.Constantpoolop();
-		}
+		
+		nameNode = (TerminalNode)ctx.constantpoolop_keyword().getChild(0);
+		
 		
 		String name = nameNode.getText();
 		if (name.equals("ldc")) {
@@ -1008,7 +999,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 
 	@Override
 	public void enterLocalvarop(LocalvaropContext ctx) {
-		String name = ctx.Localvarop().getText();
+		String name = ctx.localvarop_keyword().getText();
 		
 		boolean wide = (ctx.wideOrNormal() != null) && ctx.wideOrNormal().getText().equals("wide");
 		boolean normal = (ctx.wideOrNormal() != null) && ctx.wideOrNormal().getText().equals("normal");
@@ -1019,7 +1010,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			instr.setForceNormal(normal);
 		}
 		instr.setLocalVariableReference(createSymbolReference(ctx.Identifier()));
-		instr.setSourceLocation(createSourceLocation(ctx.Localvarop()));
+		instr.setSourceLocation(createSourceLocation((TerminalNode)ctx.localvarop_keyword().getChild(0)));
 		setInstructionLabel(ctx, instr);
 		addInstruction(instr);
 	}
@@ -1030,7 +1021,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterPushop(PushopContext ctx) {
 		AbstractPushInstruction instr = null;
-		String name = ctx.Pushop().getText();
+		String name = ctx.pushop_keyword().getText();
 		if (name.equals(OpCodes.getNameForOpcode(OpCodes.bipush))) {
 			instr = new BipushInstruction((byte)-1);
 		} else if (name.equals(OpCodes.getNameForOpcode(OpCodes.sipush))) {
@@ -1039,7 +1030,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			throw new IllegalStateException("unexpected insruction name: "+name);
 		}
 		instr.setValueLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
-		instr.setSourceLocation(createSourceLocation(ctx.Pushop()));
+		instr.setSourceLocation(createSourceLocation((TerminalNode)ctx.pushop_keyword().getChild(0)));
 		setInstructionLabel(ctx, instr);
 		addInstruction(instr);
 	}
@@ -1050,7 +1041,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		IincInstruction instr = new IincInstruction(-1, (short)-1, isWide);
 		instr.setValueLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
 		instr.setLocalVariableReference(createSymbolReference(ctx.Identifier()));
-		instr.setSourceLocation(createSourceLocation(ctx.Iincop()));
+		instr.setSourceLocation(createSourceLocation((TerminalNode)ctx.iincop_keyword().getChild(0)));
 		setInstructionLabel(ctx, instr);
 		addInstruction(instr);
 		
@@ -1061,7 +1052,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterNewarrayop(NewarrayopContext ctx) {
 		NewarrayInstruction instr = new NewarrayInstruction(ctx.arrayType().getText());
-		instr.setSourceLocation(createSourceLocation(ctx.Newarrayop()));
+		instr.setSourceLocation(createSourceLocation((TerminalNode)ctx.newarrayop_keyword().getChild(0)));
 		setInstructionLabel(ctx, instr);
 		addInstruction(instr);
 	}
@@ -1071,7 +1062,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		MultianewarrayInstruction instr = new MultianewarrayInstruction();
 		instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
 		instr.setDimensionsLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
-		instr.setSourceLocation(createSourceLocation(ctx.Multinewarrayop()));
+		instr.setSourceLocation(createSourceLocation((TerminalNode)ctx.multinewarrayop_keyword().getChild(0)));
 		setInstructionLabel(ctx, instr);
 		addInstruction(instr);
 	}
@@ -1081,7 +1072,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 
 	@Override
 	public void enterSwitchop(SwitchopContext ctx) {
-		String name = ctx.Switchop().getText();
+		String name = ctx.switchop_keyword().getText();
 		short opCode = OpCodes.getOpcodeForName(name);
 		AbstractSwitchInstruction instr = null;
 		if (opCode == OpCodes.lookupswitch) {
@@ -1089,7 +1080,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		} else if (opCode == OpCodes.tableswitch) {
 			instr = new TableSwitchInstruction();
 		}
-		instr.setSourceLocation(createSourceLocation(ctx.Switchop()));
+		instr.setSourceLocation(createSourceLocation((TerminalNode)ctx.switchop_keyword().getChild(0)));
 		setInstructionLabel(ctx, instr);
 		stack.push(instr);
 	}
@@ -1124,11 +1115,11 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 
 	@Override
 	public void enterBranchop(BranchopContext ctx) {
-		String name = ctx.Branchop().getText();
+		String name = ctx.branchop_keyword().getText();
 		short opCode = OpCodes.getOpcodeForName(name);
 		BranchInstruction instr = new BranchInstruction(opCode, null);
 		instr.setTargetReference(createSymbolReference(ctx.Identifier()));
-		instr.setSourceLocation(createSourceLocation(ctx.Branchop()));
+		instr.setSourceLocation(createSourceLocation((TerminalNode)ctx.branchop_keyword().getChild(0)));
 		setInstructionLabel(ctx, instr);
 		addInstruction(instr);
 	}
