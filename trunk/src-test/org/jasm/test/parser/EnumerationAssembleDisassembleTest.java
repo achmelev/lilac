@@ -6,7 +6,7 @@ public class EnumerationAssembleDisassembleTest extends AbstractDisassembleAssem
 
 	@Override
 	protected String getClassResourceName() {
-		return "org/jasm/test/clazz/Enumeration.class";
+		return "org/jasm/test/readwrite/Enumeration.class";
 	}
 	
 	@Test
