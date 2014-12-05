@@ -1,5 +1,5 @@
 class {
-  version 52_0;
+  version 51_0;
   name classref_0; // org/jasm/test/testclass/MethodHandleExampleT
   extends classref_2; // java/lang/Object
   implements classref_4, classref_6; // org/jasm/test/testclass/IMethodHandle1, org/jasm/test/testclass/IMethodHandle2
@@ -330,26 +330,6 @@ class {
     name utf8_39; // initHandles
     descriptor utf8_21; // ()V
     modifier public;
-    line numbers {
-      line ir0, 44;
-      line ir4, 47;
-      line ir27, 48;
-      line ir48, 49;
-      line ir69, 50;
-      line ir84, 51;
-      line ir99, 52;
-      line ir120, 53;
-      line ir135, 54;
-      line ir150, 55;
-      line ir154, 56;
-      line ir163, 58;
-    }
-    debug vars {
-      var a_0, ir0, utf8_27, utf8_28; // name=this,  descriptor=Lorg/jasm/test/testclass/MethodHandleExampleT;
-      var a_1, ir4, utf8_44, utf8_119; // name=lookup,  descriptor=Ljava/lang/invoke/MethodHandles$Lookup;
-      var a_2, ir154->ir163, utf8_120, utf8_121; // name=e,  descriptor=Ljava/lang/ReflectiveOperationException;
-    }
-    stackmap [AAL/AJkAAgcAAQcAQAABBwB8CQ==];
     maxstack 6;
     maxlocals 3;
     try ir4->ir147 catch classref_113 go to ir153; // java/lang/NoSuchMethodException
@@ -440,291 +420,138 @@ class {
     name utf8_125; // callSetA1
     descriptor utf8_30; // (I)V
     modifier public;
-    line numbers {
-      line ir0, 66;
-      line ir9, 67;
-      line ir13, 68;
-      line ir22, 70;
-    }
-    debug vars {
-      var a_0, ir0, utf8_27, utf8_28; // name=this,  descriptor=Lorg/jasm/test/testclass/MethodHandleExampleT;
-      var i_1, ir0, utf8_8, utf8_9; // name=a,  descriptor=I
-      var a_2, ir13->ir22, utf8_120, utf8_134; // name=e,  descriptor=Ljava/lang/Throwable;
-    }
-    stackmap [AAJMBwCFCQ==];
     maxstack 3;
     maxlocals 3;
-    try ir0->ir6 catch classref_132 go to ir12; // java/lang/Throwable
     //Variables
     var object a_0;
     var int i_1;
     var object a_2;
     //Instructions
-    ir0: aload a_0;
+    aload a_0;
     getfield fieldref_68; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_setA1, descriptor=Ljava/lang/invoke/MethodHandle;
     aload a_0;
     iload i_1;
-    ir6: invokevirtual methodref_126; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/MethodHandleExampleT;I)V
-    ir9: goto ir22;
-    ir12: astore a_2;
-    ir13: new classref_108; // java/lang/RuntimeException
-    dup;
-    aload a_2;
-    invokespecial methodref_110; // class=java/lang/RuntimeException, name=<init>, descriptor=(Ljava/lang/Throwable;)V
-    athrow;
-    ir22: return;
+    invokevirtual methodref_126; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/MethodHandleExampleT;I)V
+    return;
   }
   method {
     name utf8_135; // callSetA2
     descriptor utf8_30; // (I)V
     modifier public;
-    line numbers {
-      line ir0, 78;
-      line ir9, 79;
-      line ir13, 80;
-      line ir22, 82;
-    }
-    debug vars {
-      var a_0, ir0, utf8_27, utf8_28; // name=this,  descriptor=Lorg/jasm/test/testclass/MethodHandleExampleT;
-      var i_1, ir0, utf8_8, utf8_9; // name=a,  descriptor=I
-      var a_2, ir13->ir22, utf8_120, utf8_134; // name=e,  descriptor=Ljava/lang/Throwable;
-    }
-    stackmap [AAJMBwCFCQ==];
     maxstack 3;
     maxlocals 3;
-    try ir0->ir6 catch classref_132 go to ir12; // java/lang/Throwable
     //Variables
     var object a_0;
     var int i_1;
     var object a_2;
     //Instructions
-    ir0: aload a_0;
+    aload a_0;
     getfield fieldref_74; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_setA2, descriptor=Ljava/lang/invoke/MethodHandle;
     aload a_0;
     iload i_1;
-    ir6: invokevirtual methodref_126; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/MethodHandleExampleT;I)V
-    ir9: goto ir22;
-    ir12: astore a_2;
-    ir13: new classref_108; // java/lang/RuntimeException
-    dup;
-    aload a_2;
-    invokespecial methodref_110; // class=java/lang/RuntimeException, name=<init>, descriptor=(Ljava/lang/Throwable;)V
-    athrow;
-    ir22: return;
+    invokevirtual methodref_126; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/MethodHandleExampleT;I)V
+    return;
   }
   method {
     name utf8_136; // callSetA3
     descriptor utf8_30; // (I)V
     modifier public;
-    line numbers {
-      line ir0, 90;
-      line ir9, 91;
-      line ir13, 92;
-      line ir22, 94;
-    }
-    debug vars {
-      var a_0, ir0, utf8_27, utf8_28; // name=this,  descriptor=Lorg/jasm/test/testclass/MethodHandleExampleT;
-      var i_1, ir0, utf8_8, utf8_9; // name=a,  descriptor=I
-      var a_2, ir13->ir22, utf8_120, utf8_134; // name=e,  descriptor=Ljava/lang/Throwable;
-    }
-    stackmap [AAJMBwCFCQ==];
     maxstack 3;
     maxlocals 3;
-    try ir0->ir6 catch classref_132 go to ir12; // java/lang/Throwable
     //Variables
     var object a_0;
     var int i_1;
     var object a_2;
     //Instructions
-    ir0: aload a_0;
+    aload a_0;
     getfield fieldref_77; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_setA3, descriptor=Ljava/lang/invoke/MethodHandle;
     aload a_0;
     iload i_1;
-    ir6: invokevirtual methodref_126; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/MethodHandleExampleT;I)V
-    ir9: goto ir22;
-    ir12: astore a_2;
-    ir13: new classref_108; // java/lang/RuntimeException
-    dup;
-    aload a_2;
-    invokespecial methodref_110; // class=java/lang/RuntimeException, name=<init>, descriptor=(Ljava/lang/Throwable;)V
-    athrow;
-    ir22: return;
+    invokevirtual methodref_126; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/MethodHandleExampleT;I)V
+    return;
   }
   method {
     name utf8_137; // callPutA
     descriptor utf8_30; // (I)V
     modifier public;
-    line numbers {
-      line ir0, 102;
-      line ir9, 103;
-      line ir13, 104;
-      line ir22, 106;
-    }
-    debug vars {
-      var a_0, ir0, utf8_27, utf8_28; // name=this,  descriptor=Lorg/jasm/test/testclass/MethodHandleExampleT;
-      var i_1, ir0, utf8_8, utf8_9; // name=a,  descriptor=I
-      var a_2, ir13->ir22, utf8_120, utf8_134; // name=e,  descriptor=Ljava/lang/Throwable;
-    }
-    stackmap [AAJMBwCFCQ==];
     maxstack 3;
     maxlocals 3;
-    try ir0->ir6 catch classref_132 go to ir12; // java/lang/Throwable
     //Variables
     var object a_0;
     var int i_1;
     var object a_2;
     //Instructions
-    ir0: aload a_0;
+    aload a_0;
     getfield fieldref_84; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_putA, descriptor=Ljava/lang/invoke/MethodHandle;
     aload a_0;
     iload i_1;
-    ir6: invokevirtual methodref_126; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/MethodHandleExampleT;I)V
-    ir9: goto ir22;
-    ir12: astore a_2;
-    ir13: new classref_108; // java/lang/RuntimeException
-    dup;
-    aload a_2;
-    invokespecial methodref_110; // class=java/lang/RuntimeException, name=<init>, descriptor=(Ljava/lang/Throwable;)V
-    athrow;
-    ir22: return;
+    invokevirtual methodref_126; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/MethodHandleExampleT;I)V
+    return;
   }
   method {
     name utf8_138; // callGetA
     descriptor utf8_139; // ()I
     modifier public;
-    line numbers {
-      line ir0, 114;
-      line ir9, 115;
-      line ir10, 116;
-    }
-    debug vars {
-      var a_0, ir0, utf8_27, utf8_28; // name=this,  descriptor=Lorg/jasm/test/testclass/MethodHandleExampleT;
-      var a_1, ir10, utf8_120, utf8_134; // name=e,  descriptor=Ljava/lang/Throwable;
-    }
-    stackmap [AAFJBwCF];
     maxstack 3;
     maxlocals 2;
-    try ir0->ir5 catch classref_132 go to ir9; // java/lang/Throwable
     //Variables
     var object a_0;
     var object a_1;
     //Instructions
-    ir0: aload a_0;
+    aload a_0;
     getfield fieldref_89; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_getA, descriptor=Ljava/lang/invoke/MethodHandle;
     aload a_0;
     ir5: invokevirtual methodref_140; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/MethodHandleExampleT;)I
     ireturn;
-    ir9: astore a_1;
-    ir10: new classref_108; // java/lang/RuntimeException
-    dup;
-    aload a_1;
-    invokespecial methodref_110; // class=java/lang/RuntimeException, name=<init>, descriptor=(Ljava/lang/Throwable;)V
-    athrow;
   }
   method {
     name utf8_143; // callSetB
     descriptor utf8_30; // (I)V
     modifier public;
-    line numbers {
-      line ir0, 126;
-      line ir8, 127;
-      line ir12, 128;
-      line ir21, 130;
-    }
-    debug vars {
-      var a_0, ir0, utf8_27, utf8_28; // name=this,  descriptor=Lorg/jasm/test/testclass/MethodHandleExampleT;
-      var i_1, ir0, utf8_10, utf8_9; // name=b,  descriptor=I
-      var a_2, ir12->ir21, utf8_120, utf8_134; // name=e,  descriptor=Ljava/lang/Throwable;
-    }
-    stackmap [AAJLBwCFCQ==];
     maxstack 3;
     maxlocals 3;
-    try ir0->ir5 catch classref_132 go to ir11; // java/lang/Throwable
     //Variables
     var object a_0;
     var int i_1;
     var object a_2;
     //Instructions
-    ir0: aload a_0;
+    aload a_0;
     getfield fieldref_95; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_setB, descriptor=Ljava/lang/invoke/MethodHandle;
     iload i_1;
-    ir5: invokevirtual methodref_144; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(I)V
-    ir8: goto ir21;
-    ir11: astore a_2;
-    ir12: new classref_108; // java/lang/RuntimeException
-    dup;
-    aload a_2;
-    invokespecial methodref_110; // class=java/lang/RuntimeException, name=<init>, descriptor=(Ljava/lang/Throwable;)V
-    athrow;
-    ir21: return;
+    invokevirtual methodref_144; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(I)V
+    return;
   }
   method {
     name utf8_146; // callPutB
     descriptor utf8_30; // (I)V
     modifier public;
-    line numbers {
-      line ir0, 138;
-      line ir8, 139;
-      line ir12, 140;
-      line ir21, 142;
-    }
-    debug vars {
-      var a_0, ir0, utf8_27, utf8_28; // name=this,  descriptor=Lorg/jasm/test/testclass/MethodHandleExampleT;
-      var i_1, ir0, utf8_10, utf8_9; // name=b,  descriptor=I
-      var a_2, ir12->ir21, utf8_120, utf8_134; // name=e,  descriptor=Ljava/lang/Throwable;
-    }
-    stackmap [AAJLBwCFCQ==];
     maxstack 3;
     maxlocals 3;
-    try ir0->ir5 catch classref_132 go to ir11; // java/lang/Throwable
     //Variables
     var object a_0;
     var int i_1;
     var object a_2;
     //Instructions
-    ir0: aload a_0;
+    aload a_0;
     getfield fieldref_101; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_putB, descriptor=Ljava/lang/invoke/MethodHandle;
     iload i_1;
-    ir5: invokevirtual methodref_144; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(I)V
-    ir8: goto ir21;
-    ir11: astore a_2;
-    ir12: new classref_108; // java/lang/RuntimeException
-    dup;
-    aload a_2;
-    invokespecial methodref_110; // class=java/lang/RuntimeException, name=<init>, descriptor=(Ljava/lang/Throwable;)V
-    athrow;
-    ir21: return;
+    invokevirtual methodref_144; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(I)V
+    return;
   }
   method {
     name utf8_147; // callGetB
     descriptor utf8_139; // ()I
     modifier public;
-    line numbers {
-      line ir0, 150;
-      line ir8, 151;
-      line ir9, 152;
-    }
-    debug vars {
-      var a_0, ir0, utf8_27, utf8_28; // name=this,  descriptor=Lorg/jasm/test/testclass/MethodHandleExampleT;
-      var a_1, ir9, utf8_120, utf8_134; // name=e,  descriptor=Ljava/lang/Throwable;
-    }
-    stackmap [AAFIBwCF];
     maxstack 3;
     maxlocals 2;
-    try ir0->ir4 catch classref_132 go to ir8; // java/lang/Throwable
     //Variables
     var object a_0;
     var object a_1;
     //Instructions
-    ir0: aload a_0;
+    aload a_0;
     getfield fieldref_106; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_getB, descriptor=Ljava/lang/invoke/MethodHandle;
-    ir4: invokevirtual methodref_148; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=()I
+    invokevirtual methodref_148; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=()I
     ireturn;
-    ir8: astore a_1;
-    ir9: new classref_108; // java/lang/RuntimeException
-    dup;
-    aload a_1;
-    invokespecial methodref_110; // class=java/lang/RuntimeException, name=<init>, descriptor=(Ljava/lang/Throwable;)V
-    athrow;
+    
   }
 }

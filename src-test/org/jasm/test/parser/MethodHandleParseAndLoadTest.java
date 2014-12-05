@@ -3,8 +3,10 @@ package org.jasm.test.parser;
 import junit.framework.Assert;
 
 import org.jasm.test.testclass.IMethodHandle2;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class MethodHandleParseAndLoadTest extends AbstractParseAndLoadTestCase {
 	
 	@Test
