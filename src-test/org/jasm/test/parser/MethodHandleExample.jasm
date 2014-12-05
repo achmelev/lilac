@@ -222,12 +222,6 @@ class {
     name utf8_20; // <init>
     descriptor utf8_21; // ()V
     modifier public;
-    line numbers {
-      line ir0, 8;
-    }
-    debug vars {
-      var a_0, ir0, utf8_27, utf8_28; // name=this,  descriptor=Lorg/jasm/test/testclass/MethodHandleExampleT;
-    }
     maxstack 1;
     maxlocals 1;
     //Variables
@@ -241,14 +235,6 @@ class {
     name utf8_29; // setA1
     descriptor utf8_30; // (I)V
     modifier private;
-    line numbers {
-      line ir0, 23;
-      line ir5, 24;
-    }
-    debug vars {
-      var a_0, ir0, utf8_27, utf8_28; // name=this,  descriptor=Lorg/jasm/test/testclass/MethodHandleExampleT;
-      var i_1, ir0, utf8_8, utf8_9; // name=a,  descriptor=I
-    }
     maxstack 2;
     maxlocals 2;
     //Variables
@@ -264,14 +250,6 @@ class {
     name utf8_33; // setA2
     descriptor utf8_30; // (I)V
     modifier public;
-    line numbers {
-      line ir0, 27;
-      line ir5, 28;
-    }
-    debug vars {
-      var a_0, ir0, utf8_27, utf8_28; // name=this,  descriptor=Lorg/jasm/test/testclass/MethodHandleExampleT;
-      var i_1, ir0, utf8_8, utf8_9; // name=a,  descriptor=I
-    }
     maxstack 2;
     maxlocals 2;
     //Variables
@@ -287,14 +265,6 @@ class {
     name utf8_34; // setA3
     descriptor utf8_30; // (I)V
     modifier public;
-    line numbers {
-      line ir0, 31;
-      line ir5, 32;
-    }
-    debug vars {
-      var a_0, ir0, utf8_27, utf8_28; // name=this,  descriptor=Lorg/jasm/test/testclass/MethodHandleExampleT;
-      var i_1, ir0, utf8_8, utf8_9; // name=a,  descriptor=I
-    }
     maxstack 2;
     maxlocals 2;
     //Variables
@@ -310,13 +280,6 @@ class {
     name utf8_35; // setB
     descriptor utf8_30; // (I)V
     modifier public, static;
-    line numbers {
-      line ir0, 35;
-      line ir4, 36;
-    }
-    debug vars {
-      var i_0, ir0, utf8_38, utf8_9; // name=b1,  descriptor=I
-    }
     maxstack 1;
     maxlocals 1;
     //Variables
@@ -332,17 +295,14 @@ class {
     modifier public;
     maxstack 6;
     maxlocals 3;
-    try ir4->ir147 catch classref_113 go to ir153; // java/lang/NoSuchMethodException
-    try ir4->ir147 catch classref_115 go to ir153; // java/lang/IllegalAccessException
-    try ir4->ir147 catch classref_117 go to ir153; // java/lang/NoSuchFieldException
     //Variables
     var object a_0;
     var object a_1;
     var object a_2;
     //Instructions
-    ir0: invokestatic methodref_40; // class=java/lang/invoke/MethodHandles, name=lookup, descriptor=()Ljava/lang/invoke/MethodHandles$Lookup;
+    invokestatic methodref_40; // class=java/lang/invoke/MethodHandles, name=lookup, descriptor=()Ljava/lang/invoke/MethodHandles$Lookup;
     astore a_1;
-    ir4: aload a_0;
+    aload a_0;
     aload a_1;
     ldc classref_0; // org/jasm/test/testclass/MethodHandleExampleT
     ldc string_46; // "setA1"
@@ -352,7 +312,7 @@ class {
     ldc classref_0; // org/jasm/test/testclass/MethodHandleExampleT
     invokevirtual methodref_62; // class=java/lang/invoke/MethodHandles$Lookup, name=findSpecial, descriptor=(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/Class;)Ljava/lang/invoke/MethodHandle;
     putfield fieldref_68; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_setA1, descriptor=Ljava/lang/invoke/MethodHandle;
-    ir27: aload a_0;
+    aload a_0;
     aload a_1;
     ldc classref_0; // org/jasm/test/testclass/MethodHandleExampleT
     ldc string_46; // "setA1"
@@ -361,7 +321,7 @@ class {
     invokestatic methodref_56; // class=java/lang/invoke/MethodType, name=methodType, descriptor=(Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/invoke/MethodType;
     invokevirtual methodref_70; // class=java/lang/invoke/MethodHandles$Lookup, name=findVirtual, descriptor=(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/MethodHandle;
     putfield fieldref_74; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_setA2, descriptor=Ljava/lang/invoke/MethodHandle;
-    ir48: aload a_0;
+    aload a_0;
     aload a_1;
     ldc classref_0; // org/jasm/test/testclass/MethodHandleExampleT
     ldc string_76; // "setA3"
@@ -370,21 +330,21 @@ class {
     invokestatic methodref_56; // class=java/lang/invoke/MethodType, name=methodType, descriptor=(Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/invoke/MethodType;
     invokevirtual methodref_70; // class=java/lang/invoke/MethodHandles$Lookup, name=findVirtual, descriptor=(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/MethodHandle;
     putfield fieldref_77; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_setA3, descriptor=Ljava/lang/invoke/MethodHandle;
-    ir69: aload a_0;
+    aload a_0;
     aload a_1;
     ldc classref_0; // org/jasm/test/testclass/MethodHandleExampleT
     ldc string_79; // "a"
     getstatic fieldref_53; // class=java/lang/Integer, name=TYPE, descriptor=Ljava/lang/Class;
     invokevirtual methodref_80; // class=java/lang/invoke/MethodHandles$Lookup, name=findSetter, descriptor=(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/invoke/MethodHandle;
     putfield fieldref_84; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_putA, descriptor=Ljava/lang/invoke/MethodHandle;
-    ir84: aload a_0;
+    aload a_0;
     aload a_1;
     ldc classref_0; // org/jasm/test/testclass/MethodHandleExampleT
     ldc string_79; // "a"
     getstatic fieldref_53; // class=java/lang/Integer, name=TYPE, descriptor=Ljava/lang/Class;
     invokevirtual methodref_86; // class=java/lang/invoke/MethodHandles$Lookup, name=findGetter, descriptor=(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/invoke/MethodHandle;
     putfield fieldref_89; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_getA, descriptor=Ljava/lang/invoke/MethodHandle;
-    ir99: aload a_0;
+    aload a_0;
     aload a_1;
     ldc classref_0; // org/jasm/test/testclass/MethodHandleExampleT
     ldc string_91; // "setB"
@@ -393,28 +353,21 @@ class {
     invokestatic methodref_56; // class=java/lang/invoke/MethodType, name=methodType, descriptor=(Ljava/lang/Class;Ljava/lang/Class;)Ljava/lang/invoke/MethodType;
     invokevirtual methodref_92; // class=java/lang/invoke/MethodHandles$Lookup, name=findStatic, descriptor=(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/MethodHandle;
     putfield fieldref_95; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_setB, descriptor=Ljava/lang/invoke/MethodHandle;
-    ir120: aload a_0;
+    aload a_0;
     aload a_1;
     ldc classref_0; // org/jasm/test/testclass/MethodHandleExampleT
     ldc string_97; // "b"
     getstatic fieldref_53; // class=java/lang/Integer, name=TYPE, descriptor=Ljava/lang/Class;
     invokevirtual methodref_98; // class=java/lang/invoke/MethodHandles$Lookup, name=findStaticSetter, descriptor=(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/invoke/MethodHandle;
     putfield fieldref_101; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_putB, descriptor=Ljava/lang/invoke/MethodHandle;
-    ir135: aload a_0;
+    aload a_0;
     aload a_1;
     ldc classref_0; // org/jasm/test/testclass/MethodHandleExampleT
     ldc string_97; // "b"
     getstatic fieldref_53; // class=java/lang/Integer, name=TYPE, descriptor=Ljava/lang/Class;
     invokevirtual methodref_103; // class=java/lang/invoke/MethodHandles$Lookup, name=findStaticGetter, descriptor=(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/invoke/MethodHandle;
-    ir147: putfield fieldref_106; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_getB, descriptor=Ljava/lang/invoke/MethodHandle;
-    ir150: goto ir163;
-    ir153: astore a_2;
-    ir154: new classref_108; // java/lang/RuntimeException
-    dup;
-    aload a_2;
-    invokespecial methodref_110; // class=java/lang/RuntimeException, name=<init>, descriptor=(Ljava/lang/Throwable;)V
-    athrow;
-    ir163: return;
+    putfield fieldref_106; // class=org/jasm/test/testclass/MethodHandleExampleT, name=m_getB, descriptor=Ljava/lang/invoke/MethodHandle;
+    return;
   }
   method {
     name utf8_125; // callSetA1
