@@ -6,7 +6,7 @@ import org.jasm.test.testclass.IMethodHandle2;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
+//@Ignore
 public class MethodHandleParseAndLoadTest extends AbstractParseAndLoadTestCase {
 	
 	@Test
@@ -41,10 +41,18 @@ public class MethodHandleParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			Assert.assertEquals(5, obj.callGetB());
 			obj.callPutB(6);
 			Assert.assertEquals(6, obj.callGetB());
+			Assert.assertEquals(10, obj.callConstructor(10));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} 
 		
 	}
+
+	@Override
+	protected boolean readAgain() {
+		return true;
+	}
+	
+	
 
 }

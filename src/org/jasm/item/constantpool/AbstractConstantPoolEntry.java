@@ -53,7 +53,7 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 		this.label = label;
 	}
 	
-	private String createConstName() {
+	protected String createConstName() {
 		String name = getTypeLabel().trim();
 		if (name.startsWith("const")) {
 			name = name.substring("const".length(),name.length()).trim();

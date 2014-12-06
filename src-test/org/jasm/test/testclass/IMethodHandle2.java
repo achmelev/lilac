@@ -19,5 +19,7 @@ public interface IMethodHandle2 {
 	public abstract void callPutB(int b);
 
 	public abstract int callGetB();
+	
+	public int  callConstructor(int a);
 
 }
