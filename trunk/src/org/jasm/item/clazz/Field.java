@@ -13,9 +13,6 @@ public class Field extends AbstractClassMember<FieldModifier> {
 		
 	}
 	
-	public Field(Utf8Info name, Utf8Info descriptor, FieldModifier modifier) {
-		super(name, descriptor,modifier);
-	}
 
 	@Override
 	public String getPrintName() {

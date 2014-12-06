@@ -35,13 +35,6 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 		modifierLiterals = new ArrayList<>();
 	}
 	
-	public InnerClass(ClassInfo innerClass, ClassInfo outerClass, Utf8Info innerName, InnerClassModifier modifier) {
-		this.innerClass = innerClass;
-		this.outerClass = outerClass;
-		this.innerName = innerName;
-		this.modifier = modifier;
-	}
-	
 
 	@Override
 	public void read(IByteBuffer source, long offset) {

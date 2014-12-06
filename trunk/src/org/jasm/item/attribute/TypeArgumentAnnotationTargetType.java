@@ -23,16 +23,6 @@ public class TypeArgumentAnnotationTargetType extends AbstractAnnotationTargetTy
 		super();
 	}
 
-	public TypeArgumentAnnotationTargetType(short targetType, AbstractInstruction instruction,short parameterIndex) {
-		super(targetType);
-		this.parameterIndex = parameterIndex;
-		if (parameterIndex>=0 && parameterIndex<=255) {
-			//OK
-		} else {
-			throw new IllegalArgumentException("index out of bounds: "+parameterIndex);
-		}
-		this.instruction = instruction;
-	}
 
 	@Override
 	public void read(IByteBuffer source, long offset) {

@@ -16,10 +16,6 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 	protected AbstractReferenceEntry() {
 		
 	}
-	
-	protected AbstractReferenceEntry(AbstractConstantPoolEntry[] reference) {
-		this.setReference(reference);
-	}
 
 	@Override
 	public int getLength() {

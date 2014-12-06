@@ -10,9 +10,6 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 	public ClassInfo() {
 	}
 	
-	public ClassInfo(Utf8Info name) {
-		super(new Utf8Info[]{name} );
-	}
 	
 	@Override
 	protected int getNumberOfReferences() {

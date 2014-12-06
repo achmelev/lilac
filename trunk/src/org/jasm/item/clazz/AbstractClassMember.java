@@ -35,12 +35,6 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 		initChildren();
 	}
 	
-	public AbstractClassMember(Utf8Info name, Utf8Info descriptor, T modifier) {
-		this.name = name;
-		this.descriptor = descriptor;
-		this.modifier = modifier;
-		initChildren();
-	}
 	
 	@Override
 	public void read(IByteBuffer source, long offset) {

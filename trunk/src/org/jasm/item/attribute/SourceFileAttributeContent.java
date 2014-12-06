@@ -10,10 +10,6 @@ public class SourceFileAttributeContent extends AbstractStringAttributeContent {
 		super();
 	}
 
-	public SourceFileAttributeContent(Utf8Info entry) {
-		super(entry);
-	}
-
 	@Override
 	public String getPrintName() {
 		return "source file";

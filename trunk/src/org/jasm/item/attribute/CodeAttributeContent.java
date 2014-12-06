@@ -26,11 +26,6 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 	private ExceptionHandlerTable exceptionTable;
 	private Attributes attributes = null;
 	
-	public CodeAttributeContent(int maxStack, int maxLocals) {
-		this.maxStack = maxStack;
-		this.maxLocals = maxLocals;
-		initChildren();
-	}
 	
 	public CodeAttributeContent() {
 		initChildren();

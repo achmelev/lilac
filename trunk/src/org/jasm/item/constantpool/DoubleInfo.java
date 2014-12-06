@@ -1,9 +1,7 @@
 package org.jasm.item.constantpool;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.parser.literals.DoubleLiteral;
-import org.jasm.parser.literals.FloatLiteral;
 
 public class DoubleInfo extends AbstractConstantPoolEntry implements IPrimitiveValueReferencingEntry {
 	

@@ -12,10 +12,6 @@ public class LongInfo extends AbstractConstantPoolEntry implements IPrimitiveVal
 	public LongInfo() {
 		
 	}
-	
-	public LongInfo(long value) {
-		this.value = value;
-	}
 
 	@Override
 	public short getTag() {

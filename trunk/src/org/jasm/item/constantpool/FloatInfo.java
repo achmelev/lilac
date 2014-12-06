@@ -13,10 +13,6 @@ public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveVa
 	public FloatInfo() {
 		
 	}
-	
-	public FloatInfo(float value) {
-		this.value = value;
-	}
 
 	@Override
 	public short getTag() {

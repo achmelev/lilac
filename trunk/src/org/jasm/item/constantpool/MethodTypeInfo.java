@@ -8,9 +8,6 @@ public class MethodTypeInfo extends AbstractReferenceEntry implements IDescripto
 		
 	}
 	
-	public MethodTypeInfo(Utf8Info descriptor) {
-		super(new Utf8Info[]{descriptor});
-	}
 
 	@Override
 	public short getTag() {

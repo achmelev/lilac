@@ -17,17 +17,6 @@ public class LookupSwitchInstruction extends AbstractSwitchInstruction {
 	public LookupSwitchInstruction() {
 		super(OpCodes.lookupswitch);
 	}
-	
-	public LookupSwitchInstruction(int[] values, AbstractInstruction defaultTarget, AbstractInstruction[] targets) {
-		super(OpCodes.lookupswitch);
-		if (values.length == 0 || values.length != targets.length) {
-			throw new IllegalArgumentException(values.length+"!="+targets.length+" or values.length=0");
-		}
-		this.values = values;
-		this.targets = targets;
-		this.defaultTarget = defaultTarget;
-	}
-	
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
