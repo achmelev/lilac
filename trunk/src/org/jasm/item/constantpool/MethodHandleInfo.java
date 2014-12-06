@@ -1,12 +1,13 @@
 package org.jasm.item.constantpool;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
+import org.jasm.parser.literals.SymbolReference;
 
 public class MethodHandleInfo extends AbstractConstantPoolEntry implements INameReferencingEntry, IDescriptorReferencingEntry {
 	
 	private MethodHandleReferenceKind kind;
 	private int index = -1;
+	private SymbolReference refSymbolReference;
 	private AbstractConstantPoolEntry reference;
 	
 	public MethodHandleInfo() {
@@ -32,7 +33,7 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 	@Override
 	public void writeBody(IByteBuffer target, long offset) {
 		target.writeUnsignedByte(offset,(short) kind.getKind());
-		target.writeUnsignedShort(offset, index);
+		target.writeUnsignedShort(offset+1, index);
 		
 	}
 
@@ -48,7 +49,18 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 	
 	@Override
 	protected void doResolveAfterParse() {
-		throw new NotImplementedException("not implemented");
+		if (this.kind.getKind()>=1 && this.kind.getKind()<=4  ) {
+			reference = getConstantPool().checkAndLoadFromSymbolTable(this, FieldrefInfo.class, refSymbolReference);
+		}
+		if (this.kind.getKind()>=5 && this.kind.getKind()<=8  ) {
+			reference = getConstantPool().checkAndLoadFromSymbolTable(this, MethodrefInfo.class, refSymbolReference);
+		}
+		if (this.kind.getKind() == 9 ) {
+			reference = getConstantPool().checkAndLoadFromSymbolTable(this, InterfaceMethodrefInfo.class, refSymbolReference);
+		}
+		if (reference != null) {
+			updateIndex();
+		}
 	}
 
 	
@@ -110,12 +122,19 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 	
 	@Override
 	public String getTypeLabel() {
-		return "const methodhandle";
+		return "methodhandle";
+	}
+	
+	
+
+	@Override
+	public String getPrintName() {
+		return "const "+createReferenceKindLabel()+" methodhandle "+createConstName();
 	}
 
 	@Override
 	public String getPrintArgs() {
-		return kind+", "+reference.getSymbolName();
+		return reference.getSymbolName();
 	}
 
 	@Override
@@ -132,8 +151,31 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 	public String[] getReferencedNames() {
 		return ((AbstractRefInfo)reference).getReferencedNames();
 	}
+	
+	private String createReferenceKindLabel() {
+		switch (kind) {
+			case GET_FIELD: return "getfield";
+			case PUT_FIELD: return "putfield";
+			case GET_STATIC: return "getstatic";
+			case PUT_STATIC: return "putstatic";
+			case INVOKE_INTERFACE: return "invokeinterface";
+			case INVOKE_SPECIAL: return "invokespecial";
+			case INVOKE_VIRTUAL: return "invokevirtual";
+			case INVOKE_STATIC: return "invokestatic";
+			case NEW_INVOKE_SPECIAL: return "newinvokespecial";
+			default: throw new IllegalStateException(""+kind);
+		}
+	}
 
+	public void setRefSymbolReference(SymbolReference refSymbolReference) {
+		this.refSymbolReference = refSymbolReference;
+	}
 
+	public void setKind(MethodHandleReferenceKind kind) {
+		this.kind = kind;
+	}
+
+	
 	
 
 	

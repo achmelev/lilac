@@ -15,6 +15,7 @@ public class MethodHandleExample implements IMethodHandle1, IMethodHandle2 {
 	public MethodHandle m_setA3;
 	public MethodHandle m_putA;
 	public MethodHandle m_getA;
+	public MethodHandle m_constructor;
 	public MethodHandle m_setB;
 	public MethodHandle m_putB;
 	public MethodHandle m_getB;
@@ -35,6 +36,14 @@ public class MethodHandleExample implements IMethodHandle1, IMethodHandle2 {
 		b = b1;
 	}
 	
+	public MethodHandleExample() {
+		
+	}
+	
+	public MethodHandleExample(int a) {
+		this.a = a;
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see org.jasm.test.testclass.IMethodHandle2#initHandles()
@@ -52,6 +61,7 @@ public class MethodHandleExample implements IMethodHandle1, IMethodHandle2 {
 			m_setB = lookup.findStatic(MethodHandleExample.class, "setB", MethodType.methodType(void.class, int.class));
 			m_putB = lookup.findStaticSetter(MethodHandleExample.class, "b", int.class);
 			m_getB = lookup.findStaticGetter(MethodHandleExample.class, "b", int.class);
+			m_constructor = lookup.findConstructor(MethodHandleExample.class, MethodType.methodType(void.class, int.class));
 		} catch (NoSuchMethodException | IllegalAccessException | NoSuchFieldException e) {
 			throw new RuntimeException(e);
 		}
@@ -87,7 +97,8 @@ public class MethodHandleExample implements IMethodHandle1, IMethodHandle2 {
 	@Override
 	public void callSetA3(int a) {
 		try {
-			m_setA3.invokeExact(this,a);
+			IMethodHandle1 intf = this;
+			m_setA3.invokeExact(intf,a);
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
@@ -112,6 +123,16 @@ public class MethodHandleExample implements IMethodHandle1, IMethodHandle2 {
 	public int  callGetA() {
 		try {
 			return (int)m_getA.invokeExact(this);
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@Override
+	public int  callConstructor(int a) {
+		try {
+			MethodHandleExample inst = (MethodHandleExample)m_constructor.invokeExact(a);
+			return inst.a;
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
@@ -152,6 +173,14 @@ public class MethodHandleExample implements IMethodHandle1, IMethodHandle2 {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static void main(String[] args) {
+		MethodHandleExample h = new MethodHandleExample();
+		h.initHandles();
+		System.out.println(h.callConstructor(3));
+	}
+	
+	
 	
 
 }

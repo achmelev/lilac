@@ -53,6 +53,7 @@ constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 				 | CONST METHODREFINFO label Identifier COMMA  Identifier #methodrefinfo
 				 | CONST INTERFACEMETHODREFINFO label Identifier COMMA  Identifier #interfacemethodrefinfo
 				 | CONST NAMEANDTYPEINFO label Identifier COMMA  Identifier #nameandtypeinfo
+				 | CONST (GETFIELD|GETSTATIC|PUTFIELD|PUTSTATIC|INVOKESPECIAL|INVOKEVIRTUAL|INVOKEINTERFACE|INVOKESTATIC|NEWINVOKESPECIAL) METHODHANDLE label Identifier #methodhandleinfo
 				 ;
 
 
@@ -450,6 +451,8 @@ REFERENCE     :  'reference';
 CONSTRUCTOR   :  'constructor';
 CAST          :  'cast';
 RESOURCE      :  'resource';
+METHODHANDLE  :  'methodhandle';
+NEWINVOKESPECIAL : 'newinvokespecial';
 
 //Instructions (some used also as keywords)
 

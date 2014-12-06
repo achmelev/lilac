@@ -2,6 +2,7 @@ package org.jasm.parser;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -80,6 +81,8 @@ import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IntegerInfo;
 import org.jasm.item.constantpool.InterfaceMethodrefInfo;
 import org.jasm.item.constantpool.LongInfo;
+import org.jasm.item.constantpool.MethodHandleInfo;
+import org.jasm.item.constantpool.MethodHandleInfo.MethodHandleReferenceKind;
 import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.constantpool.NameAndTypeInfo;
 import org.jasm.item.constantpool.StringInfo;
@@ -190,6 +193,7 @@ import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.MethodexceptionhandlerContext;
+import org.jasm.parser.JavaAssemblerParser.MethodhandleinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodinstructionContext;
 import org.jasm.parser.JavaAssemblerParser.MethodlinenumbertableContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmaxlocalsContext;
@@ -275,19 +279,34 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		return errorMessages;
 	}
 	
-	
 	public Clazz parse(InputStream inp) {
-		
-		result = null;
-		errorMessages.clear();
-		stack.clear();
-		
 		ANTLRInputStream input = null;
 		try {
 			input = new ANTLRInputStream(inp);
 		} catch (IOException e) {
 			throw new RuntimeException("Error creating antlr stream",e);
 		}
+		return doParse(input);
+		
+	}
+	
+	public Clazz parse(Reader inp) {
+		ANTLRInputStream input = null;
+		try {
+			input = new ANTLRInputStream(inp);
+		} catch (IOException e) {
+			throw new RuntimeException("Error creating antlr stream",e);
+		}
+		return doParse(input);
+		
+	}
+	
+	
+	private  Clazz doParse(ANTLRInputStream input) {
+		
+		result = null;
+		errorMessages.clear();
+		stack.clear();
 		
 		SyntaxErrorListener errorListener = new SyntaxErrorListener(this);
 		JavaAssemblerLexer lexer = new JavaAssemblerLexer(input);
@@ -627,6 +646,41 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 		entry.setSourceLocation(createSourceLocation(ctx.DOUBLE()));
 		entry.setValueLiteral(createDoubleLiteral(ctx.FloatingPointLiteral()));
+		addConstantPoolEntry(entry);
+	}
+	
+	
+
+
+	@Override
+	public void enterMethodhandleinfo(MethodhandleinfoContext ctx) {
+		MethodHandleInfo entry = new MethodHandleInfo();
+		if (ctx.label() != null) {
+			entry.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		entry.setSourceLocation(createSourceLocation(ctx.METHODHANDLE()));
+		entry.setRefSymbolReference(createSymbolReference(ctx.Identifier()));
+		if (ctx.GETFIELD() != null) {
+			entry.setKind(MethodHandleReferenceKind.GET_FIELD);
+		} else if (ctx.PUTFIELD() != null) {
+			entry.setKind(MethodHandleReferenceKind.PUT_FIELD);
+		} else if (ctx.GETSTATIC() != null) {
+			entry.setKind(MethodHandleReferenceKind.GET_STATIC);
+		} else if (ctx.PUTSTATIC() != null) {
+			entry.setKind(MethodHandleReferenceKind.PUT_STATIC);
+		} else if (ctx.INVOKEINTERFACE() != null) {
+			entry.setKind(MethodHandleReferenceKind.INVOKE_INTERFACE);
+		} else if (ctx.INVOKESPECIAL() != null) {
+			entry.setKind(MethodHandleReferenceKind.INVOKE_SPECIAL);
+		} else if (ctx.INVOKEVIRTUAL() != null) {
+			entry.setKind(MethodHandleReferenceKind.INVOKE_VIRTUAL);
+		} else if (ctx.INVOKESTATIC() != null) {
+			entry.setKind(MethodHandleReferenceKind.INVOKE_STATIC);
+		} else if (ctx.NEWINVOKESPECIAL() != null) {
+			entry.setKind(MethodHandleReferenceKind.NEW_INVOKE_SPECIAL);
+		} else {
+			throw new IllegalStateException();
+		}
 		addConstantPoolEntry(entry);
 	}
 
