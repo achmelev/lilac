@@ -35,13 +35,6 @@ public class FormalParameterAnnotationTargetType extends AbstractAnnotationTarge
 	}
 
 	@Override
-	public String getTypeLabel() {
-		StringBuffer buf = new StringBuffer();
-		buf.append("targets parameter type");
-		return buf.toString();
-	}
-
-	@Override
 	public boolean isStructure() {
 		return false;
 	}
@@ -58,7 +51,9 @@ public class FormalParameterAnnotationTargetType extends AbstractAnnotationTarge
 
 	@Override
 	public String getPrintName() {
-		return getTypeLabel();
+		StringBuffer buf = new StringBuffer();
+		buf.append("targets parameter type");
+		return buf.toString();
 	}
 
 	@Override

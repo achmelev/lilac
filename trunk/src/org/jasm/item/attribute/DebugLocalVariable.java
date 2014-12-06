@@ -89,11 +89,6 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IConstan
 	public String getPrintName() {
 		return "var";
 	}
-	
-	@Override
-	public String getTypeLabel() {
-		return  getPrintName();
-	}
 
 	@Override
 	public String getPrintArgs() {

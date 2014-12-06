@@ -29,8 +29,8 @@ public class MethodTypeInfo extends AbstractReferenceEntry implements IDescripto
 
 	
 	@Override
-	public String getTypeLabel() {
-		return "const methodtype";
+	public String getConstTypeLabel() {
+		return "methodtype";
 	}
 
 	@Override

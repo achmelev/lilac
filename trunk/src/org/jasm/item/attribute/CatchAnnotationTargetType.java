@@ -33,11 +33,6 @@ public class CatchAnnotationTargetType extends AbstractAnnotationTargetType impl
 	}
 
 	@Override
-	public String getTypeLabel() {
-		return "targets catch type";
-	}
-
-	@Override
 	public boolean isStructure() {
 		return false;
 	}
@@ -54,7 +49,7 @@ public class CatchAnnotationTargetType extends AbstractAnnotationTargetType impl
 
 	@Override
 	public String getPrintName() {
-		return getTypeLabel();
+		return "targets catch type";
 	}
 
 	@Override

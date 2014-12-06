@@ -76,10 +76,6 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 		return "element";
 	}
 	
-	@Override
-	public String getTypeLabel() {
-		return  getPrintName();
-	}
 
 	@Override
 	public String getPrintArgs() {

@@ -58,8 +58,8 @@ public class LongInfo extends AbstractConstantPoolEntry implements IPrimitiveVal
 	}
 	
 	@Override
-	public String getTypeLabel() {
-		return  "const long";
+	public String getConstTypeLabel() {
+		return  "long";
 	}
 
 	@Override

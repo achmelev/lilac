@@ -229,11 +229,6 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	}
 	
 	@Override
-	public String getTypeLabel() {
-		return  getPrintName();
-	}
-
-	@Override
 	public String getPrintArgs() {
 		return null;
 	}

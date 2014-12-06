@@ -75,13 +75,6 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem implement
 	public String getPrintName() {
 		return (this.isWide?"wide ":"")+OpCodes.getNameForOpcode(opCode);
 	}
-	
-	
-
-	@Override
-	public String getTypeLabel() {
-		return OpCodes.getNameForOpcode(opCode);
-	}
 
 	@Override
 	protected void doResolve() {

@@ -15,11 +15,6 @@ public class Attributes extends AbstractBytecodeItemList<Attribute> {
 	public String getPrintName() {
 		return null;
 	}
-	
-	@Override
-	public String getTypeLabel() {
-		return  "attributes";
-	}
 
 
 	@Override

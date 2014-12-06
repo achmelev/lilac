@@ -11,11 +11,4 @@ public class RuntimeVisibleAnnotationsAttributeContent extends
 		return null;
 	}
 	
-	@Override
-	public String getTypeLabel() {
-		return  "visible annotations";
-	}
-
-	
-
 }

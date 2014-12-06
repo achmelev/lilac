@@ -10,12 +10,6 @@ public class Fields extends AbstractClassMemberList<Field> {
 	}
 	
 	@Override
-	public String getTypeLabel() {
-		return  "fields";
-	}
-	
-
-	@Override
 	public String getPrintComment() {
 		return "Fields";
 	}

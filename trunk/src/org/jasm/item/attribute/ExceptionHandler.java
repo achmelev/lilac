@@ -93,11 +93,6 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 	public String getPrintName() {
 		return "try";
 	}
-	
-	@Override
-	public String getTypeLabel() {
-		return  getPrintName();
-	}
 
 	@Override
 	public String getPrintArgs() {

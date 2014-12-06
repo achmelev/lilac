@@ -44,26 +44,7 @@ public class TypeArgumentAnnotationTargetType extends AbstractAnnotationTargetTy
 		return 4;
 	}
 
-	@Override
-	public String getTypeLabel() {
-		StringBuffer buf = new StringBuffer();
-		if (targetType == JasmConsts.ANNOTATION_TARGET_CAST) {
-			buf.append("targets cast type");
-		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_CONSTRUCTOR_TYPE_ARGUMENT) {
-			buf.append("targets constructor type argument");
-		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_CONSTRUCTOR_TYPE_ARGUMENT_IN_METHOD_REF) {
-			buf.append("targets constructor reference type argument");
-		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_ARGUMENT) {
-			buf.append("targets method type argument");
-		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_ARGUMENT_IN_METHOD_REF) {
-			buf.append("targets method reference type argument");
-		} else {
-			throw new IllegalArgumentException("unknown target type: "+Integer.toHexString(targetType));
-		}
-		
-		return buf.toString();
-	}
-
+	
 	@Override
 	public boolean isStructure() {
 		return false;
@@ -81,7 +62,22 @@ public class TypeArgumentAnnotationTargetType extends AbstractAnnotationTargetTy
 
 	@Override
 	public String getPrintName() {
-		return getTypeLabel();
+		StringBuffer buf = new StringBuffer();
+		if (targetType == JasmConsts.ANNOTATION_TARGET_CAST) {
+			buf.append("targets cast type");
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_CONSTRUCTOR_TYPE_ARGUMENT) {
+			buf.append("targets constructor type argument");
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_CONSTRUCTOR_TYPE_ARGUMENT_IN_METHOD_REF) {
+			buf.append("targets constructor reference type argument");
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_ARGUMENT) {
+			buf.append("targets method type argument");
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_ARGUMENT_IN_METHOD_REF) {
+			buf.append("targets method reference type argument");
+		} else {
+			throw new IllegalArgumentException("unknown target type: "+Integer.toHexString(targetType));
+		}
+		
+		return buf.toString();
 	}
 
 	@Override

@@ -10,12 +10,5 @@ public class RuntimeInvisibleAnnotationsAttributeContent extends
 	public String getPrintName() {
 		return null;
 	}
-	
-	@Override
-	public String getTypeLabel() {
-		return  "invisible annotations";
-	}
-
-	
 
 }

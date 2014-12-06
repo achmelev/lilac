@@ -441,14 +441,6 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		return getLength()-4;
 	}
 
-
-
-
-	@Override
-	public String getTypeLabel() {
-		return "instructions";
-	}
-
 	public LocalVariablesPool getVariablesPool() {
 		return variablesPool;
 	}

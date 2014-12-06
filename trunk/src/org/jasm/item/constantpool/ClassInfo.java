@@ -31,8 +31,8 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 
 	
 	@Override
-	public String getTypeLabel() {
-		return  "const classref";
+	public String getConstTypeLabel() {
+		return  "classref";
 	}
 
 	@Override

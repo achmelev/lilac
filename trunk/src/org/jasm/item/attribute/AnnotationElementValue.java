@@ -219,13 +219,6 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 		}
 		return getPrintPrefix()+" value";
 	}
-	
-	
-	
-	@Override
-	public String getTypeLabel() {
-		return  "annotation value";
-	}
 
 	@Override
 	public String getPrintArgs() {

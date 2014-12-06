@@ -11,10 +11,6 @@ public class LocalVariableTableAttributeContent extends
 		return "debug vars";
 	}
 	
-	@Override
-	public String getTypeLabel() {
-		return  getPrintName();
-	}
 
 	@Override
 	public void prepareRead(int length) {

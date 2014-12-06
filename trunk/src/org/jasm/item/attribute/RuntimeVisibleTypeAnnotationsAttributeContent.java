@@ -13,10 +13,6 @@ public class RuntimeVisibleTypeAnnotationsAttributeContent extends
 		return null;
 	}
 	
-	@Override
-	public String getTypeLabel() {
-		return  "type annotations";
-	}
 
 	@Override
 	protected Annotation createEmptyItem(IByteBuffer source, long offset) {

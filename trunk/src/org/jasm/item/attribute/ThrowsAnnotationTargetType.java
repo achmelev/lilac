@@ -38,13 +38,6 @@ public class ThrowsAnnotationTargetType extends AbstractAnnotationTargetType imp
 	}
 
 	@Override
-	public String getTypeLabel() {
-		StringBuffer buf = new StringBuffer();
-		buf.append("targets throws type");
-		return buf.toString();
-	}
-
-	@Override
 	public boolean isStructure() {
 		return false;
 	}
@@ -61,7 +54,9 @@ public class ThrowsAnnotationTargetType extends AbstractAnnotationTargetType imp
 
 	@Override
 	public String getPrintName() {
-		return getTypeLabel();
+		StringBuffer buf = new StringBuffer();
+		buf.append("targets throws type");
+		return buf.toString();
 	}
 
 	@Override

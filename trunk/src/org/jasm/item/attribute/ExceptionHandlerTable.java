@@ -24,11 +24,6 @@ public class ExceptionHandlerTable extends AbstractBytecodeItemList<ExceptionHan
 	public String getPrintName() {
 		return null;
 	}
-	
-	@Override
-	public String getTypeLabel() {
-		return  "exception handler table";
-	}
 
 	@Override
 	protected ExceptionHandler createEmptyItem(IByteBuffer source, long offset) {

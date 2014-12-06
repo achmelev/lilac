@@ -9,10 +9,6 @@ public class Methods extends AbstractClassMemberList<Method> {
 		return null;
 	}
 	
-	@Override
-	public String getTypeLabel() {
-		return  "methods";
-	}
 	
 	@Override
 	public String getPrintComment() {

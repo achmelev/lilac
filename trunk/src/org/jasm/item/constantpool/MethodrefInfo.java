@@ -15,8 +15,8 @@ public class MethodrefInfo extends AbstractRefInfo {
 
 	
 	@Override
-	public String getTypeLabel() {
-		return "const methodref";
+	public String getConstTypeLabel() {
+		return "methodref";
 	}
 
 	@Override

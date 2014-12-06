@@ -19,11 +19,6 @@ public class Method extends AbstractClassMember<MethodModifier> {
 	public String getPrintName() {
 		return "method";
 	}
-	
-	@Override
-	public String getTypeLabel() {
-		return  getPrintName();
-	}
 
 	@Override
 	protected MethodModifier createModifier(int value) {

@@ -64,11 +64,6 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 	public String getPrintName() {
 		return "constant value";
 	}
-	
-	@Override
-	public String getTypeLabel() {
-		return  getPrintName();
-	}
 
 	@Override
 	public String getPrintArgs() {

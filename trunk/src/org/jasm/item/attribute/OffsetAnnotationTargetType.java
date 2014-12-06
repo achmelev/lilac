@@ -39,24 +39,6 @@ public class OffsetAnnotationTargetType extends AbstractAnnotationTargetType imp
 	}
 
 	@Override
-	public String getTypeLabel() {
-		StringBuffer buf = new StringBuffer();
-		if (targetType == JasmConsts.ANNOTATION_TARGET_NEW) {
-			buf.append("targets new type");
-		} else if (targetType == JasmConsts.ANNOTATION_TARGET_INSTANCEOF) {
-			buf.append("targets instanceof type");
-		} else if (targetType == JasmConsts.ANNOTATION_TARGET_METHOD_REF_ID) {
-			buf.append("targets method reference");
-		} else if (targetType == JasmConsts.ANNOTATION_TARGET_METHOD_REF_NEW) {
-			buf.append("targets constructor reference");
-		} else {
-			throw new IllegalArgumentException("unknown target type: "+Integer.toHexString(targetType));
-		}
-		
-		return buf.toString();
-	}
-
-	@Override
 	public boolean isStructure() {
 		return false;
 	}
@@ -73,7 +55,20 @@ public class OffsetAnnotationTargetType extends AbstractAnnotationTargetType imp
 
 	@Override
 	public String getPrintName() {
-		return getTypeLabel();
+		StringBuffer buf = new StringBuffer();
+		if (targetType == JasmConsts.ANNOTATION_TARGET_NEW) {
+			buf.append("targets new type");
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_INSTANCEOF) {
+			buf.append("targets instanceof type");
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_METHOD_REF_ID) {
+			buf.append("targets method reference");
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_METHOD_REF_NEW) {
+			buf.append("targets constructor reference");
+		} else {
+			throw new IllegalArgumentException("unknown target type: "+Integer.toHexString(targetType));
+		}
+		
+		return buf.toString();
 	}
 
 	@Override

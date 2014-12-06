@@ -169,12 +169,6 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		return buf.toString();
 	}
 	
-	
-
-	@Override
-	public String getTypeLabel() {
-		return "annotation";
-	}
 
 	@Override
 	public String getPrintArgs() {
