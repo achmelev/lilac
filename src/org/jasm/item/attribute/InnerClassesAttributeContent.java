@@ -11,10 +11,6 @@ public class InnerClassesAttributeContent extends AbstractBytecodeItemList<Inner
 		return null;
 	}
 	
-	@Override
-	public String getTypeLabel() {
-		return  "inner classes";
-	}
 
 	@Override
 	protected InnerClass createEmptyItem(IByteBuffer source, long offset) {

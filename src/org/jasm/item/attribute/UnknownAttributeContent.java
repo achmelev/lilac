@@ -18,11 +18,6 @@ public class UnknownAttributeContent extends AbstractBinaryAttributeContent {
 	}
 	
 	@Override
-	public String getTypeLabel() {
-		return  getPrintName();
-	}
-	
-	@Override
 	public String getPrintComment() {
 		return ((Attribute)getParent()).getName().getValue();
 	}

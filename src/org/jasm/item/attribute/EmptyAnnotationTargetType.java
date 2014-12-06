@@ -34,22 +34,6 @@ public class EmptyAnnotationTargetType extends AbstractAnnotationTargetType {
 		return 1;
 	}
 
-	@Override
-	public String getTypeLabel() {
-		StringBuffer buf = new StringBuffer();
-		buf.append("targets ");
-		if (targetType == JasmConsts.ANNOTATION_TARGET_FIELD) {
-			buf.append("field type");
-		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RECEIVER_TYPE) {
-			buf.append("receiver type");
-		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RETURN_TYPE) {
-			buf.append("return type");
-		} else {
-			throw new IllegalStateException("Unknown target type: "+Integer.toHexString(targetType));
-		}
-		
-		return buf.toString();
-	}
 
 	@Override
 	public boolean isStructure() {
@@ -68,7 +52,19 @@ public class EmptyAnnotationTargetType extends AbstractAnnotationTargetType {
 
 	@Override
 	public String getPrintName() {
-		return getTypeLabel();
+		StringBuffer buf = new StringBuffer();
+		buf.append("targets ");
+		if (targetType == JasmConsts.ANNOTATION_TARGET_FIELD) {
+			buf.append("field type");
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RECEIVER_TYPE) {
+			buf.append("receiver type");
+		} else if (targetType == JasmConsts.ANNOTATION_TARGET_RETURN_TYPE) {
+			buf.append("return type");
+		} else {
+			throw new IllegalStateException("Unknown target type: "+Integer.toHexString(targetType));
+		}
+		
+		return buf.toString();
 	}
 
 	@Override

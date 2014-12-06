@@ -40,13 +40,6 @@ public class TypeParameterBoundAnnotationTargetType extends AbstractAnnotationTa
 	}
 
 	@Override
-	public String getTypeLabel() {
-		StringBuffer buf = new StringBuffer();
-		buf.append("targets type parameter bound");
-		return buf.toString();
-	}
-
-	@Override
 	public boolean isStructure() {
 		return false;
 	}
@@ -63,7 +56,9 @@ public class TypeParameterBoundAnnotationTargetType extends AbstractAnnotationTa
 
 	@Override
 	public String getPrintName() {
-		return getTypeLabel();
+		StringBuffer buf = new StringBuffer();
+		buf.append("targets type parameter bound");
+		return buf.toString();
 	}
 
 	@Override

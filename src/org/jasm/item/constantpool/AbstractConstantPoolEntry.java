@@ -30,7 +30,7 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 	
 	@Override
 	public String getPrintName() {
-		return getTypeLabel()+" "+createConstName();
+		return "const "+getConstTypeLabel()+" "+createConstName();
 	}
 
 	public int getIndexInPool() {
@@ -54,17 +54,10 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 	}
 	
 	protected String createConstName() {
-		String name = getTypeLabel().trim();
-		if (name.startsWith("const")) {
-			name = name.substring("const".length(),name.length()).trim();
-		}
+		String name = getConstTypeLabel();
 		return name+"_"+getParent().indexOf(this);
 	}
 	
-	
-
-	
-	
-	
+	public abstract String getConstTypeLabel();
 
 }

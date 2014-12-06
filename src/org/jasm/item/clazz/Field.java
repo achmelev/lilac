@@ -19,10 +19,6 @@ public class Field extends AbstractClassMember<FieldModifier> {
 		return "field";
 	}
 	
-	@Override
-	public String getTypeLabel() {
-		return  getPrintName();
-	}
 
 	@Override
 	protected FieldModifier createModifier(int value) {

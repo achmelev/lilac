@@ -11,10 +11,5 @@ public class StackMapAttributeContent extends AbstractBinaryAttributeContent {
 	public String getPrintComment() {
 		return null;
 	}
-	
-	@Override
-	public String getTypeLabel() {
-		return  getPrintName();
-	}
 
 }

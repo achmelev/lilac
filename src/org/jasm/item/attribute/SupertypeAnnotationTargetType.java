@@ -47,13 +47,6 @@ public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType 
 	}
 
 	@Override
-	public String getTypeLabel() {
-		StringBuffer buf = new StringBuffer();
-		buf.append("targets supertype");
-		return buf.toString();
-	}
-
-	@Override
 	public boolean isStructure() {
 		return false;
 	}
@@ -70,7 +63,9 @@ public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType 
 
 	@Override
 	public String getPrintName() {
-		return getTypeLabel();
+		StringBuffer buf = new StringBuffer();
+		buf.append("targets supertype");
+		return buf.toString();
 	}
 
 	@Override

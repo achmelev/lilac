@@ -14,11 +14,6 @@ public class RuntimeInvisibleTypeAnnotationsAttributeContent extends
 	}
 	
 	@Override
-	public String getTypeLabel() {
-		return  "invisible type annotations";
-	}
-	
-	@Override
 	protected Annotation createEmptyItem(IByteBuffer source, long offset) {
 		Annotation result = super.createEmptyItem(source, offset); 
 		result.setTypeAnnotation(true);

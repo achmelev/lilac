@@ -77,11 +77,6 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 	}
 	
 	@Override
-	public String getTypeLabel() {
-		return  getPrintName();
-	}
-
-	@Override
 	public String getPrintArgs() {
 		StringBuffer buf = new StringBuffer();
 		int index = 0;

@@ -15,9 +15,4 @@ public class SourceFileAttributeContent extends AbstractStringAttributeContent {
 		return "source file";
 	}
 	
-	@Override
-	public String getTypeLabel() {
-		return  getPrintName();
-	}
-
 }

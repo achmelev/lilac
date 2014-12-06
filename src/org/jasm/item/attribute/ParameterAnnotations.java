@@ -9,11 +9,6 @@ public class ParameterAnnotations extends AbstractBytecodeItemList<Annotation> {
 	public String getPrintName() {
 		return null;
 	}
-	
-	@Override
-	public String getTypeLabel() {
-		return  "parameter annotations";
-	}
 
 	@Override
 	protected Annotation createEmptyItem(IByteBuffer source, long offset) {

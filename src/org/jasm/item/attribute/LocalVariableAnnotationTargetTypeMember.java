@@ -55,11 +55,6 @@ public class LocalVariableAnnotationTargetTypeMember extends AbstractByteCodeIte
 	}
 
 	@Override
-	public String getTypeLabel() {
-		return null;
-	}
-
-	@Override
 	public boolean isStructure() {
 		return false;
 	}

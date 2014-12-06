@@ -60,11 +60,6 @@ public class AnnotationTargetTypePath extends AbstractByteCodeItem {
 	}
 
 	@Override
-	public String getTypeLabel() {
-		return null;
-	}
-
-	@Override
 	public boolean isStructure() {
 		return false;
 	}

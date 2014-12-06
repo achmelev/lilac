@@ -46,10 +46,6 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		return null;
 	}
 	
-	@Override
-	public String getTypeLabel() {
-		return  "const pool";
-	}
 	
 	@Override
 	public String getPrintComment() {
@@ -341,7 +337,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		try {
 			Constructor<T> con = t.getConstructor(new Class[]{});
 			T inst = con.newInstance(new Object[]{});
-			return inst.getTypeLabel();
+			return inst.getConstTypeLabel();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

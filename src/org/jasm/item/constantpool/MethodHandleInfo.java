@@ -121,7 +121,7 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 
 	
 	@Override
-	public String getTypeLabel() {
+	public String getConstTypeLabel() {
 		return "methodhandle";
 	}
 	

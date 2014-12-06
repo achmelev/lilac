@@ -86,8 +86,8 @@ public class Utf8Info extends AbstractConstantPoolEntry {
 
 	
 	@Override
-	public String getTypeLabel() {
-		return "const utf8";
+	public String getConstTypeLabel() {
+		return "utf8";
 	}
 
 	@Override

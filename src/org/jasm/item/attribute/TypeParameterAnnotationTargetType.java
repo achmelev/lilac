@@ -35,12 +35,7 @@ public class TypeParameterAnnotationTargetType extends AbstractAnnotationTargetT
 		return 2;
 	}
 
-	@Override
-	public String getTypeLabel() {
-		StringBuffer buf = new StringBuffer();
-		buf.append("targets type parameter");
-		return buf.toString();
-	}
+	
 
 	@Override
 	public boolean isStructure() {
@@ -59,7 +54,9 @@ public class TypeParameterAnnotationTargetType extends AbstractAnnotationTargetT
 
 	@Override
 	public String getPrintName() {
-		return getTypeLabel();
+		StringBuffer buf = new StringBuffer();
+		buf.append("targets type parameter");
+		return buf.toString();
 	}
 
 	@Override

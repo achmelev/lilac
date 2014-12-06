@@ -51,11 +51,6 @@ public class LocalVariableAnnotationTargetType extends AbstractAnnotationTargetT
 	}
 
 	@Override
-	public String getTypeLabel() {
-		return null;
-	}
-
-	@Override
 	public boolean isStructure() {
 		return true;
 	}

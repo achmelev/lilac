@@ -96,10 +96,6 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 		return "inner class";
 	}
 	
-	@Override
-	public String getTypeLabel() {
-		return  getPrintName();
-	}
 
 	@Override
 	public String getPrintArgs() {

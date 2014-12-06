@@ -19,8 +19,8 @@ public class FieldrefInfo extends AbstractRefInfo {
 
 	
 	@Override
-	public String getTypeLabel() {
-		return  "const fieldref";
+	public String getConstTypeLabel() {
+		return  "fieldref";
 	}
 
 	

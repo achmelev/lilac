@@ -11,11 +11,4 @@ public class RuntimeVisibleParameterAnnotationsAttributeContent extends
 		return null;
 	}
 	
-	@Override
-	public String getTypeLabel() {
-		return  "visible parameter annotations";
-	}
-
-	
-
 }

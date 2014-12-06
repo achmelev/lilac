@@ -28,8 +28,8 @@ public class StringInfo extends AbstractReferenceEntry implements ITextReferenci
 	}
 	
 	@Override
-	public String getTypeLabel() {
-		return "const string";
+	public String getConstTypeLabel() {
+		return "string";
 	}
 
 	@Override
