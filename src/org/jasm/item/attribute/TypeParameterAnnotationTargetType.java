@@ -17,16 +17,6 @@ public class TypeParameterAnnotationTargetType extends AbstractAnnotationTargetT
 		super();
 	}
 
-	public TypeParameterAnnotationTargetType(short targetType, short index) {
-		super(targetType);
-		this.index = index;
-		if (index>=0 && index<=255) {
-			//OK
-		} else {
-			throw new IllegalArgumentException("index out of bounds: "+index);
-		}
-	}
-
 	@Override
 	public void read(IByteBuffer source, long offset) {
 		targetType = source.readUnsignedByte(offset);

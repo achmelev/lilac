@@ -26,9 +26,6 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 	
 	private Map<String, Integer> exceptionIndexesLabelTable =  new HashMap<String, Integer>();
 	
-	public ExceptionsAttributeContent(ClassInfo[] classInfos) {
-		this.classInfos = classInfos;
-	}
 	
 	public ExceptionsAttributeContent() {
 		

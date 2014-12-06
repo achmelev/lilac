@@ -18,7 +18,6 @@ public abstract class AbstractSwitchInstruction extends AbstractInstruction impl
 	
 	public AbstractSwitchInstruction(short opCode) {
 		super(opCode);
-		// TODO Auto-generated constructor stub
 	}
 
 	private SymbolReference defaultTargetReference = null;

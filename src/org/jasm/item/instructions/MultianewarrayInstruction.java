@@ -13,14 +13,6 @@ public class MultianewarrayInstruction extends ConstantPoolInstruction {
 		super(OpCodes.multianewarray, null);
 	}
 
-	public MultianewarrayInstruction(ClassInfo entry, short dimensions) {
-		super(OpCodes.multianewarray, entry);
-		this.dimensions = dimensions;
-		if (dimensions < 1) {
-			throw new IllegalArgumentException(dimensions+"");
-		}
-	}
-
 	@Override
 	public String getPrintArgs() {
 		return super.getPrintArgs()+", "+dimensions;

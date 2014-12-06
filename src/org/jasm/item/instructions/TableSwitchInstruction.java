@@ -20,17 +20,6 @@ public class TableSwitchInstruction extends AbstractSwitchInstruction {
 		super(OpCodes.tableswitch);
 	}
 	
-	public TableSwitchInstruction(int low, int high, AbstractInstruction defaultTarget, AbstractInstruction[] targets) {
-		super(OpCodes.tableswitch);
-		if ((low>high) || (high-low+1) != targets.length) {
-			throw new IllegalArgumentException(low+":"+high+":"+targets.length);
-		}
-		this.defaultTarget = defaultTarget;
-		this.low = low;
-		this.high = high;
-		this.targets = targets;
-	}
-	
 
 	@Override
 	public void read(IByteBuffer source, long offset) {

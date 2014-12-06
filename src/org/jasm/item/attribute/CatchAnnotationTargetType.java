@@ -2,12 +2,8 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
-import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
-import org.jasm.item.instructions.AbstractInstruction;
-import org.jasm.item.instructions.IInstructionReference;
-import org.jasm.item.instructions.Instructions;
 import org.jasm.parser.literals.SymbolReference;
 
 public class CatchAnnotationTargetType extends AbstractAnnotationTargetType implements IExceptionHandlerReference {
@@ -16,14 +12,6 @@ public class CatchAnnotationTargetType extends AbstractAnnotationTargetType impl
 	private int handlerIndex = -1;
 	private ExceptionHandler handler;
 
-	public CatchAnnotationTargetType() {
-		super();
-	}
-
-	public CatchAnnotationTargetType(ExceptionHandler handler) {
-		super(JasmConsts.ANNOTATION_TARGET_CATCH);
-		this.handler = handler;
-	}
 
 	@Override
 	public void read(IByteBuffer source, long offset) {

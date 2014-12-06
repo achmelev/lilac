@@ -18,10 +18,6 @@ public class LocalVariableAnnotationTargetType extends AbstractAnnotationTargetT
 		
 	}
 	
-	public LocalVariableAnnotationTargetType(short type) {
-		super(type);
-	}
-	
 	@Override
 	public void read(IByteBuffer source, long offset) {
 		targetType = source.readUnsignedByte(offset);

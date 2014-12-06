@@ -12,10 +12,6 @@ public class FieldrefInfo extends AbstractRefInfo {
 		super();
 	}
 
-	public FieldrefInfo(ClassInfo clazz, NameAndTypeInfo nameAndType) {
-		super(clazz, nameAndType);
-	}
-
 	@Override
 	public short getTag() {
 		return 9;

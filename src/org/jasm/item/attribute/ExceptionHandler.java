@@ -40,11 +40,6 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 		
 	}
 	
-	public ExceptionHandler(AbstractInstruction startInstruction, AbstractInstruction endInstruction, AbstractInstruction handlerInstruction) {
-		this.startInstruction = startInstruction;
-		this.endInstruction = endInstruction;
-		this.handlerInstruction = handlerInstruction;
-	}
 
 	@Override
 	public void read(IByteBuffer source, long offset) {

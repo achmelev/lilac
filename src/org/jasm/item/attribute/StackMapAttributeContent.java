@@ -9,7 +9,6 @@ public class StackMapAttributeContent extends AbstractBinaryAttributeContent {
 
 	@Override
 	public String getPrintComment() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

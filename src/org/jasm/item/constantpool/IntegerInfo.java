@@ -12,10 +12,6 @@ public class IntegerInfo extends AbstractConstantPoolEntry implements IPrimitive
 		
 	}
 	
-	public IntegerInfo(int value) {
-		this.value = value;
-	}
-
 	@Override
 	public short getTag() {
 		return 3;

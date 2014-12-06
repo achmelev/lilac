@@ -23,10 +23,6 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 	private SymbolReference methodReference;
 	private NameAndTypeInfo method = null;
 	
-	public EnclosingMethodAttributeContent(ClassInfo clazz, NameAndTypeInfo method) {
-		this.clazz = clazz;
-		this.method = method;
-	}
 	
 	public EnclosingMethodAttributeContent() {
 		

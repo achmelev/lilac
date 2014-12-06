@@ -14,9 +14,6 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 		
 	}
 	
-	public NameAndTypeInfo(Utf8Info name, Utf8Info descriptor) {
-		super(new Utf8Info[]{name, descriptor});
-	}
 
 	@Override
 	public short getTag() {

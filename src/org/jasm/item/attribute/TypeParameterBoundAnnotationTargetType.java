@@ -18,21 +18,6 @@ public class TypeParameterBoundAnnotationTargetType extends AbstractAnnotationTa
 		super();
 	}
 
-	public TypeParameterBoundAnnotationTargetType(short targetType, short parameterIndex, short boundIndex) {
-		super(targetType);
-		this.parameterIndex = parameterIndex;
-		if (parameterIndex>=0 && parameterIndex<=255) {
-			//OK
-		} else {
-			throw new IllegalArgumentException("parameter index out of bounds: "+parameterIndex);
-		}
-		this.boundIndex = boundIndex;
-		if (boundIndex>=0 && boundIndex<=255) {
-			//OK
-		} else {
-			throw new IllegalArgumentException("bound index out of bounds: "+boundIndex);
-		}
-	}
 
 	@Override
 	public void read(IByteBuffer source, long offset) {

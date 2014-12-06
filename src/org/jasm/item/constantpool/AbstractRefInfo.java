@@ -10,15 +10,6 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 	public AbstractRefInfo() {
 		
 	}
-	
-	public AbstractRefInfo(ClassInfo clazz, NameAndTypeInfo nameAndType) {
-		AbstractConstantPoolEntry[] value = new AbstractConstantPoolEntry[2];
-		value[0] = clazz;
-		value[1] = nameAndType;
-		setReference(value);
-	}
-
-	
 
 	@Override
 	protected int getNumberOfReferences() {

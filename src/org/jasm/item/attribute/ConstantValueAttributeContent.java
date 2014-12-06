@@ -22,12 +22,6 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 	private AbstractConstantPoolEntry  valueEntry = null;
 	private SymbolReference valueReference;
 	
-	public ConstantValueAttributeContent(AbstractConstantPoolEntry entry) {
-		this.valueEntry = entry;
-		if (!(this.valueEntry instanceof StringInfo || this.valueEntry instanceof IPrimitiveValueReferencingEntry)) {
-			throw new IllegalArgumentException(valueEntry+"");
-		}
-	}
 	
 	public ConstantValueAttributeContent() {
 		

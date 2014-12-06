@@ -20,11 +20,6 @@ public class OffsetAnnotationTargetType extends AbstractAnnotationTargetType imp
 		super();
 	}
 
-	public OffsetAnnotationTargetType(short targetType, AbstractInstruction instruction) {
-		super(targetType);
-		this.instruction = instruction;
-	}
-
 	@Override
 	public void read(IByteBuffer source, long offset) {
 		targetType = source.readUnsignedByte(offset);

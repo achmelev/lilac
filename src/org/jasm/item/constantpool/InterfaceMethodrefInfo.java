@@ -8,10 +8,6 @@ public class InterfaceMethodrefInfo extends AbstractRefInfo {
 		super();
 	}
 
-	public InterfaceMethodrefInfo(ClassInfo clazz, NameAndTypeInfo nameAndType) {
-		super(clazz, nameAndType);
-	}
-
 	@Override
 	public short getTag() {
 		return 11;

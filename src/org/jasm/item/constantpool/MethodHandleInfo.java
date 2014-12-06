@@ -87,7 +87,7 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 		if (reference.getParent() == null) {
 			throw new RuntimeException("the referenced  entry is an orphan");
 		}
-		index = reference.getParent().indexOf(reference)+1;
+		index = reference.getIndexInPool();
 	}
 
 

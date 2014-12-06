@@ -8,10 +8,6 @@ public class MethodrefInfo extends AbstractRefInfo {
 		super();
 	}
 
-	public MethodrefInfo(ClassInfo clazz, NameAndTypeInfo nameAndType) {
-		super(clazz, nameAndType);
-	}
-
 	@Override
 	public short getTag() {
 		return 10;

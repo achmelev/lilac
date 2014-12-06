@@ -18,15 +18,6 @@ public class ThrowsAnnotationTargetType extends AbstractAnnotationTargetType imp
 		
 	}
 
-	public ThrowsAnnotationTargetType(short targetType, short index) {
-		super(targetType);
-		this.index = index;
-		if (index>=0 && index<=65535) {
-			//OK
-		} else {
-			throw new IllegalArgumentException("index out of bounds: "+index);
-		}
-	}
 
 	@Override
 	public void read(IByteBuffer source, long offset) {

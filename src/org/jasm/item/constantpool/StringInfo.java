@@ -8,9 +8,6 @@ public class StringInfo extends AbstractReferenceEntry implements ITextReferenci
 		
 	}
 	
-	public StringInfo(Utf8Info ref) {
-		super(new Utf8Info[]{ref});
-	}
 
 	@Override
 	public short getTag() {

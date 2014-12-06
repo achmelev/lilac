@@ -19,10 +19,6 @@ public class Utf8Info extends AbstractConstantPoolEntry {
 	public Utf8Info() {
 		
 	}
-	
-	public Utf8Info(String value) {
-		this.setValue(value);
-	}
 
 	@Override
 	public short getTag() {

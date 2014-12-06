@@ -24,10 +24,6 @@ public class LineNumber extends AbstractByteCodeItem implements IInstructionRefe
 		
 	}
 	
-	public LineNumber(AbstractInstruction startInstruction) {
-		this.startInstruction = startInstruction;
-	}
-	
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
