@@ -1,8 +1,7 @@
-class {
+public interface abstract class {
   version 51_0;
   name classref_0; // org/jasm/test/testclass/SimpleAnnotatedInterface
   extends classref_2; // java/lang/Object
-  modifier public, interface, abstract;
    //Constants
   const classref classref_0 utf8_1; // org/jasm/test/testclass/SimpleAnnotatedInterface
   const utf8 utf8_1 "org/jasm/test/testclass/SimpleAnnotatedInterface";
@@ -111,10 +110,9 @@ class {
     }
   }
    //Methods
-  method {
+  public abstract method {
     name utf8_4; // annotatedMethod
     descriptor utf8_5; // (I)V
-    modifier public, abstract;
      //Attributes
     invisible annotation {
       type utf8_7; // Lorg/jasm/test/testclass/TestInvisibleAnnotation;
@@ -169,10 +167,9 @@ class {
       }
     }
   }
-  method {
+  public abstract method {
     name utf8_33; // annotatedMethodWithParameters
     descriptor utf8_34; // (IDF)V
-    modifier public, abstract;
      //Attributes
     invisible annotation {
       type utf8_7; // Lorg/jasm/test/testclass/TestInvisibleAnnotation;

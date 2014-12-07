@@ -16,7 +16,12 @@ public class Field extends AbstractClassMember<FieldModifier> {
 
 	@Override
 	public String getPrintName() {
-		return "field";
+		if (!modifier.hasNoFlags()) {
+			return modifier.toString()+" field";
+		} else {
+			return "field";
+		}
+		
 	}
 	
 

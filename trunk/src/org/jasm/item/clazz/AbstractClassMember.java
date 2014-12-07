@@ -22,7 +22,7 @@ import org.jasm.parser.literals.SymbolReference;
 public abstract class AbstractClassMember<T extends AbstractClassMemberModifier> extends AbstractByteCodeItem implements IContainerBytecodeItem<Attributes>, IConstantPoolReference, IAttributesContainer {
 	
 	private List<Keyword> modifierLiterals;
-	private T modifier = null;
+	protected T modifier = null;
 	private Utf8Info name = null;
 	private SymbolReference nameReference;
 	private int nameIndex = -1;
@@ -68,9 +68,6 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 		List<IPrintable> result = new ArrayList<IPrintable>();
 		result.add(new SimplePrintable(null, "name", new String[]{name.getSymbolName()}, name.getValue()));
 		result.add(new SimplePrintable(null, "descriptor", new String[]{descriptor.getSymbolName()}, descriptor.getValue()));
-		if (!modifier.hasNoFlags()) {
-			result.add(new SimplePrintable(null, "modifier", new String[]{modifier.toString()}, (String)null));
-		}
 		
 		result.add(attributes);
 		return result;

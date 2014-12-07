@@ -1,8 +1,7 @@
-class {
+public super abstract class {
   version 51_0;
   name classref_0; // org/jasm/test/testclass/AbstractGenericClass
   extends classref_2; // java/lang/Object
-  modifier public, super, abstract;
    //Constants
   const classref classref_0 utf8_1; // org/jasm/test/testclass/AbstractGenericClass
   const utf8 utf8_1 "org/jasm/test/testclass/AbstractGenericClass";
@@ -39,23 +38,21 @@ class {
   synthetic;
   deprecated;
    //Fields
-  field {
+  private field {
     name utf8_4; // field
     descriptor utf8_5; // Ljava/lang/Object;
-    modifier private;
      //Attributes
     signature utf8_7; // TT;
-     synthetic;
+    synthetic;
   	deprecated;
   }
   
-  method {
+  public abstract method {
     name utf8_21; // method
     descriptor utf8_22; // ()Ljava/lang/Object;
-    modifier public, abstract;
      //Attributes
     signature utf8_23; // ()TT;
-     synthetic;
- 	 deprecated;
+    synthetic;
+ 	deprecated;
   }
 }

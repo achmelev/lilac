@@ -1,9 +1,8 @@
-class {
+super class {
   version 51_0;
   name classref_0; // org/jasm/test/testclass/Class2$1
   extends classref_2; // java/lang/Object
   implements classref_4; // java/lang/Runnable
-  modifier super;
    //Constants
   const classref classref_0 utf8_1; // org/jasm/test/testclass/Class2$1
   const utf8 utf8_1 "org/jasm/test/testclass/Class2$1";
@@ -40,10 +39,9 @@ class {
     inner classref_0; // org/jasm/test/testclass/Class2$1
   }
    //Fields
-  field {
+  final synthetic field {
     name utf8_6; // this$0
     descriptor utf8_7; // Lorg/jasm/test/testclass/Class2;
-    modifier final, synthetic;
   }
    //Methods
   method {
@@ -52,10 +50,8 @@ class {
     
     
   }
-  method {
+  public method {
     name utf8_20; // run
     descriptor utf8_15; // ()V
-    modifier public;
-    
   }
 }

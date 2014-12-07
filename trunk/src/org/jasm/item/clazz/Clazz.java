@@ -63,13 +63,6 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		initChildren();
 	}
 	
-	public Clazz(int minorVersion, int majorVersion, ClassModifier modifier) {
-		this.majorVersion = majorVersion;
-		this.minorVersion = minorVersion;
-		this.modifier = modifier;
-		initChildren();
-	}
-	
 	private void initChildren() {
 		pool = new ConstantPool();
 		pool.setParent(this);
@@ -207,9 +200,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			result.add(new SimplePrintable(null, "implements", args, comment));
 			
 		}
-		if (!modifier.hasNoFlags()) {
-			result.add(new SimplePrintable(null, "modifier", new String[]{modifier.toString()}, (String)null));
-		}
+		
 		result.add(pool);
 		result.add(attributes);
 		result.add(fields);
@@ -225,7 +216,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 
 	@Override
 	public String getPrintName() {
-		return "class";
+		if (!modifier.hasNoFlags()) {
+			return modifier.toString()+" class";
+		} else {
+			return "class";
+		}
 	}
 	
 	@Override

@@ -1,8 +1,7 @@
-class {
+public abstract class {
   version 51_0;
   name classref_0; // org/jasm/test/testclass/Class3
   extends classref_2; // java/lang/Object
-  modifier public, abstract;
    //Constants
   const classref classref_0 utf8_1; // org/jasm/test/testclass/Class3
   const utf8 utf8_1 "org/jasm/test/testclass/JustConstants";
@@ -38,10 +37,9 @@ class {
     descriptor utf8_7; // Lorg/jasm/test/testclass/Interface1;
   }
   
-  method {
+  public abstract method {
     name utf8_17; // testMethod
     descriptor utf8_18; // (I)V
-    modifier public, abstract;
     
   }
 }

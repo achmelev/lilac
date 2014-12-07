@@ -1,8 +1,7 @@
-class {
+public abstract interface class {
   version 51_0;
   name classref_0; // org/jasm/test/testclass/Interface2WithExceptions
   extends classref_2; // java/lang/Object
-  modifier public, interface, abstract;
    //Constants
   const classref classref_0 utf8_1; // org/jasm/test/testclass/Interface2WithExceptions
   const utf8 utf8_1 "org/jasm/test/testclass/Interface2WithExceptions";
@@ -40,53 +39,46 @@ class {
    //Attributes
   source file utf8_34; // Interface2WithExceptions.java
    //Fields
-  field {
+  public static final field {
     name utf8_4; // STRING_CONSTANT
     descriptor utf8_5; // Ljava/lang/String;
-    modifier public, static, final;
      //Attributes
     constant value string_7; // HELLO WORLD
   }
-  field {
+  public static final field {
     name utf8_9; // SHORT_CONSTANT
     descriptor utf8_10; // S
-    modifier public, static, final;
      //Attributes
     constant value int_11; // 10
   }
-  field {
+  public static final field {
     name utf8_12; // INT_CONSTANT
     descriptor utf8_13; // I
-    modifier public, static, final;
      //Attributes
     constant value int_14; // 1000
   }
-  field {
+  public static final field {
     name utf8_15; // LONG_CONSTANT
     descriptor utf8_16; // J
-    modifier public, static, final;
      //Attributes
     constant value long_17; // 10000
   }
-  field {
+  public static final field {
     name utf8_19; // FLOAT_CONSTANT
     descriptor utf8_20; // F
-    modifier public, static, final;
      //Attributes
     constant value float_21; // 10.1
   }
-  field {
+  public static final field {
     name utf8_22; // DOUBLE_CONSTANT
     descriptor utf8_23; // D
-    modifier public, static, final;
      //Attributes
     constant value double_24; // 100.1
   }
    //Methods
-  method {
+  public abstract method {
     name utf8_26; // testMethod
     descriptor utf8_27; // (I)V
-    modifier public, abstract;
      //Attributes
     throws classref_29, classref_31; // java/io/IOException, java/lang/IllegalArgumentException
   }

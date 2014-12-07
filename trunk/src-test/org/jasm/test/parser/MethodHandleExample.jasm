@@ -1,9 +1,8 @@
-class {
+public super class {
   version 52_0;
   name classref_0; // org/jasm/test/testclass/MethodHandleExampleT
   extends classref_2; // java/lang/Object
   implements classref_4, classref_6; // org/jasm/test/testclass/IMethodHandle1, org/jasm/test/testclass/IMethodHandle2
-  modifier public, super;
    //Constants
   const classref classref_0 utf8_1; // org/jasm/test/testclass/MethodHandleExampleT
   const utf8 utf8_1 "org/jasm/test/testclass/MethodHandleExampleT";
@@ -201,73 +200,60 @@ class {
   const nameandtype nameandtype_m_constructor utf8_m_constructor, utf8_12; // name=m_constructor type=Ljava/lang/invoke/MethodHandle;
   
   source file utf8_151; // MethodHandleExample.java
-  inner class {
+  public static final inner class {
     inner classref_63; // java/lang/invoke/MethodHandles$Lookup
     outer classref_41; // java/lang/invoke/MethodHandles
     name utf8_153; // Lookup
-    modifier public, static, final;
   }
    //Fields
-  field {
+  private field {
     name utf8_8; // a
     descriptor utf8_9; // I
-    modifier private;
   }
-  field {
+  private static field {
     name utf8_10; // b
     descriptor utf8_9; // I
-    modifier private, static;
   }
-  field {
+  public field {
     name utf8_11; // m_setA1
     descriptor utf8_12; // Ljava/lang/invoke/MethodHandle;
-    modifier public;
   }
-  field {
+  public field {
     name utf8_13; // m_setA2
     descriptor utf8_12; // Ljava/lang/invoke/MethodHandle;
-    modifier public;
   }
-  field {
+  public field {
     name utf8_14; // m_setA3
     descriptor utf8_12; // Ljava/lang/invoke/MethodHandle;
-    modifier public;
   }
-  field {
+  public field {
     name utf8_15; // m_putA
     descriptor utf8_12; // Ljava/lang/invoke/MethodHandle;
-    modifier public;
   }
-  field {
+  public field {
     name utf8_16; // m_getA
     descriptor utf8_12; // Ljava/lang/invoke/MethodHandle;
-    modifier public;
   }
-  field {
+  public field {
     name utf8_17; // m_setB
     descriptor utf8_12; // Ljava/lang/invoke/MethodHandle;
-    modifier public;
   }
-  field {
+  public field {
     name utf8_18; // m_putB
     descriptor utf8_12; // Ljava/lang/invoke/MethodHandle;
-    modifier public;
   }
-  field {
+  public field {
     name utf8_19; // m_getB
     descriptor utf8_12; // Ljava/lang/invoke/MethodHandle;
-    modifier public;
   }
-  field {
+  public field {
     name utf8_m_constructor; // m_constructor
     descriptor utf8_12; // Ljava/lang/invoke/MethodHandle;
-    modifier public;
   }
    //Methods
-  method {
+  public method {
     name utf8_20; // <init>
     descriptor utf8_21; // ()V
-    modifier public;
     maxstack 1;
     maxlocals 1;
     //Variables
@@ -277,10 +263,9 @@ class {
     invokespecial methodref_23; // class=java/lang/Object, name=<init>, descriptor=()V
     return;
   }
-  method {
+  public method {
     name utf8_20; // <init>
     descriptor utf8_30; // (I)V
-    modifier public;
     maxstack 2;
     maxlocals 2;
     //Variables
@@ -294,10 +279,9 @@ class {
     putfield fieldref_31; // class=org/jasm/test/testclass/MethodHandleExample, name=a, descriptor=I
     return;
   }
-  method {
+  private method {
     name utf8_29; // setA1
     descriptor utf8_30; // (I)V
-    modifier private;
     maxstack 2;
     maxlocals 2;
     //Variables
@@ -309,10 +293,9 @@ class {
     putfield fieldref_31; // class=org/jasm/test/testclass/MethodHandleExampleT, name=a, descriptor=I
     ir5: return;
   }
-  method {
+  public method {
     name utf8_33; // setA2
     descriptor utf8_30; // (I)V
-    modifier public;
     maxstack 2;
     maxlocals 2;
     //Variables
@@ -324,10 +307,9 @@ class {
     putfield fieldref_31; // class=org/jasm/test/testclass/MethodHandleExampleT, name=a, descriptor=I
     ir5: return;
   }
-  method {
+  public method {
     name utf8_34; // setA3
     descriptor utf8_30; // (I)V
-    modifier public;
     maxstack 2;
     maxlocals 2;
     //Variables
@@ -339,10 +321,9 @@ class {
     putfield fieldref_31; // class=org/jasm/test/testclass/MethodHandleExampleT, name=a, descriptor=I
     ir5: return;
   }
-  method {
+  public static method {
     name utf8_35; // setB
     descriptor utf8_30; // (I)V
-    modifier public, static;
     maxstack 1;
     maxlocals 1;
     //Variables
@@ -352,10 +333,9 @@ class {
     putstatic fieldref_36; // class=org/jasm/test/testclass/MethodHandleExampleT, name=b, descriptor=I
     ir4: return;
   }
-  method {
+  public method {
     name utf8_39; // initHandles
     descriptor utf8_21; // ()V
-    modifier public;
     maxstack 6;
     maxlocals 3;
     //Variables
@@ -394,10 +374,9 @@ class {
     putfield m_constructor; 
     return;
   }
-  method {
+  public method {
     name utf8_125; // callSetA1
     descriptor utf8_30; // (I)V
-    modifier public;
     maxstack 3;
     maxlocals 3;
     //Variables
@@ -412,10 +391,9 @@ class {
     invokevirtual methodref_126; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/MethodHandleExampleT;I)V
     return;
   }
-  method {
+  public method {
     name utf8_135; // callSetA2
     descriptor utf8_30; // (I)V
-    modifier public;
     maxstack 3;
     maxlocals 3;
     //Variables
@@ -430,10 +408,9 @@ class {
     invokevirtual methodref_126; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/MethodHandleExampleT;I)V
     return;
   }
-  method {
+  public method {
     name utf8_136; // callSetA3
     descriptor utf8_30; // (I)V
-    modifier public;
     maxstack 3;
     maxlocals 3;
     //Variables
@@ -448,10 +425,9 @@ class {
     invokevirtual methodref_126_1; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/IMethodHandle1;I)V
     return;
   }
-  method {
+  public method {
     name utf8_137; // callPutA
     descriptor utf8_30; // (I)V
-    modifier public;
     maxstack 3;
     maxlocals 3;
     //Variables
@@ -466,10 +442,9 @@ class {
     invokevirtual methodref_126; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/MethodHandleExampleT;I)V
     return;
   }
-  method {
+  public method {
     name utf8_138; // callGetA
     descriptor utf8_139; // ()I
-    modifier public;
     maxstack 3;
     maxlocals 2;
     //Variables
@@ -482,10 +457,9 @@ class {
     ir5: invokevirtual methodref_140; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(Lorg/jasm/test/testclass/MethodHandleExampleT;)I
     ireturn;
   }
-  method {
+  public method {
     name utf8_143; // callSetB
     descriptor utf8_30; // (I)V
-    modifier public;
     maxstack 3;
     maxlocals 3;
     //Variables
@@ -499,10 +473,9 @@ class {
     invokevirtual methodref_144; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(I)V
     return;
   }
-  method {
+  public method {
     name utf8_146; // callPutB
     descriptor utf8_30; // (I)V
-    modifier public;
     maxstack 3;
     maxlocals 3;
     //Variables
@@ -516,10 +489,9 @@ class {
     invokevirtual methodref_144; // class=java/lang/invoke/MethodHandle, name=invokeExact, descriptor=(I)V
     return;
   }
-  method {
+  public method {
     name utf8_147; // callGetB
     descriptor utf8_139; // ()I
-    modifier public;
     maxstack 3;
     maxlocals 2;
     //Variables
@@ -532,10 +504,9 @@ class {
     ireturn;
     
   }
-  method {
+  public method {
     name utf8_155; // callConstructor
     descriptor utf8_156; // (I)I
-    modifier public;
     maxstack 3;
     maxlocals 3;
     //Variables

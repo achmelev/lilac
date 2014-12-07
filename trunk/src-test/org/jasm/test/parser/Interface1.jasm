@@ -1,11 +1,10 @@
 /*
 Interface class
 */
-class {
+public interface abstract class {
   version 51_0;
   name cp0; // org/jasm/test/testclass/Interface1
   extends cp2; // java/lang/Object
-  modifier public, interface, abstract;
    //Constants
   const classref cp0 cp1; // org/jasm/test/testclass/Interface1
   const utf8 cp1 "org/jasm/test/testclass/Interface1";
@@ -18,9 +17,8 @@ class {
    //Attributes
   source file cp7; // Interface1.java
    //Methods
-  method {
+  public abstract method {
     name cp4; // testMethod
     descriptor cp5; // (I)V
-    modifier public, abstract;
   }
 }

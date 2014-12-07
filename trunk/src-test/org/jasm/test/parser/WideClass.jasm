@@ -1,8 +1,7 @@
-class {
+public super class {
   version 51_0;
   name classref_0; // org/jasm/test/testclass/WideClass
   extends classref_2; // java/lang/Object
-  modifier public, super;
    //Constants
   const classref classref_0 utf8_1; // org/jasm/test/testclass/WideClass
   const utf8 utf8_1 "org/jasm/test/testclass/WideClass";
@@ -600,10 +599,9 @@ class {
   source file utf8_712; // WideClass.java
    //Fields
    //Methods
-  method {
+  public method {
     name utf8_4; // <init>
     descriptor utf8_5; // ()V
-    modifier public;
     line numbers {
       line ir0, 3;
     }
@@ -619,10 +617,9 @@ class {
     invokespecial methodref_7; // class=java/lang/Object, name=<init>, descriptor=()V
     return;
   }
-  method {
+  public method {
     name utf8_13; // manyVariables
     descriptor utf8_5; // ()V
-    modifier public;
     line numbers {
       line ir0, 6;
       line ir2, 7;
@@ -2746,10 +2743,9 @@ class {
     wide astore a_421;
     ir3286: return;
   }
-  method {
+  public static method {
     name utf8_643; // main
     descriptor utf8_644; // ([Ljava/lang/String;)V
-    modifier public, static;
     line numbers {
       line ir0, 314;
       line ir5, 315;
