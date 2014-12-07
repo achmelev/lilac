@@ -1,10 +1,5 @@
 package org.jasm.item.constantpool;
 
-import org.jasm.item.utils.IdentifierUtils;
-import org.jasm.parser.literals.SymbolReference;
-
-
-
 
 public class FieldrefInfo extends AbstractRefInfo {
 	

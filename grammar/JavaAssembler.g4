@@ -351,6 +351,7 @@ switchop_keyword: LOOKUPSWITCH|TABLESWITCH;
 //Lexer
 
 // Keywords
+//startKeywords
 
 CLASS         :  'class';
 CONST         :  'const';
@@ -449,7 +450,10 @@ RESOURCE      :  'resource';
 METHODHANDLE  :  'methodhandle';
 NEWINVOKESPECIAL : 'newinvokespecial';
 
-//Instructions (some used also as keywords)
+//stopKeywords
+
+//Instructions (some also used as keywords)
+//startKeywords
 
 AALOAD: 'aaload';
 AASTORE: 'aastore';
@@ -614,7 +618,7 @@ SWAP: 'swap';
 TABLESWITCH: 'tableswitch';
 WIDE: 'wide';
 
-
+//stopKeywords
 
 Plus            :  '+';
 Pointer   : '->';

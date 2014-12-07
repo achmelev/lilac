@@ -99,6 +99,11 @@ public class DoubleInfo extends AbstractConstantPoolEntry implements IPrimitiveV
 	public void setValueLiteral(DoubleLiteral valueLiteral) {
 		this.valueLiteral = valueLiteral;
 	}
+
+	@Override
+	protected String doGetDisassemblerLabel() {
+		return null;
+	}
 	
 	
 	

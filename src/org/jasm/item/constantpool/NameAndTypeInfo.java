@@ -2,6 +2,8 @@ package org.jasm.item.constantpool;
 
 
 
+import java.util.List;
+
 import org.jasm.item.descriptor.IllegalDescriptorException;
 import org.jasm.item.descriptor.MethodDescriptor;
 import org.jasm.item.descriptor.TypeDescriptor;
@@ -110,6 +112,19 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 	@Override
 	protected AbstractConstantPoolEntry[] getExpectedReferenceTypes() {
 		return new AbstractConstantPoolEntry[]{new Utf8Info(),new Utf8Info()};
+	}
+
+
+	@Override
+	protected String doGetDisassemblerLabel() {
+		List<AbstractRefInfo> refs = getConstantPool().getReferencingItems(this, AbstractRefInfo.class); 
+		if (refs.size()>0) {
+			AbstractRefInfo ref = refs.get(0);
+			if (ref.getDisassemblerLabel() !=null) {
+				return ref.getDisassemblerLabel()+"_nat";
+			}
+		}
+		return null;
 	}
 	
 	

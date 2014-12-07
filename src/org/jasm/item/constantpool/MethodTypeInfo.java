@@ -54,4 +54,10 @@ public class MethodTypeInfo extends AbstractReferenceEntry implements IDescripto
 		return new AbstractConstantPoolEntry[]{new Utf8Info()};
 	}
 
+
+	@Override
+	protected String doGetDisassemblerLabel() {
+		return null;
+	}
+
 }
