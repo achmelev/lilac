@@ -1,9 +1,8 @@
-class {
+public super class {
   version 52_0;
   name classref_0; // org/jasm/test/testclass/SimpleAnnotatedClassT
   extends classref_2; // java/lang/Object
   implements impl:classref_4; // org/jasm/test/testclass/SimpleAnnotatedInterface
-  modifier public, super;
    //Constants
   const classref classref_0 utf8_1; // org/jasm/test/testclass/SimpleAnnotatedClassT
   const utf8 utf8_1 "org/jasm/test/testclass/SimpleAnnotatedClassT";
@@ -44,10 +43,9 @@ class {
   }
    //Fields
    //Methods
-  method {
+  public method {
     name utf8_6; // <init>
     descriptor utf8_7; // ()V
-    modifier public;
     line numbers {
       line ir0, 4;
     }
@@ -63,10 +61,9 @@ class {
     invokespecial methodref_9; // class=java/lang/Object, name=<init>, descriptor=()V
     return;
   }
-  method {
+  public method {
     name utf8_15; // annotatedMethod
     descriptor utf8_16; // (I)V
-    modifier public;
     line numbers {
       line ir0, 10;
     }
@@ -82,10 +79,9 @@ class {
     //Instructions
     ir0: return;
   }
-  method {
+  public method {
     name utf8_19; // annotatedMethodWithParameters
     descriptor utf8_20; // (IDF)V
-    modifier public;
     line numbers {
       line ir0, 16;
     }
@@ -105,10 +101,9 @@ class {
     //Instructions
     ir0: return;
   }
-  method {
+  public method {
     name utf8_25; // simpleMethod
     descriptor utf8_7; // ()V
-    modifier public;
     throws thr1: classref_27, classref_27; // java/lang/RuntimeException
     line numbers {
       line ir0, 20;

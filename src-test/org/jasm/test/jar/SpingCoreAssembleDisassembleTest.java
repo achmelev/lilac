@@ -17,7 +17,8 @@ public class SpingCoreAssembleDisassembleTest extends
 	}
 	
 	/*protected boolean filter(String name) {
-		return name.equals("org/springframework/util/concurrent/FutureAdapter.class");
+		
+		return name.equals("org/springframework/cglib/proxy/MethodProxy$1.class");
 	}*/
 
 }

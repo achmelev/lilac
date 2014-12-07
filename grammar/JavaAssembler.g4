@@ -4,7 +4,7 @@ grammar JavaAssembler;
 //Parser
 
 clazz:
-	 CLASS LBRACE 
+	 classmodifier? CLASS LBRACE 
 	 	classmember*
 	 RBRACE;
 
@@ -12,7 +12,6 @@ classmember: version SEMI
 			 | classname SEMI
 			 | superclass SEMI
 			 | interfaces SEMI
-			 | classmodifier SEMI
 			 | constpoolentry SEMI
 			 | classattribute
 			 | method
@@ -29,7 +28,7 @@ superclass: EXTENDS Identifier;
 
 interfaces: IMPLEMENTS labeledIdentifier (COMMA labeledIdentifier)*;
 
-classmodifier: MODIFIER classmodifierlabel (COMMA  classmodifierlabel)*;
+classmodifier: classmodifierlabel (classmodifierlabel)*;
 
 classmodifierlabel: PUBLIC 		# classmodifierPublic
 					| FINAL  		# classmodifierFinal
@@ -69,20 +68,19 @@ classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile
 			   | unknownattribute #classUnknownattribute
 			   ;
 			   
-innerclass: INNER CLASS LBRACE 
+ innerclass: innerclass_modifier? INNER CLASS LBRACE 
 	 			innerclassmember*
 	 		RBRACE;
 
 innerclassmember: innerclass_inner SEMI
 				  | innerclass_outer SEMI
 				  | innerclass_name SEMI
-				  | innerclass_modifier SEMI
 				  ;
 
 innerclass_inner: INNER Identifier;
 innerclass_outer: OUTER Identifier;
 innerclass_name: NAME Identifier;
-innerclass_modifier: MODIFIER innerclassmodifierlabel (COMMA  innerclassmodifierlabel)*;
+innerclass_modifier: innerclassmodifierlabel (innerclassmodifierlabel)*;
 innerclassmodifierlabel: PUBLIC #innerclassmodifierPublic
 						|PRIVATE #innerclassmodifierPrivate
 						|PROTECTED #innerclassmodifierProtected
@@ -97,13 +95,12 @@ innerclassmodifierlabel: PUBLIC #innerclassmodifierPublic
 
 enclosingmethod: ENCLOSING METHOD Identifier (COMMA Identifier)? SEMI;
 
-method  : METHOD  LBRACE
+method  : methodmodifier? METHOD  LBRACE
 					methodmember*
 				  RBRACE;
 
 methodmember: methodname SEMI
 			  | methoddescriptor SEMI
-			  | methodmodifier SEMI
 			  | methodattribute
 			  | methodvar
 			  | methodinstruction
@@ -118,7 +115,7 @@ methodmember: methodname SEMI
 methodname: NAME Identifier;
 methoddescriptor: DESCRIPTOR Identifier;
 
-methodmodifier: MODIFIER methodmodifierlabel (COMMA  methodmodifierlabel)*;
+methodmodifier: methodmodifierlabel (methodmodifierlabel)*;
 				  
 
 methodmodifierlabel:  PUBLIC 		# methodmodifierPublic
@@ -201,20 +198,19 @@ methodmaxlocals: MAXLOCALS IntegerLiteral SEMI;
 
 
 
-field  : FIELD  LBRACE
+field  : fieldmodifier? FIELD  LBRACE
 					fieldmember*
 				  RBRACE;
 
 fieldmember: fieldname SEMI
 			  | fielddescriptor SEMI
-			  | fieldmodifier SEMI
 			  | fieldattribute
 			  ;
 				  
 fieldname: NAME Identifier;
 fielddescriptor: DESCRIPTOR Identifier;
 
-fieldmodifier: MODIFIER fieldmodifierlabel (COMMA  fieldmodifierlabel)*;
+fieldmodifier: fieldmodifierlabel (fieldmodifierlabel)*;
 				  
 
 fieldmodifierlabel:   PUBLIC 		# fieldmodifierPublic
@@ -363,7 +359,6 @@ VERSION       :  'version';
 NAME          :  'name';
 EXTENDS       :  'extends';
 IMPLEMENTS    :  'implements';
-MODIFIER      :  'modifier';
 PUBLIC        :  'public';
 FINAL         :  'final';
 SUPER         :  'super';

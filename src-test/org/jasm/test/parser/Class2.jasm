@@ -1,8 +1,7 @@
-class {
+public super abstract class {
   version 51_0;
   name classref_0; // org/jasm/test/testclass/Class2
   extends classref_2; // java/lang/Object
-  modifier public, super, abstract;
    //Constants
   const classref classref_0 utf8_1; // org/jasm/test/testclass/Class2
   const utf8 utf8_1 "org/jasm/test/testclass/Class2";
@@ -135,40 +134,34 @@ class {
   inner class {
     inner classref_56; // org/jasm/test/testclass/Class2$1
   }
-  inner class {
+  private inner class {
     inner classref_125; // org/jasm/test/testclass/Class2$InnerClass
     outer classref_0; // org/jasm/test/testclass/Class2
     name utf8_127; // InnerClass
-    modifier private;
   }
    //Fields
-  field {
+  public static field {
     name utf8_4; // staticString
     descriptor utf8_5; // Ljava/lang/String;
-    modifier public, static;
   }
-  field {
+  private final field {
     name utf8_6; // finalIntField
     descriptor utf8_7; // I
-    modifier private, final;
     constant value int_9; // 0
   }
-  field {
+  protected transient field {
     name utf8_10; // transientField
     descriptor utf8_11; // Ljava/lang/Boolean;
-    modifier protected, transient;
   }
-  field {
+  public static final field {
     name utf8_12; // constInt
     descriptor utf8_7; // I
-    modifier public, static, final;
     constant value int_13; // 1
   }
    //Methods
-  method {
+  static method {
     name utf8_14; // <clinit>
     descriptor utf8_15; // ()V
-    modifier static;
     line numbers {
       line ir0, 5;
       line ir5, 3;
@@ -180,10 +173,9 @@ class {
     putstatic fieldref_19; // class=org/jasm/test/testclass/Class2, name=staticString, descriptor=Ljava/lang/String;
     ir5: return;
   }
-  method {
+  public method {
     name utf8_23; // <init>
     descriptor utf8_15; // ()V
-    modifier public;
     line numbers {
       line ir0, 3;
       line ir4, 7;
@@ -209,10 +201,9 @@ class {
     putfield fieldref_34; // class=org/jasm/test/testclass/Class2, name=transientField, descriptor=Ljava/lang/Boolean;
     ir17: return;
   }
-  method {
+  private method {
     name utf8_38; // privateMethod
     descriptor utf8_39; // (I)V
-    modifier private;
     deprecated;
     annotation {
       type utf8_42; // Ljava/lang/Deprecated;
@@ -232,15 +223,13 @@ class {
     //Instructions
     ir0: return;
   }
-  method {
+  protected abstract method {
     name utf8_44; // protectedAbstractMethod
     descriptor utf8_15; // ()V
-    modifier protected, abstract;
   }
-  method {
+  static synchronized method {
     name utf8_45; // synchronizedStaticMethod
     descriptor utf8_15; // ()V
-    modifier static, synchronized;
     line numbers {
       line ir0, 22;
     }
@@ -249,10 +238,9 @@ class {
     //Instructions
     ir0: return;
   }
-  method {
+  public method {
     name utf8_46; // methodMitException
     descriptor utf8_15; // ()V
-    modifier public;
     throws classref_48; // java/lang/IllegalArgumentException
     line numbers {
       line ir0, 25;
@@ -271,10 +259,9 @@ class {
     invokespecial methodref_52; // class=java/lang/IllegalArgumentException, name=<init>, descriptor=(Ljava/lang/String;)V
     athrow;
   }
-  method {
+  protected method {
     name utf8_55; // methodWithAnonymousClass
     descriptor utf8_15; // ()V
-    modifier protected;
     line numbers {
       line ir0, 29;
       line ir9, 36;
@@ -296,10 +283,9 @@ class {
     astore a_1;
     ir9: return;
   }
-  method {
+  public method {
     name utf8_63; // methodMitException2
     descriptor utf8_15; // ()V
-    modifier public;
     throws classref_48; // java/lang/IllegalArgumentException
     line numbers {
       line ir0, 47;
@@ -391,10 +377,9 @@ class {
     istore i_1;
     ir60: return;
   }
-  method {
+  public method {
     name utf8_88; // interfaceCall
     descriptor utf8_15; // ()V
-    modifier public;
     line numbers {
       line ir0, 67;
       line ir8, 68;
@@ -422,10 +407,9 @@ class {
     invokeinterface intfmethodref_97; // class=org/jasm/test/testclass/Interface1, name=testMethodWithoutArgs, descriptor=()V
     ir21: return;
   }
-  method {
+  public method {
     name utf8_102; // switchMethod
     descriptor utf8_39; // (I)V
-    modifier public;
     line numbers {
       line ir0, 73;
       line ir2, 74;
@@ -468,10 +452,9 @@ class {
     istore i_2;
     ir55: return;
   }
-  method {
+  public method {
     name utf8_104; // switchMethod2
     descriptor utf8_39; // (I)V
-    modifier public;
     line numbers {
       line ir0, 87;
       line ir2, 88;
@@ -514,10 +497,9 @@ class {
     istore i_2;
     ir56: return;
   }
-  method {
+  public method {
     name utf8_105; // arraysMethod
     descriptor utf8_39; // (I)V
-    modifier public;
     line numbers {
       line ir0, 101;
       line ir4, 102;

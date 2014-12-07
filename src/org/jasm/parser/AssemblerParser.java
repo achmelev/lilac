@@ -121,6 +121,7 @@ import org.jasm.parser.JavaAssemblerParser.ArrayannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.BranchopContext;
 import org.jasm.parser.JavaAssemblerParser.CasttypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.CatchtypeTargetTypeContext;
+import org.jasm.parser.JavaAssemblerParser.ClassAttributeSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassInnerClassContext;
 import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
 import org.jasm.parser.JavaAssemblerParser.ClassinfoContext;
@@ -437,14 +438,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 
 
-	@Override
-	public void enterClassmodifier(ClassmodifierContext ctx) {
-		Clazz clazz = (Clazz)stack.peek();
-		if (clazz.getModifierLiterals().size() > 0) {
-			emitError(ctx.MODIFIER(), "multiple modifier statements");
-		}
-	}
-
 
 	@Override
 	public void enterClassmodifierEnum(ClassmodifierEnumContext ctx) {
@@ -751,23 +744,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		m.getModifierLiterals().add(createKeyword(ctx.STRICT()));
 	}
 	
-	
-	
-
-	
-	
-
-	
-
-	@Override
-	public void enterMethodmodifier(MethodmodifierContext ctx) {
-		Method m = (Method)stack.peek();
-		if (m.getModifierLiterals().size() > 0) {
-			emitError(ctx.MODIFIER(), "multiple modifier statements within the same method statement");
-		}
-	}
-
-
 	@Override
 	public void enterMethoddescriptor(MethoddescriptorContext ctx) {
 		Method m = (Method)stack.peek();
@@ -1396,6 +1372,16 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		addAttribute(content, ctx.SYNTETIC());
 	}
 	
+	
+	
+	@Override
+	public void enterClassAttributeSyntetic(ClassAttributeSynteticContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterClassAttributeSyntetic(ctx);
+	}
+	
+	
+
 	@Override
 	public void enterEnclosingmethod(EnclosingmethodContext ctx) {
 		EnclosingMethodAttributeContent content = new EnclosingMethodAttributeContent();

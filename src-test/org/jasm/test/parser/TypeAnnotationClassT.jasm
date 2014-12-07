@@ -1,9 +1,8 @@
-class {
+public super class {
   version 52_0;
   name classref_0; // org/jasm/test/testclass/TypeAnnotationClassT
   extends classref_2; // java/util/HashMap
   implements classref_4, implref_1:classref_6; // java/lang/Runnable, java/lang/Appendable
-  modifier public, super;
    //Constants
   const classref classref_0 utf8_1; // org/jasm/test/testclass/TypeAnnotationClassT
   const utf8 utf8_1 "org/jasm/test/testclass/TypeAnnotationClassT";
@@ -202,10 +201,9 @@ class {
     
   }
    //Fields
-  field {
+  private field {
     name utf8_8; // text
     descriptor utf8_9; // Ljava/lang/String;
-    modifier private;
     invisible annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
     }
@@ -224,10 +222,9 @@ class {
     }
   }
    //Methods
-  method {
+  public method {
     name utf8_16; // <init>
     descriptor utf8_17; // ()V
-    modifier public;
     line numbers {
       line ir0, 14;
       line ir4, 16;
@@ -247,10 +244,9 @@ class {
     invokespecial methodref_19; // class=java/util/HashMap, name=<init>, descriptor=()V
     ir4: return;
   }
-  method {
+  public method {
     name utf8_16; // <init>
     descriptor utf8_27; // (Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
-    modifier public;
     signature utf8_29; // <F::Lorg/jasm/test/testclass/TypeAnnotationInterface1;:Lorg/jasm/test/testclass/TypeAnnotationInterface2;>(TF;)V
     line numbers {
       line ir0, 18;
@@ -280,10 +276,9 @@ class {
     invokeinterface intfmethodref_30; // class=org/jasm/test/testclass/TypeAnnotationInterface1, name=doSend1, descriptor=()V
     ir16: return;
   }
-  method {
+  public method {
     name utf8_38; // run
     descriptor utf8_17; // ()V
-    modifier public;
     line numbers {
       line ir0, 27;
       line ir8, 28;
@@ -325,10 +320,9 @@ class {
     invokevirtual methodref_54; // class=java/io/PrintStream, name=println, descriptor=(Ljava/lang/String;)V
     ir20: return;
   }
-  method {
+  public method {
     name utf8_64; // toString
     descriptor utf8_65; // ()Ljava/lang/String;
-    modifier public;
     invisible annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
     }
@@ -364,10 +358,9 @@ class {
       
     }
   }
-  method {
+  public method {
     name utf8_68; // send
     descriptor utf8_69; // (Ljava/lang/Object;)V
-    modifier public;
     line numbers {
       line ir0, 40;
       line ir5, 44;
@@ -411,10 +404,9 @@ class {
       
     }
   }
-  method {
+  public method {
     name utf8_71; // send2
     descriptor utf8_72; // (Ljava/lang/Integer;Ljava/lang/Double;)V
-    modifier public;
     throws classref_74, throwsref_1:classref_59; // java/lang/RuntimeException, java/lang/IllegalArgumentException
     invisible parameter annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
@@ -643,10 +635,9 @@ class {
       
     }
   }
-  method {
+  public static method {
     name utf8_81; // doSend
     descriptor utf8_27; // (Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
-    modifier public, static;
     signature utf8_133; // <R:Ljava/lang/Object;S::Lorg/jasm/test/testclass/TypeAnnotationInterface1;:Lorg/jasm/test/testclass/TypeAnnotationInterface2;>(TS;)V
     line numbers {
       line ir0, 68;
@@ -692,10 +683,9 @@ class {
       
     }
   }
-  method {
+  public method {
     name utf8_140; // append
     descriptor utf8_141; // (Ljava/lang/CharSequence;)Ljava/lang/Appendable;
-    modifier public;
     throws classref_107; // java/io/IOException
     line numbers {
       line ir0, 75;
@@ -716,10 +706,9 @@ class {
     ir0: aconst_null;
     areturn;
   }
-  method {
+  public method {
     name utf8_140; // append
     descriptor utf8_144; // (Ljava/lang/CharSequence;II)Ljava/lang/Appendable;
-    modifier public;
     throws classref_107; // java/io/IOException
     line numbers {
       line ir0, 82;
@@ -744,10 +733,9 @@ class {
     ir0: aconst_null;
     areturn;
   }
-  method {
+  public method {
     name utf8_140; // append
     descriptor utf8_148; // (C)Ljava/lang/Appendable;
-    modifier public;
     throws classref_107; // java/io/IOException
     line numbers {
       line ir0, 88;

@@ -17,7 +17,7 @@ public abstract class AbstractModifier {
 	protected boolean append(StringBuffer buf, boolean flag,boolean comma, String word) {
 		if (flag) {
 			if (comma) {
-				buf.append(", ");
+				buf.append(" ");
 			}
 			buf.append(word);
 		}

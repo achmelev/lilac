@@ -17,7 +17,11 @@ public class Method extends AbstractClassMember<MethodModifier> {
 
 	@Override
 	public String getPrintName() {
-		return "method";
+		if (!modifier.hasNoFlags()) {
+			return modifier.toString()+" method";
+		} else {
+			return "method";
+		}
 	}
 
 	@Override

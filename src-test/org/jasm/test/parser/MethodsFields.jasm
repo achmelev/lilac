@@ -1,10 +1,8 @@
-class {
+public super class {
   version 51_0;
   name cp0; // org/jasm/test/testclass/Class1
   extends cp2; // java/lang/Object
-  modifier public, super;
 
-    
    //Constants
   const classref cp0 cp1; // org/jasm/test/testclass/Class1
   const utf8 cp1 "org/jasm/test/testclass/Class1";
@@ -86,22 +84,19 @@ class {
 
     source file cp58; // Class1.java
     
-    field {
+    public static field {
     	name cp4; // STRING_CONSTANT
     	descriptor cp5; // Ljava/lang/String;
-    	modifier public, static;
   	}
   	
-	  field {
+	public static field {
 	    name cp6; // SHORT_CONSTANT
 	    descriptor cp7; // S
-	    modifier public, static;
-	  }
+	}
   
-    method {
+    public abstract method {
       name cp40; // testMethod
       descriptor cp54; // (I)V
-      modifier public, abstract;
     }
   
 }

@@ -79,9 +79,6 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 		} 
 		if (innerName != null) {
 			result.add(new SimplePrintable(null, "name", innerName.getSymbolName(), innerName.getValue()));
-		} 
-		if (!modifier.hasNoFlags()) {
-			result.add(new SimplePrintable(null, "modifier", modifier.toString(), null));
 		}
 		return result;
 	}
@@ -93,7 +90,12 @@ public class InnerClass extends AbstractByteCodeItem implements IConstantPoolRef
 
 	@Override
 	public String getPrintName() {
-		return "inner class";
+		if (!modifier.hasNoFlags()) {
+			return modifier.toString()+" inner class";
+		} else {
+			return "inner class";
+		}
+		
 	}
 	
 
