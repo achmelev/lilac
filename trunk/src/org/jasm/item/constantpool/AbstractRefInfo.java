@@ -86,4 +86,24 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 	
 	protected abstract boolean isMethodRef();
 
+	@Override
+	public short getTag() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected String doGetDisassemblerLabel() {
+		String result =  getNameAndTypeReference().getNameReference().getValue();
+		if (result.equals("<init>")) {
+			result = "_init";
+		} else if (result.equals("<clinit>")) {
+			result = "_clinit";
+		}
+		
+		return result;
+	}
+	
+	
+
 }

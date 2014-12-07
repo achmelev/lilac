@@ -70,6 +70,11 @@ public class IntegerInfo extends AbstractConstantPoolEntry implements IPrimitive
 
 	public void setValueLiteral(IntegerLiteral valueLiteral) {
 		this.valueLiteral = valueLiteral;
+	}
+
+	@Override
+	protected String doGetDisassemblerLabel() {
+		return null;
 	}	
 
 }

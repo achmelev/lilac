@@ -129,7 +129,7 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 
 	@Override
 	public String getPrintName() {
-		return "const "+createReferenceKindLabel()+" methodhandle "+createConstName();
+		return "const "+createReferenceKindLabel()+" methodhandle "+getSymbolName();
 	}
 
 	@Override
@@ -173,6 +173,15 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 
 	public void setKind(MethodHandleReferenceKind kind) {
 		this.kind = kind;
+	}
+
+	@Override
+	protected String doGetDisassemblerLabel() {
+		if (reference.doGetDisassemblerLabel() != null) {
+			return reference.doGetDisassemblerLabel()+"_handle";
+		} else {
+			return null;
+		}
 	}
 
 	

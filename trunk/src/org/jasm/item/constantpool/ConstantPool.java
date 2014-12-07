@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jasm.disassembler.NameGenerator;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.AbstractTaggedBytecodeItemList;
 import org.jasm.item.IBytecodeItem;
@@ -29,6 +30,8 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	private KeyToListMap<AbstractConstantPoolEntry, IBytecodeItem> entryReferences = new KeyToListMap<>();
 	
 	private SymbolTable symbolTable = new SymbolTable(null);
+	
+	private NameGenerator constNameGenerator = new NameGenerator();
 	
 	public ConstantPool() {
 		super(AbstractConstantPoolEntry.class, "org.jasm.item.constantpool");
@@ -199,6 +202,23 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		return result;
 	}
 	
+	public <T> List<T> getReferencingItems(AbstractConstantPoolEntry entry, Class<T> clazz) {
+		List<T> result = new ArrayList<T>();
+		List<IBytecodeItem> all = entryReferences.get(entry);
+		if (all != null) {
+			for (IBytecodeItem item: all) {
+				if (clazz.isAssignableFrom(item.getClass())) {
+					result.add((T)item);
+				}
+				if (item instanceof AbstractConstantPoolEntry) {
+					result.addAll(getReferencingItems((AbstractConstantPoolEntry)item, clazz));
+				}
+				
+			}
+		}
+		return result;
+	}
+	
 	
 	
 	private <T extends AbstractConstantPoolEntry> List<T> getRefs(Class<T> clazz, String className, String name, String signature) {
@@ -352,6 +372,11 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 				((AbstractReferenceEntry)item).verifyReferences();
 			}
 		}
+	}
+
+
+	public NameGenerator getConstNameGenerator() {
+		return constNameGenerator;
 	}
 	
 	

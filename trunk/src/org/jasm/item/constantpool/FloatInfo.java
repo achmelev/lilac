@@ -97,6 +97,11 @@ public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveVa
 	public void setValueLiteral(FloatLiteral valueLiteral) {
 		this.valueLiteral = valueLiteral;
 	}
+
+	@Override
+	protected String doGetDisassemblerLabel() {
+		return null;
+	}
 	
 	
 

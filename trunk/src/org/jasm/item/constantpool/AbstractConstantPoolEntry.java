@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractTaggedBytecodeItem;
+import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.literals.Label;
 
 public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeItem implements ISymbolTableEntry {
 
 	private Label label = null;
+	private String disassemblerLabel = null;
 	
 	@Override
 	public boolean isStructure() {
@@ -30,7 +32,7 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 	
 	@Override
 	public String getPrintName() {
-		return "const "+getConstTypeLabel()+" "+createConstName();
+		return "const "+getConstTypeLabel()+" "+getSymbolName();
 	}
 
 	public int getIndexInPool() {
@@ -39,10 +41,14 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 
 	@Override
 	public String getSymbolName() {
-		if (label == null) {
+		if (label != null) {
+			return label.getLabel();
+		} else if (getDisassemblerLabel() != null) {
+			return getDisassemblerLabel();
+		} else {
 			return createConstName();
 		}
-		return label.getLabel();
+		
 	}
 
 	public Label getLabel() {
@@ -58,6 +64,22 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 		return name+"_"+getParent().indexOf(this);
 	}
 	
+	public String getDisassemblerLabel() {
+		if (doGetDisassemblerLabel() == null) {
+			return null;
+		}
+		if (disassemblerLabel == null) {
+			disassemblerLabel = doGetDisassemblerLabel();
+			if (IdentifierUtils.isValidIdentifier(disassemblerLabel)) {
+				disassemblerLabel = getConstantPool().getConstNameGenerator().generateName(disassemblerLabel); 
+			} else {
+				disassemblerLabel = createConstName();
+			}
+		} 
+		return disassemblerLabel;
+	}
+	
 	public abstract String getConstTypeLabel();
+	protected abstract String doGetDisassemblerLabel();
 
 }

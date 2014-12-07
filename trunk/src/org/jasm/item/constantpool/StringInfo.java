@@ -47,6 +47,12 @@ public class StringInfo extends AbstractReferenceEntry implements ITextReferenci
 	protected AbstractConstantPoolEntry[] getExpectedReferenceTypes() {
 		return new AbstractConstantPoolEntry[]{new Utf8Info()};
 	}
+
+
+	@Override
+	protected String doGetDisassemblerLabel() {
+		return null;
+	}
 	
 	
 

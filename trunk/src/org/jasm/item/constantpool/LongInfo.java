@@ -79,6 +79,12 @@ public class LongInfo extends AbstractConstantPoolEntry implements IPrimitiveVal
 	public void setValueLiteral(LongLiteral valueLiteral) {
 		this.valueLiteral = valueLiteral;
 	}
+
+	@Override
+	protected String doGetDisassemblerLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

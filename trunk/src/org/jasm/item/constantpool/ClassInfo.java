@@ -68,6 +68,18 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 	protected AbstractConstantPoolEntry[] getExpectedReferenceTypes() {
 		return new AbstractConstantPoolEntry[]{new Utf8Info()};
 	}
+
+
+	@Override
+	protected String doGetDisassemblerLabel() {
+		String result = getClassNameReference().getValue();
+		if (result.indexOf('/')>=0) {
+			result = result.substring(result.lastIndexOf('/')+1, result.length());
+		} else {
+			return result;
+		}
+		return result;
+	}
 	
 	
 	
