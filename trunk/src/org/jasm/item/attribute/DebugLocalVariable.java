@@ -2,7 +2,6 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
@@ -92,7 +91,7 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IConstan
 
 	@Override
 	public String getPrintArgs() {
-		return getVariableType()+"_"+index+", "+startInstruction.getPrintLabel()+((endInstruction==null)?"":("->"+endInstruction.getPrintLabel()))+", "+name.getSymbolName()+", "+descriptor.getSymbolName();
+		return getAncestor(CodeAttributeContent.class).getInstructions().getDissasemblingVarName(getLocalVariableReferences()[0])+", "+startInstruction.getPrintLabel()+((endInstruction==null)?"":("->"+endInstruction.getPrintLabel()))+", "+name.getSymbolName()+", "+descriptor.getSymbolName();
 	}
 
 	@Override

@@ -11,9 +11,14 @@ import java.util.Set;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
+import org.jasm.disassembler.NameGenerator;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.item.attribute.Attribute;
+import org.jasm.item.attribute.CodeAttributeContent;
+import org.jasm.item.attribute.DebugLocalVariable;
+import org.jasm.item.attribute.LocalVariableTableAttributeContent;
 import org.jasm.map.KeyToListMap;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.SymbolTable;
@@ -36,6 +41,9 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	private Set<LocalVariable> localVariableReferences;
 	
 	private KeyToListMap<LocalVariable, AbstractInstruction> instructionsReferencingVariables = new KeyToListMap<LocalVariable, AbstractInstruction>();
+	
+	private Map<LocalVariable,String> disassemblingVariableNames;
+	private NameGenerator variablesNameGenerator = new NameGenerator();
 	
 	private LocalVariablesPool variablesPool;
 	
@@ -244,10 +252,19 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		return true;
 	}
 
-
+	public String getDissasemblingVarName(LocalVariable var) {
+		generateVariableNames();
+		if (disassemblingVariableNames.containsKey(var)) {
+			return disassemblingVariableNames.get(var);
+		} else {
+			return var.toString();
+		}
+	}
 
 	@Override
 	public List<IPrintable> getStructureParts() {
+		
+		//Variable declarations
 		List<IPrintable> result = new ArrayList<>();
 		
 		List<LocalVariable> localVariableReferencesList = new ArrayList<>();
@@ -265,7 +282,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			
 			
 			String offset = getOffset(localVariableReferencesList, i, lastOffset);
-			String [] args = (offset == null)?new String[]{loc.toString()}:new String[]{loc.toString()+" at "+offset};
+			String [] args = (offset == null)?new String[]{getDissasemblingVarName(loc)}:new String[]{getDissasemblingVarName(loc)+" at "+offset};
 			
 			result.add(new SimplePrintable(null, "var "+type, args, (String[])null));
 			lastOffset = Math.max(lastOffset, loc.getIndex()+loc.getLength());
@@ -274,8 +291,27 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		if (items.size() > 0) {
 			result.add(new SimplePrintable(null, null, (String)null,"Instructions"));
 		}
+		
+		//Instructions
 		result.addAll(items);
 		return result;
+	}
+	
+	private void generateVariableNames() {
+		if (disassemblingVariableNames == null) {
+			disassemblingVariableNames = new HashMap<LocalVariable, String>();
+			CodeAttributeContent code = (CodeAttributeContent)getParent();
+			List<Attribute> attrs = code.getAttributes().getAttributesByContentType(LocalVariableTableAttributeContent.class);
+			if (attrs.size() == 1) {
+				LocalVariableTableAttributeContent lvta = (LocalVariableTableAttributeContent)attrs.get(0).getContent();
+				for (int i=0;i<lvta.getSize(); i++) {
+					DebugLocalVariable dlv = lvta.get(i);
+					if (!disassemblingVariableNames.containsKey(dlv)) {
+						disassemblingVariableNames.put(dlv.getLocalVariableReferences()[0], variablesNameGenerator.generateName(dlv.getName().getValue()));
+					}
+				}
+			}
+		}
 	}
 	
 	private String getOffset(List<LocalVariable> variables, int index, int lastOffset) {
@@ -289,9 +325,9 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		} else if (index>0 && loc.getIndex()!=lastOffset) {
 			int gap = loc.getIndex()-variables.get(index-1).getIndex();
 			if (gap == 0) {
-				return variables.get(index-1).toString();
+				return getDissasemblingVarName(variables.get(index-1));
 			} else {
-				return variables.get(index-1).toString()+"+"+gap;
+				return getDissasemblingVarName(variables.get(index-1))+"+"+gap;
 			}
 		} else {
 			throw new IllegalStateException("");
@@ -408,7 +444,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 				for (LocalVariable l: lref.getLocalVariableReferences()) {
 					if (lref instanceof AbstractInstruction) {
 						instructionsReferencingVariables.addToList(l, (AbstractInstruction)lref);
-					}
+					} 
 					localVariableReferences.add(l);
 				}
 			}
