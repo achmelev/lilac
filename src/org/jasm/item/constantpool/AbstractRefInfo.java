@@ -95,11 +95,6 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 	@Override
 	protected String doGetDisassemblerLabel() {
 		String result =  getNameAndTypeReference().getNameReference().getValue();
-		if (result.equals("<init>")) {
-			result = "_init";
-		} else if (result.equals("<clinit>")) {
-			result = "_clinit";
-		}
 		
 		return result;
 	}

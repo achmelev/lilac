@@ -65,11 +65,19 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 	}
 	
 	public String getDisassemblerLabel() {
-		if (doGetDisassemblerLabel() == null) {
-			return null;
-		}
+
 		if (disassemblerLabel == null) {
 			disassemblerLabel = doGetDisassemblerLabel();
+			if (disassemblerLabel == null) {
+				disassemblerLabel = createConstName();
+				return disassemblerLabel;
+			}
+			if (disassemblerLabel.indexOf("<init>")>=0) {
+				disassemblerLabel = disassemblerLabel.replace("<init>", "init0");
+			}
+			if (disassemblerLabel.indexOf("<clinit>")>=0) {
+				disassemblerLabel = disassemblerLabel.replace("<clinit>", "clinit0");
+			}
 			if (IdentifierUtils.isValidIdentifier(disassemblerLabel)) {
 				disassemblerLabel = getConstantPool().getConstNameGenerator().generateName(disassemblerLabel); 
 			} else {

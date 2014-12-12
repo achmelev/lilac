@@ -10,7 +10,7 @@ import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 
-public class NameAndTypeInfo extends AbstractReferenceEntry implements INameReferencingEntry, IDescriptorReferencingEntry {
+public class NameAndTypeInfo extends AbstractReferenceEntry implements INameReferencingEntry, IDescriptorReferencingEntry, IUtf8ConstantPoolReference  {
 
 	public NameAndTypeInfo() {
 		
@@ -125,6 +125,20 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 			}
 		}
 		return null;
+	}
+
+
+	@Override
+	public String generateName(Utf8Info utf8) {
+		
+		if (utf8 == getNameReference()) {
+			return getNameReference().getValue()+"_name";
+		} else if (utf8 == getDescriptorReference()) {
+			return getNameReference().getValue()+"_desc";
+		}
+		
+		return null;
+		
 	}
 	
 	

@@ -19,6 +19,7 @@ import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.DebugLocalVariable;
 import org.jasm.item.attribute.LocalVariableTableAttributeContent;
+import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.map.KeyToListMap;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.SymbolTable;
@@ -307,7 +308,9 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 				for (int i=0;i<lvta.getSize(); i++) {
 					DebugLocalVariable dlv = lvta.get(i);
 					if (!disassemblingVariableNames.containsKey(dlv)) {
-						disassemblingVariableNames.put(dlv.getLocalVariableReferences()[0], variablesNameGenerator.generateName(dlv.getName().getValue()));
+						if (IdentifierUtils.isValidIdentifier(dlv.getName().getValue())) {
+							disassemblingVariableNames.put(dlv.getLocalVariableReferences()[0], variablesNameGenerator.generateName(dlv.getName().getValue()));
+						}
 					}
 				}
 			}

@@ -9,6 +9,7 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.IConstantPoolReference;
+import org.jasm.item.constantpool.IUtf8ConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.descriptor.IllegalDescriptorException;
 import org.jasm.item.descriptor.TypeDescriptor;
@@ -21,7 +22,7 @@ import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 
 
-public class DebugLocalVariable extends AbstractByteCodeItem implements IConstantPoolReference, ILocalVariableReference, IInstructionReference {
+public class DebugLocalVariable extends AbstractByteCodeItem implements IUtf8ConstantPoolReference, ILocalVariableReference, IInstructionReference {
 	
 	private int startPC = -1;
 	private SymbolReference startInstructionReference;
@@ -233,6 +234,16 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IConstan
 				emitError(descriptorReference, "malformed type descriptor "+descriptor.getValue());
 			}
 		}
+	}
+
+	@Override
+	public String generateName(Utf8Info utf8) {
+		if (utf8 == name) {
+			return name.getValue()+"_name";
+		} else if (utf8 == descriptor) {
+			return name.getValue()+"_desc";
+		}
+		return null;
 	}
 	
 
