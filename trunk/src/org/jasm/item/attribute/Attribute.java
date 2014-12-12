@@ -9,13 +9,14 @@ import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
+import org.jasm.item.constantpool.IUtf8ConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.parser.SourceLocation;
 import org.jasm.parser.literals.SymbolReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Attribute extends AbstractByteCodeItem implements IContainerBytecodeItem<IAttributeContent>, IConstantPoolReference {
+public class Attribute extends AbstractByteCodeItem implements IContainerBytecodeItem<IAttributeContent>, IUtf8ConstantPoolReference {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
@@ -314,6 +315,14 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 
 	public void setNameReference(SymbolReference nameReference) {
 		this.nameReference = nameReference;
+	}
+
+	@Override
+	public String generateName(Utf8Info utf8) {
+		if (utf8 == name) {
+			return name.getValue()+"_utf8";
+		}
+		return null;
 	}
 	
 	

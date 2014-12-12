@@ -13,13 +13,14 @@ import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.attribute.Attributes;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
+import org.jasm.item.constantpool.IUtf8ConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.AbstractClassMemberModifier;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.SymbolReference;
 
-public abstract class AbstractClassMember<T extends AbstractClassMemberModifier> extends AbstractByteCodeItem implements IContainerBytecodeItem<Attributes>, IConstantPoolReference, IAttributesContainer {
+public abstract class AbstractClassMember<T extends AbstractClassMemberModifier> extends AbstractByteCodeItem implements IContainerBytecodeItem<Attributes>, IUtf8ConstantPoolReference, IAttributesContainer {
 	
 	private List<Keyword> modifierLiterals;
 	protected T modifier = null;
@@ -213,7 +214,16 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	protected abstract void verifyName(SymbolReference ref, Utf8Info name);
 	protected abstract void verifyDescriptor(SymbolReference ref, String descriptor);
 	
-	
+	@Override
+	public String generateName(Utf8Info utf8) {
+		if (utf8 == name) {
+			return name.getValue()+"_name";
+		} else if (utf8 == descriptor) {
+			return name.getValue()+"_desc";
+		} else {
+			return null;
+		}
+	}
 	
 
 }

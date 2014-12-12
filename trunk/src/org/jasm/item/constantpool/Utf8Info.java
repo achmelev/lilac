@@ -4,7 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.channels.IllegalSelectorException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javassist.bytecode.MethodInfo;
 
@@ -17,6 +19,9 @@ import org.jasm.item.attribute.InnerClass;
 import org.jasm.item.clazz.AbstractClassMember;
 import org.jasm.item.clazz.Field;
 import org.jasm.item.clazz.Method;
+import org.jasm.item.descriptor.IllegalDescriptorException;
+import org.jasm.item.descriptor.MethodDescriptor;
+import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.parser.literals.StringLiteral;
 
 
@@ -119,71 +124,33 @@ public class Utf8Info extends AbstractConstantPoolEntry {
 		
 		List<IBytecodeItem> allRefs = getConstantPool().getReferencingItems(this, IBytecodeItem.class); 
 		
-		List<ClassInfo> refs = getConstantPool().getReferencingItems(this, ClassInfo.class); 
-		if (refs.size()>0) {
-			ClassInfo ref = refs.get(0);
-			if (ref.getDisassemblerLabel() !=null) {
-				return ref.getDisassemblerLabel()+"_name";
-			}
-		}
-		//name or desc
-		List<AbstractRefInfo> refs1 = getConstantPool().getReferencingItems(this, AbstractRefInfo.class); 
-		if (refs1.size()>0) {
-			
-			AbstractRefInfo ref = refs1.get(0);
-			
-			String result = "";
-			if (ref.getNameAndTypeReference().getNameReference() == this ) {
-				result = ref.getNameAndTypeReference().getNameReference().getValue();
-				if (result.equals("<init>")) {
-					result = "_init";
-				} else if (result.equals("<clinit>")) {
-					result = "_clinit";
-				}
-				result = result+"_name";
-			} else if (ref.getNameAndTypeReference().getDescriptorReference() == this && allRefs.size() ==2) {
-				result = ref.getNameAndTypeReference().getNameReference().getValue()+"_desc";
-			} else if (ref.getNameAndTypeReference().getDescriptorReference() == this) {
-				if (ref instanceof MethodrefInfo) {
-					result =  "method_desc";
-				} else if (ref instanceof FieldrefInfo){
-					result = "type_desc";
-				} 
-			} else {
-				throw new IllegalStateException();
-			}
-			return result;
-			
-			
-		}
-		
-		List<InnerClass> refs3 = getConstantPool().getReferencingItems(this, InnerClass.class); 
-		if (refs3.size() > 0) {
-			InnerClass ref = refs3.get(0);
-			if (ref.getInnerName() == this) {
-				return ref.getInnerName().getValue()+"_name";
-			}
-		}
-		
-		List<AbstractClassMember> refs4 = getConstantPool().getReferencingItems(this, AbstractClassMember.class); 
-		if (refs4.size() > 0) {
-			AbstractClassMember ref = refs4.get(0);
-			String result =  ref.getName().getValue();
-			if (result.equals("<init>")) {
-				result = "_init";
-			} else if (result.equals("<clinit>")) {
-				result = "_clinit";
-			}
-			if (ref.getName() == this) {
-				return result+"_name";
-			} else if (ref.getDescriptor() == this) {
-				if (ref instanceof Method) {
-					result =  "method_desc";
-				} else if (ref instanceof Field){
-					result = "type_desc";
+		Set<String> possibleNames = new HashSet<String>();
+		for (IBytecodeItem it: allRefs) {
+			if (it instanceof IUtf8ConstantPoolReference) {
+				String candidate = ((IUtf8ConstantPoolReference)it).generateName(this);
+				if (candidate != null) {
+					possibleNames.add(candidate);
 				}
 			}
 		}
+		
+		if (possibleNames.size() == 1) {
+			return possibleNames.iterator().next();
+		} else {
+			try {
+				MethodDescriptor desc = new MethodDescriptor(this.getValue());
+				return "method_desc";
+			} catch (IllegalDescriptorException e) {
+				
+			}
+			try {
+				TypeDescriptor desc = new TypeDescriptor(this.getValue());
+				return "type_desc";
+			} catch (IllegalDescriptorException e) {
+				
+			}
+		}
+		
 		
 		return null;
 	}

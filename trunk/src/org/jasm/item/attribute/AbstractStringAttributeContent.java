@@ -6,10 +6,11 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
+import org.jasm.item.constantpool.IUtf8ConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.parser.literals.SymbolReference;
 
-public abstract class AbstractStringAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
+public abstract class AbstractStringAttributeContent extends AbstractSimpleAttributeContent implements IUtf8ConstantPoolReference {
 	
 	private int valueIndex = -1;
 	private SymbolReference valueLabel;
@@ -100,6 +101,15 @@ public abstract class AbstractStringAttributeContent extends AbstractSimpleAttri
 
 	public void setValueLabel(SymbolReference valueLabel) {
 		this.valueLabel = valueLabel;
+	}
+
+	@Override
+	public String generateName(Utf8Info utf8) {
+		if (getPrintName() != null) {
+			return getPrintName().replace(' ', '_')+"_name";
+		} else {
+			return null;
+		}
 	}
 
 	

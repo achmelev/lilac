@@ -16,7 +16,7 @@ import org.jasm.item.utils.IdentifierUtils;
 
 public class NameGenerator {
 	
-	private Map<String, Integer> nameMap = new HashMap<String, Integer>();
+	private Set<String> names = new HashSet<String>();
 	private static Set<String> keywords = new HashSet<String>(); 
 	
 	static {
@@ -284,29 +284,19 @@ public class NameGenerator {
 		candidate = candidate.trim();
 		String result = candidate;
 		if (!IdentifierUtils.isValidIdentifier(candidate)) {
-			throw new IllegalArgumentException("illegal identifier: "+candidate);
+			return null;
 		}
-		if (nameMap.containsKey(candidate)) {
-			int counter = nameMap.get(candidate)+1;
-			result = candidate+"$"+counter;
-			while (nameMap.containsKey(result)) {
-				counter++;
-				result = candidate+"$"+counter;
-			}
-			nameMap.put(candidate, counter);
-		} else if (keywords.contains(candidate)) {
+		if (names.contains(candidate) || keywords.contains(candidate)) {
 			int counter = 0;
 			result = candidate+"$"+counter;
-			while (nameMap.containsKey(result)) {
+			while (names.contains(result)) {
 				counter++;
 				result = candidate+"$"+counter;
 			}
-			nameMap.put(candidate, counter);
 		} else {
 			result = candidate;
-			nameMap.put(candidate, 0);
 		}
-		
+		names.add(result);
 		return result;
 	}
 	

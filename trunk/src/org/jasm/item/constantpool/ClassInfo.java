@@ -5,7 +5,7 @@ import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 
-public class ClassInfo extends AbstractReferenceEntry implements INameReferencingEntry {
+public class ClassInfo extends AbstractReferenceEntry implements INameReferencingEntry, IUtf8ConstantPoolReference {
 	
 	public ClassInfo() {
 	}
@@ -79,6 +79,15 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 			return result;
 		}
 		return result;
+	}
+
+
+	@Override
+	public String generateName(Utf8Info utf8) {
+		if (utf8 == getClassNameReference()) {
+			return getDisassemblerLabel()+"_name";
+		}
+		return null;
 	}
 	
 	
