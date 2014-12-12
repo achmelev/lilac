@@ -2,7 +2,6 @@ package org.jasm.item.instructions;
 
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
@@ -34,8 +33,7 @@ public class ShortLocalVariableInstruction extends AbstractInstruction implement
 
 	@Override
 	public String getPrintArgs() {
-		char type = getPrintName().charAt(0);
-		return type+"_"+localVariableIndex;
+		return getAncestor(Instructions.class).getDissasemblingVarName(getLocalVariableReferences()[0]);
 				
 	}
 

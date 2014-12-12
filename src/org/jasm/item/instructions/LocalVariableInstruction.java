@@ -44,8 +44,7 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 
 	@Override
 	public String getPrintArgs() {
-		char type = OpCodes.getNameForOpcode(getOpCode()).charAt(0);
-		return type+"_"+localVariableIndex;
+		return getAncestor(Instructions.class).getDissasemblingVarName(getLocalVariableReferences()[0]);
 	}
 	
 	

@@ -78,8 +78,9 @@ public class LocalVariableAnnotationTargetTypeMember extends AbstractByteCodeIte
 	public String getPrintArgs() {
 		String var = index+"";
 		if (variable != null) {
-			var = variable.toString();
+			var = getAncestor(CodeAttributeContent.class).getInstructions().getDissasemblingVarName(variable);
 		}
+		
 		return var+", "+startInstruction.getPrintLabel()+((endInstruction==null)?"":("->"+endInstruction.getPrintLabel()));
 	}
 
