@@ -68,10 +68,28 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	public <T> T getAncestor(Class<T> type) {
 		if (this.getParent() == null) {
 			return null;
-		} else if (this.getParent().getClass().equals(type)) {
+		} else if (type.isAssignableFrom(this.getParent().getClass())) {
 			return (T)getParent();
 		} else {
 			return getParent().getAncestor(type);
+		}
+	}
+	
+	public <U> List<U> getDescendants(Class<U> type) {
+		List<U> result = new ArrayList<>();
+		getDescendants(result, this, type);
+		return result;
+	}
+	
+	private <U> void getDescendants(List<U> result, IBytecodeItem item, Class<U> type) {
+		if (type.isAssignableFrom(type)) {
+			result.add((U)item);
+		}
+		if (item instanceof IContainerBytecodeItem) {
+			List<IBytecodeItem> children = getItemsList((IContainerBytecodeItem<IBytecodeItem>)item);
+			for (IBytecodeItem child: children) {
+				getDescendants(result, child, type);
+			}
 		}
 	}
 
@@ -109,20 +127,9 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	}
 	
 	public List<IBytecodeItem> getAllItemsFromHere() {
-		List<IBytecodeItem> result = new ArrayList<>();
-		getAllItemsFromHere(result, this);
-		return result;
+		return getDescendants(IBytecodeItem.class);
 	}
 	
-	private void getAllItemsFromHere(List<IBytecodeItem> result, IBytecodeItem item) {
-		result.add(item);
-		if (item instanceof IContainerBytecodeItem) {
-			List<IBytecodeItem> children = getItemsList((IContainerBytecodeItem<IBytecodeItem>)item);
-			for (IBytecodeItem child: children) {
-				getAllItemsFromHere(result, child);
-			}
-		}
-	}
 
 	public void setSourceLocation(SourceLocation sourceLocation) {
 		this.sourceLocation = sourceLocation;
