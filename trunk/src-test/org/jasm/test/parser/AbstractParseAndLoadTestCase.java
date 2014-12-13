@@ -73,7 +73,7 @@ public abstract class AbstractParseAndLoadTestCase {
 			
 		}
 		
-		MyClassLoader loader = new MyClassLoader(getClassName(), data2);
+		MyClassLoader loader = new MyClassLoader(getClassName(), data2, this.getClass().getClassLoader());
 		try {
 			Class cl = loader.loadClass(getClassName());
 			testClass(cl);
@@ -89,7 +89,8 @@ class MyClassLoader extends ClassLoader {
 	private String name = null;
 	private byte [] content;
 	
-	MyClassLoader(String name, byte[] content) {
+	MyClassLoader(String name, byte[] content, ClassLoader parent) {
+		super(parent);
 		this.name = name;
 		this.content = content;
 	}
