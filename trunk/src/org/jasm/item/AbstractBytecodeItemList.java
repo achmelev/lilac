@@ -69,13 +69,15 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 		}
 		
 		currentOffset+=sizeFieldLength();
+		int i=0;
 		for (IBytecodeItem item: items) {
 			if (item != null) {
 				item.write(target, currentOffset);
 				if (log.isDebugEnabled()) {
-					log.debug("wrote item: "+item+";currentOffset="+currentOffset+"; item.length="+item.getLength());
+					log.debug("wrote item "+i+"/"+size+":"+item+";currentOffset="+currentOffset+"; item.length="+item.getLength());
 				}
 				currentOffset+=item.getLength();
+				i++;
 			}
 		}
 		

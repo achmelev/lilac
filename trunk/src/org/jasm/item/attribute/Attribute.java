@@ -197,6 +197,9 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
+		if (log.isDebugEnabled()) {
+			log.debug("Write attribute at "+offset+" content "+content.getClass().getSimpleName()+" at "+(offset+6));
+		}
 		target.writeUnsignedShort(offset, name.getIndexInPool());
 		target.writeUnsignedInt(offset+2, content.getLength());
 		content.write(target, offset+6);

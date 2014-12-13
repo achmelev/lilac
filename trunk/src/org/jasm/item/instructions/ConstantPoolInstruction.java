@@ -42,8 +42,8 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 		allowedTypes.put(OpCodes.instanceof_, new Class[]{ClassInfo.class});
 		allowedTypes.put(OpCodes.invokeinterface, new Class[]{InterfaceMethodrefInfo.class});
 		allowedTypes.put(OpCodes.invokedynamic, new Class[]{InvokeDynamicInfo.class});
-		allowedTypes.put(OpCodes.invokespecial, new Class[]{MethodrefInfo.class});
-		allowedTypes.put(OpCodes.invokestatic, new Class[]{MethodrefInfo.class});
+		allowedTypes.put(OpCodes.invokespecial, new Class[]{MethodrefInfo.class,InterfaceMethodrefInfo.class});
+		allowedTypes.put(OpCodes.invokestatic, new Class[]{MethodrefInfo.class,InterfaceMethodrefInfo.class});
 		allowedTypes.put(OpCodes.invokevirtual, new Class[]{MethodrefInfo.class});
 		allowedTypes.put(OpCodes.ldc_w, new Class[]{StringInfo.class,IntegerInfo.class,FloatInfo.class,ClassInfo.class,MethodHandleInfo.class,MethodTypeInfo.class});
 		allowedTypes.put(OpCodes.ldc2_w, new Class[]{DoubleInfo.class, LongInfo.class});
