@@ -247,6 +247,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		fields.resolve();
 		methods.resolve();
 		attributes.resolve();
+		pool.resolveInvokeDynamics();
 	}
 	
 	@Override
@@ -301,6 +302,10 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		fields.resolve();
 		//Methods
 		methods.resolve();
+		//invokeDynamics
+		pool.resolveInvokeDynamics();
+		pool.updateInvokeDynamicIndexes();
+		
 		
 	}
 	

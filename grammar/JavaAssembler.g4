@@ -53,6 +53,7 @@ constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 				 | CONST DYNREFINFO label Identifier COMMA  Identifier #dynrefinfo
 				 | CONST INTERFACEMETHODREFINFO label Identifier COMMA  Identifier #interfacemethodrefinfo
 				 | CONST NAMEANDTYPEINFO label Identifier COMMA  Identifier #nameandtypeinfo
+				 | CONST METHODTYPE label Identifier #methodtypeinfo
 				 | CONST (GETFIELD|GETSTATIC|PUTFIELD|PUTSTATIC|INVOKESPECIAL|INVOKEVIRTUAL|INVOKEINTERFACE|INVOKESTATIC|NEWINVOKESPECIAL) METHODHANDLE label Identifier #methodhandleinfo
 				 ;
 
@@ -96,7 +97,7 @@ innerclassmodifierlabel: PUBLIC #innerclassmodifierPublic
 						; 
 
 enclosingmethod: ENCLOSING METHOD Identifier (COMMA Identifier)? SEMI;
-bootstrapmethod: BOOTSTRAP METHOD Identifier Identifier (COMMA Identifier)? SEMI;
+bootstrapmethod: BOOTSTRAP METHOD Identifier Identifier (COMMA Identifier)* SEMI;
 
 method  : methodmodifier? METHOD  LBRACE
 					methodmember*
@@ -452,6 +453,7 @@ CONSTRUCTOR   :  'constructor';
 CAST          :  'cast';
 RESOURCE      :  'resource';
 METHODHANDLE  :  'methodhandle';
+METHODTYPE    :  'methodtype';
 NEWINVOKESPECIAL : 'newinvokespecial';
 BOOTSTRAP     : 'bootstrap';
 

@@ -4,6 +4,7 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.disassembler.NameGenerator;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.AbstractBytecodeItemList;
+import org.jasm.item.clazz.Clazz;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.SymbolTable;
@@ -52,6 +53,7 @@ public class BootstrapMethodsAttributeContent extends
 		}
 		return result;
 	}
+
 	
 
 }

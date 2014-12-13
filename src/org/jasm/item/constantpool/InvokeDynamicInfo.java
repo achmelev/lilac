@@ -49,7 +49,7 @@ public class InvokeDynamicInfo extends AbstractConstantPoolEntry implements INam
 
 	@Override
 	public String getConstTypeLabel() {
-		return "dynamicref";
+		return "dynref";
 	}
 
 	@Override

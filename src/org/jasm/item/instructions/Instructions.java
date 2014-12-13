@@ -88,6 +88,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			return new IincInstruction(-1,(short)-1, false);
 		} else if (OpCodes.invokeinterface == opCode) {
 			return new InvokeInterfaceInstruction(opCode,null);
+		} else if (OpCodes.invokedynamic == opCode) {
+			return new InvokeDynamicInstruction(opCode,null);
 		} else if (OpCodes.lookupswitch == opCode) {
 			return new LookupSwitchInstruction();
 		} else if (OpCodes.tableswitch == opCode) {

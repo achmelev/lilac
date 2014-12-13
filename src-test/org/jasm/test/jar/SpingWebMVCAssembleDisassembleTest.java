@@ -16,8 +16,8 @@ public class SpingWebMVCAssembleDisassembleTest extends
 		doJarTest();
 	}
 	
-	protected boolean filter(String name) {
+	/*protected boolean filter(String name) {
 		return name.equals("org/springframework/web/servlet/config/annotation/WebMvcConfigurationSupport.class");
-	}
+	}*/
 
 }
