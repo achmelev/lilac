@@ -6,6 +6,7 @@ import java.util.Map;
 
 
 
+
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
@@ -16,6 +17,7 @@ import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.IntegerInfo;
 import org.jasm.item.constantpool.InterfaceMethodrefInfo;
+import org.jasm.item.constantpool.InvokeDynamicInfo;
 import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.MethodHandleInfo;
 import org.jasm.item.constantpool.MethodTypeInfo;
@@ -39,6 +41,7 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 		allowedTypes.put(OpCodes.getstatic, new Class[]{FieldrefInfo.class});
 		allowedTypes.put(OpCodes.instanceof_, new Class[]{ClassInfo.class});
 		allowedTypes.put(OpCodes.invokeinterface, new Class[]{InterfaceMethodrefInfo.class});
+		allowedTypes.put(OpCodes.invokedynamic, new Class[]{InvokeDynamicInfo.class});
 		allowedTypes.put(OpCodes.invokespecial, new Class[]{MethodrefInfo.class});
 		allowedTypes.put(OpCodes.invokestatic, new Class[]{MethodrefInfo.class});
 		allowedTypes.put(OpCodes.invokevirtual, new Class[]{MethodrefInfo.class});

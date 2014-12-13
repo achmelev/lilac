@@ -2,17 +2,13 @@ package org.jasm.item.instructions;
 
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
-import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
-import org.jasm.item.constantpool.DoubleInfo;
 import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.IntegerInfo;
-import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.MethodHandleInfo;
 import org.jasm.item.constantpool.MethodTypeInfo;
 import org.jasm.item.constantpool.StringInfo;

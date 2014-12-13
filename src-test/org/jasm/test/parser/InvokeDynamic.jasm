@@ -6,6 +6,8 @@ public super class {
    //Constants
   const classref InvokeDynamicClassT InvokeDynamicClassT_name; // org/jasm/test/testclass/InvokeDynamicClassT
   const utf8 InvokeDynamicClassT_name "org/jasm/test/testclass/InvokeDynamicClassT";
+  const classref InvokeDynamicClass InvokeDynamicClass_name; // org/jasm/test/testclass/InvokeDynamicClassT
+  const utf8 InvokeDynamicClass_name "org/jasm/test/testclass/InvokeDynamicClass";
   const classref Object Object_name; // java/lang/Object
   const utf8 Object_name "java/lang/Object";
   const utf8 init0_name "<init>";
@@ -13,88 +15,36 @@ public super class {
   const utf8 Code_utf8 "Code";
   const methodref init0 Object, init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
   const nameandtype init0_nat init0_name, init0_desc; // name=<init> type=()V
-  const utf8 LineNumberTable_utf8 "LineNumberTable";
-  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
   const utf8 this_name "this";
   const utf8 this_desc "Lorg/jasm/test/testclass/InvokeDynamicClassT;";
   const utf8 bootstrapMethod_name "bootstrapMethod";
   const utf8 bootstrapMethod_desc "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;)Ljava/lang/invoke/CallSite;";
-  const methodref findVirtual MethodHandles$Lookup, findVirtual_nat; // class=java/lang/invoke/MethodHandles$Lookup, name=findVirtual, descriptor=(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/MethodHandle;
-  const classref MethodHandles$Lookup MethodHandles$Lookup_name; // java/lang/invoke/MethodHandles$Lookup
-  const utf8 MethodHandles$Lookup_name "java/lang/invoke/MethodHandles$Lookup";
-  const nameandtype findVirtual_nat findVirtual_name, findVirtual_desc; // name=findVirtual type=(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/MethodHandle;
-  const utf8 findVirtual_name "findVirtual";
-  const utf8 findVirtual_desc "(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/MethodHandle;";
-  const classref ConstantCallSite ConstantCallSite_name; // java/lang/invoke/ConstantCallSite
-  const utf8 ConstantCallSite_name "java/lang/invoke/ConstantCallSite";
-  const methodref init0$0 ConstantCallSite, init0$0_nat; // class=java/lang/invoke/ConstantCallSite, name=<init>, descriptor=(Ljava/lang/invoke/MethodHandle;)V
-  const nameandtype init0$0_nat init0_name, init0_desc$0; // name=<init> type=(Ljava/lang/invoke/MethodHandle;)V
-  const utf8 init0_desc$0 "(Ljava/lang/invoke/MethodHandle;)V";
-  const classref RuntimeException RuntimeException_name; // java/lang/RuntimeException
-  const utf8 RuntimeException_name "java/lang/RuntimeException";
-  const methodref init0$1 RuntimeException, init0$1_nat; // class=java/lang/RuntimeException, name=<init>, descriptor=(Ljava/lang/Throwable;)V
-  const nameandtype init0$1_nat init0_name, init0_desc$1; // name=<init> type=(Ljava/lang/Throwable;)V
-  const utf8 init0_desc$1 "(Ljava/lang/Throwable;)V";
-  const classref NoSuchMethodException NoSuchMethodException_name; // java/lang/NoSuchMethodException
-  const utf8 NoSuchMethodException_name "java/lang/NoSuchMethodException";
-  const classref IllegalAccessException IllegalAccessException_name; // java/lang/IllegalAccessException
-  const utf8 IllegalAccessException_name "java/lang/IllegalAccessException";
-  const utf8 lookup_name "lookup";
-  const utf8 lookup_desc "Ljava/lang/invoke/MethodHandles$Lookup;";
-  const utf8 name_name "name";
-  const utf8 type_desc "Ljava/lang/String;";
-  const utf8 type_name "type";
-  const utf8 type_desc$0 "Ljava/lang/invoke/MethodType;";
-  const utf8 param_name "param";
-  const utf8 handle_name "handle";
-  const utf8 handle_desc "Ljava/lang/invoke/MethodHandle;";
-  const utf8 result_name "result";
-  const utf8 result_desc "Ljava/lang/invoke/CallSite;";
-  const utf8 e_name "e";
-  const utf8 e_desc "Ljava/lang/ReflectiveOperationException;";
-  const utf8 StackMapTable_utf8 "StackMapTable";
-  const classref ReflectiveOperationException ReflectiveOperationException_name; // java/lang/ReflectiveOperationException
-  const utf8 ReflectiveOperationException_name "java/lang/ReflectiveOperationException";
-  const utf8 add_name "add";
-  const utf8 method_desc "(II)I";
-  const utf8 a_name "a";
-  const utf8 type_desc$1 "I";
-  const utf8 b_name "b";
-  const utf8 sub_name "sub";
   const utf8 calculate_name "calculate";
   const utf8 calculate_desc "()I";
-  const methodref add InvokeDynamicClassT, add_nat; // class=org/jasm/test/testclass/InvokeDynamicClassT, name=add, descriptor=(II)I
-  const nameandtype add_nat add_name, method_desc; // name=add type=(II)I
-  const methodref sub InvokeDynamicClassT, sub_nat; // class=org/jasm/test/testclass/InvokeDynamicClassT, name=sub, descriptor=(II)I
-  const nameandtype sub_nat sub_name, method_desc; // name=sub type=(II)I
   const utf8 SourceFile_utf8 "SourceFile";
   const string string_source SourceFile_utf8;
   const utf8 source_file_name "InvokeDynamicClassT.java";
-  const utf8 InnerClasses_utf8 "InnerClasses";
-  const classref MethodHandles MethodHandles_name; // java/lang/invoke/MethodHandles
-  const utf8 MethodHandles_name "java/lang/invoke/MethodHandles";
-  const utf8 Lookup_name "Lookup";
   source file source_file_name; // InvokeDynamicClassT.java
   const classref ICalculator ICalculator_name; // org/jasm/test/testclass/ICalculator
   const utf8 ICalculator_name "org/jasm/test/testclass/ICalculator";
   const utf8 BootstrapMethods_utf8 "BootstrapMethods";
   
   const nameandtype bootstrapMethod_nat bootstrapMethod_name, bootstrapMethod_desc;
-  const methodref bootstrapMethod InvokeDynamicClassT, bootstrapMethod_nat;
+  const methodref bootstrapMethod InvokeDynamicClass, bootstrapMethod_nat;
   const invokestatic methodhandle bootstrapMethod_handle bootstrapMethod;
   
-  const utf8 dyn_name "syn";
-  const nameandtype dyn_nat dyn_name, method_desc; // name=dyn type=(II)I
-  const dynref dyn bootstrap_bootstrapMethod,dyn_nat;
+  const nameandtype add_nat add_name, method_desc; // name=add type=(II)I
+  const nameandtype sub_nat sub_name, method_desc; // name=add type=(II)I
+  const utf8 add_name "add";
+  const utf8 sub_name "sub";
+  const utf8 method_desc "(II)I";
+  
+  const dynref add_dyn bootstrap_bootstrapMethod,add_nat;
+  const dynref sub_dyn bootstrap_bootstrapMethod,sub_nat;
   
   bootstrap method bootstrap_bootstrapMethod bootstrapMethod_handle, string_source;
   
-  public static final inner class {
-    inner MethodHandles$Lookup; // java/lang/invoke/MethodHandles$Lookup
-    outer MethodHandles; // java/lang/invoke/MethodHandles
-    name Lookup_name; // Lookup
-  }
-   //Fields
+  //Fields
    //Methods
   public method {
     name init0_name; // <init>
@@ -109,63 +59,8 @@ public super class {
     return;
   }
   
-  private static method {
-    name bootstrapMethod_name; // bootstrapMethod
-    descriptor bootstrapMethod_desc; // (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;)Ljava/lang/invoke/CallSite;
-    maxstack 4;
-    maxlocals 6;
-    //Variables
-    var object lookup;
-    var object name$0;
-    var object type$0;
-    var object param;
-    var object e;
-    var object result;
-    //Instructions
-    ir0: aload lookup;
-    ldc InvokeDynamicClassT; // org/jasm/test/testclass/InvokeDynamicClassT
-    aload name$0;
-    aload type$0;
-    invokevirtual findVirtual; // class=java/lang/invoke/MethodHandles$Lookup, name=findVirtual, descriptor=(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/MethodHandle;
-    astore e;
-    ir10: new ConstantCallSite; // java/lang/invoke/ConstantCallSite
-    dup;
-    aload e;
-    invokespecial init0$0; // class=java/lang/invoke/ConstantCallSite, name=<init>, descriptor=(Ljava/lang/invoke/MethodHandle;)V
-    astore result;
-    ir21: aload result;
-    areturn;
-  }
-  public method {
-    name add_name; // add
-    descriptor method_desc; // (II)I
-    maxstack 2;
-    maxlocals 3;
-    //Variables
-    var object this;
-    var int a;
-    var int b;
-    //Instructions
-    ir0: iload a;
-    iload b;
-    iadd;
-    ireturn;
-  }
-  public method {
-    name sub_name; // sub
-    descriptor method_desc; // (II)I
-    maxstack 2;
-    maxlocals 3;
-    //Variables
-    var object this;
-    var int a;
-    var int b;
-    //Instructions
-    ir0: iload a;
-    iload b;
-    isub;
-    ireturn;
-  }
+  
+  
   public method {
     name calculate_name; // calculate
     descriptor calculate_desc; // ()I
@@ -178,9 +73,9 @@ public super class {
     aload this;
     bipush 10;
     bipush 100;
-    invokevirtual add; // class=org/jasm/test/testclass/InvokeDynamicClassT, name=add, descriptor=(II)I
+    invokedynamic add_dyn; // class=org/jasm/test/testclass/InvokeDynamicClassT, name=add, descriptor=(II)I
     bipush 30;
-    invokevirtual sub; // class=org/jasm/test/testclass/InvokeDynamicClassT, name=sub, descriptor=(II)I
+    invokedynamic sub_dyn; // class=org/jasm/test/testclass/InvokeDynamicClassT, name=sub, descriptor=(II)I
     ireturn;
   }
 }
