@@ -38,8 +38,11 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem implement
 		Instructions instr = (Instructions)getParent();
 		int index = instr.indexOf(this);
 		if (index > 0) {
-			AbstractInstruction prev = instr.get(index-1);
-			return prev.getOffsetInCode()+prev.getLength();
+			int result = 0;
+			for (int i=0;i<index; i++) {
+				result+=instr.get(i).getLength();
+			}
+			return result;
 		} else {
 			return 0;
 		}

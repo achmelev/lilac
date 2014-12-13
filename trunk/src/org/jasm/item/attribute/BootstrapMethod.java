@@ -35,7 +35,7 @@ public class BootstrapMethod extends AbstractByteCodeItem implements ISymbolTabl
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
-		source.readUnsignedShort(offset);
+		methodHandleIndex = source.readUnsignedShort(offset);
 		int size = source.readUnsignedShort(offset+2);
 		paramIndexes = new int[size];
 		long currentOffset = offset+4;
@@ -150,12 +150,17 @@ public class BootstrapMethod extends AbstractByteCodeItem implements ISymbolTabl
 		this.symbolName = symbolName;
 	}
 	
+	private String disassemblerLabel = null;
+	
 	private String getDisassemblerLabel() {
-		String methodName = methodHandle.getReference().getDisassemblerLabel();
-		if (methodName != null) {
-			return "bootstrap_"+((BootstrapMethodsAttributeContent)getParent()).getBootstrapNameGenerator().generateName(methodName);
-		} else {
-			return "bootstrap_"+((BootstrapMethodsAttributeContent)getParent()).indexOf(this);
+		if (disassemblerLabel == null) {
+			String methodName = methodHandle.getReference().getDisassemblerLabel();
+			if (methodName != null) {
+				disassemblerLabel =  "bootstrap_"+((BootstrapMethodsAttributeContent)getParent()).getBootstrapNameGenerator().generateName(methodName);
+			} else {
+				disassemblerLabel =  "bootstrap_"+((BootstrapMethodsAttributeContent)getParent()).indexOf(this);
+			}
 		}
+		return disassemblerLabel;
 	}
 }

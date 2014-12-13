@@ -296,7 +296,16 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		entriesByDescriptor.clear();
 		utf8ByContent.clear();
 		for (AbstractConstantPoolEntry entry: getItems()) {
-			if (entry != null && !entry.hasResolveErrors()) {
+			if (entry != null && !(entry instanceof InvokeDynamicInfo) && !entry.hasResolveErrors()) {
+				addToIndex(entry);
+			}
+		}
+		
+	}
+	
+	public void updateInvokeDynamicIndexes() {
+		for (AbstractConstantPoolEntry entry: getItems()) {
+			if (entry != null && (entry instanceof InvokeDynamicInfo) && !entry.hasResolveErrors()) {
 				addToIndex(entry);
 			}
 		}
@@ -362,11 +371,33 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 			throw new RuntimeException(e);
 		}
 	}
+	
+	
+
+
+	@Override
+	protected void doResolve() {
+		for (IBytecodeItem item: getItems()) {
+			if (item != null && !(item instanceof InvokeDynamicInfo)) {
+				item.setParent(this);
+				item.resolve();
+			}
+		}
+	}
+	
+	public void resolveInvokeDynamics() {
+		for (IBytecodeItem item: getItems()) {
+			if (item != null && (item instanceof InvokeDynamicInfo)) {
+				item.setParent(this);
+				item.resolve();
+			}
+		}
+	}
 
 
 	@Override
 	protected void doResolveAfterParse() {
-		super.doResolveAfterParse();
+		doResolve();
 		for (AbstractConstantPoolEntry item: getItems()) {
 			if ((item instanceof AbstractReferenceEntry) && !item.hasResolveErrors()) {
 				((AbstractReferenceEntry)item).verifyReferences();

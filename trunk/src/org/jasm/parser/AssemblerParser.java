@@ -86,6 +86,7 @@ import org.jasm.item.constantpool.InvokeDynamicInfo;
 import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.MethodHandleInfo;
 import org.jasm.item.constantpool.MethodHandleInfo.MethodHandleReferenceKind;
+import org.jasm.item.constantpool.MethodTypeInfo;
 import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.constantpool.NameAndTypeInfo;
 import org.jasm.item.constantpool.StringInfo;
@@ -223,6 +224,7 @@ import org.jasm.parser.JavaAssemblerParser.MethodreferencetypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.MethodreferencetypeargumentTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.MethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodtypeargumentTargetTypeContext;
+import org.jasm.parser.JavaAssemblerParser.MethodtypeinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvarabsoluteContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvariabletableContext;
 import org.jasm.parser.JavaAssemblerParser.MethodvariabletypetableContext;
@@ -555,6 +557,17 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	
 
+
+	@Override
+	public void enterMethodtypeinfo(MethodtypeinfoContext ctx) {
+		MethodTypeInfo entry = new MethodTypeInfo();
+		if (ctx.label() != null) {
+			entry.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		entry.setSourceLocation(createSourceLocation(ctx.METHODTYPE()));
+		entry.setReferenceLabels(new SymbolReference[]{createSymbolReference(ctx.Identifier())});
+		addConstantPoolEntry(entry);
+	}
 
 	@Override
 	public void enterDynrefinfo(DynrefinfoContext ctx) {
