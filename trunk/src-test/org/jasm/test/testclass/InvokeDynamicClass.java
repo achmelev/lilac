@@ -8,9 +8,9 @@ import java.lang.invoke.MethodType;
 
 public class InvokeDynamicClass implements ICalculator {
 	
-	private static CallSite bootstrapMethod(MethodHandles.Lookup lookup, String name, MethodType type, String param) {
+	public static CallSite bootstrapMethod(MethodHandles.Lookup lookup, String name, MethodType type, String param) {
 		try {
-			MethodHandle handle =  lookup.findVirtual(InvokeDynamicClass.class, name, type);
+			MethodHandle handle =  lookup.findStatic(InvokeDynamicClass.class, name, type);
 			CallSite result = new ConstantCallSite(handle);
 			return result;
 		} catch (NoSuchMethodException | IllegalAccessException e) {
@@ -18,11 +18,11 @@ public class InvokeDynamicClass implements ICalculator {
 		}
 	}
 	
-	public int add(int a, int b) {
+	public static int add(int a, int b) {
 		return a+b;
 	}
 	
-	public int sub(int a, int b) {
+	public static int sub(int a, int b) {
 		return a-b;
 	}
 	

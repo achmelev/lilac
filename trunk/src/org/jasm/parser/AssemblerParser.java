@@ -99,6 +99,7 @@ import org.jasm.item.instructions.BranchInstruction;
 import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.IincInstruction;
 import org.jasm.item.instructions.Instructions;
+import org.jasm.item.instructions.InvokeDynamicInstruction;
 import org.jasm.item.instructions.InvokeInterfaceInstruction;
 import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.LocalVariable;
@@ -1027,6 +1028,12 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			addInstruction(instr);
 		} else if (name.equals("invokeinterface")) {
 			InvokeInterfaceInstruction instr = new InvokeInterfaceInstruction(OpCodes.invokeinterface, null);
+			instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
+			instr.setSourceLocation(createSourceLocation(nameNode));
+			setInstructionLabel(ctx, instr);
+			addInstruction(instr);
+		} else if (name.equals("invokedynamic")) {
+			InvokeDynamicInstruction instr = new InvokeDynamicInstruction(OpCodes.invokedynamic, null);
 			instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
 			instr.setSourceLocation(createSourceLocation(nameNode));
 			setInstructionLabel(ctx, instr);

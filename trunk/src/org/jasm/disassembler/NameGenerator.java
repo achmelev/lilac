@@ -40,6 +40,7 @@ public class NameGenerator {
 		keywords.add("bastore");
 		keywords.add("bipush");
 		keywords.add("boolean");
+		keywords.add("bootstrap");
 		keywords.add("bound");
 		keywords.add("bridge");
 		keywords.add("byte");
@@ -84,6 +85,7 @@ public class NameGenerator {
 		keywords.add("dup2_x2");
 		keywords.add("dup_x1");
 		keywords.add("dup_x2");
+		keywords.add("dynref");
 		keywords.add("element");
 		keywords.add("enclosing");
 		keywords.add("enum");
