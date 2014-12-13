@@ -82,6 +82,7 @@ import org.jasm.item.constantpool.FieldrefInfo;
 import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IntegerInfo;
 import org.jasm.item.constantpool.InterfaceMethodrefInfo;
+import org.jasm.item.constantpool.InvokeDynamicInfo;
 import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.MethodHandleInfo;
 import org.jasm.item.constantpool.MethodHandleInfo.MethodHandleReferenceKind;
@@ -147,6 +148,7 @@ import org.jasm.parser.JavaAssemblerParser.DebugvarContext;
 import org.jasm.parser.JavaAssemblerParser.DebugvartypeContext;
 import org.jasm.parser.JavaAssemblerParser.DeprecatedattributeContext;
 import org.jasm.parser.JavaAssemblerParser.DoubleinfoContext;
+import org.jasm.parser.JavaAssemblerParser.DynrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.EmptyTargetFieldTypeContext;
 import org.jasm.parser.JavaAssemblerParser.EmptyTargetReceiverTypeContext;
 import org.jasm.parser.JavaAssemblerParser.EmptyTargetReturnTypeContext;
@@ -552,6 +554,18 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	
 
+
+	@Override
+	public void enterDynrefinfo(DynrefinfoContext ctx) {
+		InvokeDynamicInfo entry = new InvokeDynamicInfo();
+		if (ctx.label() != null) {
+			entry.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		entry.setSourceLocation(createSourceLocation(ctx.DYNREFINFO()));
+		entry.setMethodReference(createSymbolReference(ctx.Identifier(0)));
+		entry.setNameAndTypeReference(createSymbolReference(ctx.Identifier(1)));
+		addConstantPoolEntry(entry);
+	}
 
 	@Override
 	public void enterInterfacemethodrefinfo(InterfacemethodrefinfoContext ctx) {
@@ -1397,7 +1411,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	@Override
 	public void enterBootstrapmethod(BootstrapmethodContext ctx) {
-		BootstrapMethodsAttributeContent content = getAttributeContentCreatingIfNecessary(BootstrapMethodsAttributeContent.class);
 		BootstrapMethod method = new BootstrapMethod();
 		method.setSymbolName(ctx.Identifier(0).getText());
 		method.setMethodHandleReference(createSymbolReference(ctx.Identifier(1)));
@@ -1406,6 +1419,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 				method.addParamReference(createSymbolReference(ctx.Identifier(i)));
 			}
 		}
+		addBootstrapMethod(method);
 	}
 	
 	//Annotations
@@ -2151,7 +2165,17 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (!pool.getSymbolTable().contains(entry.getSymbolName())) {
 			pool.getSymbolTable().add(entry);
 		} else {
-			emitError(entry.getSourceLocation().getLine(), entry.getSourceLocation().getCharPosition(), "dublicate constant pool entry label "+entry.getSymbolName());
+			emitError(entry.getSourceLocation().getLine(), entry.getSourceLocation().getCharPosition(), "dublicate constant declaration"+entry.getSymbolName());
+		}
+	}
+	
+	private void addBootstrapMethod(BootstrapMethod entry) {
+		BootstrapMethodsAttributeContent pool = getAttributeContentCreatingIfNecessary(BootstrapMethodsAttributeContent.class);
+		pool.add(entry);
+		if (!pool.getSymbolTable().contains(entry.getSymbolName())) {
+			pool.getSymbolTable().add(entry);
+		} else {
+			emitError(entry.getSourceLocation().getLine(), entry.getSourceLocation().getCharPosition(), "dublicate bootstrap method declaration"+entry.getSymbolName());
 		}
 	}
 	

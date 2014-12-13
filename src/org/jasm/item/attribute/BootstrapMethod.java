@@ -62,9 +62,9 @@ public class BootstrapMethod extends AbstractByteCodeItem implements ISymbolTabl
 	public int getLength() {
 		int result = 4;
 		if (params != null) {
-			result+=params.length;
+			result+=params.length*2;
 		} else if (paramIndexes != null) {
-			result+=paramIndexes.length;
+			result+=paramIndexes.length*2;
 		}
 		return result;
 	}
@@ -138,7 +138,12 @@ public class BootstrapMethod extends AbstractByteCodeItem implements ISymbolTabl
 
 	@Override
 	public String getSymbolName() {
-		return null;
+		if (symbolName != null) {
+			return symbolName;
+		} else {
+			return getDisassemblerLabel();
+		}
+		
 	}
 
 	public void setSymbolName(String symbolName) {
