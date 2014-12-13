@@ -90,6 +90,12 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 		index = reference.getIndexInPool();
 	}
 
+	
+
+	public MethodHandleReferenceKind getKind() {
+		return kind;
+	}
+
 
 
 	public enum MethodHandleReferenceKind {

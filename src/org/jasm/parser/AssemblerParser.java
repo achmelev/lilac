@@ -31,6 +31,8 @@ import org.jasm.item.attribute.AnnotationElementNameValue;
 import org.jasm.item.attribute.AnnotationElementValue;
 import org.jasm.item.attribute.AnnotationTargetTypePath;
 import org.jasm.item.attribute.Attribute;
+import org.jasm.item.attribute.BootstrapMethod;
+import org.jasm.item.attribute.BootstrapMethodsAttributeContent;
 import org.jasm.item.attribute.CatchAnnotationTargetType;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
@@ -118,6 +120,7 @@ import org.jasm.parser.JavaAssemblerParser.AnnotationtargetpathContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationtypeContext;
 import org.jasm.parser.JavaAssemblerParser.ArgumentlessopContext;
 import org.jasm.parser.JavaAssemblerParser.ArrayannotationelementvalueContext;
+import org.jasm.parser.JavaAssemblerParser.BootstrapmethodContext;
 import org.jasm.parser.JavaAssemblerParser.BranchopContext;
 import org.jasm.parser.JavaAssemblerParser.CasttypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.CatchtypeTargetTypeContext;
@@ -1392,13 +1395,20 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		addAttribute(content, ctx.ENCLOSING());
 	}
 	
+	@Override
+	public void enterBootstrapmethod(BootstrapmethodContext ctx) {
+		BootstrapMethodsAttributeContent content = getAttributeContentCreatingIfNecessary(BootstrapMethodsAttributeContent.class);
+		BootstrapMethod method = new BootstrapMethod();
+		method.setSymbolName(ctx.Identifier(0).getText());
+		method.setMethodHandleReference(createSymbolReference(ctx.Identifier(1)));
+		if (ctx.Identifier().size()>2) {
+			for (int i=2; i<ctx.Identifier().size(); i++) {
+				method.addParamReference(createSymbolReference(ctx.Identifier(i)));
+			}
+		}
+	}
 	
 	//Annotations
-	
-	
-	
-	
-
 
 	@Override
 	public void enterAnnotationdeclaration(AnnotationdeclarationContext ctx) {
