@@ -63,6 +63,7 @@ classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile
 			   | deprecatedattribute #classAttributeDeprecated
 			   | annotation #classAnnotation 
 			   | typeannotation #classTypeAnnotation 
+			   | bootstrapmethod #classBootstrapMethod 
 			   | innerclass #classInnerClass
 			   | enclosingmethod #classEnclosingMethod
 			   | unknownattribute #classUnknownattribute
@@ -94,6 +95,7 @@ innerclassmodifierlabel: PUBLIC #innerclassmodifierPublic
 						; 
 
 enclosingmethod: ENCLOSING METHOD Identifier (COMMA Identifier)? SEMI;
+bootstrapmethod: BOOTSTRAP METHOD Identifier Identifier (COMMA Identifier)? SEMI;
 
 method  : methodmodifier? METHOD  LBRACE
 					methodmember*
@@ -449,6 +451,7 @@ CAST          :  'cast';
 RESOURCE      :  'resource';
 METHODHANDLE  :  'methodhandle';
 NEWINVOKESPECIAL : 'newinvokespecial';
+BOOTSTRAP     : 'bootstrap';
 
 //stopKeywords
 
