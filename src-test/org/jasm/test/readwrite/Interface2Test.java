@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Interface2Test extends AbstractReadWriteTest {
+public class Interface2Test extends AbstractReadWriteTestCase {
 	
     private Logger log = LoggerFactory.getLogger(this.getClass());
 	

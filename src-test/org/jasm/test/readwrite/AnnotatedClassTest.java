@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AnnotatedClassTest extends AbstractReadWriteTest {
+public class AnnotatedClassTest extends AbstractReadWriteTestCase {
 	
     private Logger log = LoggerFactory.getLogger(this.getClass());
 	

@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class Class1Test extends AbstractReadWriteTest {
+public class Class1Test extends AbstractReadWriteTestCase {
 	
     private Logger log = LoggerFactory.getLogger(this.getClass());
 	
