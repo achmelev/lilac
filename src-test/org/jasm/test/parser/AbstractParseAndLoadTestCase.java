@@ -94,8 +94,11 @@ class MyClassLoader extends ClassLoader {
 		this.content = content;
 	}
 	
-
-	public Class findClass(String name) {
+	@Override
+	public Class findClass(String name) throws ClassNotFoundException {
+		if (!this.name.equals(name)) {
+			throw new ClassNotFoundException(name);
+		}
     	byte[] ba = content;
     	return defineClass(name,ba,0,ba.length);
     }
