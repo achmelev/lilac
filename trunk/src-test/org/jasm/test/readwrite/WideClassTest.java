@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WideClassTest extends AbstractReadWriteTest{
+public class WideClassTest extends AbstractReadWriteTestCase{
 	
     private Logger log = LoggerFactory.getLogger(this.getClass());
 	

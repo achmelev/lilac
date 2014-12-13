@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SimpleAnnotatedClassTest extends AbstractReadWriteTest {
+public class SimpleAnnotatedClassTest extends AbstractReadWriteTestCase {
 	
     private Logger log = LoggerFactory.getLogger(this.getClass());
 	

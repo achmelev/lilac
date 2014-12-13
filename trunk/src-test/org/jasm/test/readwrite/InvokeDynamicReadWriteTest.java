@@ -3,7 +3,7 @@ package org.jasm.test.readwrite;
 import org.jasm.item.clazz.Clazz;
 import org.junit.Test;
 
-public class InvokeDynamicReadWriteTest extends AbstractReadWriteTest {
+public class InvokeDynamicReadWriteTest extends AbstractReadWriteTestCase {
 	
 	@Test
 	public void test() {
