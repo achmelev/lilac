@@ -13,13 +13,10 @@ import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IntegerInfo;
 import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.MethodHandleInfo;
-import org.jasm.item.constantpool.MethodHandleInfo.MethodHandleReferenceKind;
 import org.jasm.item.constantpool.MethodTypeInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.literals.SymbolReference;
-
-import com.sun.org.apache.bcel.internal.classfile.Method;
 
 public class BootstrapMethod extends AbstractByteCodeItem implements ISymbolTableEntry {
 	
