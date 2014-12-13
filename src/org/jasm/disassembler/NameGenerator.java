@@ -216,6 +216,7 @@ public class NameGenerator {
 		keywords.add("method");
 		keywords.add("methodhandle");
 		keywords.add("methodref");
+		keywords.add("methodtype");
 		keywords.add("monitorenter");
 		keywords.add("monitorexit");
 		keywords.add("multianewarray");
@@ -288,7 +289,7 @@ public class NameGenerator {
 		if (!IdentifierUtils.isValidIdentifier(candidate)) {
 			return null;
 		}
-		if (names.contains(candidate) || keywords.contains(candidate)) {
+		if (names.contains(candidate) || keywords.contains(candidate) || candidate.equals("NaN")) {
 			int counter = 0;
 			result = candidate+"$"+counter;
 			while (names.contains(result)) {

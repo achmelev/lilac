@@ -52,8 +52,11 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 		if (this.kind.getKind()>=1 && this.kind.getKind()<=4  ) {
 			reference = getConstantPool().checkAndLoadFromSymbolTable(this, FieldrefInfo.class, refSymbolReference);
 		}
-		if (this.kind.getKind()>=5 && this.kind.getKind()<=8  ) {
+		if (this.kind.getKind()==5 || this.kind.getKind()==8  ) {
 			reference = getConstantPool().checkAndLoadFromSymbolTable(this, MethodrefInfo.class, refSymbolReference);
+		}
+		if (this.kind.getKind()==6 || this.kind.getKind()==7  ) {
+			reference = getConstantPool().checkAndLoadFromSymbolTable(this, new Class[]{MethodrefInfo.class, InterfaceMethodrefInfo.class}, refSymbolReference);
 		}
 		if (this.kind.getKind() == 9 ) {
 			reference = getConstantPool().checkAndLoadFromSymbolTable(this, InterfaceMethodrefInfo.class, refSymbolReference);
@@ -72,7 +75,10 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 		if (this.kind.getKind()>=1 && this.kind.getKind()<=4 && ! (reference instanceof FieldrefInfo) ) {
 			throw new IllegalArgumentException("Illegal reference type for method handle kind "+kind+": "+reference.getClass().getName());
 		}
-		if (this.kind.getKind()>=5 && this.kind.getKind()<=8 && ! (reference instanceof MethodrefInfo) ) {
+		if (this.kind.getKind()==5 || this.kind.getKind()==8 && ! (reference instanceof MethodrefInfo) ) {
+			throw new IllegalArgumentException("Illegal reference type for method handle kind "+kind+": "+reference.getClass().getName());
+		}
+		if (this.kind.getKind()==6 || this.kind.getKind()==7 && ! (reference instanceof MethodrefInfo) && !! (reference instanceof InterfaceMethodrefInfo) ) {
 			throw new IllegalArgumentException("Illegal reference type for method handle kind "+kind+": "+reference.getClass().getName());
 		}
 		if (this.kind.getKind() == 9 && ! (reference instanceof InterfaceMethodrefInfo) ) {

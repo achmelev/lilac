@@ -76,7 +76,7 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 	public String getPrintComment() {
 		StringBuffer buf = new StringBuffer();
 		if (valueEntry instanceof StringInfo) {
-			buf.append(((StringInfo)valueEntry).getContent());
+			buf.append(((StringInfo)valueEntry).getPrintComment());
 		} else {
 			buf.append(((IPrimitiveValueReferencingEntry)valueEntry).getValue());
 		}
