@@ -38,7 +38,7 @@ public class InvokeDynamicParseAndLoadTest extends AbstractParseAndLoadTestCase 
 
 	@Override
 	protected boolean readAgain() {
-		return true;
+		return false;
 	}
 	
 	

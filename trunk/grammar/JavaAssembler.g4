@@ -50,6 +50,7 @@ constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 				 | CONST FLOAT   label FloatingPointLiteral  #floatinfo
 				 | CONST DOUBLE  label FloatingPointLiteral  #doubleinfo
 				 | CONST METHODREFINFO label Identifier COMMA  Identifier #methodrefinfo
+				 | CONST DYNREFINFO label Identifier COMMA  Identifier #dynrefinfo
 				 | CONST INTERFACEMETHODREFINFO label Identifier COMMA  Identifier #interfacemethodrefinfo
 				 | CONST NAMEANDTYPEINFO label Identifier COMMA  Identifier #nameandtypeinfo
 				 | CONST (GETFIELD|GETSTATIC|PUTFIELD|PUTSTATIC|INVOKESPECIAL|INVOKEVIRTUAL|INVOKEINTERFACE|INVOKESTATIC|NEWINVOKESPECIAL) METHODHANDLE label Identifier #methodhandleinfo
@@ -374,6 +375,7 @@ CLASSINFO     :  'classref';
 UTF8INFO      :  'utf8';
 FIELDREFINFO  :  'fieldref';
 METHODREFINFO :  'methodref';
+DYNREFINFO    :  'dynref';
 INTERFACEMETHODREFINFO : 'intfmethodref';
 NAMEANDTYPEINFO :  'nameandtype';
 ATTRIBUTE     :  'attribute';

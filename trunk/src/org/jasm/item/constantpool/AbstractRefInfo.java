@@ -32,7 +32,7 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 		return getNameAndTypeReference().getName();
 	}
 	
-	public String getSignature() {
+	public String getDescriptor() {
 		return getNameAndTypeReference().getDescriptor();
 	}
 
@@ -40,13 +40,13 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 
 	@Override
 	public String getPrintComment() {
-		return "class="+getClassName()+", name="+getName()+", descriptor="+getSignature();
+		return "class="+getClassName()+", name="+getName()+", descriptor="+getDescriptor();
 	}
 
 
 	@Override
 	public String[] getReferencedDescriptors() {
-		return new String[]{getSignature()};
+		return new String[]{getDescriptor()};
 	}
 
 	@Override

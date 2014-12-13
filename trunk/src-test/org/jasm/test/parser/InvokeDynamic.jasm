@@ -83,7 +83,11 @@ public super class {
   const methodref bootstrapMethod InvokeDynamicClassT, bootstrapMethod_nat;
   const invokestatic methodhandle bootstrapMethod_handle bootstrapMethod;
   
-  bootstrap method bootstrap_bootstrapMethod bootstrapMethod, string_source;
+  const utf8 dyn_name "syn";
+  const nameandtype dyn_nat dyn_name, method_desc; // name=dyn type=(II)I
+  const dynref dyn bootstrap_bootstrapMethod,dyn_nat;
+  
+  bootstrap method bootstrap_bootstrapMethod bootstrapMethod_handle, string_source;
   
   public static final inner class {
     inner MethodHandles$Lookup; // java/lang/invoke/MethodHandles$Lookup
@@ -135,14 +139,6 @@ public super class {
   public method {
     name add_name; // add
     descriptor method_desc; // (II)I
-    line numbers {
-      line ir0, 22;
-    }
-    debug vars {
-      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/InvokeDynamicClassT;
-      var a, ir0, a_name, type_desc$1; // name=a,  descriptor=I
-      var b, ir0, b_name, type_desc$1; // name=b,  descriptor=I
-    }
     maxstack 2;
     maxlocals 3;
     //Variables
