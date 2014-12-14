@@ -25,13 +25,13 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem {
 		} else {
 			deltaOffset = 0;
 		}
-		doReadBody(source, offset+1);
+		doReadBody(source, offset);
 	}
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
 		target.writeUnsignedByte(offset, calculateTag(tagRangeBegin));
-		doWriteBody(target, offset+1);
+		doWriteBody(target, offset);
 	}
 	
 	public int calculateOffsetFromDeltaOffset() {
@@ -87,7 +87,30 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem {
 		this.deltaOffset = deltaOffset;
 	}
 
-	
+	protected AbstractStackmapVariableinfo createEmptyVariableInfo(IByteBuffer source, long offset) {
+		short tag = source.readUnsignedByte(offset);
+		if (tag == new DoubleVariableinfo().getTag()) {
+			return new DoubleVariableinfo();
+		} else if (tag == new FloatVariableinfo().getTag()) {
+			return new FloatVariableinfo();
+		} else if (tag == new IntegerVariableinfo().getTag()) {
+			return new IntegerVariableinfo();
+		} else if (tag == new LongVariableinfo().getTag()) {
+			return new LongVariableinfo();
+		} else if (tag == new ObjectVariableinfo().getTag()) {
+			return new ObjectVariableinfo();
+		} else if (tag == new UninitializedVariableinfo().getTag()) {
+			return new UninitializedVariableinfo();
+		} else if (tag == new UninitializedThisVariableinfo().getTag()) {
+			return new UninitializedThisVariableinfo();
+		} else if (tag == new NullVariableinfo().getTag()) {
+			return new NullVariableinfo();
+		} else if (tag == new TopVariableinfo().getTag()) {
+				return new TopVariableinfo();
+		} else {
+			throw new IllegalArgumentException("unknown tag: "+tag);
+		}
+	}
 
 	
 	
