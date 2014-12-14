@@ -13,7 +13,14 @@ public class StackMapAttributeContent extends AbstractBytecodeItemList<AbstractS
 	@Override
 	protected AbstractStackmapFrame createEmptyItem(IByteBuffer source,
 			long offset) {
-		return null;
+		short value = source.readUnsignedByte(offset);
+		if (value>=0 && value<=63) {
+			return new SameStackmapFrame();
+		} else if (value>=248 && value<=250) {
+			return new ChopStackmapFrame();
+		} else {
+			throw new IllegalArgumentException("unknown tag value: "+value);
+		}
 	}
 
 }
