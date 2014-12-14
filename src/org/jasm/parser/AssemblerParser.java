@@ -62,7 +62,7 @@ import org.jasm.item.attribute.RuntimeVisibleParameterAnnotationsAttributeConten
 import org.jasm.item.attribute.RuntimeVisibleTypeAnnotationsAttributeContent;
 import org.jasm.item.attribute.SignatureAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
-import org.jasm.item.attribute.StackMapAttributeContent;
+import org.jasm.item.attribute.StackMapBinaryAttributeContent;
 import org.jasm.item.attribute.SupertypeAnnotationTargetType;
 import org.jasm.item.attribute.SynteticAttributeContent;
 import org.jasm.item.attribute.ThrowsAnnotationTargetType;
@@ -864,11 +864,15 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		LocalVariable var = new LocalVariable(LocalVariable.getTypeCode(ctx.methodvartype().getText()));
 		var.setName(createSymbolReference(ctx.Identifier()));
 		IntegerLiteral lit = createIntegerLiteral(ctx.IntegerLiteral());
-		if (lit.getValue()<0) {
-			emitError(ctx.IntegerLiteral(), "an offset must be positive");
+		if (lit.isValid()) {
+			if (lit.getValue()<0) {
+				emitError(ctx.IntegerLiteral(), "an offset must be positive");
+			} else {
+				var.setOffset(lit.getValue());
+				addVar(var);
+			}
 		} else {
-			var.setOffset(lit.getValue());
-			addVar(var);
+			emitError(ctx.IntegerLiteral(), "malformed integer or integer out of bounds");
 		}
 		
 	}
@@ -882,10 +886,14 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		int offset = -1;
 		if (ctx.IntegerLiteral() != null) {
 			IntegerLiteral lit = createIntegerLiteral(ctx.IntegerLiteral());
-			if (lit.getValue()<0) {
-				emitError(ctx.IntegerLiteral(), "an offset must be positive");
+			if (lit.isValid()) {
+				if (lit.getValue()<0) {
+					emitError(ctx.IntegerLiteral(), "an offset must be positive");
+				} else {
+					offset = lit.getValue();
+				}
 			} else {
-				offset = lit.getValue();
+				emitError(ctx.IntegerLiteral(), "malformed integer or integer out of bounds");
 			}
 		} else {
 			offset = 0;
@@ -2157,7 +2165,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	@Override
 	public void enterStackmapattribute(StackmapattributeContext ctx) {
-		StackMapAttributeContent content = new StackMapAttributeContent();
+		StackMapBinaryAttributeContent content = new StackMapBinaryAttributeContent();
 		content.setDataLiteral(createBase64Literal(ctx.Base64Literal()));
 		CodeAttributeContent content2 = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
 		stack.push(content2);

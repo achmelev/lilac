@@ -103,11 +103,15 @@ public class TypeArgumentAnnotationTargetType extends AbstractAnnotationTargetTy
 			CodeAttributeContent content = getAncestor(CodeAttributeContent.class);
 			instruction = content.getInstructions().checkAndLoadFromSymbolTable(this, instructionReference);
 			
-			int iValue = parameterIndexLiteral.getValue();
-			if (iValue<0 || iValue>255) {
-				emitError(parameterIndexLiteral, "parameter index out of bounds!");
+			if (parameterIndexLiteral.isValid()) {
+				int iValue = parameterIndexLiteral.getValue();
+				if (iValue<0 || iValue>255) {
+					emitError(parameterIndexLiteral, "parameter index out of bounds!");
+				} else {
+					parameterIndex = (short)iValue;
+				}
 			} else {
-				parameterIndex = (short)iValue;
+				emitError(parameterIndexLiteral, "malformed integer or integer out of bounds");
 			}
 			
 		} else {

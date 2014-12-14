@@ -38,11 +38,15 @@ public class MultianewarrayInstruction extends ConstantPoolInstruction {
 	@Override
 	protected void doResolveAfterParse() {
 		super.doResolveAfterParse();
-		int iValue = dimensionsLiteral.getValue();
-		if (iValue<1 || iValue>255) {
-			emitError(dimensionsLiteral, "dimensions value out of bounds");
+		if (dimensionsLiteral.isValid()) {
+			int iValue = dimensionsLiteral.getValue();
+			if (iValue<1 || iValue>255) {
+				emitError(dimensionsLiteral, "dimensions value out of bounds");
+			} else {
+				dimensions = (short)iValue;
+			}
 		} else {
-			dimensions = (short)iValue;
+			emitError(dimensionsLiteral, "malformed integer or integer out of bounds");
 		}
 	}
 

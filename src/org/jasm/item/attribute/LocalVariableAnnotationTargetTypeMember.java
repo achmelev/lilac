@@ -114,11 +114,15 @@ public class LocalVariableAnnotationTargetTypeMember extends AbstractByteCodeIte
 				index = variable.getIndex();
 			}
 		} else {
-			int iValue = variableLiteral.getValue();
-			if (iValue<0 || iValue>65535) {
-				emitError(variableLiteral, "variable offset out of bounds!");
+			if (variableLiteral.isValid()) {
+				int iValue = variableLiteral.getValue();
+				if (iValue<0 || iValue>65535) {
+					emitError(variableLiteral, "variable offset out of bounds!");
+				} else {
+					index = (short)iValue;
+				}
 			} else {
-				index = (short)iValue;
+				emitError(variableLiteral, "malformed integer or integer out of bounds");
 			}
 		}
 	}
