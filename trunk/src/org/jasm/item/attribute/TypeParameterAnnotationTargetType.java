@@ -85,11 +85,15 @@ public class TypeParameterAnnotationTargetType extends AbstractAnnotationTargetT
 			emitIllegalInContextError();
 		}
 		
-		int iValue = indexLiteral.getValue();
-		if (iValue<0 || iValue>255) {
-			emitError(indexLiteral, "parameter index out of bounds!");
+		if (indexLiteral.isValid()) {
+			int iValue = indexLiteral.getValue();
+			if (iValue<0 || iValue>255) {
+				emitError(indexLiteral, "parameter index out of bounds!");
+			} else {
+				index = (short)iValue;
+			}
 		} else {
-			index = (short)iValue;
+			emitError(indexLiteral, "malformed integer or integer out of bounds");
 		}
 		
 	}

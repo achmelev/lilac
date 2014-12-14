@@ -128,7 +128,7 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		} else if (name.getValue().equals("LocalVariableTypeTable")) {
 			return new LocalVariableTypeTableAttributeContent();
 		} else if (name.getValue().equals("StackMapTable")) {
-			return new StackMapAttributeContent();
+			return new StackMapBinaryAttributeContent();
 		} else if (name.getValue().equals("BootstrapMethods")) {
 			return new BootstrapMethodsAttributeContent();
 		} else {
@@ -177,7 +177,7 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 			name = "LocalVariableTable";
 		} else if (content instanceof LocalVariableTypeTableAttributeContent) {
 			name = "LocalVariableTypeTable";
-		} else if (content instanceof StackMapAttributeContent) {
+		} else if (content instanceof StackMapBinaryAttributeContent) {
 			name = "StackMapTable";
 		} else if (content instanceof BootstrapMethodsAttributeContent) {
 			name = "BootstrapMethods";

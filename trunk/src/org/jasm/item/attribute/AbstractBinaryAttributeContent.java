@@ -52,7 +52,7 @@ public abstract class AbstractBinaryAttributeContent extends AbstractSimpleAttri
 	
 	@Override
 	public String getPrintArgs() {
-		return "["+Base64.encodeBase64String(data)+"]";
+		return getContentAsBase64();
 	}
 
 

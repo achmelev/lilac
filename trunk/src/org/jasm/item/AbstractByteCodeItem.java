@@ -3,6 +3,8 @@ package org.jasm.item;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
+import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.constantpool.ConstantPool;
@@ -189,6 +191,11 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		this.hasResolveErrors = value;
 	}
 	
-	
+	protected String getContentAsBase64() {
+		byte [] data = new byte[getLength()];
+		ByteArrayByteBuffer buf = new ByteArrayByteBuffer(data);
+		write(buf, 0);
+		return "["+Base64.encodeBase64String(data)+"]";
+	}
 	
 }

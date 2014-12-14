@@ -129,11 +129,15 @@ public class AnnotationTargetTypePath extends AbstractByteCodeItem {
 			if (argumentIndexLiterals[i] == null) {
 				argumentIndexes[i] = 0;
 			} else {
-				int iValue = argumentIndexLiterals[i].getValue();
-				if (iValue<0 || iValue>255) {
-					emitError(argumentIndexLiterals[i], "type argument index out of bounds!");
+				if (argumentIndexLiterals[i].isValid()) {
+					int iValue = argumentIndexLiterals[i].getValue();
+					if (iValue<0 || iValue>255) {
+						emitError(argumentIndexLiterals[i], "type argument index out of bounds!");
+					} else {
+						argumentIndexes[i] = (short)iValue;
+					}
 				} else {
-					argumentIndexes[i] = (short)iValue;
+					emitError(argumentIndexLiterals[i], "malformed integer or integer out of bounds");
 				}
 			}
 		}

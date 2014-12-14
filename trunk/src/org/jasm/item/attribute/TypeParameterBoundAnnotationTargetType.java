@@ -88,17 +88,25 @@ public class TypeParameterBoundAnnotationTargetType extends AbstractAnnotationTa
 			emitIllegalInContextError();
 		}
 		
-		int iValue = parameterIndexLiteral.getValue();
-		if (iValue<0 || iValue>255) {
-			emitError(parameterIndexLiteral, "parameter index out of bounds!");
+		if (parameterIndexLiteral.isValid()) {
+			int iValue = parameterIndexLiteral.getValue();
+			if (iValue<0 || iValue>255) {
+				emitError(parameterIndexLiteral, "parameter index out of bounds!");
+			} else {
+				parameterIndex = (short)iValue;
+			}
 		} else {
-			parameterIndex = (short)iValue;
+			emitError(parameterIndexLiteral, "malformed integer or integer out of bounds");
 		}
-		iValue = boundIndexLiteral.getValue();
-		if (iValue<0 || iValue>255) {
-			emitError(boundIndexLiteral, "bound index out of bounds!");
+		if (boundIndexLiteral.isValid()) {
+			int iValue = boundIndexLiteral.getValue();
+			if (iValue<0 || iValue>255) {
+				emitError(boundIndexLiteral, "bound index out of bounds!");
+			} else {
+				boundIndex = (short)iValue;
+			}
 		} else {
-			boundIndex = (short)iValue;
+			emitError(boundIndexLiteral, "malformed integer or integer out of bounds");
 		}
 	}
 
