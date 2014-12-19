@@ -1,6 +1,6 @@
 package org.jasm.test.jar;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,19 +13,15 @@ import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
 import org.junit.Assert;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class AbstractAssembleDisassembleJarForClassTestCase extends
 		AbstractJarForClassTestCase {
-	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
 	protected void testClass(byte[] data) {
 		
 		String code = disassemble(data);
 		byte[] data2 = assemble(code);
-		//log.debug("code: \n"+code);
 		assertArrayEquals(data, data2);
 	}
 	
@@ -43,8 +39,14 @@ public abstract class AbstractAssembleDisassembleJarForClassTestCase extends
 		printer.printItem(clazz);
 		writer.close();
 		
+		if (log.isDebugEnabled()) {
+			log.debug(sw.toString());
+		}
+		
 		return sw.toString();
 	}
+	
+	
 	
 	protected byte [] assemble(String data) {
 		

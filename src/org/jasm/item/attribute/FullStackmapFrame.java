@@ -1,0 +1,152 @@
+package org.jasm.item.attribute;
+
+import java.util.List;
+
+import org.jasm.bytebuffer.IByteBuffer;
+import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.item.IBytecodeItem;
+import org.jasm.item.IContainerBytecodeItem;
+
+public class FullStackmapFrame extends AbstractStackmapFrame implements IContainerBytecodeItem<AbstractStackmapVariableinfo>{
+	
+	private AbstractStackmapVariableinfo[] locals;
+	private AbstractStackmapVariableinfo [] stackItems;
+
+	public FullStackmapFrame() {
+		super((short)255);
+	}
+
+	@Override
+	public int getLength() {
+		return 1+2+2+2+calculateVariableInfosLength(locals)+calculateVariableInfosLength(stackItems);
+	}
+
+	@Override
+	public boolean isStructure() {
+		return false;
+	}
+
+	@Override
+	public List<IPrintable> getStructureParts() {
+		return null;
+	}
+
+	@Override
+	public String getPrintLabel() {
+		return null;
+	}
+
+	@Override
+	public String getPrintName() {
+		return "full";
+	}
+
+	@Override
+	public String getPrintArgs() {
+		return getInstruction().getPrintLabel()+", "+createItemsListArg(locals)+", "+createItemsListArg(stackItems);
+	}
+
+	@Override
+	public String getPrintComment() {
+		return null;
+	}
+
+	@Override
+	protected void doReadBody(IByteBuffer source, long offset) {
+		long currentOffset = offset+1;
+		deltaOffset = source.readUnsignedShort(currentOffset);
+		currentOffset+=2;
+		int number = source.readUnsignedShort(currentOffset);
+		currentOffset+=2;
+		locals = readVariableInfos(this, source, currentOffset, number);
+		currentOffset+= calculateVariableInfosLength(locals);
+		number = source.readUnsignedShort(currentOffset);
+		currentOffset+=2;
+		stackItems = readVariableInfos(this, source, currentOffset, number);
+		
+	}
+
+	@Override
+	protected void doWriteBody(IByteBuffer target, long offset) {
+		long currentOffset = offset+1;
+		target.writeUnsignedShort(currentOffset, calculateDeltaOffset());
+		currentOffset+=2;
+		target.writeUnsignedShort(currentOffset, locals.length);
+		currentOffset+=2;
+		writeVariableInfos(target, currentOffset, locals);
+		currentOffset+= calculateVariableInfosLength(locals);
+		target.writeUnsignedShort(currentOffset, stackItems.length);
+		currentOffset+=2;
+		writeVariableInfos(target, currentOffset, stackItems);
+		
+	}
+
+	@Override
+	protected void doResolveBody() {
+		for (AbstractStackmapVariableinfo info: locals) {
+			info.resolve();
+		}
+		for (AbstractStackmapVariableinfo info: stackItems) {
+			info.resolve();
+		}
+		
+	}
+
+	@Override
+	protected void doResolveBodyAfterParse() {
+		//TODO
+		for (AbstractStackmapVariableinfo info: locals) {
+			info.resolve();
+		}
+		for (AbstractStackmapVariableinfo info: stackItems) {
+			info.resolve();
+		}
+		
+	}
+
+	@Override
+	protected boolean offsetCodedInTag() {
+		return false;
+	}
+
+	@Override
+	protected short calculateTag(short tagRangeBegin) {
+		return tagRangeBegin;
+	}
+
+	@Override
+	public int getSize() {
+		return locals.length+stackItems.length;
+	}
+
+	@Override
+	public AbstractStackmapVariableinfo get(int index) {
+		if (index<locals.length) {
+			return locals[index];
+		} else {
+			return stackItems[index-locals.length];
+		}
+		
+	}
+
+	@Override
+	public int indexOf(AbstractStackmapVariableinfo item) {
+		for (int i=0;i<locals.length; i++) {
+			if (locals[i] == item) {
+				return i;
+			}
+		}
+		for (int i=0;i<stackItems.length; i++) {
+			if (stackItems[i] == item) {
+				return locals.length+i;
+			}
+		}
+		return -1;
+	}
+
+	@Override
+	public int getItemSizeInList(IBytecodeItem item) {
+		return 1;
+	}
+
+}

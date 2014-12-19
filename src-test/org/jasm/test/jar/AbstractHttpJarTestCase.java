@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -18,13 +20,26 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.jasm.bytebuffer.print.PrettyPrinter;
+import org.jasm.item.clazz.Clazz;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class AbstractHttpJarTestCase {
 	
-	private Logger log = LoggerFactory.getLogger(this.getClass());
+	protected Logger log = LoggerFactory.getLogger(this.getClass());
 	
+	
+	protected void debugClass(Clazz clazz) {
+		if (log.isDebugEnabled()) {
+			StringWriter sw = new StringWriter();
+			PrintWriter writer = new PrintWriter(sw);
+			PrettyPrinter printer = new PrettyPrinter(writer);
+			printer.printItem(clazz);
+			writer.close();
+			log.debug(sw.toString());
+		}
+	}
 	
 	protected void doJarTest() {
 		log.info("Testing "+getURL());

@@ -4,15 +4,11 @@ import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
-import org.jasm.parser.literals.IntegerLiteral;
 
-public class ChopStackmapFrame extends AbstractStackmapFrame {
+public class SameExtendedStackmapFrame extends AbstractStackmapFrame {
 	
-	private short k;
-	private IntegerLiteral kLiteral;
-	
-	public ChopStackmapFrame() {
-		super((short)248);
+	public SameExtendedStackmapFrame() {
+		super((short)251);
 	}
 
 	@Override
@@ -37,12 +33,12 @@ public class ChopStackmapFrame extends AbstractStackmapFrame {
 
 	@Override
 	public String getPrintName() {
-		return "chop frame";
+		return "same extended";
 	}
 
 	@Override
 	public String getPrintArgs() {
-		return getInstruction().getPrintLabel()+", "+k;
+		return getInstruction().getPrintLabel();
 	}
 
 	@Override
@@ -62,21 +58,12 @@ public class ChopStackmapFrame extends AbstractStackmapFrame {
 
 	@Override
 	protected void doResolveBody() {
-		k = (short)(251-tagValue);
+		
 	}
 
 	@Override
 	protected void doResolveBodyAfterParse() {
-		if (kLiteral.isValid()) {
-			int iValue = kLiteral.getValue();
-			if (iValue<0 || iValue>2) {
-				emitError(kLiteral, "locals number out of bounds!");
-			} else {
-				k = (short)iValue;
-			}
-		} else {
-			emitError(kLiteral, "malformed integer or integer out of bounds");
-		}
+		
 	}
 
 	@Override
@@ -86,15 +73,7 @@ public class ChopStackmapFrame extends AbstractStackmapFrame {
 
 	@Override
 	protected short calculateTag(short tagRangeBegin) {
-		return (short)(251-k);
+		return tagRangeBegin;
 	}
-
-	public void setkLiteral(IntegerLiteral kLiteral) {
-		this.kLiteral = kLiteral;
-	}
-	
-	
-	
-	
 
 }
