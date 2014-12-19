@@ -2,6 +2,7 @@ package org.jasm.item.attribute;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.parser.literals.SymbolReference;
 
@@ -34,25 +35,25 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem {
 		doWriteBody(target, offset);
 	}
 	
-	public int calculateOffsetFromDeltaOffset() {
+	private int calculateOffsetFromDeltaOffset() {
 		StackMapAttributeContent stackmap = (StackMapAttributeContent)getParent();
 		int index = stackmap.indexOf(this);
 		if (stackmap.indexOf(this) == 0) {
 			return deltaOffset;
 		} else {
 			AbstractStackmapFrame prev = stackmap.get(index-1);
-			return prev.calculateOffsetFromDeltaOffset()+deltaOffset;
+			return prev.calculateOffsetFromDeltaOffset()+deltaOffset+1;
 		}
 	}
 	
-	public int calculateDeltaOffset() {
+	protected int calculateDeltaOffset() {
 		StackMapAttributeContent stackmap = (StackMapAttributeContent)getParent();
 		int index = stackmap.indexOf(this);
 		if (stackmap.indexOf(this) == 0) {
 			return instruction.getOffsetInCode();
 		} else {
 			AbstractStackmapFrame prev = stackmap.get(index-1);
-			return instruction.getOffsetInCode()-prev.getInstruction().getOffsetInCode();
+			return instruction.getOffsetInCode()-prev.getInstruction().getOffsetInCode()-1;
 		}
 	}
 	
@@ -83,11 +84,7 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem {
 		return instruction;
 	}
 
-	public void setDeltaOffset(int deltaOffset) {
-		this.deltaOffset = deltaOffset;
-	}
-
-	protected AbstractStackmapVariableinfo createEmptyVariableInfo(IByteBuffer source, long offset) {
+	protected static AbstractStackmapVariableinfo createEmptyVariableInfo(IByteBuffer source, long offset) {
 		short tag = source.readUnsignedByte(offset);
 		if (tag == new DoubleVariableinfo().getTag()) {
 			return new DoubleVariableinfo();
@@ -111,7 +108,34 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem {
 			throw new IllegalArgumentException("unknown tag: "+tag);
 		}
 	}
-
 	
+	protected static AbstractStackmapVariableinfo[] readVariableInfos(IContainerBytecodeItem parent, IByteBuffer source, long offset, int size) {
+		AbstractStackmapVariableinfo[] result = new AbstractStackmapVariableinfo[size];
+		long currentOffset = offset;
+		for (int i=0;i<result.length; i++) {
+			result[i] = createEmptyVariableInfo(source, currentOffset);
+			result[i].setParent(parent);
+			result[i].read(source, currentOffset);
+			
+			currentOffset+=result[i].getLength();
+		}
+		return result;
+	}
+	
+	protected static void writeVariableInfos(IByteBuffer target, long offset, AbstractStackmapVariableinfo[] infos) {
+		long currentOffset = offset;
+		for (int i=0;i<infos.length; i++) {
+			infos[i].write(target, currentOffset);
+			currentOffset+=infos[i].getLength();
+		}
+	}
+	
+	protected int calculateVariableInfosLength(AbstractStackmapVariableinfo[] infos) {
+		int length = 0;
+		for (AbstractStackmapVariableinfo info: infos) {
+			length+=info.getLength();
+		}
+		return length;
+	}
 	
 }

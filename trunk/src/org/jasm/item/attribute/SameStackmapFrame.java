@@ -33,7 +33,7 @@ public class SameStackmapFrame extends AbstractStackmapFrame {
 
 	@Override
 	public String getPrintName() {
-		return "same frame";
+		return "same";
 	}
 
 	@Override

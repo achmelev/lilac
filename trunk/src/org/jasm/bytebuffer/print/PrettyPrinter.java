@@ -50,6 +50,9 @@ public class PrettyPrinter {
 		if (item.isStructure()) {
 			if (item.getPrintName() != null) {
 				buf.append(item.getPrintName());
+				if (item.getPrintArgs() != null) {
+					buf.append(" "+item.getPrintArgs());
+				}
 				buf.append(" {");
 				if (item.getPrintComment() != null) {
 					buf.append(" //"+item.getPrintComment());

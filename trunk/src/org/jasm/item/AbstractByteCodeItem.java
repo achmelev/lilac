@@ -198,4 +198,22 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		return "["+Base64.encodeBase64String(data)+"]";
 	}
 	
+	protected String createItemsListArg(AbstractByteCodeItem[] args) {
+		StringBuffer buf = new StringBuffer();
+		buf.append("{");
+		for (int i=0;i<args.length; i++) {
+			AbstractByteCodeItem item = args[i];
+			if (i>0) {
+				buf.append(";");
+			}
+			buf.append(item.getPrintName());
+			if (item.getPrintArgs() != null) {
+				buf.append(" "+item.getPrintArgs());
+			}
+			
+		}
+		buf.append("}");
+		return buf.toString();
+	}
+	
 }

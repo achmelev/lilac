@@ -15,5 +15,9 @@ public class SpingCoreReadWriteTest extends
 	public void test() {
 		doJarTest();
 	}
+	
+	/*protected boolean filter(String name) {
+		return "org/springframework/asm/Frame.class".equals(name);
+	}*/
 
 }

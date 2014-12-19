@@ -25,7 +25,6 @@ public abstract class AbstractAssembleDisassembleHttpJarTestCase extends
 		
 		String code = disassemble(data);
 		byte[] data2 = assemble(code);
-		//log.debug("code: \n"+code);
 		assertArrayEquals(data, data2);
 	}
 	

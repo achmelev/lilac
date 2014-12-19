@@ -16,6 +16,7 @@ public abstract class AbstractReadWriteHttpJarTestCase extends
 		clazz.read(bbuf, 0L);
 		clazz.resolve();
 		clazz.updateMetadata();
+		debugClass(clazz);
 		byte [] data2 = new byte[clazz.getLength()];
 		ByteArrayByteBuffer bbuf2 = new ByteArrayByteBuffer(data2);
 		clazz.write(bbuf2, 0);

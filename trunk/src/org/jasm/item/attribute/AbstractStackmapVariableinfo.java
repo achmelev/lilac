@@ -23,7 +23,7 @@ public abstract class AbstractStackmapVariableinfo extends AbstractByteCodeItem 
 	}
 	
 	protected abstract void doReadBody(IByteBuffer source, long offset);
-	protected abstract void doWriteBody(IByteBuffer source, long offset);
+	protected abstract void doWriteBody(IByteBuffer target, long offset);
 
 	public short getTag() {
 		return tag;
