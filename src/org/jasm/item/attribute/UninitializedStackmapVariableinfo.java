@@ -11,13 +11,13 @@ import org.jasm.parser.literals.SymbolReference;
 
 import com.sun.prism.impl.Disposer.Target;
 
-public class UninitializedVariableinfo extends AbstractStackmapVariableinfo implements IInstructionReference {
+public class UninitializedStackmapVariableinfo extends AbstractStackmapVariableinfo implements IInstructionReference {
 	
 	private int instructionOffset;
 	private AbstractInstruction instruction;
 	private SymbolReference instructionReference;
 
-	public UninitializedVariableinfo() {
+	public UninitializedStackmapVariableinfo() {
 		super((short)8);
 	}
 
@@ -82,5 +82,11 @@ public class UninitializedVariableinfo extends AbstractStackmapVariableinfo impl
 	public AbstractInstruction[] getInstructionReferences() {
 		return new AbstractInstruction[]{instruction};
 	}
+
+	public void setInstructionReference(SymbolReference instructionReference) {
+		this.instructionReference = instructionReference;
+	}
+	
+	
 
 }

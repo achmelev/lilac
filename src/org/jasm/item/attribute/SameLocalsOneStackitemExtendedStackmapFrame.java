@@ -1,5 +1,6 @@
 package org.jasm.item.attribute;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
@@ -7,9 +8,11 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.parser.JavaAssemblerParser.StackitemstackmapvarinfosContext;
 
-public class SameLocalsOneStackitemExtendedStackmapFrame extends AbstractStackmapFrame implements IContainerBytecodeItem<IBytecodeItem> {
+public class SameLocalsOneStackitemExtendedStackmapFrame extends AbstractStackmapFrame implements IContainerBytecodeItem<IBytecodeItem>, IStackmapVariableinfoContainer {
 	
+	private List<AbstractStackmapVariableinfo> stackitemsList;
 	private AbstractStackmapVariableinfo stackitemInfo;
 	
 	public SameLocalsOneStackitemExtendedStackmapFrame() {
@@ -70,7 +73,14 @@ public class SameLocalsOneStackitemExtendedStackmapFrame extends AbstractStackma
 
 	@Override
 	protected void doResolveBodyAfterParse() {
-		stackitemInfo.resolve();
+		if (stackitemsList != null && stackitemsList.size() == 1) {
+			stackitemInfo = stackitemsList.get(0);
+			stackitemInfo.resolve();
+		} else {
+			emitError(null, "number of stackitems is out of bounds");
+		}
+		
+		
 	}
 
 	@Override
@@ -110,6 +120,17 @@ public class SameLocalsOneStackitemExtendedStackmapFrame extends AbstractStackma
 	public int getItemSizeInList(IBytecodeItem item) {
 		return 1;
 	}
-	
 
+	@Override
+	public void addVariableInfo(AbstractStackmapVariableinfo info) {
+		if (stackitemsList == null) {
+			stackitemsList = new ArrayList<AbstractStackmapVariableinfo>();
+		}
+		info.setParent(this);
+		stackitemsList.add(info);
+	}
+
+	
+	
+	
 }

@@ -9,15 +9,13 @@ import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.parser.literals.SymbolReference;
 
-import com.sun.prism.impl.Disposer.Target;
-
-public class ObjectVariableinfo extends AbstractStackmapVariableinfo implements IConstantPoolReference {
+public class ObjectStackmapVariableinfo extends AbstractStackmapVariableinfo implements IConstantPoolReference {
 	
 	private int classInfoindex;
 	private ClassInfo classInfo;
 	private SymbolReference classInfoReference;
 
-	public ObjectVariableinfo() {
+	public ObjectStackmapVariableinfo() {
 		super((short)7);
 	}
 
@@ -80,5 +78,11 @@ public class ObjectVariableinfo extends AbstractStackmapVariableinfo implements 
 	public AbstractConstantPoolEntry[] getConstantReferences() {
 		return new AbstractConstantPoolEntry[]{classInfo};
 	}
+
+	public void setClassInfoReference(SymbolReference classInfoReference) {
+		this.classInfoReference = classInfoReference;
+	}
+	
+	
 
 }

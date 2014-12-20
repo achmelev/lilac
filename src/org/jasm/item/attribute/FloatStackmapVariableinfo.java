@@ -5,10 +5,10 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
-public class NullVariableinfo extends AbstractStackmapVariableinfo {
+public class FloatStackmapVariableinfo extends AbstractStackmapVariableinfo {
 
-	public NullVariableinfo() {
-		super((short)5);
+	public FloatStackmapVariableinfo() {
+		super((short)2);
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class NullVariableinfo extends AbstractStackmapVariableinfo {
 
 	@Override
 	public String getPrintName() {
-		return "null";
+		return "float";
 	}
 
 	@Override

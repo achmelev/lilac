@@ -2785,7 +2785,6 @@ public super class {
       var a_1, ir263, utf8_707, utf8_708; // name=buf,  descriptor=Ljava/lang/StringBuffer;
       var i_2, ir273->ir450, utf8_701, utf8_343; // name=i,  descriptor=I
     }
-    stackmap [AA78AAUBJTAwMC0C/wAkAAMHAscHAq0BAAAmHx8fHAI=];
     maxstack 4;
     maxlocals 3;
     //Variables

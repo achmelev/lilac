@@ -204,7 +204,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		for (int i=0;i<args.length; i++) {
 			AbstractByteCodeItem item = args[i];
 			if (i>0) {
-				buf.append(";");
+				buf.append(",");
 			}
 			buf.append(item.getPrintName());
 			if (item.getPrintArgs() != null) {
