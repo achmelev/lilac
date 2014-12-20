@@ -38,10 +38,7 @@ public abstract class AbstractAssembleDisassembleJarForClassTestCase extends
 		PrettyPrinter printer = new PrettyPrinter(writer);
 		printer.printItem(clazz);
 		writer.close();
-		
-		if (log.isDebugEnabled()) {
-			log.debug(sw.toString());
-		}
+	
 		
 		return sw.toString();
 	}
