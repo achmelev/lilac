@@ -4,9 +4,10 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.parser.literals.SymbolReference;
 
-public abstract class AbstractStackmapFrame extends AbstractByteCodeItem {
+public abstract class AbstractStackmapFrame extends AbstractByteCodeItem implements IInstructionReference {
 	
 	protected short tagValue; 
 	protected short tagRangeBegin = -1;
@@ -140,6 +141,11 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem {
 
 	public void setInstructionReference(SymbolReference instructionReference) {
 		this.instructionReference = instructionReference;
+	}
+
+	@Override
+	public AbstractInstruction[] getInstructionReferences() {
+		return new AbstractInstruction[]{instruction};
 	}
 	
 	
