@@ -72,7 +72,7 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem {
 	protected void doResolveAfterParse() {
 		CodeAttributeContent code = getAncestor(CodeAttributeContent.class);
 		instruction = code.getInstructions().checkAndLoadFromSymbolTable(this, instructionReference);
-		
+		doResolveBodyAfterParse();
 	}
 	
 	protected abstract void doResolveBody();
@@ -86,24 +86,24 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem {
 
 	protected static AbstractStackmapVariableinfo createEmptyVariableInfo(IByteBuffer source, long offset) {
 		short tag = source.readUnsignedByte(offset);
-		if (tag == new DoubleVariableinfo().getTag()) {
-			return new DoubleVariableinfo();
-		} else if (tag == new FloatVariableinfo().getTag()) {
-			return new FloatVariableinfo();
-		} else if (tag == new IntegerVariableinfo().getTag()) {
-			return new IntegerVariableinfo();
-		} else if (tag == new LongVariableinfo().getTag()) {
-			return new LongVariableinfo();
-		} else if (tag == new ObjectVariableinfo().getTag()) {
-			return new ObjectVariableinfo();
-		} else if (tag == new UninitializedVariableinfo().getTag()) {
-			return new UninitializedVariableinfo();
-		} else if (tag == new UninitializedThisVariableinfo().getTag()) {
-			return new UninitializedThisVariableinfo();
-		} else if (tag == new NullVariableinfo().getTag()) {
-			return new NullVariableinfo();
-		} else if (tag == new TopVariableinfo().getTag()) {
-				return new TopVariableinfo();
+		if (tag == new DoubleStackmapVariableinfo().getTag()) {
+			return new DoubleStackmapVariableinfo();
+		} else if (tag == new FloatStackmapVariableinfo().getTag()) {
+			return new FloatStackmapVariableinfo();
+		} else if (tag == new IntegerStackmapVariableinfo().getTag()) {
+			return new IntegerStackmapVariableinfo();
+		} else if (tag == new LongStackmapVariableinfo().getTag()) {
+			return new LongStackmapVariableinfo();
+		} else if (tag == new ObjectStackmapVariableinfo().getTag()) {
+			return new ObjectStackmapVariableinfo();
+		} else if (tag == new UninitializedStackmapVariableinfo().getTag()) {
+			return new UninitializedStackmapVariableinfo();
+		} else if (tag == new UninitializedThisStackmapVariableinfo().getTag()) {
+			return new UninitializedThisStackmapVariableinfo();
+		} else if (tag == new NullStackmapVariableinfo().getTag()) {
+			return new NullStackmapVariableinfo();
+		} else if (tag == new TopStackmapVariableinfo().getTag()) {
+				return new TopStackmapVariableinfo();
 		} else {
 			throw new IllegalArgumentException("unknown tag: "+tag);
 		}
@@ -137,5 +137,11 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem {
 		}
 		return length;
 	}
+
+	public void setInstructionReference(SymbolReference instructionReference) {
+		this.instructionReference = instructionReference;
+	}
+	
+	
 	
 }

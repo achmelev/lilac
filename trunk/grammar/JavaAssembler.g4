@@ -338,7 +338,40 @@ identifierOrAll: ALL|Identifier;
 
 unknownattribute: UNKNOWN CODE? ATTRIBUTE Identifier COMMA Base64Literal SEMI;
 
-stackmapattribute: STACKMAP Base64Literal SEMI;
+//stackmapattribute: STACKMAP Base64Literal SEMI;
+stackmapattribute: STACKMAP LBRACE
+				   	 stackmapframe*
+				   RBRACE;
+
+stackmapframe: APPEND Identifier COMMA stackmapvarinfos SEMI #appendStackmapFrame
+		       | CHOP Identifier COMMA IntegerLiteral SEMI #chopStackmapFrame
+		       | FULL Identifier COMMA localstackmapvarinfos COMMA stackitemstackmapvarinfos SEMI #fullStackmapFrame
+		       | SAME Identifier SEMI #sameStackmapFrame
+		       | SAME EXTENDED Identifier SEMI #sameExtendedStackmapFrame
+		       | SAME LOCALS Identifier COMMA stackmapvarinfos SEMI #sameLocalsStackmapFrame
+		       | SAME LOCALS EXTENDED Identifier COMMA stackmapvarinfos SEMI #sameLocalsExtendedStackmapFrame
+		       ;
+		       
+stackmapvarinfos: LBRACE RBRACE #emptyStackmapvarinfos
+				  |LBRACE stackmapvarinfo (COMMA stackmapvarinfo)* RBRACE #notemptyStackmapvarinfos
+				  ;
+					
+				  
+
+localstackmapvarinfos: stackmapvarinfos;
+stackitemstackmapvarinfos: stackmapvarinfos;
+
+stackmapvarinfo: TOP #topStackmapvarinfo
+				 | FLOAT #floatStackmapvarinfo
+				 | DOUBLE #doubleStackmapvarinfo
+				 | INT #intStackmapvarinfo
+				 | LONG #longStackmapvarinfo
+				 | NULL #nullStackmapvarinfo
+				 | UNINITIALIZED Identifier #uninitializedStackmapvarinfo
+				 | UNINITIALIZEDTHIS #uninitializedThisStackmapvarinfo
+				 | OBJECT Identifier #objectStackmapvarinfo
+				 ;
+
 
 //Instruction Rules
 
@@ -456,6 +489,16 @@ METHODHANDLE  :  'methodhandle';
 METHODTYPE    :  'methodtype';
 NEWINVOKESPECIAL : 'newinvokespecial';
 BOOTSTRAP     : 'bootstrap';
+APPEND        : 'append';
+SAME          : 'same';
+LOCALS        : 'locals';
+EXTENDED      : 'extended';
+FULL          : 'full';
+NULL          : 'null';
+CHOP          : 'chop';
+TOP           : 'top';
+UNINITIALIZED: 'uninitialized';
+UNINITIALIZEDTHIS: 'uninitializedthis';
 
 //stopKeywords
 

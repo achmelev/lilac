@@ -64,9 +64,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		data = ((UnknownAttributeContent)code.getAttributes().get(0).getContent()).getData();
 		Assert.assertEquals("Mein Attribut",new String(data));
 		Assert.assertEquals("MyAttr",code.getAttributes().get(0).getName().getValue());
-		
-		Assert.assertTrue(code.getAttributes().get(1).getContent() instanceof StackMapBinaryAttributeContent);
-		
+				
 		LocalVariablesPool pool = code.getInstructions().getVariablesPool();
 		
 		Assert.assertEquals(8, pool.calculateSize());
@@ -234,7 +232,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertEquals(OpCodes.return_, handler.getHandlerInstruction().getOpCode());
 		Assert.assertNull(handler.getCatchType());
 		
-		LineNumberTableAttributeContent linenumbers = (LineNumberTableAttributeContent)code.getAttributes().get(2).getContent();
+		LineNumberTableAttributeContent linenumbers = (LineNumberTableAttributeContent)code.getAttributes().get(1).getContent();
 		Assert.assertEquals(2, linenumbers.getSize());
 		
 		LineNumber line1 = linenumbers.get(0);
@@ -245,7 +243,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertEquals(20, line1.getLineNumber());
 		Assert.assertEquals(OpCodes.ldc, line1.getStartInstruction().getOpCode());
 		
-		LocalVariableTableAttributeContent debugvars = (LocalVariableTableAttributeContent)code.getAttributes().get(3).getContent();
+		LocalVariableTableAttributeContent debugvars = (LocalVariableTableAttributeContent)code.getAttributes().get(2).getContent();
 		Assert.assertEquals(2, debugvars.getSize());
 		DebugLocalVariable dvar = debugvars.get(0);
 		Assert.assertEquals("o1",dvar.getVariable().getName().getContent());

@@ -18,7 +18,7 @@ public class SpingCoreAssembleDisassembleTest extends
 	
 	/*protected boolean filter(String name) {
 		
-		return name.equals("org/springframework/cglib/proxy/MethodProxy$1.class");
+		return name.equals("org/springframework/core/style/ToStringCreator.class");
 	}*/
 
 }

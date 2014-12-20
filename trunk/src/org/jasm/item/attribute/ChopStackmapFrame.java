@@ -37,7 +37,7 @@ public class ChopStackmapFrame extends AbstractStackmapFrame {
 
 	@Override
 	public String getPrintName() {
-		return "chop frame";
+		return "chop";
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class ChopStackmapFrame extends AbstractStackmapFrame {
 	protected void doResolveBodyAfterParse() {
 		if (kLiteral.isValid()) {
 			int iValue = kLiteral.getValue();
-			if (iValue<0 || iValue>2) {
+			if (iValue<1 || iValue>3) {
 				emitError(kLiteral, "locals number out of bounds!");
 			} else {
 				k = (short)iValue;

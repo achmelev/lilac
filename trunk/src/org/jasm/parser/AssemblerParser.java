@@ -25,34 +25,45 @@ import org.jasm.JasmConsts;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.AbstractAnnotationsAttributeContent;
 import org.jasm.item.attribute.AbstractParameterAnnotationsAttributeContent;
+import org.jasm.item.attribute.AbstractStackmapVariableinfo;
 import org.jasm.item.attribute.Annotation;
 import org.jasm.item.attribute.AnnotationDefaultAttributeContent;
 import org.jasm.item.attribute.AnnotationElementNameValue;
 import org.jasm.item.attribute.AnnotationElementValue;
 import org.jasm.item.attribute.AnnotationTargetTypePath;
+import org.jasm.item.attribute.AppendStackmapFrame;
 import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.BootstrapMethod;
 import org.jasm.item.attribute.BootstrapMethodsAttributeContent;
 import org.jasm.item.attribute.CatchAnnotationTargetType;
+import org.jasm.item.attribute.ChopStackmapFrame;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.ConstantValueAttributeContent;
 import org.jasm.item.attribute.DebugLocalVariable;
 import org.jasm.item.attribute.DebugLocalVariableType;
 import org.jasm.item.attribute.DeprecatedAttributeContent;
+import org.jasm.item.attribute.DoubleStackmapVariableinfo;
 import org.jasm.item.attribute.EmptyAnnotationTargetType;
 import org.jasm.item.attribute.EnclosingMethodAttributeContent;
 import org.jasm.item.attribute.ExceptionHandler;
 import org.jasm.item.attribute.ExceptionsAttributeContent;
+import org.jasm.item.attribute.FloatStackmapVariableinfo;
 import org.jasm.item.attribute.FormalParameterAnnotationTargetType;
+import org.jasm.item.attribute.FullStackmapFrame;
 import org.jasm.item.attribute.IAttributeContent;
+import org.jasm.item.attribute.IStackmapVariableinfoContainer;
 import org.jasm.item.attribute.InnerClass;
 import org.jasm.item.attribute.InnerClassesAttributeContent;
+import org.jasm.item.attribute.IntegerStackmapVariableinfo;
 import org.jasm.item.attribute.LineNumber;
 import org.jasm.item.attribute.LineNumberTableAttributeContent;
 import org.jasm.item.attribute.LocalVariableAnnotationTargetType;
 import org.jasm.item.attribute.LocalVariableAnnotationTargetTypeMember;
 import org.jasm.item.attribute.LocalVariableTableAttributeContent;
 import org.jasm.item.attribute.LocalVariableTypeTableAttributeContent;
+import org.jasm.item.attribute.LongStackmapVariableinfo;
+import org.jasm.item.attribute.NullStackmapVariableinfo;
+import org.jasm.item.attribute.ObjectStackmapVariableinfo;
 import org.jasm.item.attribute.OffsetAnnotationTargetType;
 import org.jasm.item.attribute.RuntimeInvisibleAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeInvisibleParameterAnnotationsAttributeContent;
@@ -60,15 +71,23 @@ import org.jasm.item.attribute.RuntimeInvisibleTypeAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeVisibleAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeVisibleParameterAnnotationsAttributeContent;
 import org.jasm.item.attribute.RuntimeVisibleTypeAnnotationsAttributeContent;
+import org.jasm.item.attribute.SameExtendedStackmapFrame;
+import org.jasm.item.attribute.SameLocalsOneStackitemExtendedStackmapFrame;
+import org.jasm.item.attribute.SameLocalsOneStackitemStackmapFrame;
+import org.jasm.item.attribute.SameStackmapFrame;
 import org.jasm.item.attribute.SignatureAttributeContent;
 import org.jasm.item.attribute.SourceFileAttributeContent;
+import org.jasm.item.attribute.StackMapAttributeContent;
 import org.jasm.item.attribute.StackMapBinaryAttributeContent;
 import org.jasm.item.attribute.SupertypeAnnotationTargetType;
 import org.jasm.item.attribute.SynteticAttributeContent;
 import org.jasm.item.attribute.ThrowsAnnotationTargetType;
+import org.jasm.item.attribute.TopStackmapVariableinfo;
 import org.jasm.item.attribute.TypeArgumentAnnotationTargetType;
 import org.jasm.item.attribute.TypeParameterAnnotationTargetType;
 import org.jasm.item.attribute.TypeParameterBoundAnnotationTargetType;
+import org.jasm.item.attribute.UninitializedStackmapVariableinfo;
+import org.jasm.item.attribute.UninitializedThisStackmapVariableinfo;
 import org.jasm.item.attribute.UnknownAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Field;
@@ -121,12 +140,14 @@ import org.jasm.parser.JavaAssemblerParser.AnnotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationparameterindexContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationtargetpathContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationtypeContext;
+import org.jasm.parser.JavaAssemblerParser.AppendStackmapFrameContext;
 import org.jasm.parser.JavaAssemblerParser.ArgumentlessopContext;
 import org.jasm.parser.JavaAssemblerParser.ArrayannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.BootstrapmethodContext;
 import org.jasm.parser.JavaAssemblerParser.BranchopContext;
 import org.jasm.parser.JavaAssemblerParser.CasttypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.CatchtypeTargetTypeContext;
+import org.jasm.parser.JavaAssemblerParser.ChopStackmapFrameContext;
 import org.jasm.parser.JavaAssemblerParser.ClassAttributeSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassInnerClassContext;
 import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
@@ -149,6 +170,7 @@ import org.jasm.parser.JavaAssemblerParser.ConstructortypeargumentTargetTypeCont
 import org.jasm.parser.JavaAssemblerParser.DebugvarContext;
 import org.jasm.parser.JavaAssemblerParser.DebugvartypeContext;
 import org.jasm.parser.JavaAssemblerParser.DeprecatedattributeContext;
+import org.jasm.parser.JavaAssemblerParser.DoubleStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.DoubleinfoContext;
 import org.jasm.parser.JavaAssemblerParser.DynrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.EmptyTargetFieldTypeContext;
@@ -171,8 +193,10 @@ import org.jasm.parser.JavaAssemblerParser.FieldmodifierTransientContext;
 import org.jasm.parser.JavaAssemblerParser.FieldmodifierVolatileContext;
 import org.jasm.parser.JavaAssemblerParser.FieldnameContext;
 import org.jasm.parser.JavaAssemblerParser.FieldrefinfoContext;
+import org.jasm.parser.JavaAssemblerParser.FloatStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FloatinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FormalparametertypeTargetTypeContext;
+import org.jasm.parser.JavaAssemblerParser.FullStackmapFrameContext;
 import org.jasm.parser.JavaAssemblerParser.IincopContext;
 import org.jasm.parser.JavaAssemblerParser.InnerclassContext;
 import org.jasm.parser.JavaAssemblerParser.Innerclass_innerContext;
@@ -189,6 +213,7 @@ import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierPublicContext;
 import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierStaticContext;
 import org.jasm.parser.JavaAssemblerParser.InnerclassmodifierSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.InstanceoftypeTargetTypeContext;
+import org.jasm.parser.JavaAssemblerParser.IntStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacemethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacesContext;
@@ -197,6 +222,7 @@ import org.jasm.parser.JavaAssemblerParser.LinenumberContext;
 import org.jasm.parser.JavaAssemblerParser.LocalvaropContext;
 import org.jasm.parser.JavaAssemblerParser.LocalvartypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.LocalvartypememberContext;
+import org.jasm.parser.JavaAssemblerParser.LongStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
@@ -234,12 +260,19 @@ import org.jasm.parser.JavaAssemblerParser.MultinewarrayopContext;
 import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
 import org.jasm.parser.JavaAssemblerParser.NewarrayopContext;
 import org.jasm.parser.JavaAssemblerParser.NewtypeTargetTypeContext;
+import org.jasm.parser.JavaAssemblerParser.NullStackmapvarinfoContext;
+import org.jasm.parser.JavaAssemblerParser.ObjectStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.ParameterTypeBoundTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.ParameterTypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.ParameterannotationContext;
 import org.jasm.parser.JavaAssemblerParser.PushopContext;
+import org.jasm.parser.JavaAssemblerParser.SameExtendedStackmapFrameContext;
+import org.jasm.parser.JavaAssemblerParser.SameLocalsExtendedStackmapFrameContext;
+import org.jasm.parser.JavaAssemblerParser.SameLocalsStackmapFrameContext;
+import org.jasm.parser.JavaAssemblerParser.SameStackmapFrameContext;
 import org.jasm.parser.JavaAssemblerParser.SignatureattributeContext;
 import org.jasm.parser.JavaAssemblerParser.SimpleannotationelementvalueContext;
+import org.jasm.parser.JavaAssemblerParser.StackitemstackmapvarinfosContext;
 import org.jasm.parser.JavaAssemblerParser.StackmapattributeContext;
 import org.jasm.parser.JavaAssemblerParser.StringinfoContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
@@ -252,7 +285,10 @@ import org.jasm.parser.JavaAssemblerParser.TargetPathNestedContext;
 import org.jasm.parser.JavaAssemblerParser.TargetPathTypeArgumentBoundContext;
 import org.jasm.parser.JavaAssemblerParser.TargetPathTypeArgumentContext;
 import org.jasm.parser.JavaAssemblerParser.ThrowstypeTargetTypeContext;
+import org.jasm.parser.JavaAssemblerParser.TopStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.TypeannotationContext;
+import org.jasm.parser.JavaAssemblerParser.UninitializedStackmapvarinfoContext;
+import org.jasm.parser.JavaAssemblerParser.UninitializedThisStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.UnknownattributeContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
@@ -2165,14 +2201,199 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	@Override
 	public void enterStackmapattribute(StackmapattributeContext ctx) {
-		StackMapBinaryAttributeContent content = new StackMapBinaryAttributeContent();
-		content.setDataLiteral(createBase64Literal(ctx.Base64Literal()));
-		CodeAttributeContent content2 = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
-		stack.push(content2);
-		addAttribute(content, ctx.STACKMAP());
+		StackMapAttributeContent content = new StackMapAttributeContent();
+		CodeAttributeContent code = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+		if (code.getAttributes().getAttributesByContentType(StackMapAttributeContent.class).isEmpty()) {
+			stack.push(code);
+			addAttribute(content, ctx.STACKMAP());
+			stack.pop();
+			stack.push(content);
+		} else {
+			emitError(ctx.STACKMAP(), "dublicate stackmap declaration");
+		}
+	}
+	
+	@Override
+	public void enterSameStackmapFrame(SameStackmapFrameContext ctx) {
+		StackMapAttributeContent content = (StackMapAttributeContent)stack.peek();
+		SameStackmapFrame stackframe = new SameStackmapFrame();
+		stackframe.setInstructionReference(createSymbolReference(ctx.Identifier()));
+		stackframe.setSourceLocation(createSourceLocation(ctx.SAME()));
+		content.add(stackframe);
+	}
+
+	@Override
+	public void enterSameExtendedStackmapFrame(
+			SameExtendedStackmapFrameContext ctx) {
+		StackMapAttributeContent content = (StackMapAttributeContent)stack.peek();
+		SameExtendedStackmapFrame stackframe = new SameExtendedStackmapFrame();
+		stackframe.setInstructionReference(createSymbolReference(ctx.Identifier()));
+		stackframe.setSourceLocation(createSourceLocation(ctx.SAME()));
+		content.add(stackframe);
+	}
+	
+	
+
+	@Override
+	public void enterChopStackmapFrame(ChopStackmapFrameContext ctx) {
+		StackMapAttributeContent content = (StackMapAttributeContent)stack.peek();
+		ChopStackmapFrame stackframe = new ChopStackmapFrame();
+		stackframe.setInstructionReference(createSymbolReference(ctx.Identifier()));
+		stackframe.setkLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
+		stackframe.setSourceLocation(createSourceLocation(ctx.CHOP()));
+		content.add(stackframe);
+	}
+
+	@Override
+	public void enterFullStackmapFrame(FullStackmapFrameContext ctx) {
+		StackMapAttributeContent content = (StackMapAttributeContent)stack.peek();
+		FullStackmapFrame stackframe = new FullStackmapFrame ();
+		stackframe.setInstructionReference(createSymbolReference(ctx.Identifier()));
+		stackframe.setSourceLocation(createSourceLocation(ctx.FULL()));
+		content.add(stackframe);
+		stack.push(stackframe);
+	}
+	
+	
+	
+	@Override
+	public void enterStackitemstackmapvarinfos(
+			StackitemstackmapvarinfosContext ctx) {
+		FullStackmapFrame info = (FullStackmapFrame)stack.peek();
+		info.switchAddingToStackItems();
+	}
+
+	@Override
+	public void enterSameLocalsExtendedStackmapFrame(
+			SameLocalsExtendedStackmapFrameContext ctx) {
+		StackMapAttributeContent content = (StackMapAttributeContent)stack.peek();
+		SameLocalsOneStackitemExtendedStackmapFrame stackframe = new SameLocalsOneStackitemExtendedStackmapFrame ();
+		stackframe.setInstructionReference(createSymbolReference(ctx.Identifier()));
+		stackframe.setSourceLocation(createSourceLocation(ctx.SAME()));
+		content.add(stackframe);
+		stack.push(stackframe);
+	}
+		
+
+	@Override
+	public void enterAppendStackmapFrame(AppendStackmapFrameContext ctx) {
+		StackMapAttributeContent content = (StackMapAttributeContent)stack.peek();
+		AppendStackmapFrame stackframe = new AppendStackmapFrame();
+		stackframe.setInstructionReference(createSymbolReference(ctx.Identifier()));
+		stackframe.setSourceLocation(createSourceLocation(ctx.APPEND()));
+		content.add(stackframe);
+		stack.push(stackframe);
+	}
+
+	@Override
+	public void enterSameLocalsStackmapFrame(SameLocalsStackmapFrameContext ctx) {
+		StackMapAttributeContent content = (StackMapAttributeContent)stack.peek();
+		SameLocalsOneStackitemStackmapFrame stackframe = new SameLocalsOneStackitemStackmapFrame ();
+		stackframe.setInstructionReference(createSymbolReference(ctx.Identifier()));
+		stackframe.setSourceLocation(createSourceLocation(ctx.SAME()));
+		content.add(stackframe);
+		stack.push(stackframe);
+	}
+	
+	@Override
+	public void enterIntStackmapvarinfo(IntStackmapvarinfoContext ctx) {
+		IntegerStackmapVariableinfo info = new IntegerStackmapVariableinfo();
+		info.setSourceLocation(createSourceLocation(ctx.INT()));
+		addStackmapVarinfo(info);
+	}
+
+	@Override
+	public void enterUninitializedStackmapvarinfo(
+			UninitializedStackmapvarinfoContext ctx) {
+		UninitializedStackmapVariableinfo info = new UninitializedStackmapVariableinfo();
+		info.setSourceLocation(createSourceLocation(ctx.UNINITIALIZED()));
+		info.setInstructionReference(createSymbolReference(ctx.Identifier()));
+		addStackmapVarinfo(info);
+	}
+
+	@Override
+	public void enterDoubleStackmapvarinfo(DoubleStackmapvarinfoContext ctx) {
+		DoubleStackmapVariableinfo info = new DoubleStackmapVariableinfo();
+		info.setSourceLocation(createSourceLocation(ctx.DOUBLE()));
+		addStackmapVarinfo(info);
+	}
+
+	@Override
+	public void enterLongStackmapvarinfo(LongStackmapvarinfoContext ctx) {
+		LongStackmapVariableinfo info = new LongStackmapVariableinfo();
+		info.setSourceLocation(createSourceLocation(ctx.LONG()));
+		addStackmapVarinfo(info);
+	}
+	
+	@Override
+	public void enterNullStackmapvarinfo(NullStackmapvarinfoContext ctx) {
+		NullStackmapVariableinfo info = new NullStackmapVariableinfo();
+		info.setSourceLocation(createSourceLocation(ctx.NULL()));
+		addStackmapVarinfo(info);
+	}
+
+	@Override
+	public void enterTopStackmapvarinfo(TopStackmapvarinfoContext ctx) {
+		TopStackmapVariableinfo info = new TopStackmapVariableinfo();
+		info.setSourceLocation(createSourceLocation(ctx.TOP()));
+		addStackmapVarinfo(info);
+	}
+
+	@Override
+	public void enterObjectStackmapvarinfo(ObjectStackmapvarinfoContext ctx) {
+		ObjectStackmapVariableinfo info = new ObjectStackmapVariableinfo();
+		info.setSourceLocation(createSourceLocation(ctx.OBJECT()));
+		info.setClassInfoReference(createSymbolReference(ctx.Identifier()));
+		addStackmapVarinfo(info);
+	}
+
+	@Override
+	public void enterFloatStackmapvarinfo(FloatStackmapvarinfoContext ctx) {
+		FloatStackmapVariableinfo info = new FloatStackmapVariableinfo();
+		info.setSourceLocation(createSourceLocation(ctx.FLOAT()));
+		addStackmapVarinfo(info);
+	}
+
+	@Override
+	public void enterUninitializedThisStackmapvarinfo(
+			UninitializedThisStackmapvarinfoContext ctx) {
+		UninitializedThisStackmapVariableinfo info = new UninitializedThisStackmapVariableinfo();
+		info.setSourceLocation(createSourceLocation(ctx.UNINITIALIZEDTHIS()));
+		addStackmapVarinfo(info);
+	}
+	
+	private void addStackmapVarinfo(AbstractStackmapVariableinfo info) {
+		IStackmapVariableinfoContainer cont = (IStackmapVariableinfoContainer)stack.peek();
+		cont.addVariableInfo(info);
+	}
+
+	@Override
+	public void exitStackmapattribute(StackmapattributeContext ctx) {
+		stack.pop();
+	}
+	
+	
+
+	@Override
+	public void exitFullStackmapFrame(FullStackmapFrameContext ctx) {
 		stack.pop();
 	}
 
+	@Override
+	public void exitSameLocalsExtendedStackmapFrame(
+			SameLocalsExtendedStackmapFrameContext ctx) {
+		stack.pop();
+	}
+
+	@Override
+	public void exitAppendStackmapFrame(AppendStackmapFrameContext ctx) {
+		stack.pop();
+	}
+
+	@Override
+	public void exitSameLocalsStackmapFrame(SameLocalsStackmapFrameContext ctx) {
+		stack.pop();
+	}
 
 	public void emitError(TerminalNode node, String message) {
 		errorMessages.add(new ErrorMessage(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), message));

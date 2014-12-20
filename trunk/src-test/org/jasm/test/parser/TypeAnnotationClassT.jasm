@@ -292,7 +292,6 @@ public super class {
     debug var types {
       var a_0, ir0, utf8_23, utf8_26; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<TQ;TT;>;
     }
-    stackmap [AAJLBwA8CA==];
     invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets catch type try_0;
@@ -450,7 +449,6 @@ public super class {
       var a_6, ir20, utf8_118, utf8_124; // name=inst,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<Ljava/lang/String;Lorg/jasm/test/testclass/TypeAnnotationInterface3;>;
       var a_7, ir36, utf8_119, utf8_124; // name=inst2,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClassT<Ljava/lang/String;Lorg/jasm/test/testclass/TypeAnnotationInterface3;>;
     }
-    stackmap [AAf/AFMADAcAAQcAKAcAfgcAgAcAKAcAggcAAQcAAQcAhAcAZgcAZgcAVwABBwBm+gALQgcAZg0N/wACAAkHAAEHACgHAH4HAIAHACgHAIIHAAEHAAEHAIQAAQcAbAY=];
     invisible type annotation {
       type utf8_11; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
       targets cast type ir3, 0;

@@ -5,10 +5,10 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
-public class DoubleVariableinfo extends AbstractStackmapVariableinfo {
+public class TopStackmapVariableinfo extends AbstractStackmapVariableinfo {
 
-	public DoubleVariableinfo() {
-		super((short)3);
+	public TopStackmapVariableinfo() {
+		super((short)0);
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class DoubleVariableinfo extends AbstractStackmapVariableinfo {
 
 	@Override
 	public String getPrintName() {
-		return "double";
+		return "top";
 	}
 
 	@Override

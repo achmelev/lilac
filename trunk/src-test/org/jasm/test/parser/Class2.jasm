@@ -320,7 +320,6 @@ public super abstract class {
       var a_10, ir9, utf8_82, utf8_65; // name=multi,  descriptor=[[I
       var a_11, ir44->ir46, utf8_83, utf8_84; // name=e,  descriptor=Ljava/lang/RuntimeException;
     }
-    stackmap [AAT/ACoACwcAAQAAAAAAAAAAAAcAQQABBwBGSAcAV/8ABgALBwABAQAAAAAAAAAABwBBAAAB];
     maxstack 4;
     maxlocals 13;
     try ir9->ir39 catch classref_69 go to ir42; // java/lang/RuntimeException
@@ -427,7 +426,6 @@ public super abstract class {
       var i_1, ir0, utf8_43, utf8_7; // name=a,  descriptor=I
       var i_2, ir2, utf8_103, utf8_7; // name=r,  descriptor=I
     }
-    stackmap [AAX8ACQBBAQFAg==];
     maxstack 1;
     maxlocals 3;
     //Variables
@@ -472,7 +470,6 @@ public super abstract class {
       var i_1, ir0, utf8_43, utf8_7; // name=a,  descriptor=I
       var i_2, ir2, utf8_103, utf8_7; // name=r,  descriptor=I
     }
-    stackmap [AAX8ACQBBAQGAg==];
     maxstack 1;
     maxlocals 3;
     //Variables

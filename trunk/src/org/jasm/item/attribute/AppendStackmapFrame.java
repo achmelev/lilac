@@ -1,5 +1,6 @@
 package org.jasm.item.attribute;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
@@ -7,10 +8,11 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 
-public class AppendStackmapFrame extends AbstractStackmapFrame implements IContainerBytecodeItem<AbstractStackmapVariableinfo> {
+public class AppendStackmapFrame extends AbstractStackmapFrame implements IContainerBytecodeItem<AbstractStackmapVariableinfo>, IStackmapVariableinfoContainer {
 	
 	
-	private AbstractStackmapVariableinfo[] infos;
+	private List<AbstractStackmapVariableinfo> localsList;
+	private AbstractStackmapVariableinfo[] locals;
 	
 	public AppendStackmapFrame() {
 		super((short)252);
@@ -18,7 +20,7 @@ public class AppendStackmapFrame extends AbstractStackmapFrame implements IConta
 
 	@Override
 	public int getLength() {
-		return 1+2+calculateVariableInfosLength(infos);
+		return 1+2+calculateVariableInfosLength(locals);
 	}
 
 	@Override
@@ -43,7 +45,7 @@ public class AppendStackmapFrame extends AbstractStackmapFrame implements IConta
 
 	@Override
 	public String getPrintArgs() {
-		return getInstruction().getPrintLabel()+", "+createItemsListArg(infos);
+		return getInstruction().getPrintLabel()+", "+createItemsListArg(locals);
 	}
 
 	@Override
@@ -54,19 +56,19 @@ public class AppendStackmapFrame extends AbstractStackmapFrame implements IConta
 	@Override
 	protected void doReadBody(IByteBuffer source, long offset) {
 		deltaOffset = source.readUnsignedShort(offset+1);
-		infos = readVariableInfos(this, source, offset+3, tagValue-251);
+		locals = readVariableInfos(this, source, offset+3, tagValue-251);
 		
 	}
 
 	@Override
 	protected void doWriteBody(IByteBuffer target, long offset) {
 		target.writeUnsignedShort(offset+1, calculateDeltaOffset());
-		writeVariableInfos(target, offset+3, infos);
+		writeVariableInfos(target, offset+3, locals);
 	}
 
 	@Override
 	protected void doResolveBody() {
-		for (AbstractStackmapVariableinfo info: infos) {
+		for (AbstractStackmapVariableinfo info: locals) {
 			info.resolve();
 		}
 		
@@ -74,7 +76,16 @@ public class AppendStackmapFrame extends AbstractStackmapFrame implements IConta
 
 	@Override
 	protected void doResolveBodyAfterParse() {
-		for (AbstractStackmapVariableinfo info: infos) {
+		if (localsList == null) {
+			localsList = new ArrayList<AbstractStackmapVariableinfo>();
+		}
+		locals = localsList.toArray(new AbstractStackmapVariableinfo[0]);
+		
+		if (calculateTag((short)0)<252 || calculateTag((short)0)>254) {
+			emitError(null, "number of locals out of bounds");
+		}
+		
+		for (AbstractStackmapVariableinfo info: locals) {
 			info.resolve();
 		}
 		
@@ -87,23 +98,23 @@ public class AppendStackmapFrame extends AbstractStackmapFrame implements IConta
 
 	@Override
 	protected short calculateTag(short tagRangeBegin) {
-		return (short)(251+infos.length);
+		return (short)(251+locals.length);
 	}
 
 	@Override
 	public int getSize() {
-		return infos.length;
+		return locals.length;
 	}
 
 	@Override
 	public AbstractStackmapVariableinfo get(int index) {
-		return infos[index];
+		return locals[index];
 	}
 
 	@Override
 	public int indexOf(AbstractStackmapVariableinfo item) {
-		for (int i=0;i<infos.length; i++) {
-			if (infos[i] == item) {
+		for (int i=0;i<locals.length; i++) {
+			if (locals[i] == item) {
 				return i;
 			}
 		}
@@ -114,6 +125,20 @@ public class AppendStackmapFrame extends AbstractStackmapFrame implements IConta
 	@Override
 	public int getItemSizeInList(IBytecodeItem item) {
 		return 1;
+	}
+	
+	private void addLocal(AbstractStackmapVariableinfo info) {
+		if (localsList == null) {
+			localsList = new ArrayList<AbstractStackmapVariableinfo>();
+		}
+		info.setParent(this);
+		localsList.add(info);
+	}
+
+	@Override
+	public void addVariableInfo(AbstractStackmapVariableinfo info) {
+		addLocal(info);
+		
 	}
 
 }

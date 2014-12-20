@@ -28,6 +28,7 @@ public class NameGenerator {
 		keywords.add("aload");
 		keywords.add("anewarray");
 		keywords.add("annotation");
+		keywords.add("append");
 		keywords.add("areturn");
 		keywords.add("argument");
 		keywords.add("array");
@@ -50,6 +51,7 @@ public class NameGenerator {
 		keywords.add("catch");
 		keywords.add("char");
 		keywords.add("checkcast");
+		keywords.add("chop");
 		keywords.add("class");
 		keywords.add("classref");
 		keywords.add("code");
@@ -89,6 +91,7 @@ public class NameGenerator {
 		keywords.add("element");
 		keywords.add("enclosing");
 		keywords.add("enum");
+		keywords.add("extended");
 		keywords.add("extends");
 		keywords.add("f2d");
 		keywords.add("f2i");
@@ -115,6 +118,7 @@ public class NameGenerator {
 		keywords.add("freturn");
 		keywords.add("fstore");
 		keywords.add("fsub");
+		keywords.add("full");
 		keywords.add("getfield");
 		keywords.add("getstatic");
 		keywords.add("go");
@@ -200,6 +204,7 @@ public class NameGenerator {
 		keywords.add("lload");
 		keywords.add("lmul");
 		keywords.add("lneg");
+		keywords.add("locals");
 		keywords.add("long");
 		keywords.add("lookupswitch");
 		keywords.add("lor");
@@ -229,6 +234,7 @@ public class NameGenerator {
 		keywords.add("newinvokespecial");
 		keywords.add("nop");
 		keywords.add("normal");
+		keywords.add("null");
 		keywords.add("numbers");
 		keywords.add("object");
 		keywords.add("outer");
@@ -248,6 +254,7 @@ public class NameGenerator {
 		keywords.add("return");
 		keywords.add("returnadress");
 		keywords.add("saload");
+		keywords.add("same");
 		keywords.add("sastore");
 		keywords.add("short");
 		keywords.add("signature");
@@ -268,10 +275,13 @@ public class NameGenerator {
 		keywords.add("targets");
 		keywords.add("throws");
 		keywords.add("to");
+		keywords.add("top");
 		keywords.add("transient");
 		keywords.add("try");
 		keywords.add("type");
 		keywords.add("types");
+		keywords.add("uninitialized");
+		keywords.add("uninitializedthis");
 		keywords.add("unknown");
 		keywords.add("utf8");
 		keywords.add("value");

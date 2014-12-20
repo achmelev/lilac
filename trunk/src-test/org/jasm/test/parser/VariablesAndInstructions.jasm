@@ -64,7 +64,6 @@ public super abstract class {
     
     //Code attributes
     unknown code attribute myattr,[TWVpbiBBdHRyaWJ1dA==];
-    stackmap [TWVpbiBBdHRyaWJ1dA==];
     
     line numbers {
     	line label1, 10;

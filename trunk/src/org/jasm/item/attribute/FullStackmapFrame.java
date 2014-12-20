@@ -1,5 +1,6 @@
 package org.jasm.item.attribute;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
@@ -7,10 +8,14 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 
-public class FullStackmapFrame extends AbstractStackmapFrame implements IContainerBytecodeItem<AbstractStackmapVariableinfo>{
+public class FullStackmapFrame extends AbstractStackmapFrame implements IContainerBytecodeItem<AbstractStackmapVariableinfo>, IStackmapVariableinfoContainer {
 	
+	private List<AbstractStackmapVariableinfo> localsList;
 	private AbstractStackmapVariableinfo[] locals;
+	private List<AbstractStackmapVariableinfo> stackItemsList;
 	private AbstractStackmapVariableinfo [] stackItems;
+	
+	private boolean addToStackItems = false;
 
 	public FullStackmapFrame() {
 		super((short)255);
@@ -94,10 +99,17 @@ public class FullStackmapFrame extends AbstractStackmapFrame implements IContain
 
 	@Override
 	protected void doResolveBodyAfterParse() {
-		//TODO
+		if (localsList == null) {
+			localsList = new ArrayList<AbstractStackmapVariableinfo>();
+		}
+		locals = localsList.toArray(new AbstractStackmapVariableinfo[0]);
 		for (AbstractStackmapVariableinfo info: locals) {
 			info.resolve();
 		}
+		if (stackItemsList == null) {
+			stackItemsList = new ArrayList<AbstractStackmapVariableinfo>();
+		}
+		stackItems = stackItemsList.toArray(new AbstractStackmapVariableinfo[0]);
 		for (AbstractStackmapVariableinfo info: stackItems) {
 			info.resolve();
 		}
@@ -147,6 +159,36 @@ public class FullStackmapFrame extends AbstractStackmapFrame implements IContain
 	@Override
 	public int getItemSizeInList(IBytecodeItem item) {
 		return 1;
+	}
+	
+	private void addLocal(AbstractStackmapVariableinfo info) {
+		if (localsList == null) {
+			localsList = new ArrayList<AbstractStackmapVariableinfo>();
+		}
+		info.setParent(this);
+		localsList.add(info);
+	}
+	
+	private void addStackItem(AbstractStackmapVariableinfo info) {
+		if (stackItemsList == null) {
+			stackItemsList = new ArrayList<AbstractStackmapVariableinfo>();
+		}
+		info.setParent(this);
+		stackItemsList.add(info);
+	}
+	
+	public void switchAddingToStackItems() {
+		addToStackItems = true;
+	}
+
+	@Override
+	public void addVariableInfo(AbstractStackmapVariableinfo info) {
+		if (addToStackItems) {
+			addStackItem(info);
+		} else {
+			addLocal(info);
+		}
+		
 	}
 
 }

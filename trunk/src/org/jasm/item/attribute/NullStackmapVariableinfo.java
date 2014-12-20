@@ -5,10 +5,10 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
-public class UninitializedThisVariableinfo extends AbstractStackmapVariableinfo {
+public class NullStackmapVariableinfo extends AbstractStackmapVariableinfo {
 
-	public UninitializedThisVariableinfo() {
-		super((short)6);
+	public NullStackmapVariableinfo() {
+		super((short)5);
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class UninitializedThisVariableinfo extends AbstractStackmapVariableinfo 
 
 	@Override
 	public String getPrintName() {
-		return "uninitializedthis";
+		return "null";
 	}
 
 	@Override
