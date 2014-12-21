@@ -5,7 +5,7 @@ package org.jasm.test.descriptor;
 import junit.framework.Assert;
 
 import org.jasm.item.clazz.Method;
-import org.jasm.item.descriptor.MethodDescriptor;
+import org.jasm.type.descriptor.MethodDescriptor;
 import org.junit.Test;
 
 public class MethodDescriptorTest {

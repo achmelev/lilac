@@ -1,9 +1,9 @@
 package org.jasm.item.constantpool;
 
-import org.jasm.item.descriptor.IllegalDescriptorException;
-import org.jasm.item.descriptor.MethodDescriptor;
-import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.descriptor.IllegalDescriptorException;
+import org.jasm.type.descriptor.MethodDescriptor;
+import org.jasm.type.descriptor.TypeDescriptor;
 
 public abstract class AbstractRefInfo extends AbstractReferenceEntry implements INameReferencingEntry, IDescriptorReferencingEntry {
 	

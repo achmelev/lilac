@@ -2,8 +2,8 @@ package org.jasm.test.descriptor;
 
 import junit.framework.Assert;
 
-import org.jasm.item.descriptor.IllegalDescriptorException;
-import org.jasm.item.descriptor.TypeDescriptor;
+import org.jasm.type.descriptor.IllegalDescriptorException;
+import org.jasm.type.descriptor.TypeDescriptor;
 import org.junit.Test;
 
 public class TypeDescriptorTest {

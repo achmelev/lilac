@@ -1,8 +1,8 @@
 package org.jasm.item.attribute;
 
 import org.jasm.JasmConsts;
-import org.jasm.item.descriptor.IllegalDescriptorException;
 import org.jasm.item.instructions.Instructions;
+import org.jasm.type.descriptor.IllegalDescriptorException;
 
 
 public class DebugLocalVariableType extends DebugLocalVariable {

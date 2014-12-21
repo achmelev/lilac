@@ -1,9 +1,9 @@
 package org.jasm.item.constantpool;
 
-import org.jasm.item.descriptor.IllegalDescriptorException;
-import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.descriptor.IllegalDescriptorException;
+import org.jasm.type.descriptor.TypeDescriptor;
 
 public class ClassInfo extends AbstractReferenceEntry implements INameReferencingEntry, IUtf8ConstantPoolReference {
 	

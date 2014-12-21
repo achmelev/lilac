@@ -11,8 +11,6 @@ import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.IUtf8ConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
-import org.jasm.item.descriptor.IllegalDescriptorException;
-import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.ILocalVariableReference;
@@ -20,6 +18,8 @@ import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.LocalVariable;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.descriptor.IllegalDescriptorException;
+import org.jasm.type.descriptor.TypeDescriptor;
 
 
 public class DebugLocalVariable extends AbstractByteCodeItem implements IUtf8ConstantPoolReference, ILocalVariableReference, IInstructionReference {
