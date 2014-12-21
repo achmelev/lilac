@@ -1,4 +1,4 @@
-package org.jasm.item.descriptor;
+package org.jasm.type.descriptor;
 
 public class IllegalDescriptorException extends RuntimeException {
 

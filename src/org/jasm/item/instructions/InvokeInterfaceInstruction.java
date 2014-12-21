@@ -2,8 +2,8 @@ package org.jasm.item.instructions;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.item.constantpool.InterfaceMethodrefInfo;
-import org.jasm.item.descriptor.MethodDescriptor;
-import org.jasm.item.descriptor.TypeDescriptor;
+import org.jasm.type.descriptor.MethodDescriptor;
+import org.jasm.type.descriptor.TypeDescriptor;
 
 public class InvokeInterfaceInstruction extends ConstantPoolInstruction {
 	

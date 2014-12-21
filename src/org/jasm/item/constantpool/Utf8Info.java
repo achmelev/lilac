@@ -19,10 +19,10 @@ import org.jasm.item.attribute.InnerClass;
 import org.jasm.item.clazz.AbstractClassMember;
 import org.jasm.item.clazz.Field;
 import org.jasm.item.clazz.Method;
-import org.jasm.item.descriptor.IllegalDescriptorException;
-import org.jasm.item.descriptor.MethodDescriptor;
-import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.parser.literals.StringLiteral;
+import org.jasm.type.descriptor.IllegalDescriptorException;
+import org.jasm.type.descriptor.MethodDescriptor;
+import org.jasm.type.descriptor.TypeDescriptor;
 
 
 public class Utf8Info extends AbstractConstantPoolEntry {

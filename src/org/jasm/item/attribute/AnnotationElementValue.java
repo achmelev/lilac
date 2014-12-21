@@ -20,10 +20,10 @@ import org.jasm.item.constantpool.IntegerInfo;
 import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
-import org.jasm.item.descriptor.IllegalDescriptorException;
-import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.descriptor.IllegalDescriptorException;
+import org.jasm.type.descriptor.TypeDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

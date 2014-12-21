@@ -14,9 +14,9 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.IUtf8ConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
-import org.jasm.item.descriptor.IllegalDescriptorException;
-import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.descriptor.IllegalDescriptorException;
+import org.jasm.type.descriptor.TypeDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

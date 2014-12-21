@@ -1,4 +1,4 @@
-package org.jasm.item.descriptor;
+package org.jasm.type.descriptor;
 
 import java.util.ArrayList;
 import java.util.List;

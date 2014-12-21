@@ -1,11 +1,11 @@
 package org.jasm.item.clazz;
 
 import org.jasm.item.constantpool.Utf8Info;
-import org.jasm.item.descriptor.IllegalDescriptorException;
-import org.jasm.item.descriptor.TypeDescriptor;
 import org.jasm.item.modifier.FieldModifier;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.descriptor.IllegalDescriptorException;
+import org.jasm.type.descriptor.TypeDescriptor;
 
 public class Field extends AbstractClassMember<FieldModifier> {
 	
