@@ -20,7 +20,6 @@ import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.AssemblerParser;
-import org.jasm.parser.SymbolTable;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
