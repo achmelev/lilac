@@ -126,7 +126,7 @@ public class TypeDescriptor {
 		return className;
 	}
 
-	public String getDescriptor() {
+	public String getValue() {
 		return descriptor;
 	}
 	
@@ -151,7 +151,7 @@ public class TypeDescriptor {
 			} else {
 				try {
 					TypeDescriptor d1 = TypeDescriptor.parseFromStringBegin(s.substring(1,s.length()));
-					return new TypeDescriptor("["+d1.getDescriptor());
+					return new TypeDescriptor("["+d1.getValue());
 				} catch (IllegalDescriptorException e) {
 					throw new IllegalDescriptorException("illegal type descriptor begin "+s);
 				}

@@ -1,0 +1,40 @@
+package org.jasm.item.classpath;
+
+import org.jasm.item.modifier.MethodModifier;
+import org.jasm.type.descriptor.MethodDescriptor;
+
+public class MethodInfo {
+	
+	private String name;
+	private MethodModifier modifier;
+	private MethodDescriptor descriptor;
+	private ClassInfo parent;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public MethodModifier getModifier() {
+		return modifier;
+	}
+	public void setModifier(MethodModifier modifier) {
+		this.modifier = modifier;
+	}
+	public MethodDescriptor getDescriptor() {
+		return descriptor;
+	}
+	public void setDescriptor(MethodDescriptor descriptor) {
+		this.descriptor = descriptor;
+	}
+	public ClassInfo getParent() {
+		return parent;
+	}
+	public void setParent(ClassInfo parent) {
+		this.parent = parent;
+	}
+	
+	
+
+}
