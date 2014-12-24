@@ -19,7 +19,6 @@ import org.jasm.parser.literals.SymbolReference;
 
 public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstantPoolEntry> {
 	
-	//TODO - InvokeDynamic
 	
 	private KeyToListMap<String,AbstractConstantPoolEntry> entriesByName = new KeyToListMap<>();
 	private KeyToListMap<String,AbstractConstantPoolEntry> entriesByDescriptor = new KeyToListMap<String,AbstractConstantPoolEntry>();
