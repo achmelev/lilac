@@ -8,7 +8,10 @@ public class MethodDescriptor {
 	private List<TypeDescriptor> parameters = new ArrayList<>();
 	private TypeDescriptor returnType;
 	
+	private String value = null;
+	
 	public MethodDescriptor(String descriptor) throws IllegalDescriptorException {
+		this.value = descriptor;
 		if (!descriptor.startsWith("(")) {
 			throw new IllegalDescriptorException("illegal method descriptor "+descriptor);
 		} else {
@@ -33,7 +36,7 @@ public class MethodDescriptor {
 		while (s1.length()>0) {
 			TypeDescriptor t = TypeDescriptor.parseFromStringBegin(s1);
 			parameters.add(t);
-			s1 = s1.substring(t.getDescriptor().length(),s1.length());
+			s1 = s1.substring(t.getValue().length(),s1.length());
 		}
 	}
 	
@@ -52,6 +55,11 @@ public class MethodDescriptor {
 	public TypeDescriptor getReturnType() {
 		return returnType;
 	}
+
+	public String getValue() {
+		return value;
+	}
+	
 	
 	
 
