@@ -207,6 +207,20 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 			return getParent().getNextSourceLocation();
 		}
 	}
+	
+	protected SourceLocation getNextSourceLocationDown() {
+		if (this.sourceLocation != null) {
+			return sourceLocation;
+		} else  {
+			List<IBytecodeItem> descendants = getAllItemsFromHere();
+			for (IBytecodeItem item: descendants) {
+				if (item.getSourceLocation() != null) {
+					return item.getSourceLocation();
+				}
+			}
+		}
+		return null;
+	}
 
 	public boolean hasErrors() {
 		return hasResolveErrors;
