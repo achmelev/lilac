@@ -3,6 +3,7 @@ package org.jasm.item.constantpool;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.parser.literals.LongLiteral;
+import org.jasm.type.verifier.VerifierParams;
 
 public class LongInfo extends AbstractConstantPoolEntry implements IPrimitiveValueReferencingEntry {
 	
@@ -29,6 +30,12 @@ public class LongInfo extends AbstractConstantPoolEntry implements IPrimitiveVal
 
 	}
 	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
+		
+	}
+
 	@Override
 	protected void doResolveAfterParse() {
 		if (valueLiteral.isValid()) {

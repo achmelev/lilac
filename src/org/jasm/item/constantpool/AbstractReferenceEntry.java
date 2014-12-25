@@ -3,6 +3,7 @@ package org.jasm.item.constantpool;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 
 
 public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry implements IConstantPoolReference {
@@ -47,6 +48,14 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 		}
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
+		
+	}
+
 	@Override
 	protected void doResolveAfterParse() {
 	
@@ -125,11 +134,11 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 					emitError(referenceLabels[i], "wrong constant type, expected "+expectedTypes[i].getPrintName());
 					
 				} else {
-					if (!reference[i].hasResolveErrors()) {
+					if (!reference[i].hasErrors()) {
 						if (reference[i] instanceof AbstractReferenceEntry) {
 							AbstractReferenceEntry ar = (AbstractReferenceEntry)reference[i];
 							ar.verifyReferences();
-							if (!ar.hasResolveErrors()) {
+							if (!ar.hasErrors()) {
 								verifyReference(i, referenceLabels[i], reference[i]);
 							} else {
 								hasResolveErrors(true);

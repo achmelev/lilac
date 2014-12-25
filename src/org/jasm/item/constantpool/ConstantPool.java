@@ -16,6 +16,7 @@ import org.jasm.map.KeyToListMap;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.SymbolTable;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 
 public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstantPoolEntry> {
 	
@@ -295,7 +296,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		entriesByDescriptor.clear();
 		utf8ByContent.clear();
 		for (AbstractConstantPoolEntry entry: getItems()) {
-			if (entry != null && !(entry instanceof InvokeDynamicInfo) && !entry.hasResolveErrors()) {
+			if (entry != null && !(entry instanceof InvokeDynamicInfo) && !entry.hasErrors()) {
 				addToIndex(entry);
 			}
 		}
@@ -304,7 +305,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	
 	public void updateInvokeDynamicIndexes() {
 		for (AbstractConstantPoolEntry entry: getItems()) {
-			if (entry != null && (entry instanceof InvokeDynamicInfo) && !entry.hasResolveErrors()) {
+			if (entry != null && (entry instanceof InvokeDynamicInfo) && !entry.hasErrors()) {
 				addToIndex(entry);
 			}
 		}
@@ -384,6 +385,17 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		}
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		for (IBytecodeItem item: getItems()) {
+			item.verify(params);
+		}
+		
+	}
+
+
 	public void resolveInvokeDynamics() {
 		for (IBytecodeItem item: getItems()) {
 			if (item != null && (item instanceof InvokeDynamicInfo)) {
@@ -398,7 +410,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	protected void doResolveAfterParse() {
 		doResolve();
 		for (AbstractConstantPoolEntry item: getItems()) {
-			if ((item instanceof AbstractReferenceEntry) && !item.hasResolveErrors()) {
+			if ((item instanceof AbstractReferenceEntry) && !item.hasErrors()) {
 				((AbstractReferenceEntry)item).verifyReferences();
 			}
 		}

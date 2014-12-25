@@ -4,6 +4,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.parser.literals.FloatLiteral;
 import org.jasm.parser.literals.IntegerLiteral;
+import org.jasm.type.verifier.VerifierParams;
 
 public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveValueReferencingEntry {
 	
@@ -30,6 +31,14 @@ public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveVa
 
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
+		
+	}
+
 	@Override
 	protected void doResolveAfterParse() {
 		if (valueLiteral.isValid()) {
