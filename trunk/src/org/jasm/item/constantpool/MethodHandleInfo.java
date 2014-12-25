@@ -2,6 +2,7 @@ package org.jasm.item.constantpool;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 
 public class MethodHandleInfo extends AbstractConstantPoolEntry implements INameReferencingEntry, IDescriptorReferencingEntry {
 	
@@ -47,6 +48,14 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 		reference = (AbstractConstantPoolEntry)getParent().get(index-1);
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
+		
+	}
+
 	@Override
 	protected void doResolveAfterParse() {
 		if (this.kind.getKind()>=1 && this.kind.getKind()<=4  ) {
