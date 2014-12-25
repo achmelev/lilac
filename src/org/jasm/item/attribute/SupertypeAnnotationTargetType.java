@@ -8,6 +8,7 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.IImplementsDeclarationsReference;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 
 public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType implements IImplementsDeclarationsReference {
 	
@@ -85,6 +86,11 @@ public class SupertypeAnnotationTargetType extends AbstractAnnotationTargetType 
 	@Override
 	protected void doResolve() {
 
+	}
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
 		
 	}
 

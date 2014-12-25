@@ -11,6 +11,7 @@ import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.clazz.IAttributesContainer;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.parser.literals.IntegerLiteral;
+import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,13 +119,23 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		instructions.verify(params);
+		exceptionTable.verify(params);
+		attributes.verify(params);
+		
+	}
+
 	@Override
 	protected void doResolveAfterParse() {
 		instructions.resolve();
 		exceptionTable.resolve();
 		attributes.resolve();
 		
-		if (!hasResolveErrors()) {
+		if (!hasErrors()) {
 			if (maxStackLiteral != null) {
 				Integer value = maxStackLiteral.checkAndLoadValue(this);
 				if (value != null && value>=0 && value < 65536) {

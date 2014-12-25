@@ -5,6 +5,7 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.parser.literals.IntegerLiteral;
+import org.jasm.type.verifier.VerifierParams;
 
 public class ChopStackmapFrame extends AbstractStackmapFrame {
 	
@@ -63,6 +64,13 @@ public class ChopStackmapFrame extends AbstractStackmapFrame {
 	@Override
 	protected void doResolveBody() {
 		k = (short)(251-tagValue);
+	}
+	
+	
+
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
 	}
 
 	@Override

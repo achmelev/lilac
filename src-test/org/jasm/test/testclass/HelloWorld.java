@@ -8,7 +8,12 @@ public class HelloWorld {
 	
 	@Deprecated
 	public String getMessage() {
+		varArgsMethod("a","a","b");
 		return "Hello \n World!";
+	}
+	
+	public void varArgsMethod(Object... args) {
+		
 	}
 
 }

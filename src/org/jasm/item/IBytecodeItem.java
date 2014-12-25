@@ -3,13 +3,15 @@ package org.jasm.item;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.parser.SourceLocation;
+import org.jasm.type.verifier.VerifierParams;
 
 public interface IBytecodeItem {
 	
 	public void read(IByteBuffer source, long offset);
 	public void write(IByteBuffer target, long offset);
 	public void resolve();
-	public boolean hasResolveErrors();
+	public void verify(VerifierParams params);
+	public boolean hasErrors();
 	public void updateMetadata();
 	public int getLength();
 	

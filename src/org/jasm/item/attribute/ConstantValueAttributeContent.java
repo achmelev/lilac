@@ -15,6 +15,7 @@ import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 
 public class ConstantValueAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
 	
@@ -89,6 +90,14 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 		this.valueEntry = getConstantPool().get(this.valueIndex-1);
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
+		
+	}
+
 	@Override
 	protected void doResolveAfterParse() {
 		valueEntry = getConstantPool().checkAndLoadFromSymbolTable(this,new Class[]{StringInfo.class,IntegerInfo.class,LongInfo.class,FloatInfo.class,DoubleInfo.class}, valueReference);

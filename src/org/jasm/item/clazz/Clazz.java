@@ -14,6 +14,7 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.attribute.Attributes;
+import org.jasm.item.classpath.ClassPath;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
@@ -23,6 +24,7 @@ import org.jasm.parser.AssemblerParser;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
+import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +59,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	
 	private Map<String, Integer> interfaceIndexesLabelTable =  new HashMap<String, Integer>();
 	
+	private ClassPath classpath;
+	private org.jasm.item.classpath.ClassInfo me;
 	
 	public Clazz() {
 		initChildren();
@@ -249,6 +253,15 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		pool.resolveInvokeDynamics();
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		pool.verify(params);
+		methods.verify(params);
+		attributes.verify(params);
+	}
+
 	@Override
 	protected void doResolveAfterParse() {
 		//Version
@@ -491,8 +504,25 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			return interfaceIndexesLabelTable.get(ref.getSymbolName());
 		}
 	}
+
+	public void setClasspath(ClassPath classpath) {
+		this.classpath = classpath;
+	}
 	
-	
+	public org.jasm.item.classpath.ClassInfo findClass(String name) {
+		if (name.equals(getThisClass().getClassName())) {
+			if (me == null) {
+				me = org.jasm.item.classpath.ClassInfo.createFromClass(this);
+			}
+			return me;
+		} else {
+			if (classpath != null) {
+				return classpath.findClass(name);
+			} else {
+				return null;
+			}
+		}
+	}
 	
 	
 

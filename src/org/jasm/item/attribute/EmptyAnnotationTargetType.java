@@ -5,6 +5,7 @@ import java.util.List;
 import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.type.verifier.VerifierParams;
 
 public class EmptyAnnotationTargetType extends AbstractAnnotationTargetType {
 	
@@ -80,6 +81,14 @@ public class EmptyAnnotationTargetType extends AbstractAnnotationTargetType {
 	@Override
 	protected void doResolve() {
 
+		
+	}
+	
+	
+
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
 		
 	}
 

@@ -19,6 +19,7 @@ import org.jasm.item.modifier.AbstractClassMemberModifier;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 
 public abstract class AbstractClassMember<T extends AbstractClassMemberModifier> extends AbstractByteCodeItem implements IContainerBytecodeItem<Attributes>, IUtf8ConstantPoolReference, IAttributesContainer {
 	
@@ -98,6 +99,12 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	}
 	
 	@Override
+	protected void doVerify(VerifierParams params) {
+		attributes.verify(params);
+		
+	}
+
+	@Override
 	protected void doResolveAfterParse() {
 		if (this.nameReference != null) {
 			this.name = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, nameReference);
@@ -116,7 +123,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 			emitError(null, "missing descriptor statement");
 		}
 		
-		if (!this.hasResolveErrors()) {
+		if (!this.hasErrors()) {
 			modifier = createModifier(0);
 			for (Keyword kw: modifierLiterals) {
 				modifier.setFlag(kw.getKeyword());
