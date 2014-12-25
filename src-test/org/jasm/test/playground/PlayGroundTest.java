@@ -31,6 +31,17 @@ public class PlayGroundTest {
 		
 	}
 	
+	@Test
+	public void testInterface() {
+		ClassLoader cl = createClassLoader();
+		try {
+			Class clazz = cl.loadClass(ICalculator.class.getName()+"2");
+			
+		} catch (ClassNotFoundException  e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	private ClassLoader createClassLoader() {
 		return new AssemblerClassLoader(Thread.currentThread().getContextClassLoader());
 	}

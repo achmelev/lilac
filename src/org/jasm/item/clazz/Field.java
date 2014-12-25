@@ -6,6 +6,7 @@ import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.TypeDescriptor;
+import org.jasm.type.verifier.VerifierParams;
 
 public class Field extends AbstractClassMember<FieldModifier> {
 	
@@ -43,8 +44,53 @@ public class Field extends AbstractClassMember<FieldModifier> {
 	@Override
 	protected void verifyName(SymbolReference ref, Utf8Info name) {
 		IdentifierUtils.checkIdentifier(this, ref, name);
-		
-		
 	}
+
+
+	@Override
+	protected void doVerify(VerifierParams params) {
+		checkModifiers();
+		super.doVerify(params);
+	}
+	
+	private void checkModifiers() {
+		boolean valid = true;
+		boolean isInInterface = getRoot().getModifier().isInterface();
+		if (!isInInterface) {
+			valid = checkPublicPrivateProtected();
+			if (getModifier().isFinal() && getModifier().isVolatile()) {
+				valid = false;
+			}
+		} else  {
+			if (!getModifier().isPublic() || !getModifier().isStatic() || !getModifier().isFinal()) {
+				valid = false;
+			}
+			if (getModifier().isEnum() || 
+					getModifier().isPrivate() || 
+					getModifier().isProtected() ||
+					getModifier().isTransient() || 
+					getModifier().isVolatile()) {
+				valid = false;
+			}
+		} 
+		if (!valid) {
+			emitError(null, "illegal field modifiers");
+		}
+	}
+	
+	private boolean checkPublicPrivateProtected() {
+		boolean valid = true;
+		if (getModifier().isPrivate() && (getModifier().isPublic() || getModifier().isProtected())) {
+			valid = false;
+		}
+		if (getModifier().isPublic() && (getModifier().isPrivate() || getModifier().isProtected())) {
+			valid = false;
+		}
+		if (getModifier().isProtected() && (getModifier().isPublic() || getModifier().isPrivate())) {
+			valid = false;
+		}
+		return valid;
+	}
+	
 
 }

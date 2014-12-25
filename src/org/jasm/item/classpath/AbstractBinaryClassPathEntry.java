@@ -15,7 +15,6 @@ public abstract class AbstractBinaryClassPathEntry implements IClassPathEntry {
 		Clazz clazz = new Clazz();
 		clazz.read(bbuf, 0L);
 		clazz.resolve();
-		clazz.updateMetadata();
 		
 		return ClassInfo.createFromClass(clazz);
 	}

@@ -6,6 +6,7 @@ import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.MethodDescriptor;
+import org.jasm.type.verifier.VerifierParams;
 
 public class Method extends AbstractClassMember<MethodModifier> {
 	
@@ -59,6 +60,66 @@ public class Method extends AbstractClassMember<MethodModifier> {
 		
 	}
 
+	@Override
+	protected void doVerify(VerifierParams params) {
+		checkModifiers();
+		super.doVerify(params);
+	}
+	
+	private void checkModifiers() {
+		if (getName().getValue().equals("<clinit>")) {
+			return;
+		}
+		boolean valid = true;
+		boolean istInit = getName().getValue().equals("<init>");
+		boolean isInInterface = getRoot().getModifier().isInterface();
+		if (!isInInterface && !istInit) {
+			valid = checkPublicPrivateProtected();
+		} else if (isInInterface) {
+			if (getModifier().isProtected() || getModifier().isFinal() || getModifier().isSynchronized() || getModifier().isNative()) {
+				valid = false;
+			} 
+			if (classVersionLess("52.0")) {
+				if (!(getModifier().isPublic() && getModifier().isAbstract())) {
+					valid = false;
+				}
+			} else {
+				valid = checkPublicPrivateProtected();
+			}
+		} else if (istInit) {
+			valid = checkPublicPrivateProtected();
+			if (getModifier().isBridge() || getModifier().isFinal() || 
+					getModifier().isNative() || getModifier().isStatic() ||
+					getModifier().isSynchronized()) {
+				valid = false;
+			}	
+		}
+		if (getModifier().isAbstract()) {
+			if (getModifier().isPrivate() || getModifier().isStatic() || 
+					getModifier().isSynchronized()  ||
+					getModifier().isStrict()) {
+				valid = false;
+			}
+		}
+		if (!valid) {
+			emitError(null, "illegal method modifiers");
+		}
+	}
+	
+	
+	private boolean checkPublicPrivateProtected() {
+		boolean valid = true;
+		if (getModifier().isPrivate() && (getModifier().isPublic() || getModifier().isProtected())) {
+			valid = false;
+		}
+		if (getModifier().isPublic() && (getModifier().isPrivate() || getModifier().isProtected())) {
+			valid = false;
+		}
+		if (getModifier().isProtected() && (getModifier().isPublic() || getModifier().isPrivate())) {
+			valid = false;
+		}
+		return valid;
+	}
 	
 	
 	

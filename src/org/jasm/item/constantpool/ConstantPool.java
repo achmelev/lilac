@@ -390,7 +390,9 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	@Override
 	protected void doVerify(VerifierParams params) {
 		for (IBytecodeItem item: getItems()) {
-			item.verify(params);
+			if (item != null) {
+				item.verify(params);
+			}
 		}
 		
 	}

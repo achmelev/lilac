@@ -232,5 +232,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 		}
 	}
 	
+	
+	
 
 }
