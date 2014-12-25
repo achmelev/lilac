@@ -20,6 +20,7 @@ import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.TypeDescriptor;
+import org.jasm.type.verifier.VerifierParams;
 
 
 public class DebugLocalVariable extends AbstractByteCodeItem implements IUtf8ConstantPoolReference, ILocalVariableReference, IInstructionReference {
@@ -114,6 +115,13 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IUtf8Con
 
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
+	}
+
 	@Override
 	protected void doResolveAfterParse() {
 		Instructions instr = ((CodeAttributeContent)getParent().getParent().getParent().getParent()).getInstructions();

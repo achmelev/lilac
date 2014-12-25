@@ -24,7 +24,7 @@ public abstract class AbstractClassMemberList<T extends AbstractClassMember> ext
 		for (IBytecodeItem item: getItems()) {
 			if (item != null) {
 				T member = (T)item;
-				if (member != null && !member.hasResolveErrors()) {
+				if (member != null && !member.hasErrors()) {
 					addToIndex(member);
 				}
 			}

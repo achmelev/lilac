@@ -12,6 +12,7 @@ import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.LocalVariable;
 import org.jasm.parser.literals.IntegerLiteral;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 
 public class LocalVariableAnnotationTargetTypeMember extends AbstractByteCodeItem implements IUnknownVariableReference, IInstructionReference {
 	
@@ -99,6 +100,14 @@ public class LocalVariableAnnotationTargetTypeMember extends AbstractByteCodeIte
 		} else {
 			endInstruction = instr.getInstructionAtOffset(startPC+length);
 		}
+	}
+	
+	
+
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
+		
 	}
 
 	@Override

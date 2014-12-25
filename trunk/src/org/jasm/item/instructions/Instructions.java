@@ -24,6 +24,7 @@ import org.jasm.map.KeyToListMap;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.SymbolTable;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -391,6 +392,15 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		
 	}
 	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		for (AbstractInstruction instr: items) {
+			instr.verify(params);
+		}
+		
+	}
+
+
 	@Override
 	protected void doResolveAfterParse() {
 		variablesPool.resolveAfterParse();

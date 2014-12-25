@@ -11,6 +11,7 @@ import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.parser.literals.IntegerLiteral;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 
 public class LineNumber extends AbstractByteCodeItem implements IInstructionReference {
 	
@@ -78,6 +79,15 @@ public class LineNumber extends AbstractByteCodeItem implements IInstructionRefe
 		startInstruction = instr.getInstructionAtOffset(startPC);
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
+		
+	}
+
+
 	@Override
 	protected void doResolveAfterParse() {
 		CodeAttributeContent code = getAncestor(CodeAttributeContent.class);

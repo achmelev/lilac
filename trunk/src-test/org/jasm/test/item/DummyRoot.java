@@ -8,6 +8,7 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.type.verifier.VerifierParams;
 
 public class DummyRoot extends AbstractByteCodeItem implements IContainerBytecodeItem {
 
@@ -97,6 +98,12 @@ public class DummyRoot extends AbstractByteCodeItem implements IContainerBytecod
 	@Override
 	public int getItemSizeInList(IBytecodeItem item) {
 		return 1;
+	}
+
+	@Override
+	protected void doVerify(VerifierParams params) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

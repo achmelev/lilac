@@ -20,6 +20,8 @@ public super class {
   const utf8 method_desc "(II)I";
   const classref CalculatorDelegate$1 CalculatorDelegate$1_name; // org/jasm/test/playground/CalculatorDelegate$1
   const utf8 CalculatorDelegate$1_name "org/jasm/test/playground/CalculatorDelegate$1";
+  const classref CalculatorDelegate$2 CalculatorDelegate$2_name; // org/jasm/test/playground/CalculatorDelegate$1
+  const utf8 CalculatorDelegate$2_name "org/jasm/test/playground/CalculatorDelegate$2";
   const methodref init0$0 CalculatorDelegate$1, init0$0_nat; // class=org/jasm/test/playground/CalculatorDelegate$1, name=<init>, descriptor=(Lorg/jasm/test/playground/CalculatorDelegate;I)V
   const nameandtype init0$0_nat init0_name, init0_desc$0; // name=<init> type=(Lorg/jasm/test/playground/CalculatorDelegate;I)V
   const utf8 init0_desc$0 "(Lorg/jasm/test/playground/CalculatorDelegate;I)V";
@@ -39,7 +41,7 @@ public super class {
   const utf8 InnerClasses_utf8 "InnerClasses";
   source file source_file_name; // CalculatorDelegate.java
   inner class {
-    inner CalculatorDelegate$1; // org/jasm/test/playground/CalculatorDelegate$1
+    inner CalculatorDelegate$2; // org/jasm/test/playground/CalculatorDelegate$1
   }
    //Fields
    //Methods

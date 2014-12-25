@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.type.verifier.VerifierParams;
 
 public class FloatStackmapVariableinfo extends AbstractStackmapVariableinfo {
 
@@ -48,6 +49,12 @@ public class FloatStackmapVariableinfo extends AbstractStackmapVariableinfo {
 
 	@Override
 	protected void doResolve() {
+		
+	}
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
 		
 	}
 

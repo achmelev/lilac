@@ -36,7 +36,7 @@ public class SymbolTable {
 	public boolean contains(String name) {
 		if (symbols.containsKey(name)) {
 			ISymbolTableEntry value = symbols.get(name);
-			return !value.hasResolveErrors();
+			return !value.hasErrors();
 		} else {
 			return false;
 		}

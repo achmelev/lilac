@@ -14,6 +14,7 @@ import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 
 public class ExceptionHandler extends AbstractByteCodeItem implements IConstantPoolReference, IInstructionReference, ISymbolTableEntry {
 	
@@ -126,6 +127,15 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
+		
+	}
+
+
 	@Override
 	protected void doResolveAfterParse() {
 		Instructions instrs = getAncestor(CodeAttributeContent.class).getInstructions();

@@ -4,6 +4,6 @@ public interface ISymbolTableEntry {
 	
 	public String getSymbolName();
 	public SourceLocation getSourceLocation();
-	public boolean hasResolveErrors();
+	public boolean hasErrors();
 
 }

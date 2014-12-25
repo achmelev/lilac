@@ -42,7 +42,7 @@ super class {
   const utf8 InnerClasses_utf8 "InnerClasses";
   source file source_file_name; // CalculatorDelegate.java
   enclosing method CalculatorDelegate, nameandtype_34; // org/jasm/test/playground/CalculatorDelegate, calculate (II)I
-  inner class {
+  private inner class {
     inner CalculatorDelegate$1; // org/jasm/test/playground/CalculatorDelegate$1
   }
    //Fields

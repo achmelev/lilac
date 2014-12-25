@@ -16,6 +16,7 @@ import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 
 public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
 	
@@ -114,6 +115,14 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 		}
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
+		
+	}
+
 	@Override
 	protected void doResolveAfterParse() {
 		ConstantPool pool = getConstantPool();

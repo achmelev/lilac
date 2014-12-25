@@ -9,6 +9,7 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.parser.JavaAssemblerParser.StackitemstackmapvarinfosContext;
+import org.jasm.type.verifier.VerifierParams;
 
 public class SameLocalsOneStackitemExtendedStackmapFrame extends AbstractStackmapFrame implements IContainerBytecodeItem<IBytecodeItem>, IStackmapVariableinfoContainer {
 	
@@ -58,6 +59,14 @@ public class SameLocalsOneStackitemExtendedStackmapFrame extends AbstractStackma
 	protected void doReadBody(IByteBuffer source, long offset) {
 		deltaOffset = source.readUnsignedShort(offset+1);
 		stackitemInfo = readVariableInfos(this,source,offset+3,1)[0];
+	}
+	
+	
+
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
+		
 	}
 
 	@Override

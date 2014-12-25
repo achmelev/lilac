@@ -6,6 +6,7 @@ import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.parser.literals.IntegerLiteral;
+import org.jasm.type.verifier.VerifierParams;
 
 public class TypeParameterAnnotationTargetType extends AbstractAnnotationTargetType {
 	
@@ -72,6 +73,11 @@ public class TypeParameterAnnotationTargetType extends AbstractAnnotationTargetT
 	@Override
 	protected void doResolve() {
 
+	}
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
 		
 	}
 

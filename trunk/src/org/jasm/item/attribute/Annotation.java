@@ -17,6 +17,7 @@ import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.TypeDescriptor;
+import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -194,6 +195,20 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		if (isTypeAnnotation) {
+			target.verify(params);
+			targetPath.verify(params);
+		}
+		for (AnnotationElementNameValue value: values) {
+			value.verify(params);
+		}
+		
+	}
+
 	@Override
 	protected void doResolveAfterParse() {
 		type = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, typeValueReference);

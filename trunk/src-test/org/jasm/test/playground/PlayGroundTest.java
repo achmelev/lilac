@@ -18,6 +18,19 @@ public class PlayGroundTest {
 		
 	}
 	
+	@Test
+	public void testStakmap() {
+		ClassLoader cl = createClassLoader();
+		try {
+			Class clazz = cl.loadClass(StackmapProber.class.getName());
+			Prober prob = (Prober)clazz.newInstance();
+			prob.check(3);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
 	private ClassLoader createClassLoader() {
 		return new AssemblerClassLoader(Thread.currentThread().getContextClassLoader());
 	}

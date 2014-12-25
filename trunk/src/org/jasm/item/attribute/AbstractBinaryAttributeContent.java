@@ -6,6 +6,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.parser.literals.Base64Literal;
+import org.jasm.type.verifier.VerifierParams;
 
 public abstract class AbstractBinaryAttributeContent extends AbstractSimpleAttributeContent {
 	
@@ -61,6 +62,13 @@ public abstract class AbstractBinaryAttributeContent extends AbstractSimpleAttri
 
 	}
 	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
+	}
+	
+	
+
 	@Override
 	protected void doResolveAfterParse() {
 		data = dataLiteral.getValue();

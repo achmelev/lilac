@@ -13,6 +13,7 @@ import org.jasm.item.constantpool.IUtf8ConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.parser.SourceLocation;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,6 +77,13 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		content.verify(params);
+	}
+
 	@Override
 	protected void doResolveAfterParse() {
 		if (this.nameReference != null) {

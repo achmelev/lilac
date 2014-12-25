@@ -10,6 +10,7 @@ import org.jasm.item.clazz.Clazz;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.parser.SourceLocation;
 import org.jasm.parser.literals.AbstractLiteral;
+import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,8 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	private IContainerBytecodeItem parent = null;
 	
 	private boolean resolved = false;
+	
+	private boolean verified = false;
 	
 	private SourceLocation sourceLocation = null;
 	
@@ -51,7 +54,20 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		this.resolved = true;
 	}
 	
+	@Override
+	public void verify(VerifierParams params) {
+		if (this.resolved) {
+			throw new RuntimeException("Verify can be called only once on the same instance");
+		}
+		if ((this.parent == null) && !isRoot()) {
+			throw new RuntimeException("Cannot verify orphan item!");
+		}
+		doVerify(params);
+		this.verified = true;
+	}
+	
 	protected abstract void doResolve();
+	protected abstract void doVerify(VerifierParams params);
 	protected abstract void doResolveAfterParse();
 
 	@Override
@@ -183,7 +199,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		}
 	}
 
-	public boolean hasResolveErrors() {
+	public boolean hasErrors() {
 		return hasResolveErrors;
 	}
 	
@@ -214,6 +230,10 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		}
 		buf.append("}");
 		return buf.toString();
+	}
+	
+	protected org.jasm.item.classpath.ClassInfo findClass(String name) {
+		return getRoot().findClass(name);
 	}
 	
 }

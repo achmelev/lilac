@@ -17,6 +17,7 @@ import org.jasm.item.modifier.InnerClassModifier;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 
 public class InnerClass extends AbstractByteCodeItem implements IUtf8ConstantPoolReference{
 	
@@ -121,6 +122,15 @@ public class InnerClass extends AbstractByteCodeItem implements IUtf8ConstantPoo
 		}
 	}
 	
+	
+	
+	@Override
+	protected void doVerify(VerifierParams params) {
+		
+		
+	}
+
+
 	@Override
 	protected void doResolveAfterParse() {
 		if (this.innerClassReference != null) {
@@ -138,7 +148,7 @@ public class InnerClass extends AbstractByteCodeItem implements IUtf8ConstantPoo
 			}
 		}
 		
-		if (!this.hasResolveErrors()) {
+		if (!this.hasErrors()) {
 			modifier = new InnerClassModifier(0);
 			for (Keyword kw: modifierLiterals) {
 				modifier.setFlag(kw.getKeyword());
