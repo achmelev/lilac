@@ -12,6 +12,7 @@ import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
+import org.jasm.type.verifier.VerifierParams;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +56,7 @@ public abstract class AbstractAssembleDisassembleHttpJarTestCase extends
 		AssemblerParser parser = null;
 		parser = new AssemblerParser();
 		Clazz clazz =  parser.parse(bi);
+		clazz.verify(new VerifierParams());
 		if (parser.getErrorMessages().size() > 0) {
 			log.debug("code: \n"+data);
 			parser.debugErrors();

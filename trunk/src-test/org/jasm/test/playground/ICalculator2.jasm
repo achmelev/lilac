@@ -1,0 +1,61 @@
+public interface abstract class {
+  version 51_0;
+  name ICalculator; // org/jasm/test/playground/ICalculator
+  extends Object; // java/lang/Object
+   //Constants
+  const classref ICalculator ICalculator_name; // org/jasm/test/playground/ICalculator
+  const utf8 ICalculator_name "org/jasm/test/playground/ICalculator2";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const utf8 a_name "a";
+  const utf8 a_desc "Ljava/lang/Integer;";
+  const utf8 clinit0_name "<clinit>";
+  const utf8 clinit0_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref valueOf Integer, valueOf_nat; // class=java/lang/Integer, name=valueOf, descriptor=(I)Ljava/lang/Integer;
+  const classref Integer Integer_name; // java/lang/Integer
+  const utf8 Integer_name "java/lang/Integer";
+  const nameandtype valueOf_nat valueOf_name, valueOf_desc; // name=valueOf type=(I)Ljava/lang/Integer;
+  const utf8 valueOf_name "valueOf";
+  const utf8 valueOf_desc "(I)Ljava/lang/Integer;";
+  const fieldref a ICalculator, a_nat; // class=org/jasm/test/playground/ICalculator, name=a, descriptor=Ljava/lang/Integer;
+  const nameandtype a_nat a_name, a_desc; // name=a type=Ljava/lang/Integer;
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 calculate_name "calculate";
+  const utf8 method_desc "(II)I";
+  const utf8 calculate2_name "calculate2";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "ICalculator.java";
+  source file source_file_name; // ICalculator.java
+   //Fields
+  public static final field {
+    name a_name; // a
+    descriptor a_desc; // Ljava/lang/Integer;
+  }
+   //Methods
+  private method {
+    name clinit0_name; // <clinit>
+    descriptor clinit0_desc; // ()V
+    line numbers {
+      line ir0, 5;
+    }
+    debug vars {
+    }
+    maxstack 1;
+    maxlocals 1;
+    //Instructions
+    ir0: bipush 7;
+    invokestatic valueOf; // class=java/lang/Integer, name=valueOf, descriptor=(I)Ljava/lang/Integer;
+    putstatic a; // class=org/jasm/test/playground/ICalculator, name=a, descriptor=Ljava/lang/Integer;
+    return;
+  }
+  public abstract method {
+    name calculate_name; // calculate
+    descriptor method_desc; // (II)I
+  }
+  public abstract method {
+    name calculate2_name; // calculate2
+    descriptor method_desc; // (II)I
+  }
+}

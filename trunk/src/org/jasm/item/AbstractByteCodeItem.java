@@ -1,5 +1,6 @@
 package org.jasm.item;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +41,14 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	
 	@Override
 	public void resolve() {
-		if (this.resolved) {
-			throw new RuntimeException("Resolve can be called only once on the same instance");
-		}
 		if ((this.parent == null) && !isRoot()) {
-			throw new RuntimeException("Cannot resolve orphan item!");
+			throw new IllegalStateException("Cannot resolve orphan item!");
 		}
-		if (isAfterParseResolving()) {
+		if (this.resolved) {
+			throw new IllegalStateException("Resolve can be called only once on the same instance");
+		}
+		
+		if (isAfterParse()) {
 			doResolveAfterParse();
 		} else {
 			doResolve();
@@ -56,12 +58,19 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	
 	@Override
 	public void verify(VerifierParams params) {
-		if (this.resolved) {
-			throw new RuntimeException("Verify can be called only once on the same instance");
-		}
 		if ((this.parent == null) && !isRoot()) {
-			throw new RuntimeException("Cannot verify orphan item!");
+			throw new IllegalStateException("Cannot verify orphan item!");
 		}
+		if (!isAfterParse()) {
+			throw new IllegalStateException("verify can be called only aufer parse and resolve");
+		}
+		if (!this.resolved) {
+			throw new IllegalStateException("verify can be called only after parse and resolve");
+		}
+		if (this.verified) {
+			throw new IllegalStateException("Verify can be called only once on the same instance");
+		}
+		
 		doVerify(params);
 		this.verified = true;
 	}
@@ -157,9 +166,9 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		return sourceLocation;
 	}
 	
-	//Methods for "after parse"-resolving
+	//Methods for "after parse"-resolving and verification
 	
-	protected boolean isAfterParseResolving() {
+	protected boolean isAfterParse() {
 		return this.getRoot().getParser() != null;
 	}
 	
@@ -234,6 +243,26 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	
 	protected org.jasm.item.classpath.ClassInfo findClass(String name) {
 		return getRoot().findClass(name);
+	}
+	
+	protected BigDecimal getClassVersion() {
+		return getRoot().getDecimalVersion();
+	}
+	
+	protected boolean classVersionAbove(String v) {
+		return getRoot().getDecimalVersion().compareTo(new BigDecimal(v))>0;
+	}
+	
+	protected boolean classVersionLess(String v) {
+		return getRoot().getDecimalVersion().compareTo(new BigDecimal(v))<0;
+	}
+	
+	protected boolean classVersionAboveOrEqual(String v) {
+		return getRoot().getDecimalVersion().compareTo(new BigDecimal(v))>=0;
+	}
+	
+	protected boolean classVersionLessOrEqual(String v) {
+		return getRoot().getDecimalVersion().compareTo(new BigDecimal(v))<=0;
 	}
 	
 }

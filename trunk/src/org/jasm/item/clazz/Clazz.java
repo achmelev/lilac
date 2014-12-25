@@ -1,5 +1,6 @@
 package org.jasm.item.clazz;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -257,9 +258,37 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	
 	@Override
 	protected void doVerify(VerifierParams params) {
-		pool.verify(params);
-		methods.verify(params);
-		attributes.verify(params);
+		
+		if (getClassVersion().compareTo(new BigDecimal("45.0"))<0
+		|| getClassVersion().compareTo(new BigDecimal("52.0"))>0) {
+			emitError(version, "illegal version number");
+		} else {
+			checkModifiers();
+			pool.verify(params);
+			methods.verify(params);
+			attributes.verify(params);
+		}
+		
+		
+	}
+	
+	private void checkModifiers() {
+		boolean valid = true;
+		if (getModifier().isInterface()) {
+			if (!getModifier().isAbstract() || getModifier().isFinal() || getModifier().isEnum()) {
+				valid = false;
+			}
+		} else {
+			if (getModifier().isAnnotation()) {
+				valid = false;
+			}
+		}
+		if (getModifier().isAnnotation() && !getModifier().isInterface()) {
+			valid = false;
+		}
+		if (!valid) {
+			emitError(null, "illegal class modifiers");
+		}
 	}
 
 	@Override
@@ -432,6 +461,10 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	
 	public VersionLiteral getVersion() {
 		return version;
+	}
+	
+	public BigDecimal getDecimalVersion() {
+		return new BigDecimal(majorVersion+"."+minorVersion);
 	}
 
 	public void setVersion(VersionLiteral version) {
