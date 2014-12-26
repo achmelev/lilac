@@ -10,6 +10,8 @@ import java.io.StringWriter;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
+import org.jasm.item.classpath.ClassLoaderClasspathEntry;
+import org.jasm.item.classpath.ClassPath;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.type.verifier.VerifierParams;
@@ -57,7 +59,14 @@ public abstract class AbstractAssembleDisassembleMavenJarTestCase extends
 		parser = new AssemblerParser();
 		Clazz clazz =  parser.parse(bi);
 		VerifierParams params = new VerifierParams();
-		params.setCheckReferences(false);
+		ClassPath classPath = new ClassPath();
+		classPath.add(getRootEntry());
+		classPath.add(new ClassLoaderClasspathEntry(this.getClass().getClassLoader()));
+		for (MavenJarClassPathEntry entry: getDependencies()) {
+			classPath.add(entry);
+		}
+		clazz.setClasspath(classPath);
+		//params.setCheckReferences(false);
 		clazz.verify(params);
 		if (parser.getErrorMessages().size() > 0) {
 			log.debug("code: \n"+data);

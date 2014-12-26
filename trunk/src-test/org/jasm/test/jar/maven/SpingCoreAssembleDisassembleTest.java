@@ -25,7 +25,8 @@ public class SpingCoreAssembleDisassembleTest extends
 		result.add(new MavenJarClassPathEntry("http://central.maven.org/maven2", "log4j", "log4j", "1.2.17"));
 		result.add(new MavenJarClassPathEntry("http://central.maven.org/maven2", "org.aspectj", "aspectjweaver", "1.8.1"));
 		result.add(new MavenJarClassPathEntry("http://central.maven.org/maven2", "commons-logging", "commons-logging", "1.1.3"));
-		result.add(new MavenJarClassPathEntry("http://central.maven.org/maven2", "net.sf.jopt", "jopt-simple", "4.6"));
+		result.add(new MavenJarClassPathEntry("http://central.maven.org/maven2", "net.sf.jopt-simple", "jopt-simple", "4.6"));
+		result.add(new MavenJarClassPathEntry("http://central.maven.org/maven2", "org.apache.ant", "ant", "1.9.4"));
 		
 		return result;
 	}

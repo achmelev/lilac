@@ -87,12 +87,13 @@ public abstract class AbstractMavenJarTestCase {
 				if (line.trim().length()>0) {
 					String [] parts = line.trim().split(":");
 					if (parts.length==5) {
-						if (parts[2].equals("jar") && parts[4].equals("compile")) {
+						if (parts[2].equals("jar")) {
 							result.add(new MavenJarClassPathEntry(repositoryURL, parts[0], parts[1], parts[3]));
 						}
 					}
 					
 				}
+				line = reader.readLine();
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);

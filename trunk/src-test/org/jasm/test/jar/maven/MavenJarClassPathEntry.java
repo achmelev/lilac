@@ -42,7 +42,7 @@ public class MavenJarClassPathEntry extends AbstractJarClassPathEntry {
 
 	@Override
 	protected String getName() {
-		return this.repositoryURL+"/"+createName()+"/"+createName();
+		return this.repositoryURL+"/"+createPath()+"/"+createName();
 	}
 	
 	private String createPath() {
