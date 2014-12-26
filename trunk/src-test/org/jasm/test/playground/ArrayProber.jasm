@@ -1,0 +1,94 @@
+public super class {
+  version 52_0;
+  name ArrayProber; // org/jasm/test/playground/ArrayProber
+  extends Object; // java/lang/Object
+  implements Prober; // org/jasm/test/playground/Prober
+   //Constants
+  const classref ArrayProber ArrayProber_name; // org/jasm/test/playground/ArrayProber
+  const utf8 ArrayProber_name "org/jasm/test/playground/ArrayProber";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const classref Prober Prober_name; // org/jasm/test/playground/Prober
+  const utf8 Prober_name "org/jasm/test/playground/Prober";
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref init0 Object, init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype init0_nat init0_name, init0_desc; // name=<init> type=()V
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/ArrayProber;";
+  const utf8 check_name "check";
+  const utf8 check_desc "(I)I";
+  const classref Boolean Boolean_name; // java/lang/Boolean
+  const utf8 Boolean_name "java/lang/Boolean";
+  const methodref toString BooleanArray, toString_nat; // class=java/lang/Object, name=toString, descriptor=()Ljava/lang/String;
+  const nameandtype toString_nat toString_name, toString_desc; // name=toString type=()Ljava/lang/String;
+  const utf8 toString_name "toString";
+  const utf8 toString_desc "()Ljava/lang/String;";
+  const utf8 a_name "a";
+  const utf8 a_desc "I";
+  const utf8 array_name "array";
+  const utf8 array_desc "[Ljava/lang/Boolean;";
+  const utf8 s_name "s";
+  const utf8 s_desc "Ljava/lang/String;";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "ArrayProber.java";
+  
+  const classref BooleanArray BooleanArray_name;
+  const utf8 BooleanArray_name "[Ljava/lang/Boolean;";
+  
+  source file source_file_name; // ArrayProber.java
+   //Fields
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor init0_desc; // ()V
+    line numbers {
+      line ir0, 3;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/ArrayProber;
+    }
+    maxstack 1;
+    maxlocals 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial init0; // class=java/lang/Object, name=<init>, descriptor=()V
+    return;
+  }
+  public method {
+    name check_name; // check
+    descriptor check_desc; // (I)I
+    line numbers {
+      line ir0, 7;
+      line ir5, 8;
+      line ir10, 9;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/ArrayProber;
+      var a, ir0, a_name, a_desc; // name=a,  descriptor=I
+      var array$0, ir5, array_name, array_desc; // name=array,  descriptor=[Ljava/lang/Boolean;
+      var s, ir10, s_name, s_desc; // name=s,  descriptor=Ljava/lang/String;
+    }
+    maxstack 1;
+    maxlocals 4;
+    //Variables
+    var object this;
+    var int a;
+    var object array$0;
+    var object s;
+    //Instructions
+    ir0: iload a;
+    anewarray Boolean; // java/lang/Boolean
+    astore array$0;
+    ir5: aload array$0;
+    invokevirtual toString; // class=java/lang/Object, name=toString, descriptor=()Ljava/lang/String;
+    astore s;
+    ir10: iconst_1;
+    ireturn;
+  }
+}

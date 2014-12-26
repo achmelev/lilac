@@ -19,10 +19,23 @@ public class PlayGroundTest {
 	}
 	
 	@Test
-	public void testStakmap() {
+	public void testStackmap() {
 		ClassLoader cl = createClassLoader();
 		try {
 			Class clazz = cl.loadClass(StackmapProber.class.getName());
+			Prober prob = (Prober)clazz.newInstance();
+			prob.check(3);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
+	@Test
+	public void testArray() {
+		ClassLoader cl = createClassLoader();
+		try {
+			Class clazz = cl.loadClass(ArrayProber.class.getName());
 			Prober prob = (Prober)clazz.newInstance();
 			prob.check(3);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {

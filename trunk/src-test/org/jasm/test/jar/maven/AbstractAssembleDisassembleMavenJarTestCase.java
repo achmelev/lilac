@@ -48,6 +48,8 @@ public abstract class AbstractAssembleDisassembleMavenJarTestCase extends
 		return sw.toString();
 	}
 	
+	private ClassPath classPath = null;
+	
 	protected byte [] assemble(String data) {
 		
 		ByteArrayOutputStream bo = new ByteArrayOutputStream();
@@ -59,11 +61,13 @@ public abstract class AbstractAssembleDisassembleMavenJarTestCase extends
 		parser = new AssemblerParser();
 		Clazz clazz =  parser.parse(bi);
 		VerifierParams params = new VerifierParams();
-		ClassPath classPath = new ClassPath();
-		classPath.add(getRootEntry());
-		classPath.add(new ClassLoaderClasspathEntry(this.getClass().getClassLoader()));
-		for (MavenJarClassPathEntry entry: getDependencies()) {
-			classPath.add(entry);
+		if (classPath == null) {
+			classPath = new ClassPath();
+			classPath.add(getRootEntry());
+			classPath.add(new ClassLoaderClasspathEntry(this.getClass().getClassLoader()));
+			for (MavenJarClassPathEntry entry: getDependencies()) {
+				classPath.add(entry);
+			}
 		}
 		clazz.setClasspath(classPath);
 		//params.setCheckReferences(false);

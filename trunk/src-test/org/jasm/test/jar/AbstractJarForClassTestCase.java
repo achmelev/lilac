@@ -33,7 +33,7 @@ public abstract class AbstractJarForClassTestCase {
 				if (!entry.isDirectory() && entry.getName().endsWith(".class") && filter(entry.getName())) {
 					InputStream data = jar.getInputStream(entry);
 					try {
-						testClass(IOUtils.toByteArray(data));
+						testClass(IOUtils.toByteArray(data),f);
 					} catch (Throwable e) {
 						log.error("Error testing: "+entry.getName(),e);
 						errorCounter++;
@@ -59,7 +59,7 @@ public abstract class AbstractJarForClassTestCase {
 	}
 	
 	
-	protected abstract void testClass(byte[] data);
+	protected abstract void testClass(byte[] data, File jarFile);
 	
 	protected abstract Class getClazz();
 	
