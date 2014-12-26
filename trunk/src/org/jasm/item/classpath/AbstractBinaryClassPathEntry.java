@@ -24,7 +24,7 @@ public abstract class AbstractBinaryClassPathEntry implements IClassPathEntry {
 			
 			return ExternalClassInfo.createFromClass(clazz);
 		} catch (Throwable e) {
-			log.warn("Error reading from "+getName()+", marked invalid");
+			log.warn("Error reading from "+getName()+", marked invalid, error message: ",e );
 			invalid = true;
 			return null;
 		}
