@@ -2,7 +2,7 @@ package org.jasm.test.classpath;
 
 import junit.framework.Assert;
 
-import org.jasm.item.classpath.ClassInfo;
+import org.jasm.item.classpath.ExternalClassInfo;
 import org.jasm.item.classpath.ClassLoaderClasspathEntry;
 import org.jasm.item.classpath.ClassPath;
 import org.jasm.item.classpath.FieldInfo;
@@ -18,13 +18,13 @@ public class ClassPathTest {
 		
 		Assert.assertNull(path.findClass("java/lang/Objecgtt"));
 		
-		ClassInfo info = path.findClass("org/jasm/test/testclass/ClassToFind");
+		ExternalClassInfo info = path.findClass("org/jasm/test/testclass/ClassToFind");
 		
 		Assert.assertNotNull(info);
 		testClassToFind(info);
 	}
 	
-	private void testClassToFind(ClassInfo info) {
+	private void testClassToFind(ExternalClassInfo info) {
 		Assert.assertEquals("org/jasm/test/testclass/ClassToFind", info.getName());
 		Assert.assertEquals("java/lang/Object", info.getSuperName());
 		Assert.assertEquals(true, info.getModifier().isAbstract());

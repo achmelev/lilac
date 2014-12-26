@@ -8,12 +8,12 @@ import java.util.WeakHashMap;
 public class ClassPath implements IClassPathEntry {
 	
 	private List<IClassPathEntry> entries = new ArrayList<IClassPathEntry>();
-	private Map<String, ClassInfo> cache = new WeakHashMap<String, ClassInfo>();
+	private Map<String, ExternalClassInfo> cache = new WeakHashMap<String, ExternalClassInfo>();
 	
 	
 	@Override
-	public ClassInfo findClass(String className) {
-		ClassInfo info;
+	public ExternalClassInfo findClass(String className) {
+		ExternalClassInfo info;
 		if (cache.containsKey(className)) {
 			info = cache.get(className);
 		} else {
@@ -28,14 +28,14 @@ public class ClassPath implements IClassPathEntry {
 		}
 	}
 	
-	private ClassInfo doFindClass(String className) {
+	private ExternalClassInfo doFindClass(String className) {
 		for (IClassPathEntry entry: entries) {
-			ClassInfo info = entry.findClass(className);
+			ExternalClassInfo info = entry.findClass(className);
 			if (info != null) {
 				return info;
 			}
 		}
-		return new ClassInfo();
+		return new ExternalClassInfo();
 	}
 	
 	public void add(IClassPathEntry entry) {

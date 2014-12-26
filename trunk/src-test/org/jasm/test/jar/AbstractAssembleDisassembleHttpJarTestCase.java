@@ -56,7 +56,9 @@ public abstract class AbstractAssembleDisassembleHttpJarTestCase extends
 		AssemblerParser parser = null;
 		parser = new AssemblerParser();
 		Clazz clazz =  parser.parse(bi);
-		clazz.verify(new VerifierParams());
+		VerifierParams params = new VerifierParams();
+		params.setCheckReferences(false);
+		clazz.verify(params);
 		if (parser.getErrorMessages().size() > 0) {
 			log.debug("code: \n"+data);
 			parser.debugErrors();

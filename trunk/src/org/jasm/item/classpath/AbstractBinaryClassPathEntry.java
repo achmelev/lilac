@@ -5,7 +5,7 @@ import org.jasm.item.clazz.Clazz;
 
 public abstract class AbstractBinaryClassPathEntry implements IClassPathEntry {
 	
-	public ClassInfo findClass(String className) {
+	public ExternalClassInfo findClass(String className) {
 		
 		byte [] data = findBytes(className);
 		if (data == null) {
@@ -16,7 +16,7 @@ public abstract class AbstractBinaryClassPathEntry implements IClassPathEntry {
 		clazz.read(bbuf, 0L);
 		clazz.resolve();
 		
-		return ClassInfo.createFromClass(clazz);
+		return ExternalClassInfo.createFromClass(clazz);
 	}
 	
 	protected abstract byte[] findBytes(String className);
