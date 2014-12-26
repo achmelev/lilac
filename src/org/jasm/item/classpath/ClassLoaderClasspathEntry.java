@@ -39,4 +39,9 @@ public class ClassLoaderClasspathEntry extends AbstractBinaryClassPathEntry {
 		}
 	}
 
+	@Override
+	protected String getName() {
+		return "loader: "+loader.getClass().getName();
+	}
+
 }
