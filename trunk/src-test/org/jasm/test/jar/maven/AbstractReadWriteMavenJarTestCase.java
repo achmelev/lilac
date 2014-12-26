@@ -1,12 +1,12 @@
-package org.jasm.test.jar;
+package org.jasm.test.jar.maven;
 
 import static org.junit.Assert.*;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.item.clazz.Clazz;
 
-public abstract class AbstractReadWriteHttpJarTestCase extends
-		AbstractHttpJarTestCase {
+public abstract class AbstractReadWriteMavenJarTestCase extends
+		AbstractMavenJarTestCase {
 	
 	@Override
 	protected void testClass(byte[] data) {
@@ -22,6 +22,13 @@ public abstract class AbstractReadWriteHttpJarTestCase extends
 		clazz.write(bbuf2, 0);
 		assertArrayEquals(data2, data);
 	}
+
+	@Override
+	protected boolean filter(String name) {
+		return true;
+	}
+	
+	
 	
 
 }

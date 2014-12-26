@@ -1,4 +1,4 @@
-package org.jasm.test.jar;
+package org.jasm.test.jar.maven;
 
 import static org.junit.Assert.*;
 
@@ -17,8 +17,8 @@ import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractAssembleDisassembleHttpJarTestCase extends
-		AbstractHttpJarTestCase {
+public abstract class AbstractAssembleDisassembleMavenJarTestCase extends
+		AbstractMavenJarTestCase {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
@@ -72,5 +72,9 @@ public abstract class AbstractAssembleDisassembleHttpJarTestCase extends
 		
 	}
 	
+	@Override
+	protected boolean filter(String name) {
+		return true;
+	}
 
 }
