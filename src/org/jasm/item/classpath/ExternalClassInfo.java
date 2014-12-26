@@ -13,7 +13,7 @@ import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
 import org.junit.runner.Result;
 
-public class ClassInfo {
+public class ExternalClassInfo {
 	
 	private String name;
 	private String superName;
@@ -81,11 +81,13 @@ public class ClassInfo {
 		return fieldRegistry.get(name+"@"+descriptor);
 	}
 	
-	public static ClassInfo createFromClass(Clazz clazz) {
-		ClassInfo result = new ClassInfo();
+	public static ExternalClassInfo createFromClass(Clazz clazz) {
+		ExternalClassInfo result = new ExternalClassInfo();
 		
 		result.setName(clazz.getThisClass().getClassName());
-		result.setSuperName(clazz.getSuperClass().getClassName());
+		if (clazz.getSuperClass() != null) {
+			result.setSuperName(clazz.getSuperClass().getClassName());
+		}
 		result.setModifier(clazz.getModifier());
 		
 		for (org.jasm.item.constantpool.ClassInfo clinfo: clazz.getInterfaces()) {

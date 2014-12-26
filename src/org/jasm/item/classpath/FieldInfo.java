@@ -8,7 +8,7 @@ public class FieldInfo {
 	private String name;
 	private FieldModifier modifier;
 	private TypeDescriptor descriptor;
-	private ClassInfo parent;
+	private ExternalClassInfo parent;
 	
 	public String getName() {
 		return name;
@@ -28,10 +28,10 @@ public class FieldInfo {
 	public void setDescriptor(TypeDescriptor descriptor) {
 		this.descriptor = descriptor;
 	}
-	public ClassInfo getParent() {
+	public ExternalClassInfo getParent() {
 		return parent;
 	}
-	public void setParent(ClassInfo parent) {
+	public void setParent(ExternalClassInfo parent) {
 		this.parent = parent;
 	}
 	

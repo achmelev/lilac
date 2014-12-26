@@ -16,6 +16,9 @@ import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.attribute.Attributes;
 import org.jasm.item.classpath.ClassPath;
+import org.jasm.item.classpath.ExternalClassInfo;
+import org.jasm.item.classpath.FieldInfo;
+import org.jasm.item.classpath.MethodInfo;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
@@ -61,7 +64,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	private Map<String, Integer> interfaceIndexesLabelTable =  new HashMap<String, Integer>();
 	
 	private ClassPath classpath;
-	private org.jasm.item.classpath.ClassInfo me;
+	private org.jasm.item.classpath.ExternalClassInfo me;
 	
 	public Clazz() {
 		initChildren();
@@ -263,7 +266,13 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		|| getClassVersion().compareTo(new BigDecimal("52.0"))>0) {
 			emitError(version, "illegal version number");
 		} else {
-			checkModifiers();
+			verifyModifiers();
+			if (params.isCheckReferences()) {
+				verifySuperclass();
+				for (int i=0;i<interfaces.size(); i++) {
+					verifyInterface(interfaceSymbols.get(i), interfaces.get(i).getClassName());
+				}
+			}
 			pool.verify(params);
 			methods.verify(params);
 			attributes.verify(params);
@@ -272,7 +281,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		
 	}
 	
-	private void checkModifiers() {
+	private void verifyModifiers() {
 		boolean valid = true;
 		if (getModifier().isInterface()) {
 			if (!getModifier().isAbstract() || getModifier().isFinal() || getModifier().isEnum()) {
@@ -290,6 +299,41 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			emitError(null, "illegal class modifiers");
 		}
 	}
+	
+	private void verifySuperclass() {
+		if (this.getThisClass().getClassName().equals("java/lang/Object")) {
+			if (this.getSuperClass() !=null) {
+				emitError(superClassSymbol, "java/lang/Object must not have a superclass");
+			}
+		} else {
+			ExternalClassInfo superClass = checkAndLoadClassInfo(this, superClassSymbol, getSuperClass().getClassName());
+			if (superClass != null) {
+				if (getModifier().isInterface()) {
+					if (!superClass.getName().equals("java/lang/Object")) {
+						emitError(superClassSymbol, "interfaces must have java/lang/Object as superclass");
+					}
+				} else {
+					if (superClass.getModifier().isInterface()) {
+						emitError(superClassSymbol, "interfaces aren't allowed as superclasses");
+					}
+					if (superClass.getModifier().isFinal()) {
+						emitError(superClassSymbol, "final classes aren't allowed as superclasses");
+					}
+				}
+			}
+		}
+	}
+	
+	private void verifyInterface(SymbolReference intfSymbol, String name) {
+		ExternalClassInfo intfClass = checkAndLoadClassInfo(this, intfSymbol, name);
+		if (intfClass != null) {
+			if (!intfClass.getModifier().isInterface()) {
+				emitError(intfSymbol, name+" isn't an interface");
+			} 
+		}
+	}
+	
+	
 
 	@Override
 	protected void doResolveAfterParse() {
@@ -542,10 +586,80 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		this.classpath = classpath;
 	}
 	
-	public org.jasm.item.classpath.ClassInfo findClass(String name) {
+	
+	public org.jasm.item.classpath.ExternalClassInfo checkAndLoadClassInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className) {
+		org.jasm.item.classpath.ExternalClassInfo info = findClass(className);
+		if (info != null) {
+			if (checkAccess(info)) {
+				return info;
+			} else {
+				caller.emitError(symbol, "illegal class access");
+				return null;
+			}
+		} else {
+			caller.emitError(symbol, "unknown class "+className);
+			return null;
+		}
+	}
+	
+	public org.jasm.item.classpath.MethodInfo checkAndLoadMethodInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String methodName, String desc) {
+		org.jasm.item.classpath.ExternalClassInfo info = checkAndLoadClassInfo(caller, symbol, className);
+		if (info != null) {
+			MethodInfo mi = info.getMethod(methodName, desc);
+			if (mi != null) {
+				if (checkAccess(info, mi)) {
+					return mi;
+				} else {
+					emitError(symbol, "illegal method access");
+					return null;
+				}
+			} else {
+				emitError(symbol, "unknown method "+className+"."+methodName+"@"+desc);
+				return null;
+			}
+		} else {
+			return null;
+		}
+		
+	}
+	
+	public org.jasm.item.classpath.FieldInfo checkAndLoadFieldInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String fieldName, String desc) {
+		org.jasm.item.classpath.ExternalClassInfo info = checkAndLoadClassInfo(caller,symbol,  className);
+		if (info != null) {
+			FieldInfo fi = info.getField(fieldName, desc);
+			if (fi != null) {
+				if (checkAccess(info, fi)) {
+					return fi;
+				} else {
+					emitError(symbol, "illegal field access");
+					return null;
+				}
+			} else {
+				emitError(symbol, "unknown field "+className+"."+fieldName+"@"+desc);
+				return null;
+			}
+		} else {
+			return null;
+		}
+		
+	}
+	
+	private boolean checkAccess(org.jasm.item.classpath.ExternalClassInfo info) {
+		return true;
+	}
+	
+	private boolean checkAccess(org.jasm.item.classpath.ExternalClassInfo info, MethodInfo mi) {
+		return true;
+	}
+	
+	private boolean checkAccess(org.jasm.item.classpath.ExternalClassInfo info, FieldInfo fi) {
+		return true;
+	}
+	
+	private org.jasm.item.classpath.ExternalClassInfo findClass(String name) {
 		if (name.equals(getThisClass().getClassName())) {
 			if (me == null) {
-				me = org.jasm.item.classpath.ClassInfo.createFromClass(this);
+				me = org.jasm.item.classpath.ExternalClassInfo.createFromClass(this);
 			}
 			return me;
 		} else {

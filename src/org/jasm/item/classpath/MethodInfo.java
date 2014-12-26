@@ -8,7 +8,7 @@ public class MethodInfo {
 	private String name;
 	private MethodModifier modifier;
 	private MethodDescriptor descriptor;
-	private ClassInfo parent;
+	private ExternalClassInfo parent;
 	
 	public String getName() {
 		return name;
@@ -28,10 +28,10 @@ public class MethodInfo {
 	public void setDescriptor(MethodDescriptor descriptor) {
 		this.descriptor = descriptor;
 	}
-	public ClassInfo getParent() {
+	public ExternalClassInfo getParent() {
 		return parent;
 	}
-	public void setParent(ClassInfo parent) {
+	public void setParent(ExternalClassInfo parent) {
 		this.parent = parent;
 	}
 	

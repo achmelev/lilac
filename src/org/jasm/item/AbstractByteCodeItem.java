@@ -255,10 +255,6 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		return buf.toString();
 	}
 	
-	protected org.jasm.item.classpath.ClassInfo findClass(String name) {
-		return getRoot().findClass(name);
-	}
-	
 	protected BigDecimal getClassVersion() {
 		return getRoot().getDecimalVersion();
 	}

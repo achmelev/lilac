@@ -3,6 +3,8 @@ package org.jasm.loader;
 import java.io.InputStream;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
+import org.jasm.item.classpath.ClassLoaderClasspathEntry;
+import org.jasm.item.classpath.ClassPath;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.type.verifier.VerifierParams;
@@ -69,6 +71,9 @@ public class AssemblerClassLoader extends ClassLoader {
 		AssemblerParser parser = new AssemblerParser();
 		Clazz clazz =  parser.parse(inp);
 		VerifierParams params = new VerifierParams();
+		ClassPath clp = new ClassPath();
+		clp.add(new ClassLoaderClasspathEntry(this));
+		clazz.setClasspath(clp);
 		clazz.verify(params);
 		if (parser.getErrorMessages().size() > 0) {
 			parser.debugErrors();
