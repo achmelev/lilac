@@ -23,4 +23,9 @@ public class ClazzClassPathEntry implements IClassPathEntry {
 		
 	}
 
+	@Override
+	public boolean isInvalid() {
+		return false;
+	}
+
 }

@@ -30,9 +30,11 @@ public class ClassPath implements IClassPathEntry {
 	
 	private ExternalClassInfo doFindClass(String className) {
 		for (IClassPathEntry entry: entries) {
-			ExternalClassInfo info = entry.findClass(className);
-			if (info != null) {
-				return info;
+			if (!entry.isInvalid()) {
+				ExternalClassInfo info = entry.findClass(className);
+				if (info != null) {
+					return info;
+				}
 			}
 		}
 		return new ExternalClassInfo();
@@ -44,6 +46,11 @@ public class ClassPath implements IClassPathEntry {
 	
 	public void addAtBegin(IClassPathEntry entry) {
 		entries.add(0, entry);
+	}
+
+	@Override
+	public boolean isInvalid() {
+		return false;
 	}
 	
 }
