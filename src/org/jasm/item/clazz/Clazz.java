@@ -267,10 +267,13 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			emitError(version, "illegal version number");
 		} else {
 			verifyModifiers();
+			if (thisClass.isArray()) {
+				emitError(thisClassSymbol, "array isn't allowed as class name");
+			}
 			if (params.isCheckReferences()) {
 				verifySuperclass();
 				for (int i=0;i<interfaces.size(); i++) {
-					verifyInterface(interfaceSymbols.get(i), interfaces.get(i).getClassName());
+					verifyInterface(interfaceSymbols.get(i), interfaces.get(i));
 				}
 			}
 			pool.verify(params);
@@ -301,11 +304,16 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	}
 	
 	private void verifySuperclass() {
+		
 		if (this.getThisClass().getClassName().equals("java/lang/Object")) {
 			if (this.getSuperClass() !=null) {
 				emitError(superClassSymbol, "java/lang/Object must not have a superclass");
 			}
 		} else {
+			if (this.getSuperClass().isArray()) {
+				emitError(superClassSymbol, "arrays arent allowed as superclasses");
+				return;
+			}
 			ExternalClassInfo superClass = checkAndLoadClassInfo(this, superClassSymbol, getSuperClass().getClassName());
 			if (superClass != null) {
 				if (getModifier().isInterface()) {
@@ -324,13 +332,23 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		}
 	}
 	
-	private void verifyInterface(SymbolReference intfSymbol, String name) {
-		ExternalClassInfo intfClass = checkAndLoadClassInfo(this, intfSymbol, name);
-		if (intfClass != null) {
-			if (!intfClass.getModifier().isInterface()) {
-				emitError(intfSymbol, name+" isn't an interface");
-			} 
+	private void verifyInterface(SymbolReference intfSymbol, ClassInfo clinfo) {
+		boolean valid = true;
+		if (clinfo.isArray()) {
+			valid = false;
+		} else {
+			ExternalClassInfo intfClass = checkAndLoadClassInfo(this, intfSymbol, clinfo.getClassName());
+			if (intfClass != null) {
+				
+				if (!intfClass.getModifier().isInterface()) {
+					valid = false;
+				} 
+			}
 		}
+		if (!valid) {
+			emitError(intfSymbol, clinfo.getClassName()+" isn't an interface");
+		}
+		
 	}
 	
 	

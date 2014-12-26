@@ -7,6 +7,7 @@ import org.jasm.type.descriptor.TypeDescriptor;
 
 public class ClassInfo extends AbstractReferenceEntry implements INameReferencingEntry, IUtf8ConstantPoolReference {
 	
+	
 	public ClassInfo() {
 	}
 	
@@ -59,8 +60,8 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 			if (desc == null || !desc.isArray()) { 
 				emitError(ref, "invalid class name or array type"+className);
 				return false;
-			}
-		}
+			} 
+		} 
 		return true;
 	}
 
@@ -91,7 +92,9 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 	}
 	
 	
-	
+	public boolean isArray() {
+		return getClassName().startsWith("[");
+	}
 	
 	
 	

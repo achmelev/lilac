@@ -70,11 +70,15 @@ public class AssemblerClassLoader extends ClassLoader {
 		
 		AssemblerParser parser = new AssemblerParser();
 		Clazz clazz =  parser.parse(inp);
+		if (parser.getErrorMessages().size() > 0) {
+			parser.debugErrors();
+			throw new AssemblerClassLoaderException("invalid assembler file", rName, parser.getErrorMessages());
+		}
 		VerifierParams params = new VerifierParams();
 		ClassPath clp = new ClassPath();
 		clp.add(new ClassLoaderClasspathEntry(this));
 		clazz.setClasspath(clp);
-		clazz.verify(params);
+		//clazz.verify(params);
 		if (parser.getErrorMessages().size() > 0) {
 			parser.debugErrors();
 			throw new AssemblerClassLoaderException("invalid assembler file", rName, parser.getErrorMessages());

@@ -130,7 +130,6 @@ public class TypeDescriptor {
 		return descriptor;
 	}
 	
-	
 	public static TypeDescriptor parseFromStringBegin(String s) throws IllegalDescriptorException {
 		if (s.length() == 0) {
 			throw new IllegalDescriptorException("illegal descriptor "+s);
