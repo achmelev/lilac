@@ -257,30 +257,35 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		pool.resolveInvokeDynamics();
 	}
 	
+	private Boolean resolvedMyself; 
+	
+	public boolean resolveMyselfAndSuperclasses() {
+		if (isAfterParse()) {
+			if (resolvedMyself == null) {
+				verifySuperclass();
+				for (int i=0;i<interfaces.size(); i++) {
+					verifyInterface(interfaceSymbols.get(i), interfaces.get(i));
+				}
+				me = checkAndLoadClassInfo(this, thisClassSymbol, this.getThisClass().getClassName());
+				resolvedMyself = getParser().getErrorMessages().size() == 0;
+			}
+			return resolvedMyself;
+		} else {
+			return true;
+		}
+	}
+	
+	
 	
 	
 	@Override
 	protected void doVerify(VerifierParams params) {
 		
-		if (getClassVersion().compareTo(new BigDecimal("45.0"))<0
-		|| getClassVersion().compareTo(new BigDecimal("52.0"))>0) {
-			emitError(version, "illegal version number");
-		} else {
-			verifyModifiers();
-			if (thisClass.isArray()) {
-				emitError(thisClassSymbol, "array isn't allowed as class name");
-			}
-			if (params.isCheckReferences()) {
-				verifySuperclass();
-				for (int i=0;i<interfaces.size(); i++) {
-					verifyInterface(interfaceSymbols.get(i), interfaces.get(i));
-				}
-			}
+		if (resolveMyselfAndSuperclasses()) {
 			pool.verify(params);
 			methods.verify(params);
 			attributes.verify(params);
 		}
-		
 		
 	}
 	
@@ -304,16 +309,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	}
 	
 	private void verifySuperclass() {
-		
-		if (this.getThisClass().getClassName().equals("java/lang/Object")) {
-			if (this.getSuperClass() !=null) {
-				emitError(superClassSymbol, "java/lang/Object must not have a superclass");
-			}
-		} else {
-			if (this.getSuperClass().isArray()) {
-				emitError(superClassSymbol, "arrays aren't allowed as superclasses");
-				return;
-			}
+		if (this.superClass != null) {
 			ExternalClassInfo superClass = checkAndLoadClassInfo(this, superClassSymbol, getSuperClass().getClassName());
 			if (superClass != null) {
 				if (getModifier().isInterface()) {
@@ -361,6 +357,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 				String versionStr = version.getContent();
 				majorVersion = Integer.parseInt(versionStr.substring(0, versionStr.indexOf('_')));
 				minorVersion = Integer.parseInt(versionStr.substring(versionStr.indexOf('_')+1, versionStr.length()));
+				if (getClassVersion().compareTo(new BigDecimal("45.0"))<0
+						|| getClassVersion().compareTo(new BigDecimal("52.0"))>0) {
+							emitError(version, "illegal version number");
+				}
+				
 			} catch (Exception e) {
 				emitError(version, "malformed or illegal version");
 				majorVersion = 0;
@@ -372,7 +373,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		//Pool
 		pool.resolve();
 		pool.updateIndexes();
-		//this, super
+		//this, super, me
 		if (thisClassSymbol != null) {
 			thisClass = pool.checkAndLoadFromSymbolTable(this,ClassInfo.class, thisClassSymbol);
 		} else {
@@ -394,11 +395,25 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			}
 		}
 		
+		if (thisClass.isArray()) {
+			emitError(thisClassSymbol, "array isn't allowed as class name");
+		}
+		if (this.getThisClass().getClassName().equals("java/lang/Object")) {
+			if (this.getSuperClass() !=null) {
+				emitError(superClassSymbol, "java/lang/Object must not have a superclass");
+			}
+		}
+		if (this.getSuperClass() != null && this.getSuperClass().isArray()) {
+			emitError(superClassSymbol, "arrays aren't allowed as superclasses");
+			return;
+		}
+		
 		//Modifier
 		modifier = new ClassModifier(0);
 		for (Keyword k: modifierLiterals) {
 			modifier.setFlag(k.getKeyword());
 		}
+		verifyModifiers();
 		//Attributes
 		attributes.resolve();
 		//Fields
@@ -641,23 +656,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	}
 	
 	public org.jasm.item.classpath.FieldInfo checkAndLoadFieldInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String fieldName, String desc) {
-		org.jasm.item.classpath.ExternalClassInfo info = checkAndLoadClassInfo(caller,symbol,  className);
-		if (info != null) {
-			FieldInfo fi = info.getField(fieldName, desc);
-			if (fi != null) {
-				if (checkAccess(info, fi)) {
-					return fi;
-				} else {
-					emitError(symbol, "illegal field access");
-					return null;
-				}
-			} else {
-				emitError(symbol, "unknown field "+className+"."+fieldName+"@"+desc);
-				return null;
-			}
-		} else {
-			return null;
-		}
+		return FieldInfo.resolve(this, caller, symbol, className, fieldName, desc, true);
 		
 	}
 	
@@ -686,6 +685,10 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 				return null;
 			}
 		}
+	}
+
+	public org.jasm.item.classpath.ExternalClassInfo getMe() {
+		return me;
 	}
 	
 	

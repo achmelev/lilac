@@ -51,6 +51,47 @@ public class ExternalClassInfo {
 		}
 	}
 	
+	public boolean isAssignableTo(ExternalClassInfo info) {
+		if (info.name.equals(name)) {
+			return true;
+		}
+		if (isArray) {
+			if (info.isArray) {
+				if (getDescriptor().isPrimitive()) {
+					return info.getDescriptor().isPrimitive() && getDescriptor().equals(info.getDescriptor());
+				} else {
+					return getComponentClass().isAssignableTo(info.getComponentClass());
+				}
+			} else {
+				return false;
+			}
+		} else {
+			if (info.isArray) {
+				return false;
+			} else {
+				boolean result = false;
+				if (superClass != null) {
+					result = result || superClass.isAssignableTo(info);
+				}
+				for (ExternalClassInfo intf: interfaces) {
+					result = result || intf.isAssignableTo(info);
+				}
+				return result;
+			}
+		}
+		
+	}
+	
+	public boolean isDerivedFrom(String className) {
+		if (name.equals(className)) {
+			return true;
+		} else if (superClass != null) {
+			return superClass.isDerivedFrom(className);
+		} else {
+			return false;
+		}
+	}
+	
 
 	public String getSuperName() {
 		return superName;
@@ -93,20 +134,14 @@ public class ExternalClassInfo {
 	
 	public boolean isInvalid() {
 		return invalid;
-	}
+	}	
 
-	public void setInvalid(boolean invalid) {
-		this.invalid = invalid;
+	public ExternalClassInfo getComponentClass() {
+		return componentClass;
 	}
-	
-	
 
 	public boolean isResolved() {
 		return resolved;
-	}
-
-	public void setResolved(boolean resolved) {
-		this.resolved = resolved;
 	}
 
 	public void updateMetaData() {
@@ -138,7 +173,7 @@ public class ExternalClassInfo {
 			return resolveArray(clazz, caller, symbol, className);
 		} else {
 			ExternalClassInfo result =  resolveClass(clazz, caller, symbol, className);
-			if (checkAccess) {
+			if (result !=null && checkAccess) {
 				if (result.getModifier().isPublic()) {
 					//OK
 				} else {
@@ -161,10 +196,14 @@ public class ExternalClassInfo {
 		result.descriptor = desc;
 		result.superName = "java/lang/Object";
 		ExternalClassInfo superInfo = resolve(clazz, caller, symbol, result.superName, false);
-		if (superInfo != null && !superInfo.isInvalid()) {
+		if (superInfo != null) {
 			result.superClass = superInfo;
 			if (desc.getComponentType().isArray() || desc.getComponentType().isObject()) {
-				result.componentClass = resolve(clazz, caller, symbol, desc.getComponentType().getValue(), true);
+				if (desc.getComponentType().isArray()) {
+					result.componentClass = resolve(clazz, caller, symbol, desc.getComponentType().getValue(), true);
+				} else {
+					result.componentClass = resolve(clazz, caller, symbol, desc.getComponentType().getComponentClassName(), true);
+				}
 				if (result.componentClass != null) {
 					return result;
 				} else {
@@ -192,7 +231,7 @@ public class ExternalClassInfo {
 				if (superInfo != null) {
 					result.superClass = superInfo;
 				} else {
-					result.setInvalid(true);
+					result.invalid = true;
 					return null;
 				}
 			}
@@ -201,10 +240,11 @@ public class ExternalClassInfo {
 				if (intfInfo != null) {
 					result.interfaces.add(intfInfo);
 				} else {
-					result.setInvalid(true);
+					result.invalid = true;
 					return null;
 				}
 			}
+			result.resolved = true;
 			return result;
 		}
 	}

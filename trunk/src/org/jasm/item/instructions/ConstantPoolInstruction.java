@@ -7,6 +7,7 @@ import java.util.Map;
 
 
 
+
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
@@ -24,6 +25,7 @@ import org.jasm.item.constantpool.MethodTypeInfo;
 import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 
 public class ConstantPoolInstruction extends AbstractInstruction implements IConstantPoolReference {
 	
@@ -116,6 +118,15 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 
 	public void setCpEntryReference(SymbolReference cpEntryReference) {
 		this.cpEntryReference = cpEntryReference;
+	}
+
+	@Override
+	protected void doVerify(VerifierParams params) {
+		if (cpEntry instanceof ClassInfo) {
+			getRoot().checkAndLoadClassInfo(this, cpEntryReference, ((ClassInfo)cpEntry).getClassName());
+		} else if (cpEntry instanceof FieldrefInfo) {
+			getRoot().checkAndLoadFieldInfo(this, cpEntryReference, ((FieldrefInfo)cpEntry).getClassName(), ((FieldrefInfo)cpEntry).getName(), ((FieldrefInfo)cpEntry).getDescriptor());
+		}
 	}
 	
 	

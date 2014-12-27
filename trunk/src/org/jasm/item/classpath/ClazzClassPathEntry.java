@@ -7,20 +7,27 @@ import org.jasm.item.clazz.Clazz;
 
 public class ClazzClassPathEntry implements IClassPathEntry {
 	
-	private Map<String, ExternalClassInfo> classes = new HashMap<String, ExternalClassInfo>();
+	private Map<String, Clazz> classes = new HashMap<String, Clazz>();
 
 	@Override
 	public ExternalClassInfo findClass(String className) {
-		return classes.get(className);
+		Clazz cl = classes.get(className);
+		if (cl == null) {
+			return null;
+		} else {
+			if (cl.resolveMyselfAndSuperclasses()) {
+				ExternalClassInfo cli = ExternalClassInfo.createFromClass(cl);
+				return cli;
+				
+			} else {
+				return null;
+			}
+		}
+		
 	}
 	
 	public void add(Clazz cl) {
-		ExternalClassInfo cli = ExternalClassInfo.createFromClass(cl);
-		if (classes.containsKey(cli.getName())) {
-			throw new IllegalArgumentException("Already registered!");
-		}
-		classes.put(cli.getName(), cli);
-		
+		classes.put(cl.getThisClass().getClassName(), cl);
 	}
 
 	@Override
