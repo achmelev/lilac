@@ -35,7 +35,7 @@ public class SpingCoreAssembleDisassembleTest extends
 
 	
 	/*protected boolean filter(String name) {
-		return "org/springframework/asm/Frame.class".equals(name);
+		return "org/springframework/util/StopWatch.class".equals(name);
 	}*/
 
 }

@@ -92,7 +92,7 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem implement
 	
 	@Override
 	protected void doVerify(VerifierParams params) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

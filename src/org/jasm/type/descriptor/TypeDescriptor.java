@@ -109,12 +109,23 @@ public class TypeDescriptor {
 	public boolean isBoolean() {
 		return isBoolean;
 	}
+	
+	public boolean isPrimitive() {
+		return !isArray() && !isObject();
+	}
 
 	public TypeDescriptor getComponentType() {
 		if (!isArray()) {
 			throw new IllegalStateException("isn't an array!");
 		}
 		return componentType;
+	}
+	
+	public String getComponentClassName() {
+		if (!isObject) {
+			throw new IllegalStateException("isn't an object!");
+		}
+		return descriptor.substring(1, descriptor.length()-1);
 	}
 
 	@Override
@@ -172,6 +183,32 @@ public class TypeDescriptor {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((descriptor == null) ? 0 : descriptor.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TypeDescriptor other = (TypeDescriptor) obj;
+		if (descriptor == null) {
+			if (other.descriptor != null)
+				return false;
+		} else if (!descriptor.equals(other.descriptor))
+			return false;
+		return true;
 	}
 	
 	

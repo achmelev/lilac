@@ -45,13 +45,16 @@ public class Field extends AbstractClassMember<FieldModifier> {
 	protected void verifyName(SymbolReference ref, Utf8Info name) {
 		IdentifierUtils.checkIdentifier(this, ref, name);
 	}
+	
+	
 
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doResolveAfterParse() {
+		super.doResolveAfterParse();
 		checkModifiers();
-		super.doVerify(params);
 	}
+
 	
 	private void checkModifiers() {
 		boolean valid = true;

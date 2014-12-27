@@ -42,7 +42,7 @@ public abstract class AbstractMavenJarTestCase {
 			PrettyPrinter printer = new PrettyPrinter(writer);
 			printer.printItem(clazz);
 			writer.close();
-			log.debug(sw.toString());
+			log.debug("code:\n"+sw.toString());
 		}
 	}
 	

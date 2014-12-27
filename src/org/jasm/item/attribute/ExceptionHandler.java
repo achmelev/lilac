@@ -6,6 +6,7 @@ import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.classpath.ExternalClassInfo;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
@@ -36,6 +37,7 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 	private int catchTypeIndex = -1;
 	private SymbolReference catchTypeReference;
 	private ClassInfo catchType = null;
+	private ExternalClassInfo externalCatchType;
 	
 	public ExceptionHandler() {
 		
@@ -131,8 +133,14 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 	
 	@Override
 	protected void doVerify(VerifierParams params) {
-		
-		
+		if (catchType != null) {
+			externalCatchType = getRoot().checkAndLoadClassInfo(this, catchTypeReference, catchType.getClassName());
+			ExternalClassInfo throwable = getRoot().checkAndLoadClassInfo(this, null, "java/lang/Throwable");
+			if (externalCatchType != null && throwable!=null && !externalCatchType.isAssignableTo(throwable)) {
+				emitError(catchTypeReference, catchType.getClassName()+" isn't a java/lang/Throwable instance");
+				externalCatchType = null;
+			}
+		}
 	}
 
 
