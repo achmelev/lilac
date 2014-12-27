@@ -45,6 +45,32 @@ public class PlayGroundTest {
 	}
 	
 	@Test
+	public void testException() {
+		ClassLoader cl = createClassLoader();
+		try {
+			Class clazz = cl.loadClass(ExceptionProber.class.getName());
+			Prober prob = (Prober)clazz.newInstance();
+			prob.check(3);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
+	@Test
+	public void testAccess() {
+		ClassLoader cl = createClassLoader();
+		try {
+			Class clazz = cl.loadClass(AccessProber.class.getName());
+			Prober prob = (Prober)clazz.newInstance();
+			prob.check(3);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
+	@Test
 	public void testInterface() {
 		ClassLoader cl = createClassLoader();
 		try {
@@ -54,6 +80,8 @@ public class PlayGroundTest {
 			throw new RuntimeException(e);
 		}
 	}
+	
+
 	
 	private ClassLoader createClassLoader() {
 		return new AssemblerClassLoader(Thread.currentThread().getContextClassLoader());

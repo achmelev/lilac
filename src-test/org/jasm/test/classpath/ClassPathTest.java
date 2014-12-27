@@ -35,8 +35,8 @@ public class ClassPathTest {
 		Assert.assertEquals(false, info.getModifier().isInterface());
 		Assert.assertEquals(false, info.getModifier().isSyntetic());
 		
-		Assert.assertEquals(1, info.getInterfaces().size());
-		Assert.assertEquals("java/lang/Runnable", info.getInterfaces().get(0));
+		Assert.assertEquals(1, info.getInterfacesNames().size());
+		Assert.assertEquals("java/lang/Runnable", info.getInterfacesNames().get(0));
 		
 		Assert.assertEquals(2, info.getFields().size());
 		FieldInfo fi = info.getField("intField", "I");

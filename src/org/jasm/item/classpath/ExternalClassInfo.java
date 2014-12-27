@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Field;
 import org.jasm.item.clazz.Method;
 import org.jasm.item.modifier.ClassModifier;
+import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
 import org.junit.runner.Result;
@@ -17,51 +19,96 @@ public class ExternalClassInfo {
 	
 	private String name;
 	private String superName;
-	private List<String> interfaces = new ArrayList<String>();
+	private ExternalClassInfo superClass;
+	private List<String> interfacesNames = new ArrayList<String>();
+	private List<ExternalClassInfo> interfaces = new ArrayList<ExternalClassInfo>();
 	private ClassModifier modifier;
 	private List<MethodInfo> methods = new ArrayList<MethodInfo>();
 	private List<FieldInfo> fields = new ArrayList<FieldInfo>();
 	
+	private boolean isArray = false;
+	private TypeDescriptor descriptor;
+	private ExternalClassInfo componentClass;
+	
 	private Map<String, MethodInfo> methodRegistry = new HashMap<String, MethodInfo>();
 	private Map<String, FieldInfo> fieldRegistry = new HashMap<String, FieldInfo>();
+	
+	private boolean invalid = false;
+	private boolean resolved = false;
 	
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
-		this.name = name;
+	
+	public String getPackage() {
+		if (isArray) {
+			throw new IllegalStateException("Arrays have no packages");
+		}
+		if (name.indexOf('/')>=0) {
+			return name.substring(0, name.lastIndexOf('/'));
+		} else {
+			return "";
+		}
 	}
+	
+
 	public String getSuperName() {
 		return superName;
 	}
-	public void setSuperName(String superName) {
-		this.superName = superName;
+
+	public List<String> getInterfacesNames() {
+		return interfacesNames;
 	}
-	public List<String> getInterfaces() {
+
+
+
+	public List<ExternalClassInfo> getInterfaces() {
 		return interfaces;
 	}
-	public void setInterfaces(List<String> interfaces) {
-		this.interfaces = interfaces;
+	
+	public ExternalClassInfo getSuperClass() {
+		return superClass;
 	}
+
 	public ClassModifier getModifier() {
 		return modifier;
 	}
-	public void setModifier(ClassModifier modifier) {
-		this.modifier = modifier;
-	}
+	
 	public List<MethodInfo> getMethods() {
 		return methods;
 	}
-	public void setMethods(List<MethodInfo> methods) {
-		this.methods = methods;
-	}
+	
 	public List<FieldInfo> getFields() {
 		return fields;
 	}
-	public void setFields(List<FieldInfo> fields) {
-		this.fields = fields;
+	
+	public boolean isArray() {
+		return isArray;
 	}
 	
+	
+	public TypeDescriptor getDescriptor() {
+		return descriptor;
+	}
+	
+	public boolean isInvalid() {
+		return invalid;
+	}
+
+	public void setInvalid(boolean invalid) {
+		this.invalid = invalid;
+	}
+	
+	
+
+	public boolean isResolved() {
+		return resolved;
+	}
+
+	public void setResolved(boolean resolved) {
+		this.resolved = resolved;
+	}
+
 	public void updateMetaData() {
 		methodRegistry.clear();
 		for (MethodInfo mi: methods) {
@@ -81,17 +128,99 @@ public class ExternalClassInfo {
 		return fieldRegistry.get(name+"@"+descriptor);
 	}
 	
+	
+	
+	
+	
+	
+	public static ExternalClassInfo resolve(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className, boolean checkAccess)  {
+		if (className.startsWith("[")) {
+			return resolveArray(clazz, caller, symbol, className);
+		} else {
+			ExternalClassInfo result =  resolveClass(clazz, caller, symbol, className);
+			if (checkAccess) {
+				if (result.getModifier().isPublic()) {
+					//OK
+				} else {
+					if (clazz.getPackage().equals(result.getPackage())) {
+						//OK
+					} else {
+						caller.emitError(symbol, "tried illegal access for "+result.name);
+						return null;
+					}
+				}
+			}
+			return result;
+		}
+		
+	}
+	
+	private static ExternalClassInfo resolveArray(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className) {
+		ExternalClassInfo result = new ExternalClassInfo();
+		TypeDescriptor desc = new TypeDescriptor(className);
+		result.descriptor = desc;
+		result.superName = "java/lang/Object";
+		ExternalClassInfo superInfo = resolve(clazz, caller, symbol, result.superName, false);
+		if (superInfo != null && !superInfo.isInvalid()) {
+			result.superClass = superInfo;
+			if (desc.getComponentType().isArray() || desc.getComponentType().isObject()) {
+				result.componentClass = resolve(clazz, caller, symbol, desc.getComponentType().getValue(), true);
+				if (result.componentClass != null) {
+					return result;
+				} else {
+					return null;
+				}
+			} else {
+				return result;
+			}
+		} else {
+			return null;
+		}
+		
+	}
+	
+	private static ExternalClassInfo resolveClass(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className) {
+		ExternalClassInfo result = clazz.findClass(className);
+		if (result == null || result.isInvalid()) {
+			caller.emitError(symbol, "unknown class "+className);
+			return null;
+		} else if (result.isResolved()) {
+			return result;
+		} else {
+			if (result.superName != null) {
+				ExternalClassInfo superInfo = resolve(clazz, caller, symbol, result.superName, false);
+				if (superInfo != null) {
+					result.superClass = superInfo;
+				} else {
+					result.setInvalid(true);
+					return null;
+				}
+			}
+			for (String name: result.interfacesNames) {
+				ExternalClassInfo intfInfo = resolve(clazz, caller, symbol, name, false);
+				if (intfInfo != null) {
+					result.interfaces.add(intfInfo);
+				} else {
+					result.setInvalid(true);
+					return null;
+				}
+			}
+			return result;
+		}
+	}
+	
+	
 	public static ExternalClassInfo createFromClass(Clazz clazz) {
 		ExternalClassInfo result = new ExternalClassInfo();
 		
-		result.setName(clazz.getThisClass().getClassName());
+		result.name = clazz.getThisClass().getClassName();
 		if (clazz.getSuperClass() != null) {
-			result.setSuperName(clazz.getSuperClass().getClassName());
+			result.superName = clazz.getSuperClass().getClassName();
 		}
-		result.setModifier(clazz.getModifier());
+		result.modifier = clazz.getModifier();
 		
 		for (org.jasm.item.constantpool.ClassInfo clinfo: clazz.getInterfaces()) {
-			result.getInterfaces().add(clinfo.getClassName());
+			result.interfacesNames.add(clinfo.getClassName());
 		}
 		
 		for (int i=0;i<clazz.getMethods().getSize(); i++) {
@@ -101,7 +230,7 @@ public class ExternalClassInfo {
 			info.setDescriptor(new MethodDescriptor(meth.getDescriptor().getValue()));
 			info.setParent(result);
 			info.setModifier(meth.getModifier());
-			result.getMethods().add(info);
+			result.methods.add(info);
 		}
 		
 		for (int i=0;i<clazz.getFields().getSize(); i++) {
@@ -111,7 +240,7 @@ public class ExternalClassInfo {
 			info.setDescriptor(new TypeDescriptor(field.getDescriptor().getValue()));
 			info.setParent(result);
 			info.setModifier(field.getModifier());
-			result.getFields().add(info);
+			result.fields.add(info);
 		}
 		
 		result.updateMetaData();

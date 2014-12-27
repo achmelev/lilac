@@ -311,7 +311,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			}
 		} else {
 			if (this.getSuperClass().isArray()) {
-				emitError(superClassSymbol, "arrays arent allowed as superclasses");
+				emitError(superClassSymbol, "arrays aren't allowed as superclasses");
 				return;
 			}
 			ExternalClassInfo superClass = checkAndLoadClassInfo(this, superClassSymbol, getSuperClass().getClassName());
@@ -464,6 +464,15 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		return thisClass;
 	}
 	
+	public String getPackage() {
+		String name = thisClass.getClassName();
+		if (name.indexOf('/')>=0) {
+			return name.substring(0, name.lastIndexOf('/'));
+		} else {
+			return "";
+		}
+	}
+	
 	public void setThisClass(ClassInfo thisClass) {
 		this.thisClass = thisClass;
 	}
@@ -606,19 +615,9 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	
 	
 	public org.jasm.item.classpath.ExternalClassInfo checkAndLoadClassInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className) {
-		org.jasm.item.classpath.ExternalClassInfo info = findClass(className);
-		if (info != null) {
-			if (checkAccess(info)) {
-				return info;
-			} else {
-				caller.emitError(symbol, "illegal class access");
-				return null;
-			}
-		} else {
-			caller.emitError(symbol, "unknown class "+className);
-			return null;
-		}
+		return ExternalClassInfo.resolve(this, caller, symbol, className, true);
 	}
+	
 	
 	public org.jasm.item.classpath.MethodInfo checkAndLoadMethodInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String methodName, String desc) {
 		org.jasm.item.classpath.ExternalClassInfo info = checkAndLoadClassInfo(caller, symbol, className);
@@ -674,7 +673,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		return true;
 	}
 	
-	private org.jasm.item.classpath.ExternalClassInfo findClass(String name) {
+	public org.jasm.item.classpath.ExternalClassInfo findClass(String name) {
 		if (name.equals(getThisClass().getClassName())) {
 			if (me == null) {
 				me = org.jasm.item.classpath.ExternalClassInfo.createFromClass(this);
