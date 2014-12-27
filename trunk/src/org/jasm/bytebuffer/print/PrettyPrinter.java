@@ -41,9 +41,6 @@ public class PrettyPrinter {
 		}*/
 		
 		StringBuffer buf = new StringBuffer();
-		if (item == null) {
-			System.out.println("here!");
-		}
 		if (item.getPrintLabel() != null) {
 			buf.append(item.getPrintLabel()+": ");
 		}
