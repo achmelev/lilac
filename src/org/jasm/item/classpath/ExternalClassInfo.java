@@ -15,26 +15,25 @@ import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
 import org.junit.runner.Result;
 
-public class ExternalClassInfo {
+public class ExternalClassInfo extends AbstractInfo {
 	
-	private String name;
-	private String superName;
-	private ExternalClassInfo superClass;
-	private List<String> interfacesNames = new ArrayList<String>();
-	private List<ExternalClassInfo> interfaces = new ArrayList<ExternalClassInfo>();
-	private ClassModifier modifier;
-	private List<MethodInfo> methods = new ArrayList<MethodInfo>();
-	private List<FieldInfo> fields = new ArrayList<FieldInfo>();
+	String name;
+	String superName;
+	ExternalClassInfo superClass;
+	List<String> interfacesNames = new ArrayList<String>();
+	List<ExternalClassInfo> interfaces = new ArrayList<ExternalClassInfo>();
+	ClassModifier modifier;
+	List<MethodInfo> methods = new ArrayList<MethodInfo>();
+	List<FieldInfo> fields = new ArrayList<FieldInfo>();
 	
-	private boolean isArray = false;
-	private TypeDescriptor descriptor;
-	private ExternalClassInfo componentClass;
+	boolean isArray = false;
+	TypeDescriptor descriptor;
+	ExternalClassInfo componentClass;
 	
 	private Map<String, MethodInfo> methodRegistry = new HashMap<String, MethodInfo>();
 	private Map<String, FieldInfo> fieldRegistry = new HashMap<String, FieldInfo>();
 	
-	private boolean invalid = false;
-	private boolean resolved = false;
+	
 	
 	public String getName() {
 		return name;
@@ -132,17 +131,12 @@ public class ExternalClassInfo {
 		return descriptor;
 	}
 	
-	public boolean isInvalid() {
-		return invalid;
-	}	
 
 	public ExternalClassInfo getComponentClass() {
 		return componentClass;
 	}
 
-	public boolean isResolved() {
-		return resolved;
-	}
+	
 
 	public void updateMetaData() {
 		methodRegistry.clear();
@@ -162,93 +156,6 @@ public class ExternalClassInfo {
 	public FieldInfo getField(String name, String descriptor) {
 		return fieldRegistry.get(name+"@"+descriptor);
 	}
-	
-	
-	
-	
-	
-	
-	public static ExternalClassInfo resolve(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className, boolean checkAccess)  {
-		if (className.startsWith("[")) {
-			return resolveArray(clazz, caller, symbol, className);
-		} else {
-			ExternalClassInfo result =  resolveClass(clazz, caller, symbol, className);
-			if (result !=null && checkAccess) {
-				if (result.getModifier().isPublic()) {
-					//OK
-				} else {
-					if (clazz.getPackage().equals(result.getPackage())) {
-						//OK
-					} else {
-						caller.emitError(symbol, "tried illegal access for "+result.name);
-						return null;
-					}
-				}
-			}
-			return result;
-		}
-		
-	}
-	
-	private static ExternalClassInfo resolveArray(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className) {
-		ExternalClassInfo result = new ExternalClassInfo();
-		TypeDescriptor desc = new TypeDescriptor(className);
-		result.descriptor = desc;
-		result.superName = "java/lang/Object";
-		ExternalClassInfo superInfo = resolve(clazz, caller, symbol, result.superName, false);
-		if (superInfo != null) {
-			result.superClass = superInfo;
-			if (desc.getComponentType().isArray() || desc.getComponentType().isObject()) {
-				if (desc.getComponentType().isArray()) {
-					result.componentClass = resolve(clazz, caller, symbol, desc.getComponentType().getValue(), true);
-				} else {
-					result.componentClass = resolve(clazz, caller, symbol, desc.getComponentType().getComponentClassName(), true);
-				}
-				if (result.componentClass != null) {
-					return result;
-				} else {
-					return null;
-				}
-			} else {
-				return result;
-			}
-		} else {
-			return null;
-		}
-		
-	}
-	
-	private static ExternalClassInfo resolveClass(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className) {
-		ExternalClassInfo result = clazz.findClass(className);
-		if (result == null || result.isInvalid()) {
-			caller.emitError(symbol, "unknown class "+className);
-			return null;
-		} else if (result.isResolved()) {
-			return result;
-		} else {
-			if (result.superName != null) {
-				ExternalClassInfo superInfo = resolve(clazz, caller, symbol, result.superName, false);
-				if (superInfo != null) {
-					result.superClass = superInfo;
-				} else {
-					result.invalid = true;
-					return null;
-				}
-			}
-			for (String name: result.interfacesNames) {
-				ExternalClassInfo intfInfo = resolve(clazz, caller, symbol, name, false);
-				if (intfInfo != null) {
-					result.interfaces.add(intfInfo);
-				} else {
-					result.invalid = true;
-					return null;
-				}
-			}
-			result.resolved = true;
-			return result;
-		}
-	}
-	
 	
 	public static ExternalClassInfo createFromClass(Clazz clazz) {
 		ExternalClassInfo result = new ExternalClassInfo();

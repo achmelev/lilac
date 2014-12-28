@@ -4,7 +4,8 @@ import java.io.InputStream;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.item.classpath.ClassLoaderClasspathEntry;
-import org.jasm.item.classpath.ClassPath;
+import org.jasm.item.classpath.ClassInfoResolver;
+import org.jasm.item.classpath.ClazzClassPathEntry;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.type.verifier.VerifierParams;
@@ -75,9 +76,10 @@ public class AssemblerClassLoader extends ClassLoader {
 			throw new AssemblerClassLoaderException("invalid assembler file", rName, parser.getErrorMessages());
 		}
 		VerifierParams params = new VerifierParams();
-		ClassPath clp = new ClassPath();
+		ClassInfoResolver clp = new ClassInfoResolver();
+		clp.add(new ClazzClassPathEntry(clazz));
 		clp.add(new ClassLoaderClasspathEntry(this));
-		clazz.setClasspath(clp);
+		clazz.setResolver(clp);
 		//clazz.verify(params);
 		if (parser.getErrorMessages().size() > 0) {
 			parser.debugErrors();

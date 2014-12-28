@@ -8,6 +8,14 @@ import org.jasm.item.clazz.Clazz;
 public class ClazzClassPathEntry implements IClassPathEntry {
 	
 	private Map<String, Clazz> classes = new HashMap<String, Clazz>();
+	
+	public ClazzClassPathEntry() {
+		
+	}
+	
+	public ClazzClassPathEntry(Clazz cl) {
+		add(cl);
+	}
 
 	@Override
 	public ExternalClassInfo findClass(String className) {

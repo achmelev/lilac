@@ -3,7 +3,7 @@ package org.jasm.item.classpath;
 import org.jasm.item.modifier.MethodModifier;
 import org.jasm.type.descriptor.MethodDescriptor;
 
-public class MethodInfo {
+public class MethodInfo extends AbstractInfo {
 	
 	private String name;
 	private MethodModifier modifier;
