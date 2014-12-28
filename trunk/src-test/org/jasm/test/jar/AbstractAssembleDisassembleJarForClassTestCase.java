@@ -11,11 +11,11 @@ import java.io.StringWriter;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
-import org.jasm.item.classpath.ClassLoaderClasspathEntry;
-import org.jasm.item.classpath.ClassInfoResolver;
-import org.jasm.item.classpath.JarFileClassPathEntry;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
+import org.jasm.resolver.ClassInfoResolver;
+import org.jasm.resolver.ClassLoaderClasspathEntry;
+import org.jasm.resolver.JarFileClassPathEntry;
 import org.jasm.type.verifier.VerifierParams;
 import org.junit.Assert;
 
