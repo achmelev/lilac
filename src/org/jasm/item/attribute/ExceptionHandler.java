@@ -6,7 +6,6 @@ import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
-import org.jasm.item.classpath.ExternalClassInfo;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
@@ -15,6 +14,7 @@ import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.resolver.ExternalClassInfo;
 import org.jasm.type.verifier.VerifierParams;
 
 public class ExceptionHandler extends AbstractByteCodeItem implements IConstantPoolReference, IInstructionReference, ISymbolTableEntry {

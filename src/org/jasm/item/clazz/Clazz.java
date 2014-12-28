@@ -15,11 +15,6 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.attribute.Attributes;
-import org.jasm.item.classpath.ClassInfoResolver;
-import org.jasm.item.classpath.ClazzClassPathEntry;
-import org.jasm.item.classpath.ExternalClassInfo;
-import org.jasm.item.classpath.FieldInfo;
-import org.jasm.item.classpath.MethodInfo;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
@@ -29,6 +24,11 @@ import org.jasm.parser.AssemblerParser;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
+import org.jasm.resolver.ClassInfoResolver;
+import org.jasm.resolver.ClazzClassPathEntry;
+import org.jasm.resolver.ExternalClassInfo;
+import org.jasm.resolver.FieldInfo;
+import org.jasm.resolver.MethodInfo;
 import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +67,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	private Map<String, Integer> interfaceIndexesLabelTable =  new HashMap<String, Integer>();
 	
 	private ClassInfoResolver resolver;
-	private org.jasm.item.classpath.ExternalClassInfo me;
+	private org.jasm.resolver.ExternalClassInfo me;
 	
 	public Clazz() {
 		initChildren();
@@ -645,19 +645,19 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	}
 	
 	
-	public org.jasm.item.classpath.MethodInfo checkAndLoadMethodInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String methodName, String desc) {
+	public org.jasm.resolver.MethodInfo checkAndLoadMethodInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String methodName, String desc) {
 		return null;
 		
 	}
 	
-	public org.jasm.item.classpath.FieldInfo checkAndLoadFieldInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String fieldName, String desc) {
+	public org.jasm.resolver.FieldInfo checkAndLoadFieldInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String fieldName, String desc) {
 		return getResolver().resolve(this, caller, symbol, className, fieldName, desc, true);
 	}
 	
 	
 	
 
-	public org.jasm.item.classpath.ExternalClassInfo getMe() {
+	public org.jasm.resolver.ExternalClassInfo getMe() {
 		return me;
 	}
 	
