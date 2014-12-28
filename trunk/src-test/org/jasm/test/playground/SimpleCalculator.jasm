@@ -42,8 +42,17 @@ public super class {
   const utf8 innerinit_desc "(Lorg/jasm/test/playground/CalculatorDelegate;I)V";
   
   source file source_file_name; // SimpleCalculator.java
+  
+
+  const utf8 BooleanArray_name "bArray";
+  const utf8 BooleanArray_desc "[Ljava/lang/Boolean2;";
+  
    //Fields
-   //Methods
+  private field {
+   	 name BooleanArray_name;
+   	 descriptor BooleanArray_desc;
+  }
+  //Methods
   public method {
     name init0_name; // <init>
     descriptor init0_desc; // ()V

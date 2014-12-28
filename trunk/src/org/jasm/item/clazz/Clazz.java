@@ -651,7 +651,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	}
 	
 	public org.jasm.resolver.FieldInfo checkAndLoadFieldInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String fieldName, String desc) {
-		return getResolver().resolve(this, caller, symbol, className, fieldName, desc, true);
+		return getResolver().resolveField(this, caller, symbol, className, fieldName, desc, true);
 	}
 	
 	

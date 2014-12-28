@@ -18,6 +18,8 @@ public class ClassInfoResolver  {
 	private Map<String, Boolean> classAccessCache = new HashMap<String, Boolean>();
 	private Map<String, AbstractInfo> fieldCache = new HashMap<String, AbstractInfo>();
 	private Map<String, Boolean> fieldAccessCache = new HashMap<String, Boolean>();
+	private Map<String, AbstractInfo> methodCache = new HashMap<String, AbstractInfo>();
+	private Map<String, Boolean> methodAccessCache = new HashMap<String, Boolean>();
 	
 	
 	
@@ -127,40 +129,50 @@ public class ClassInfoResolver  {
 		}
 	}
 	
-	public FieldInfo resolve(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className,String name,  String descriptor,boolean checkAccess)  {
-		
-		String fieldKey = className+"."+name+"@"+descriptor;
-		if (classCache.containsKey(fieldKey)) {
-			AbstractInfo info = fieldCache.get(className);
+	ExternalClassInfo findClass(String className) {
+		for (IClassPathEntry entry: entries) {
+			if (!entry.isInvalid()) {
+				ExternalClassInfo info = entry.findClass(className);
+				if (info != null) {
+					return info;
+				}
+			}
+		}
+		return null;
+	}
+	
+	private AbstractInfo resolveMember(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className,String name,  String descriptor,boolean checkAccess, Map<String, AbstractInfo> memberCache, Map<String, Boolean> memberAccessCache, MemberFindAndAccess mfa, String label) {
+		String memberKey = className+"."+name+"@"+descriptor;
+		if (memberCache.containsKey(memberKey)) {
+			AbstractInfo info = memberCache.get(className);
 			if (info == NotFoundInfo.VALUE) {
 				return null;
 			} else {
-				return (FieldInfo)info;
+				return info;
 			}
 		}
-		
 		ExternalClassInfo cli = resolve(clazz, caller, symbol, className, checkAccess);
-		FieldInfo result = null;
+		AbstractInfo result = null;
 		if (cli != null) {
-			result = findField(cli, name, descriptor);
+			result = mfa.findMember(cli, name, descriptor);
 			if (result == null) {
-				fieldCache.put(fieldKey, NotFoundInfo.VALUE);
+				memberCache.put(memberKey, NotFoundInfo.VALUE);
 			} else {
-				fieldCache.put(fieldKey, result);
+				memberCache.put(memberKey, result);
 			}
 			if (result != null) {
 				if (checkAccess) {
-					String accessKey = clazz.getThisClass().getClassName()+"->"+fieldKey;
-					if (fieldAccessCache.containsKey(accessKey)) {
-						if (!fieldAccessCache.get(accessKey)) {
+					String accessKey = clazz.getThisClass().getClassName()+"->"+memberKey;
+					if (memberAccessCache.containsKey(accessKey)) {
+						if (!memberAccessCache.get(accessKey)) {
 							result = null;
 						}
 					} else {
-						if (checkAccess(clazz, cli,result)) {
-							fieldAccessCache.put(accessKey, true);
+						if (mfa.checkAccess(clazz, cli,result)) {
+							memberAccessCache.put(accessKey, true);
 							return result;
 						} else {
-							fieldAccessCache.put(accessKey, false);
+							memberAccessCache.put(accessKey, false);
 							caller.emitError(symbol, "lllegal access for "+cli.getName()+"."+name+"@"+descriptor);
 							result = null;
 						}
@@ -169,13 +181,35 @@ public class ClassInfoResolver  {
 					return result;
 				}
 			} else {
-				caller.emitError(symbol, "unknown field "+cli.getName()+"."+name+"@"+descriptor);
+				caller.emitError(symbol, "unknown "+label+" "+cli.getName()+"."+name+"@"+descriptor);
 				return null;
 			}
 		} else {
-			fieldCache.put(fieldKey, NotFoundInfo.VALUE);
+			memberCache.put(memberKey, NotFoundInfo.VALUE);
 		}
 		return result;
+	}
+	
+	public FieldInfo resolveField(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className,String name,  String descriptor,boolean checkAccess)  {
+		MemberFindAndAccess mfa = new MemberFindAndAccess() {
+			
+			@Override
+			public AbstractInfo findMember(ExternalClassInfo cli, String name,
+					String descriptor) {
+				return findField(cli, name, descriptor);
+			}
+			
+			@Override
+			public boolean checkAccess(Clazz clazz, ExternalClassInfo requestClass,
+					AbstractInfo member) {
+				return checkFieldAccess(clazz, requestClass, (FieldInfo)member);
+			}
+			
+			
+		};
+		
+		return (FieldInfo)resolveMember(clazz, caller, symbol, className, name, descriptor, checkAccess, fieldCache, fieldAccessCache, mfa, "field");
+		
 	}
 	
 	private FieldInfo findField(ExternalClassInfo cli, String name, String descriptor) {
@@ -206,7 +240,7 @@ public class ClassInfoResolver  {
 		}
 	}
 	
-	private boolean checkAccess(Clazz clazz, ExternalClassInfo requestClass, FieldInfo fi) {
+	private boolean checkFieldAccess(Clazz clazz, ExternalClassInfo requestClass, FieldInfo fi) {
 		
 		ExternalClassInfo me = clazz.getMe();
 		String declarationClass = fi.getParent().getName();
@@ -238,17 +272,7 @@ public class ClassInfoResolver  {
 	}
 	
 	
-	ExternalClassInfo findClass(String className) {
-		for (IClassPathEntry entry: entries) {
-			if (!entry.isInvalid()) {
-				ExternalClassInfo info = entry.findClass(className);
-				if (info != null) {
-					return info;
-				}
-			}
-		}
-		return null;
-	}
+	
 	
 	public void add(IClassPathEntry entry) {
 		entries.add(entry);
@@ -257,5 +281,9 @@ public class ClassInfoResolver  {
 	public void addAtBegin(IClassPathEntry entry) {
 		entries.add(0, entry);
 	}
-	
+}
+
+interface MemberFindAndAccess {
+	AbstractInfo findMember(ExternalClassInfo cli, String name, String descriptor);
+	boolean checkAccess(Clazz clazz, ExternalClassInfo requestClass, AbstractInfo member);
 }

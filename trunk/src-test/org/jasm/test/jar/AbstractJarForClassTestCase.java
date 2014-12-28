@@ -40,6 +40,9 @@ public abstract class AbstractJarForClassTestCase {
 					}
 					data.close();
 					counter++;
+					if (counter%500 == 0) {
+						log.info("Tested "+counter+" classes");
+					}
 				}
 			}
 			Assert.assertEquals(0, errorCounter);

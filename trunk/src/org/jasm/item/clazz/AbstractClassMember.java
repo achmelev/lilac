@@ -122,13 +122,15 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 		} else {
 			emitError(null, "missing descriptor statement");
 		}
-		
 		if (!this.hasErrors()) {
 			modifier = createModifier(0);
 			for (Keyword kw: modifierLiterals) {
 				modifier.setFlag(kw.getKeyword());
 			}
-			attributes.resolve();
+			checkModifiers();
+			if (!hasErrors()) {
+				attributes.resolve();
+			}
 		}
 		
 	}
@@ -220,6 +222,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	
 	protected abstract void verifyName(SymbolReference ref, Utf8Info name);
 	protected abstract void verifyDescriptor(SymbolReference ref, String descriptor);
+	protected abstract void checkModifiers();
 	
 	@Override
 	public String generateName(Utf8Info utf8) {

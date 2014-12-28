@@ -71,6 +71,19 @@ public class PlayGroundTest {
 	}
 	
 	@Test
+	public void testField() {
+		ClassLoader cl = createClassLoader();
+		try {
+			Class clazz = cl.loadClass(FieldProber.class.getName());
+			Prober prob = (Prober)clazz.newInstance();
+			prob.check(3);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
+	@Test
 	public void testInterface() {
 		ClassLoader cl = createClassLoader();
 		try {

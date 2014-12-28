@@ -61,16 +61,8 @@ public class Method extends AbstractClassMember<MethodModifier> {
 	}
 	
 	
-
-	@Override
-	protected void doResolveAfterParse() {
-		super.doResolveAfterParse();
-		checkModifiers();
-	}
-
 	
-	
-	private void checkModifiers() {
+	protected void checkModifiers() {
 		if (getName().getValue().equals("<clinit>")) {
 			return;
 		}

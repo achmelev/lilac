@@ -46,17 +46,9 @@ public class Field extends AbstractClassMember<FieldModifier> {
 		IdentifierUtils.checkIdentifier(this, ref, name);
 	}
 	
-	
-
 
 	@Override
-	protected void doResolveAfterParse() {
-		super.doResolveAfterParse();
-		checkModifiers();
-	}
-
-	
-	private void checkModifiers() {
+	protected void checkModifiers() {
 		boolean valid = true;
 		boolean isInInterface = getRoot().getModifier().isInterface();
 		if (!isInInterface) {
