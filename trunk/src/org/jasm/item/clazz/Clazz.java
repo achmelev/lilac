@@ -15,7 +15,8 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.attribute.Attributes;
-import org.jasm.item.classpath.ClassPath;
+import org.jasm.item.classpath.ClassInfoResolver;
+import org.jasm.item.classpath.ClazzClassPathEntry;
 import org.jasm.item.classpath.ExternalClassInfo;
 import org.jasm.item.classpath.FieldInfo;
 import org.jasm.item.classpath.MethodInfo;
@@ -31,6 +32,8 @@ import org.jasm.parser.literals.VersionLiteral;
 import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.sun.xml.internal.bind.api.ClassResolver;
 
 
 public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeItem<IBytecodeItem>, IConstantPoolReference, IAttributesContainer {
@@ -63,7 +66,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	
 	private Map<String, Integer> interfaceIndexesLabelTable =  new HashMap<String, Integer>();
 	
-	private ClassPath classpath;
+	private ClassInfoResolver resolver;
 	private org.jasm.item.classpath.ExternalClassInfo me;
 	
 	public Clazz() {
@@ -274,9 +277,6 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			return true;
 		}
 	}
-	
-	
-	
 	
 	@Override
 	protected void doVerify(VerifierParams params) {
@@ -624,68 +624,38 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		}
 	}
 
-	public void setClasspath(ClassPath classpath) {
-		this.classpath = classpath;
+	public void setResolver(ClassInfoResolver resolver) {
+		this.resolver = resolver;
+	}
+	
+	private ClassInfoResolver getResolver() {
+		if (this.resolver == null) {
+			//Simple Resolver
+			resolver = new ClassInfoResolver();
+			ClazzClassPathEntry clp = new ClazzClassPathEntry();
+			clp.add(this);
+			resolver.add(clp);
+		}
+		return resolver;
 	}
 	
 	
-	public org.jasm.item.classpath.ExternalClassInfo checkAndLoadClassInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className) {
-		return ExternalClassInfo.resolve(this, caller, symbol, className, true);
+	public ExternalClassInfo checkAndLoadClassInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className) {
+		return getResolver().resolve(this, caller, symbol, className, true);
 	}
 	
 	
 	public org.jasm.item.classpath.MethodInfo checkAndLoadMethodInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String methodName, String desc) {
-		org.jasm.item.classpath.ExternalClassInfo info = checkAndLoadClassInfo(caller, symbol, className);
-		if (info != null) {
-			MethodInfo mi = info.getMethod(methodName, desc);
-			if (mi != null) {
-				if (checkAccess(info, mi)) {
-					return mi;
-				} else {
-					emitError(symbol, "illegal method access");
-					return null;
-				}
-			} else {
-				emitError(symbol, "unknown method "+className+"."+methodName+"@"+desc);
-				return null;
-			}
-		} else {
-			return null;
-		}
+		return null;
 		
 	}
 	
 	public org.jasm.item.classpath.FieldInfo checkAndLoadFieldInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String fieldName, String desc) {
-		return FieldInfo.resolve(this, caller, symbol, className, fieldName, desc, true);
-		
+		return getResolver().resolve(this, caller, symbol, className, fieldName, desc, true);
 	}
 	
-	private boolean checkAccess(org.jasm.item.classpath.ExternalClassInfo info) {
-		return true;
-	}
 	
-	private boolean checkAccess(org.jasm.item.classpath.ExternalClassInfo info, MethodInfo mi) {
-		return true;
-	}
 	
-	private boolean checkAccess(org.jasm.item.classpath.ExternalClassInfo info, FieldInfo fi) {
-		return true;
-	}
-	
-	public org.jasm.item.classpath.ExternalClassInfo findClass(String name) {
-		if (name.equals(getThisClass().getClassName())) {
-			if (me == null) {
-				me = org.jasm.item.classpath.ExternalClassInfo.createFromClass(this);
-			}
-			return me;
-		} else {
-			if (classpath != null) {
-				return classpath.findClass(name);
-			} else {
-				return null;
-			}
-		}
-	}
 
 	public org.jasm.item.classpath.ExternalClassInfo getMe() {
 		return me;

@@ -11,7 +11,7 @@ import java.io.StringWriter;
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.classpath.ClassLoaderClasspathEntry;
-import org.jasm.item.classpath.ClassPath;
+import org.jasm.item.classpath.ClassInfoResolver;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.type.verifier.VerifierParams;
@@ -48,7 +48,7 @@ public abstract class AbstractAssembleDisassembleMavenJarTestCase extends
 		return sw.toString();
 	}
 	
-	private ClassPath classPath = null;
+	private ClassInfoResolver classPath = null;
 	
 	protected byte [] assemble(String data) {
 		
@@ -62,14 +62,14 @@ public abstract class AbstractAssembleDisassembleMavenJarTestCase extends
 		Clazz clazz =  parser.parse(bi);
 		VerifierParams params = new VerifierParams();
 		if (classPath == null) {
-			classPath = new ClassPath();
+			classPath = new ClassInfoResolver();
 			classPath.add(getRootEntry());
 			classPath.add(new ClassLoaderClasspathEntry(this.getClass().getClassLoader()));
 			for (MavenJarClassPathEntry entry: getDependencies()) {
 				classPath.add(entry);
 			}
 		}
-		clazz.setClasspath(classPath);
+		clazz.setResolver(classPath);
 		//params.setCheckReferences(false);
 		clazz.verify(params);
 		if (parser.getErrorMessages().size() > 0) {

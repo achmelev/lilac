@@ -11,7 +11,7 @@ import java.io.StringWriter;
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.classpath.ClassLoaderClasspathEntry;
-import org.jasm.item.classpath.ClassPath;
+import org.jasm.item.classpath.ClassInfoResolver;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.type.verifier.VerifierParams;
@@ -73,9 +73,9 @@ public abstract class AbstractDisassembleAssembleTestCase {
 		
 		parser = new AssemblerParser();
 		Clazz clazz =  parser.parse(bi);
-		ClassPath path = new ClassPath();
+		ClassInfoResolver path = new ClassInfoResolver();
 		path.add(new ClassLoaderClasspathEntry(this.getClass().getClassLoader()));
-		clazz.setClasspath(path);
+		clazz.setResolver(path);
 		clazz.verify(new VerifierParams());
 		if (parser.getErrorMessages().size() > 0) {
 			parser.debugErrors();

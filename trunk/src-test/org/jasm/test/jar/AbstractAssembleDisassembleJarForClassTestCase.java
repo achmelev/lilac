@@ -12,7 +12,7 @@ import java.io.StringWriter;
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.classpath.ClassLoaderClasspathEntry;
-import org.jasm.item.classpath.ClassPath;
+import org.jasm.item.classpath.ClassInfoResolver;
 import org.jasm.item.classpath.JarFileClassPathEntry;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
@@ -48,7 +48,7 @@ public abstract class AbstractAssembleDisassembleJarForClassTestCase extends
 		return sw.toString();
 	}
 	
-	private ClassPath clp = null;
+	private ClassInfoResolver clp = null;
 	
 	protected byte [] assemble(String data, File jarFile) {
 		
@@ -63,11 +63,11 @@ public abstract class AbstractAssembleDisassembleJarForClassTestCase extends
 		VerifierParams params = new VerifierParams();
 		//params.setCheckReferences(false);
 		if (clp == null) {
-			clp = new ClassPath();
+			clp = new ClassInfoResolver();
 			clp.add(new JarFileClassPathEntry(jarFile));
 			clp.add(new ClassLoaderClasspathEntry(this.getClass().getClassLoader()));
 		}
-		clazz.setClasspath(clp);
+		clazz.setResolver(clp);
 		clazz.verify(params);
 		if (parser.getErrorMessages().size() > 0) {
 			log.debug("code: \n"+data);
