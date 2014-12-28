@@ -2,11 +2,11 @@ package org.jasm.item.classpath;
 
 import junit.framework.Assert;
 
-import org.jasm.item.classpath.ExternalClassInfo;
-import org.jasm.item.classpath.ClassLoaderClasspathEntry;
-import org.jasm.item.classpath.ClassInfoResolver;
-import org.jasm.item.classpath.FieldInfo;
-import org.jasm.item.classpath.MethodInfo;
+import org.jasm.resolver.ClassInfoResolver;
+import org.jasm.resolver.ClassLoaderClasspathEntry;
+import org.jasm.resolver.ExternalClassInfo;
+import org.jasm.resolver.FieldInfo;
+import org.jasm.resolver.MethodInfo;
 import org.junit.Test;
 
 public class ClassPathTest {
