@@ -3,7 +3,6 @@ package org.jasm.test.classpath;
 import junit.framework.Assert;
 
 import org.jasm.resolver.ClassLoaderClasspathEntry;
-import org.jasm.resolver.ClassPath;
 import org.jasm.resolver.ExternalClassInfo;
 import org.jasm.resolver.FieldInfo;
 import org.jasm.resolver.MethodInfo;
@@ -13,16 +12,7 @@ public class ClassPathTest {
 	
 	@Test
 	public void testClassLoader() {
-		ClassPath path = new ClassPath();
-		path.add(new ClassLoaderClasspathEntry(Thread.currentThread().getContextClassLoader()));
-		
-		Assert.assertNull(path.findClass("java/lang/Objecgtt"));
-		
-		ExternalClassInfo info = path.findClass("org/jasm/test/testclass/ClassToFind");
-		
-		Assert.assertNotNull(info);
-		testClassToFind(info);
-	}
+		}
 	
 	private void testClassToFind(ExternalClassInfo info) {
 		Assert.assertEquals("org/jasm/test/testclass/ClassToFind", info.getName());
