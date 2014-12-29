@@ -134,8 +134,8 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 	@Override
 	protected void doVerify(VerifierParams params) {
 		if (catchType != null) {
-			externalCatchType = getRoot().checkAndLoadClassInfo(this, catchTypeReference, catchType.getClassName());
-			ExternalClassInfo throwable = getRoot().checkAndLoadClassInfo(this, null, "java/lang/Throwable");
+			externalCatchType = getRoot().checkAndLoadClassInfo(this, catchTypeReference, catchType.getClassName(), true);
+			ExternalClassInfo throwable = getRoot().checkAndLoadClassInfo(this, null, "java/lang/Throwable", true);
 			if (externalCatchType != null && throwable!=null && !externalCatchType.isAssignableTo(throwable)) {
 				emitError(catchTypeReference, catchType.getClassName()+" isn't a java/lang/Throwable instance");
 				externalCatchType = null;

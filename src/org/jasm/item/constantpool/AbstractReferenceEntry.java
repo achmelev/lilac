@@ -9,7 +9,7 @@ import org.jasm.type.verifier.VerifierParams;
 public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry implements IConstantPoolReference {
 
 	private int[] index = null;
-	private SymbolReference[] referenceLabels = null;
+	protected SymbolReference[] referenceLabels = null;
 	private AbstractConstantPoolEntry[] reference = null;
 	
 	private boolean referencesVerified = false;

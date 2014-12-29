@@ -87,7 +87,7 @@ public class ClassInfoResolver  {
 				if (desc.getComponentType().isArray()) {
 					result.componentClass = resolve(clazz, caller, symbol, desc.getComponentType().getValue(), true);
 				} else {
-					result.componentClass = resolve(clazz, caller, symbol, desc.getComponentType().getComponentClassName(), true);
+					result.componentClass = resolve(clazz, caller, symbol, desc.getComponentType().getClassName(), true);
 				}
 				if (result.componentClass != null) {
 					return result;

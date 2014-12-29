@@ -1,6 +1,7 @@
 package org.jasm.type.descriptor;
 
 import org.jasm.item.utils.IdentifierUtils;
+import org.jasm.resolver.ExternalClassInfo;
 
 public class TypeDescriptor {
 	
@@ -16,6 +17,7 @@ public class TypeDescriptor {
 	private boolean isBoolean;
 	
 	private TypeDescriptor componentType;
+	private ExternalClassInfo externalInfo;
 	
 	private String className = null;
 	
@@ -59,6 +61,7 @@ public class TypeDescriptor {
 			if (descriptor.length()<2) {
 				throw new IllegalDescriptorException("illegal type descriptor: "+descriptor);
 			}
+			className = descriptor;
 			componentType = new TypeDescriptor(descriptor.substring(1, descriptor.length()));
 		} else if (descriptor.equals("S")) {
 			isShort = true;
@@ -121,13 +124,7 @@ public class TypeDescriptor {
 		return componentType;
 	}
 	
-	public String getComponentClassName() {
-		if (!isObject) {
-			throw new IllegalStateException("isn't an object!");
-		}
-		return descriptor.substring(1, descriptor.length()-1);
-	}
-
+	
 	@Override
 	public String toString() {
 		return descriptor;
@@ -209,6 +206,22 @@ public class TypeDescriptor {
 		} else if (!descriptor.equals(other.descriptor))
 			return false;
 		return true;
+	}
+
+	public ExternalClassInfo getExternalInfo() {
+		if (isObject || isArray) {
+			return externalInfo;
+		} else {
+			throw new IllegalStateException("cannot set external info");
+		}
+	}
+
+	public void setExternalInfo(ExternalClassInfo externalInfo) {
+		if (isObject || isArray) {
+			this.externalInfo = externalInfo;
+		} else {
+			throw new IllegalStateException("cannot set external info");
+		}
 	}
 	
 	

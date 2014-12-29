@@ -59,18 +59,13 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 			AbstractConstantPoolEntry value) {
 		if (index == 1) {
 			NameAndTypeInfo nti = (NameAndTypeInfo)value;
-			String descriptor = nti.getDescriptor();
 			if (isMethodRef()) {
-				try {
-					MethodDescriptor desc = new MethodDescriptor(descriptor);
-				} catch (IllegalDescriptorException e) {
+				if (nti.isField()) {
 					emitError(ref, "expected method but got type descriptor");
 					return false;
 				}
 			} else {
-				try {
-					TypeDescriptor desc = new TypeDescriptor(descriptor);
-				} catch (IllegalDescriptorException e) {
+				if (!nti.isField()) {
 					emitError(ref, "expected type but got method descriptor");
 					return false;
 				}

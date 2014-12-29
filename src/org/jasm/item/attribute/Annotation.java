@@ -34,9 +34,12 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	
 	private int typeIndex = -1;
 	private SymbolReference typeValueReference;
+	private TypeDescriptor typeDescriptor;
 	private Utf8Info type = null;
 	private int numberOfValues = -1;
 	private List<AnnotationElementNameValue> values = new ArrayList<>();
+	
+	
 	
 
 	@Override
@@ -199,6 +202,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	
 	@Override
 	protected void doVerify(VerifierParams params) {
+		getRoot().checkAndLoadTypeDescriptor(this, typeValueReference, typeDescriptor);
 		if (isTypeAnnotation) {
 			target.verify(params);
 			targetPath.verify(params);
@@ -231,7 +235,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	
 	private  boolean verifyDescriptor(SymbolReference ref, String descriptor) {
 		try {
-			TypeDescriptor d = new TypeDescriptor(descriptor);
+			typeDescriptor = new TypeDescriptor(descriptor);
 		} catch (IllegalDescriptorException e) {
 			emitError(ref, "malformed type descriptor "+descriptor);
 			return false;
@@ -403,6 +407,10 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	public void setTarget(AbstractAnnotationTargetType target) {
 		this.target = target;
 		this.target.setParent(this);
+	}
+
+	public TypeDescriptor getTypeDescriptor() {
+		return typeDescriptor;
 	}
 
 	

@@ -40,6 +40,8 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IUtf8Con
 	protected SymbolReference variableReference;
 	protected LocalVariable variable;
 	protected int index = -1;
+	
+	private TypeDescriptor typeDescriptor;
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
@@ -119,7 +121,9 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IUtf8Con
 	
 	@Override
 	protected void doVerify(VerifierParams params) {
-		
+		if (typeDescriptor != null) {
+			getRoot().checkAndLoadTypeDescriptor(this, descriptorReference, typeDescriptor);
+		}
 	}
 
 	@Override
@@ -150,7 +154,10 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IUtf8Con
 	}
 	
 	protected char getVariableType() throws IllegalDescriptorException {
-		TypeDescriptor desc = new TypeDescriptor(descriptor.getValue());
+		TypeDescriptor desc = typeDescriptor;
+		if (desc == null) {
+			desc = new TypeDescriptor(descriptor.getValue());
+		}
 		if (desc.isBoolean() || 
 			desc.isByte() || 
 			desc.isCharacter() ||
@@ -233,7 +240,7 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IUtf8Con
 		Instructions instr = ((CodeAttributeContent)getParent().getParent().getParent().getParent()).getInstructions();
 		if (descriptor != null) {
 			try {
-				TypeDescriptor d = new TypeDescriptor(descriptor.getValue());
+				typeDescriptor = new TypeDescriptor(descriptor.getValue());
 				variable = instr.getVariablesPool().checkAndLoad(this, variableReference, getVariableType());
 				if (variable != null) {
 					index = variable.getIndex();
@@ -253,6 +260,10 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IUtf8Con
 		}
 		return null;
 	}
-	
 
+	public TypeDescriptor getTypeDescriptor() {
+		return typeDescriptor;
+	}
+	
+	
 }

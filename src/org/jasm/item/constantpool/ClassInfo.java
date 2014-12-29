@@ -2,11 +2,15 @@ package org.jasm.item.constantpool;
 
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.resolver.ExternalClassInfo;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.TypeDescriptor;
+import org.jasm.type.verifier.VerifierParams;
 
 public class ClassInfo extends AbstractReferenceEntry implements INameReferencingEntry, IUtf8ConstantPoolReference {
 	
+	private TypeDescriptor descriptor;
+	private ExternalClassInfo externalInfo;
 	
 	public ClassInfo() {
 	}
@@ -60,7 +64,9 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 			if (desc == null || !desc.isArray()) { 
 				emitError(ref, "invalid class name or array type"+className);
 				return false;
-			} 
+			} else {
+				descriptor = desc;
+			}
 		} 
 		return true;
 	}
@@ -95,8 +101,21 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 	public boolean isArray() {
 		return getClassName().startsWith("[");
 	}
-	
-	
-	
 
+
+	@Override
+	protected void doVerify(VerifierParams params) {
+		externalInfo = getRoot().checkAndLoadClassInfo(this, referenceLabels[0], getClassName(), false);
+	}
+
+
+	public TypeDescriptor getDescriptor() {
+		return descriptor;
+	}
+
+
+	public ExternalClassInfo getExternalInfo() {
+		return externalInfo;
+	}
+	
 }
