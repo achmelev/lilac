@@ -1,8 +1,17 @@
 package org.jasm.item.constantpool;
 
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.resolver.MethodInfo;
+import org.jasm.type.descriptor.IllegalDescriptorException;
+import org.jasm.type.descriptor.MethodDescriptor;
+import org.jasm.type.descriptor.TypeDescriptor;
+import org.jasm.type.verifier.VerifierParams;
 
 public class MethodTypeInfo extends AbstractReferenceEntry implements IDescriptorReferencingEntry {
+	
+	
+	private MethodDescriptor methodDescriptor;
+	private SymbolReference methodSymbol;
 	
 	public MethodTypeInfo() {
 		
@@ -46,7 +55,19 @@ public class MethodTypeInfo extends AbstractReferenceEntry implements IDescripto
 	@Override
 	protected boolean verifyReference(int index, SymbolReference ref,
 			AbstractConstantPoolEntry value) {
-		return true;
+		if (index == 0) {
+			String valueStr = ((Utf8Info)value).getValue();
+			methodSymbol = ref;
+			try {
+				methodDescriptor = new MethodDescriptor(valueStr);
+				return true;
+			} catch (IllegalDescriptorException e) {
+				emitError(ref, "malformed method descriptor");
+				return false;
+			}
+		} else {
+			throw new IllegalArgumentException("wrong index: "+index);
+		}
 	}
 
 	@Override
@@ -59,5 +80,13 @@ public class MethodTypeInfo extends AbstractReferenceEntry implements IDescripto
 	protected String doGetDisassemblerLabel() {
 		return null;
 	}
+
+
+	@Override
+	protected void doVerify(VerifierParams params) {
+		getRoot().checkAndLoadMethodDescriptor(this, methodSymbol, methodDescriptor);
+	}
+	
+	
 
 }
