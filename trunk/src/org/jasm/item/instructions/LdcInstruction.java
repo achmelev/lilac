@@ -85,7 +85,7 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 	@Override
 	protected void doVerify(VerifierParams params) {
 		if (cpEntry instanceof ClassInfo) {
-			getRoot().checkAndLoadClassInfo(this, cpEntryReference, ((ClassInfo)cpEntry).getClassName());
+			getRoot().checkAndLoadClassInfo(this, cpEntryReference, ((ClassInfo)cpEntry).getClassName(), true);
 		}
 	}
 	

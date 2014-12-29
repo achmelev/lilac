@@ -127,9 +127,7 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 			if (this.method == null) {
 				emitError(methodReference, "unknown name_and_type info");
 			} else {
-				try {
-					MethodDescriptor desc = new MethodDescriptor(method.getDescriptor());
-				} catch (IllegalDescriptorException e) {
+				if (method.isField()) {
 					emitError(methodReference, "expected method but got type descriptor");
 				}
 			}
@@ -173,6 +171,8 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 	public void setMethodReference(SymbolReference methodReference) {
 		this.methodReference = methodReference;
 	}
+
+	
 	
 	
 

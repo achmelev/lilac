@@ -10,6 +10,8 @@ import org.jasm.type.verifier.VerifierParams;
 
 public class Field extends AbstractClassMember<FieldModifier> {
 	
+	private TypeDescriptor typeDescriptor;
+	
 	public Field() {
 		
 	}
@@ -34,7 +36,7 @@ public class Field extends AbstractClassMember<FieldModifier> {
 	@Override
 	protected void verifyDescriptor(SymbolReference ref, String descriptor) {
 		try {
-			TypeDescriptor d = new TypeDescriptor(descriptor);
+			typeDescriptor = new TypeDescriptor(descriptor);
 		} catch (IllegalDescriptorException e) {
 			emitError(ref, "malformed field descriptor "+descriptor);
 		}
@@ -86,6 +88,16 @@ public class Field extends AbstractClassMember<FieldModifier> {
 		}
 		return valid;
 	}
+
+
+	@Override
+	protected void doVerify(VerifierParams params) {
+		if (typeDescriptor != null) {
+			getRoot().checkAndLoadTypeDescriptor(this, descriptorReference, typeDescriptor);
+		}
+		super.doVerify(params);
+	}
+	
 	
 
 }

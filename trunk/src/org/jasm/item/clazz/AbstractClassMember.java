@@ -29,7 +29,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	private SymbolReference nameReference;
 	private int nameIndex = -1;
 	private Utf8Info descriptor = null;
-	private SymbolReference descriptorReference;
+	protected SymbolReference descriptorReference;
 	private int descriptorIndex = -1;
 	private Attributes attributes = null;
 	

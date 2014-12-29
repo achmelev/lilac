@@ -54,6 +54,9 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
     
     private List<AnnotationElementValue> arrayMembers = null;
     
+    private TypeDescriptor classTypeDescriptor;
+    private TypeDescriptor enumTypeDescriptor;
+    
     public AnnotationElementValue() {
     	
     }
@@ -284,6 +287,12 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 	
 	@Override
 	protected void doVerify(VerifierParams params) {
+		if (classTypeDescriptor !=null) {
+			getRoot().checkAndLoadTypeDescriptor(this, classInfoReference, classTypeDescriptor);
+		}
+		if (enumTypeDescriptor !=null) {
+			getRoot().checkAndLoadTypeDescriptor(this, enumTypeNameReference, enumTypeDescriptor);
+		}
 		if (isNested()) {
 			nestedAnnotation.verify(params);
 		} else if (isArray()) {
@@ -340,7 +349,7 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 			
 		} else {
 			try {
-				new TypeDescriptor(descriptor);
+				classTypeDescriptor = new TypeDescriptor(descriptor);
 			} catch (IllegalDescriptorException e) {
 				emitError(classInfoReference, "malformed class annotation descriptor: "+descriptor);
 			}
@@ -353,6 +362,8 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 			TypeDescriptor desc = new TypeDescriptor(descriptor);
 			if (!desc.isObject()) {
 				emitError(classInfoReference, "expected an enum class descriptor: "+descriptor);
+			} else {
+				enumTypeDescriptor = desc;
 			}
 		} catch (IllegalDescriptorException e) {
 			emitError(classInfoReference, "malformed class annotation descriptor: "+descriptor);
@@ -561,6 +572,14 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 
 	public void setEnumConstNameReference(SymbolReference enumConstNameReference) {
 		this.enumConstNameReference = enumConstNameReference;
+	}
+
+	public TypeDescriptor getClassTypeDescriptor() {
+		return classTypeDescriptor;
+	}
+
+	public TypeDescriptor getEnumTypeDescriptor() {
+		return enumTypeDescriptor;
 	}
 	
 	

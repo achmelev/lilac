@@ -116,6 +116,13 @@ public class Method extends AbstractClassMember<MethodModifier> {
 		}
 		return valid;
 	}
+
+	@Override
+	protected void doVerify(VerifierParams params) {
+		if (methodDescriptor != null) {
+			getRoot().checkAndLoadMethodDescriptor(this, descriptorReference, methodDescriptor);
+		}
+	}
 	
 	
 	

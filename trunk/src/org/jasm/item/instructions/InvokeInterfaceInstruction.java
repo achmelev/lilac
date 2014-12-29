@@ -33,13 +33,15 @@ public class InvokeInterfaceInstruction extends ConstantPoolInstruction {
 	
 	private void calculateCount(InterfaceMethodrefInfo methodRef) {
 		InterfaceMethodrefInfo iminfo = (InterfaceMethodrefInfo)cpEntry;
-		String descriptor = iminfo.getNameAndTypeReference().getDescriptor();
-		count = 1;
-		for (TypeDescriptor t: new MethodDescriptor(descriptor).getParameters()) {
-			if (t.isLong() || t.isDouble()) {
-				count+=2;
-			} else {
-				count++;
+		MethodDescriptor descriptor = iminfo.getNameAndTypeReference().getMethodDescriptor();
+		if (descriptor != null) {
+			count = 1;
+			for (TypeDescriptor t: descriptor.getParameters()) {
+				if (t.isLong() || t.isDouble()) {
+					count+=2;
+				} else {
+					count++;
+				}
 			}
 		}
 	}

@@ -9,9 +9,14 @@ import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
+import org.jasm.type.verifier.VerifierParams;
 
 public class NameAndTypeInfo extends AbstractReferenceEntry implements INameReferencingEntry, IDescriptorReferencingEntry, IUtf8ConstantPoolReference  {
-
+	
+	private SymbolReference descriptorRef; 
+	private TypeDescriptor typeDescriptor;
+	private MethodDescriptor methodDescriptor;
+	
 	public NameAndTypeInfo() {
 		
 	}
@@ -62,56 +67,50 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 	public String[] getReferencedNames() {
 		return new String[]{getName()};
 	}
+	
+	private Utf8Info nameToVerify;
+	private SymbolReference nameSymbolToVerify;
 
 	@Override
 	protected boolean verifyReference(int index, SymbolReference ref,
 			AbstractConstantPoolEntry value) {
 		String valueStr = ((Utf8Info)value).getValue();
 		if (index == 0) {
-			boolean isField = (getParent() instanceof AbstractRefInfo) && ((AbstractRefInfo)getParent()).isMethodRef();
-			if (!isField) {
-				IdentifierUtils.checkMethodName(this, ref, (Utf8Info)value);
-			} else {
-				IdentifierUtils.checkIdentifier(this, ref, (Utf8Info)value);
-				
-			}
+			nameToVerify = (Utf8Info)value;
+			nameSymbolToVerify = ref;
 		} else if (index == 1) {
-			try {
-				MethodDescriptor desc = new MethodDescriptor(valueStr);
-			} catch (IllegalDescriptorException e) {
+				descriptorRef = ref;
 				try {
-					TypeDescriptor desc = new TypeDescriptor(valueStr);
-				} catch (IllegalDescriptorException e1) {
-					emitError(ref, "malformed type or method descriptor");
+					methodDescriptor = new MethodDescriptor(valueStr);
+				} catch (IllegalDescriptorException e) {
+					try {
+						typeDescriptor = new TypeDescriptor(valueStr);
+					} catch (IllegalDescriptorException e1) {
+						emitError(ref, "malformed type or method descriptor");
+					}
 				}
-			}
+				if (typeDescriptor != null || methodDescriptor != null) {
+					if (!isField()) {
+						IdentifierUtils.checkMethodName(this, nameSymbolToVerify, nameToVerify);
+					} else {
+						IdentifierUtils.checkIdentifier(this, nameSymbolToVerify, nameToVerify);
+						
+					}
+				}
 		} else {
 			throw new IllegalArgumentException("wrong index: "+index);
 		}
 		return true;
 	}
 
-	public boolean isFieldDescriptor() {
-		try {
-			TypeDescriptor desc = new TypeDescriptor(getDescriptor());
-			return true;
-		} catch (IllegalDescriptorException e) {
-			return false;
-		}
-	}
-	
-	public boolean isMethodDescriptor() {
-		try {
-			MethodDescriptor desc = new MethodDescriptor(getDescriptor());
-			return true;
-		} catch (IllegalDescriptorException e) {
-			return false;
-		}
-	}
 
 	@Override
 	protected AbstractConstantPoolEntry[] getExpectedReferenceTypes() {
 		return new AbstractConstantPoolEntry[]{new Utf8Info(),new Utf8Info()};
+	}
+	
+	public boolean isField() {
+		return (typeDescriptor != null);
 	}
 
 
@@ -140,6 +139,28 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 		return null;
 		
 	}
+
+
+	public TypeDescriptor getTypeDescriptor() {
+		return typeDescriptor;
+	}
+
+
+	public MethodDescriptor getMethodDescriptor() {
+		return methodDescriptor;
+	}
+
+
+	@Override
+	protected void doVerify(VerifierParams params) {
+		if (typeDescriptor != null) {
+			getRoot().checkAndLoadTypeDescriptor(this, descriptorRef, typeDescriptor);
+		}
+		if (methodDescriptor != null) {
+			getRoot().checkAndLoadMethodDescriptor(this, descriptorRef, methodDescriptor);
+		}
+	}
+	
 	
 	
 

@@ -27,6 +27,8 @@ import org.jasm.parser.literals.VersionLiteral;
 import org.jasm.resolver.ClassInfoResolver;
 import org.jasm.resolver.ClazzClassPathEntry;
 import org.jasm.resolver.ExternalClassInfo;
+import org.jasm.type.descriptor.MethodDescriptor;
+import org.jasm.type.descriptor.TypeDescriptor;
 import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -265,7 +267,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 				for (int i=0;i<interfaces.size(); i++) {
 					verifyInterface(interfaceSymbols.get(i), interfaces.get(i));
 				}
-				me = checkAndLoadClassInfo(this, thisClassSymbol, this.getThisClass().getClassName());
+				me = checkAndLoadClassInfo(this, thisClassSymbol, this.getThisClass().getClassName(), true);
 				resolvedMyself = getParser().getErrorMessages().size() == 0;
 			}
 			return resolvedMyself;
@@ -306,7 +308,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	
 	private void verifySuperclass() {
 		if (this.superClass != null) {
-			ExternalClassInfo superClass = checkAndLoadClassInfo(this, superClassSymbol, getSuperClass().getClassName());
+			ExternalClassInfo superClass = checkAndLoadClassInfo(this, superClassSymbol, getSuperClass().getClassName(), true);
 			if (superClass != null) {
 				if (getModifier().isInterface()) {
 					if (!superClass.getName().equals("java/lang/Object")) {
@@ -329,7 +331,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		if (clinfo.isArray()) {
 			valid = false;
 		} else {
-			ExternalClassInfo intfClass = checkAndLoadClassInfo(this, intfSymbol, clinfo.getClassName());
+			ExternalClassInfo intfClass = checkAndLoadClassInfo(this, intfSymbol, clinfo.getClassName(), true);
 			if (intfClass != null) {
 				
 				if (!intfClass.getModifier().isInterface()) {
@@ -636,21 +638,38 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	}
 	
 	
-	public ExternalClassInfo checkAndLoadClassInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className) {
-		return getResolver().resolve(this, caller, symbol, className, true);
+	public ExternalClassInfo checkAndLoadClassInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, boolean checkAccess) {
+		return getResolver().resolve(this, caller, symbol, className, checkAccess);
+	}
+	
+	public void checkAndLoadTypeDescriptor(AbstractByteCodeItem caller, SymbolReference symbol, TypeDescriptor desc) {
+		if (desc.isArray() || desc.isObject()) {
+			ExternalClassInfo info = checkAndLoadClassInfo(caller, symbol, desc.getClassName(), false);
+			desc.setExternalInfo(info);
+		}
+		
+	}
+	
+	public void checkAndLoadMethodDescriptor(AbstractByteCodeItem caller, SymbolReference symbol, MethodDescriptor desc) {
+		if (desc.getReturnType() != null) {
+			checkAndLoadTypeDescriptor(caller, symbol, desc.getReturnType());
+		}
+		for (TypeDescriptor tdesc: desc.getParameters()) {
+			checkAndLoadTypeDescriptor(caller, symbol, tdesc);
+		}
 	}
 	
 	
-	public org.jasm.resolver.MethodInfo checkAndLoadMethodInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String methodName, String desc) {
-		return getResolver().resolveMethod(this, caller, symbol, className, methodName, desc, true);
+	public org.jasm.resolver.MethodInfo checkAndLoadMethodInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String methodName, String desc, boolean checkAccess) {
+		return getResolver().resolveMethod(this, caller, symbol, className, methodName, desc, checkAccess);
 	}
 	
-	public org.jasm.resolver.MethodInfo checkAndLoadInterfaceMethodInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String methodName, String desc) {
-		return getResolver().resolveInterfaceMethod(this, caller, symbol, className, methodName, desc, true);
+	public org.jasm.resolver.MethodInfo checkAndLoadInterfaceMethodInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String methodName, String desc, boolean checkAccess) {
+		return getResolver().resolveInterfaceMethod(this, caller, symbol, className, methodName, desc, checkAccess);
 	}
 	
-	public org.jasm.resolver.FieldInfo checkAndLoadFieldInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String fieldName, String desc) {
-		return getResolver().resolveField(this, caller, symbol, className, fieldName, desc, true);
+	public org.jasm.resolver.FieldInfo checkAndLoadFieldInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String fieldName, String desc, boolean checkAccess) {
+		return getResolver().resolveField(this, caller, symbol, className, fieldName, desc, checkAccess);
 	}
 	
 	
