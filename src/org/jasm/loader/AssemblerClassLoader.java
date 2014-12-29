@@ -72,7 +72,7 @@ public class AssemblerClassLoader extends ClassLoader {
 		AssemblerParser parser = new AssemblerParser();
 		Clazz clazz =  parser.parse(inp);
 		if (parser.getErrorMessages().size() > 0) {
-			parser.debugErrors();
+			parser.printErrors();
 			throw new AssemblerClassLoaderException("invalid assembler file", rName, parser.getErrorMessages());
 		}
 		VerifierParams params = new VerifierParams();
@@ -82,7 +82,7 @@ public class AssemblerClassLoader extends ClassLoader {
 		clazz.setResolver(clp);
 		//clazz.verify(params);
 		if (parser.getErrorMessages().size() > 0) {
-			parser.debugErrors();
+			parser.printErrors();
 			throw new AssemblerClassLoaderException("invalid assembler file", rName, parser.getErrorMessages());
 		}
 		byte [] data = new byte[clazz.getLength()];

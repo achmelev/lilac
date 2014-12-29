@@ -1,21 +1,16 @@
 package org.jasm.resolver;
 
+import org.jasm.item.modifier.MemberModifier;
 import org.jasm.item.modifier.MethodModifier;
 import org.jasm.type.descriptor.MethodDescriptor;
 
-public class MethodInfo extends AbstractInfo {
+public class MethodInfo extends AbstractMemberInfo {
 	
-	private String name;
 	private MethodModifier modifier;
 	private MethodDescriptor descriptor;
-	private ExternalClassInfo parent;
+	private boolean polymorphic = false;
 	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+	
 	public MethodModifier getModifier() {
 		return modifier;
 	}
@@ -28,11 +23,16 @@ public class MethodInfo extends AbstractInfo {
 	public void setDescriptor(MethodDescriptor descriptor) {
 		this.descriptor = descriptor;
 	}
-	public ExternalClassInfo getParent() {
-		return parent;
+	
+	public boolean isPolymorphic() {
+		return polymorphic;
 	}
-	public void setParent(ExternalClassInfo parent) {
-		this.parent = parent;
+	public void setPolymorphic(boolean polymorphic) {
+		this.polymorphic = polymorphic;
+	}
+	@Override
+	public MemberModifier getMemberModifier() {
+		return getModifier();
 	}
 	
 	

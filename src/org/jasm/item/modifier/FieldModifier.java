@@ -3,7 +3,7 @@ package org.jasm.item.modifier;
 import org.jasm.JasmConsts;
 
 
-public class FieldModifier extends AbstractClassMemberModifier {
+public class FieldModifier extends AbstractClassMemberModifier implements MemberModifier {
 	
 	private static int PUBLIC_BIT=0x0001;
 	private static String PUBLIC_LABEL="public";
@@ -29,18 +29,34 @@ public class FieldModifier extends AbstractClassMemberModifier {
 		super(value);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.jasm.item.modifier.MemberModifier#isPublic()
+	 */
+	@Override
 	public boolean isPublic() {
 		return (this.value & PUBLIC_BIT) !=0;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.jasm.item.modifier.MemberModifier#isPrivate()
+	 */
+	@Override
 	public boolean isPrivate() {
 		return (this.value & PRIVATE_BIT) !=0;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.jasm.item.modifier.MemberModifier#isProtected()
+	 */
+	@Override
 	public boolean isProtected() {
 		return (this.value & PROTECTED_BIT) !=0;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.jasm.item.modifier.MemberModifier#isStatic()
+	 */
+	@Override
 	public boolean isStatic() {
 		return (this.value & STATIC_BIT) !=0;
 	}

@@ -42,6 +42,7 @@ public abstract class AbstractJarForClassTestCase {
 					counter++;
 					if (counter%500 == 0) {
 						log.info("Tested "+counter+" classes");
+						logStatus();
 					}
 				}
 			}
@@ -69,5 +70,7 @@ public abstract class AbstractJarForClassTestCase {
 	protected boolean filter(String name) {
 		return true;
 	}
+	
+	protected abstract void logStatus();
 
 }

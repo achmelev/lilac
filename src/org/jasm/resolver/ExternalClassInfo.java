@@ -32,6 +32,7 @@ public class ExternalClassInfo extends AbstractInfo {
 	
 	private Map<String, MethodInfo> methodRegistry = new HashMap<String, MethodInfo>();
 	private Map<String, FieldInfo> fieldRegistry = new HashMap<String, FieldInfo>();
+	private Map<String, List<MethodInfo>> methodsByName = new HashMap<String, List<MethodInfo>>();
 	
 	
 	
@@ -41,7 +42,7 @@ public class ExternalClassInfo extends AbstractInfo {
 	
 	public String getPackage() {
 		if (isArray) {
-			throw new IllegalStateException("Arrays have no packages");
+			return "java/lang";
 		}
 		if (name.indexOf('/')>=0) {
 			return name.substring(0, name.lastIndexOf('/'));
@@ -81,14 +82,21 @@ public class ExternalClassInfo extends AbstractInfo {
 		
 	}
 	
-	public boolean isDerivedFrom(String className) {
-		if (name.equals(className)) {
+	public boolean isDerivedFrom(ExternalClassInfo info) {
+		if (info.isArray) {
 			return true;
-		} else if (superClass != null) {
-			return superClass.isDerivedFrom(className);
+		} else if (this.isArray) {
+			return info.getName().equals("java/lang/Object");
 		} else {
-			return false;
+			if (name.equals(info.getName())) {
+				return true;
+			} else if (superClass != null) {
+				return superClass.isDerivedFrom(info);
+			} else {
+				return false;
+			}
 		}
+		
 	}
 	
 
@@ -142,11 +150,31 @@ public class ExternalClassInfo extends AbstractInfo {
 		methodRegistry.clear();
 		for (MethodInfo mi: methods) {
 			methodRegistry.put(mi.getName()+"@"+mi.getDescriptor().getValue(),mi);
+			if (methodsByName.containsKey(mi.getName())) {
+				List<MethodInfo> infos = methodsByName.get(mi.getName());
+				infos.add(mi);
+			} else {
+				List<MethodInfo> infos = new ArrayList<MethodInfo>();
+				infos.add(mi);
+				methodsByName.put(mi.getName(), infos);
+			}
 		}
 		fieldRegistry.clear();
 		for (FieldInfo fi: fields) {
 			fieldRegistry.put(fi.getName()+"@"+fi.getDescriptor().getValue(),fi);
 		}
+	}
+	
+	public void registerVirtualField(FieldInfo fi) {
+		fieldRegistry.put(fi.getName()+"@"+fi.getDescriptor().getValue(),fi);
+	}
+	
+	public void registerVirtualMethod(MethodInfo fi) {
+		methodRegistry.put(fi.getName()+"@"+fi.getDescriptor().getValue(),fi);
+	}
+	
+	public List<MethodInfo> getMethodByName(String name) {
+		return methodsByName.get(name);
 	}
 	
 	public MethodInfo getMethod(String name, String descriptor) {

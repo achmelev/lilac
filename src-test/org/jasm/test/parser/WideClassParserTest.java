@@ -21,7 +21,7 @@ public class WideClassParserTest extends AbstractParserTestCase {
 	public void test() {
 		Clazz clazz = parse();
 		if (parser.getErrorMessages().size() > 0) {
-			parser.debugErrors();
+			parser.printErrors();
 			Assert.fail("Parsing failed!");
 		} 
 		

@@ -2,7 +2,7 @@ package org.jasm.item.modifier;
 
 import org.jasm.JasmConsts;
 
-public class MethodModifier extends AbstractClassMemberModifier {
+public class MethodModifier extends AbstractClassMemberModifier implements MemberModifier {
 	
 	private static int PUBLIC_BIT=0x0001;
 	private static String PUBLIC_LABEL="public";
