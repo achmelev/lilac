@@ -76,7 +76,7 @@ public abstract class AbstractAssembleDisassembleMavenJarTestCase extends
 			
 			
 			log.error("code: \n"+data);
-			parser.debugErrors();
+			parser.printErrors();
 			Assert.fail("Parsing failed");
 		}
 		

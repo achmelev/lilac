@@ -24,7 +24,7 @@ public abstract class AbstractParseAndLoadTestCase {
 		parser = new AssemblerParser();
 		Clazz clazz =  parser.parse(inp);
 		if (parser.getErrorMessages().size() > 0) {
-			parser.debugErrors();
+			parser.printErrors();
 			Assert.fail("Parsing failed!");
 		}
 		return clazz;
@@ -35,7 +35,7 @@ public abstract class AbstractParseAndLoadTestCase {
 		parser = new AssemblerParser();
 		Clazz clazz =  parser.parse(inp);
 		if (parser.getErrorMessages().size() > 0) {
-			parser.debugErrors();
+			parser.printErrors();
 			Assert.fail("Parsing disassembled failed!");
 		}
 		return clazz;

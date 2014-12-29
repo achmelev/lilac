@@ -1,24 +1,15 @@
 package org.jasm.resolver;
 
-import org.jasm.item.AbstractByteCodeItem;
-import org.jasm.item.clazz.Clazz;
 import org.jasm.item.modifier.FieldModifier;
-import org.jasm.parser.literals.SymbolReference;
+import org.jasm.item.modifier.MemberModifier;
 import org.jasm.type.descriptor.TypeDescriptor;
 
-public class FieldInfo extends AbstractInfo {
+public class FieldInfo extends AbstractMemberInfo {
 	
-	private String name;
 	private FieldModifier modifier;
 	private TypeDescriptor descriptor;
-	private ExternalClassInfo parent;
 	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+	
 	public FieldModifier getModifier() {
 		return modifier;
 	}
@@ -31,11 +22,10 @@ public class FieldInfo extends AbstractInfo {
 	public void setDescriptor(TypeDescriptor descriptor) {
 		this.descriptor = descriptor;
 	}
-	public ExternalClassInfo getParent() {
-		return parent;
-	}
-	public void setParent(ExternalClassInfo parent) {
-		this.parent = parent;
+	
+	@Override
+	public MemberModifier getMemberModifier() {
+		return getModifier();
 	}
 
 }

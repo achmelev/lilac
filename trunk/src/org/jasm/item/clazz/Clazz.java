@@ -27,13 +27,9 @@ import org.jasm.parser.literals.VersionLiteral;
 import org.jasm.resolver.ClassInfoResolver;
 import org.jasm.resolver.ClazzClassPathEntry;
 import org.jasm.resolver.ExternalClassInfo;
-import org.jasm.resolver.FieldInfo;
-import org.jasm.resolver.MethodInfo;
 import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.xml.internal.bind.api.ClassResolver;
 
 
 public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeItem<IBytecodeItem>, IConstantPoolReference, IAttributesContainer {
@@ -646,8 +642,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	
 	
 	public org.jasm.resolver.MethodInfo checkAndLoadMethodInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String methodName, String desc) {
-		return null;
-		
+		return getResolver().resolveMethod(this, caller, symbol, className, methodName, desc, true);
+	}
+	
+	public org.jasm.resolver.MethodInfo checkAndLoadInterfaceMethodInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String methodName, String desc) {
+		return getResolver().resolveInterfaceMethod(this, caller, symbol, className, methodName, desc, true);
 	}
 	
 	public org.jasm.resolver.FieldInfo checkAndLoadFieldInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String fieldName, String desc) {

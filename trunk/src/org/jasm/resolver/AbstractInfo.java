@@ -1,5 +1,7 @@
 package org.jasm.resolver;
 
-public abstract class AbstractInfo {
+import org.jasm.item.modifier.ClassModifier;
 
+public abstract class AbstractInfo {
+	
 }

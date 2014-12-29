@@ -126,6 +126,10 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 			getRoot().checkAndLoadClassInfo(this, cpEntryReference, ((ClassInfo)cpEntry).getClassName());
 		} else if (cpEntry instanceof FieldrefInfo) {
 			getRoot().checkAndLoadFieldInfo(this, cpEntryReference, ((FieldrefInfo)cpEntry).getClassName(), ((FieldrefInfo)cpEntry).getName(), ((FieldrefInfo)cpEntry).getDescriptor());
+		} else if (cpEntry instanceof MethodrefInfo) {
+			getRoot().checkAndLoadMethodInfo(this, cpEntryReference, ((MethodrefInfo)cpEntry).getClassName(), ((MethodrefInfo)cpEntry).getName(), ((MethodrefInfo)cpEntry).getDescriptor());
+		} else if (cpEntry instanceof InterfaceMethodrefInfo) {
+			getRoot().checkAndLoadInterfaceMethodInfo(this, cpEntryReference, ((InterfaceMethodrefInfo)cpEntry).getClassName(), ((InterfaceMethodrefInfo)cpEntry).getName(), ((InterfaceMethodrefInfo)cpEntry).getDescriptor());
 		}
 	}
 	

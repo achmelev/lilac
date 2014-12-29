@@ -70,8 +70,8 @@ public abstract class AbstractAssembleDisassembleJarForClassTestCase extends
 		clazz.setResolver(clp);
 		clazz.verify(params);
 		if (parser.getErrorMessages().size() > 0) {
-			log.debug("code: \n"+data);
-			parser.debugErrors();
+			log.error("code: \n"+data);
+			parser.printErrors();
 			Assert.fail("Parsing failed on:");
 		}
 		
@@ -81,6 +81,16 @@ public abstract class AbstractAssembleDisassembleJarForClassTestCase extends
 		return data2;
 		
 	}
+
+	@Override
+	protected void logStatus() {
+		if (clp != null) {
+			clp.logStatus();
+		}
+		
+	}
+	
+	
 	
 
 }

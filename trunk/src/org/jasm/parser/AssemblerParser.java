@@ -398,17 +398,16 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		return result;
 	}
 	
-	public void debugErrors() {
-		if (log.isDebugEnabled()) {
-			if (getErrorMessages().size() > 0) {
-				StringBuffer buf = new StringBuffer();
-				for (ErrorMessage erm: getErrorMessages()) {
-					buf.append(erm.toString());
-					buf.append("\n");
-				}
-				log.debug("\nsyntax error messages:\n"+buf.toString());
+	public void printErrors() {
+		if (getErrorMessages().size() > 0) {
+			StringBuffer buf = new StringBuffer();
+			for (ErrorMessage erm: getErrorMessages()) {
+				buf.append(erm.toString());
+				buf.append("\n");
 			}
+			log.error("\nsyntax error messages:\n"+buf.toString());
 		}
+		
 	}
 
 
