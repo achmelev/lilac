@@ -3,22 +3,14 @@ package org.jasm.item.constantpool;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.nio.channels.IllegalSelectorException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javassist.bytecode.MethodInfo;
-
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.Utf8String;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.IBytecodeItem;
-import org.jasm.item.attribute.InnerClass;
-import org.jasm.item.clazz.AbstractClassMember;
-import org.jasm.item.clazz.Field;
-import org.jasm.item.clazz.Method;
 import org.jasm.parser.literals.StringLiteral;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.MethodDescriptor;

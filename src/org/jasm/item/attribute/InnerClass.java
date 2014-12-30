@@ -3,14 +3,12 @@ package org.jasm.item.attribute;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
-import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.IUtf8ConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.InnerClassModifier;

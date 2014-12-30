@@ -6,7 +6,6 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.item.AbstractBytecodeItemList;
 import org.jasm.item.clazz.Method;
-import org.jasm.parser.SourceLocation;
 
 
 public abstract class AbstractParameterAnnotationsAttributeContent extends AbstractBytecodeItemList<ParameterAnnotations> implements IAttributeContent {

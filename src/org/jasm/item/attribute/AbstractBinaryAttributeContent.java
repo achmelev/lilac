@@ -2,7 +2,6 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
-import org.apache.commons.codec.binary.Base64;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.parser.literals.Base64Literal;

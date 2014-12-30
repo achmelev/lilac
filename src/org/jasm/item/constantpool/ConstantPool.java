@@ -2,16 +2,12 @@ package org.jasm.item.constantpool;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.jasm.disassembler.NameGenerator;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.AbstractTaggedBytecodeItemList;
 import org.jasm.item.IBytecodeItem;
-import org.jasm.item.IContainerBytecodeItem;
-import org.jasm.item.clazz.Clazz;
 import org.jasm.map.KeyToListMap;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.SymbolTable;

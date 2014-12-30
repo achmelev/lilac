@@ -5,10 +5,8 @@ package org.jasm.item.clazz;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hamcrest.core.IsAnything;
 import org.jasm.item.AbstractBytecodeItemList;
 import org.jasm.item.IBytecodeItem;
-import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.map.KeyToListMap;
 
 public abstract class AbstractClassMemberList<T extends AbstractClassMember> extends AbstractBytecodeItemList<T>  {

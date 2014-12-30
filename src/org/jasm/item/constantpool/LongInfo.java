@@ -1,6 +1,5 @@
 package org.jasm.item.constantpool;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.parser.literals.LongLiteral;
 import org.jasm.type.verifier.VerifierParams;
