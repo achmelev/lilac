@@ -8,7 +8,6 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
-import org.jasm.parser.JavaAssemblerParser.StackitemstackmapvarinfosContext;
 import org.jasm.type.verifier.VerifierParams;
 
 public class SameLocalsOneStackitemExtendedStackmapFrame extends AbstractStackmapFrame implements IContainerBytecodeItem<IBytecodeItem>, IStackmapVariableinfoContainer {

@@ -12,7 +12,6 @@ import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
-import org.jasm.item.constantpool.IUtf8ConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;

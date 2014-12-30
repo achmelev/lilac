@@ -2,9 +2,6 @@ package org.jasm.item.instructions;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.item.constantpool.InterfaceMethodrefInfo;
-import org.jasm.item.constantpool.InvokeDynamicInfo;
-import org.jasm.type.descriptor.MethodDescriptor;
-import org.jasm.type.descriptor.TypeDescriptor;
 
 public class InvokeDynamicInstruction extends ConstantPoolInstruction {
 	

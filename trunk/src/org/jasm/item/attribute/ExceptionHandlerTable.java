@@ -8,7 +8,6 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.AbstractBytecodeItemList;
 import org.jasm.item.IBytecodeItem;
-import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.SymbolTable;
 import org.jasm.parser.literals.SymbolReference;

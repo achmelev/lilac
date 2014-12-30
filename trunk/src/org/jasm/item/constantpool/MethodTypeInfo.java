@@ -1,10 +1,8 @@
 package org.jasm.item.constantpool;
 
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.resolver.MethodInfo;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.MethodDescriptor;
-import org.jasm.type.descriptor.TypeDescriptor;
 import org.jasm.type.verifier.VerifierParams;
 
 public class MethodTypeInfo extends AbstractReferenceEntry implements IDescriptorReferencingEntry {

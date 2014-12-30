@@ -5,15 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Field;
 import org.jasm.item.clazz.Method;
 import org.jasm.item.modifier.ClassModifier;
-import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
-import org.junit.runner.Result;
 
 public class ExternalClassInfo extends AbstractInfo {
 	

@@ -4,13 +4,11 @@ import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
-import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.verifier.VerifierParams;
 
-import com.sun.prism.impl.Disposer.Target;
 
 public class UninitializedStackmapVariableinfo extends AbstractStackmapVariableinfo implements IInstructionReference {
 	

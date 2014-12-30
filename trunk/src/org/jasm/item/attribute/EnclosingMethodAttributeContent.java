@@ -2,10 +2,6 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
-
-
-
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
@@ -13,8 +9,6 @@ import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.NameAndTypeInfo;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.descriptor.IllegalDescriptorException;
-import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.verifier.VerifierParams;
 
 public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {

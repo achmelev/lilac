@@ -1,9 +1,7 @@
 package org.jasm.item.constantpool;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.parser.literals.FloatLiteral;
-import org.jasm.parser.literals.IntegerLiteral;
 import org.jasm.type.verifier.VerifierParams;
 
 public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveValueReferencingEntry {

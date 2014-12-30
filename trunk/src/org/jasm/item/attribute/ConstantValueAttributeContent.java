@@ -2,7 +2,6 @@ package org.jasm.item.attribute;
 
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
@@ -13,7 +12,6 @@ import org.jasm.item.constantpool.IPrimitiveValueReferencingEntry;
 import org.jasm.item.constantpool.IntegerInfo;
 import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.StringInfo;
-import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.verifier.VerifierParams;
 
