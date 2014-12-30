@@ -51,6 +51,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	
 	private SymbolTable symbolTable = new SymbolTable(null);
 	
+	private int calculatedMaxLocals = -1;
+	
 	public Instructions() {
 		variablesPool = new LocalVariablesPool();
 		variablesPool.setParent(this);
@@ -477,6 +479,17 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			}
 		}
 		
+		if (isAfterParse()) {
+			calculatedMaxLocals = variablesPool.calculateSize();
+		} else {
+			calculatedMaxLocals = 0;
+			for (LocalVariable var: localVariableReferences) {
+				calculatedMaxLocals = Math.max(calculatedMaxLocals, var.getIndex()+var.getLength());
+			}
+		}
+		
+		
+		
 		
 				
 	}
@@ -536,6 +549,12 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		return vars;
 		
 	}
+
+
+	public int getCalculatedMaxLocals() {
+		return calculatedMaxLocals;
+	}
+	
 	
 
 }

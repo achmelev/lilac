@@ -86,7 +86,9 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 		List<IPrintable> result = new ArrayList<>();
 		result.add(attributes);
 		result.add(new SimplePrintable(null, "maxstack", maxStack+"", null));
-		result.add(new SimplePrintable(null, "maxlocals", maxLocals+"", null));
+		if (instructions.getCalculatedMaxLocals() != maxLocals) {
+			result.add(new SimplePrintable(null, "maxlocals", maxLocals+"", null));
+		}
 		result.add(exceptionTable);
 		result.add(instructions);
 		
@@ -155,15 +157,19 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 				//TODO - maxStack berechnen
 			}
 			
+			int calculatedMaxLocals = instructions.getVariablesPool().calculateSize();
 			if (maxLocalsLiteral != null) {
 				Integer value = maxLocalsLiteral.checkAndLoadValue(this);
 				if (value != null && value>=0 && value < 65536) {
 					maxLocals = value;
+					if (maxLocals < calculatedMaxLocals) {
+						emitError(maxStackLiteral, "max locals must be at least "+calculatedMaxLocals);
+					}
 				} else {
-					emitError(maxStackLiteral, "max stack out of bounds");
+					emitError(maxStackLiteral, "max locals out of bounds");
 				}
 			} else {
-				//TODO - maxStack berechnen
+				maxLocals = instructions.getVariablesPool().calculateSize();
 			}
 		}
 		
