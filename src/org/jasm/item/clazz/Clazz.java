@@ -19,6 +19,7 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.IConstantPoolReference;
+import org.jasm.item.instructions.Instructions;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.parser.literals.Keyword;
@@ -283,6 +284,14 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			pool.verify(params);
 			methods.verify(params);
 			attributes.verify(params);
+			if (getParser().getErrorMessages().size()== 0) {
+				List<Instructions> instrs = this.getDescendants(Instructions.class);
+				for (Instructions instr: instrs) {
+					instr.verifyByteCode();
+				}
+				
+			}
+			
 		}
 		
 	}

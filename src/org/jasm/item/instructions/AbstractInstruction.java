@@ -8,7 +8,7 @@ import org.jasm.type.verifier.VerifierParams;
 
 public abstract class AbstractInstruction extends AbstractByteCodeItem implements ISymbolTableEntry {
 
-	private short opCode = -1;
+	protected short opCode = -1;
 	private boolean isWide = false;
 	
 	private Label label = null;
@@ -47,6 +47,12 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem implement
 		} else {
 			return 0;
 		}
+	}
+	
+	public int getIndex() {
+		Instructions instr = (Instructions)getParent();
+		int index = instr.indexOf(this);
+		return index;
 	}
 	
 	protected CodeAttributeContent getCode() {
