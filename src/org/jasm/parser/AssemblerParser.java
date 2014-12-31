@@ -1224,7 +1224,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void enterBranchop(BranchopContext ctx) {
 		String name = ctx.branchop_keyword().getText();
 		short opCode = OpCodes.getOpcodeForName(name);
-		BranchInstruction instr = new BranchInstruction(opCode, null);
+		BranchInstruction instr = new BranchInstruction(opCode, null, name.endsWith("_w"));
 		instr.setTargetReference(createSymbolReference(ctx.Identifier()));
 		instr.setSourceLocation(createSourceLocation((TerminalNode)ctx.branchop_keyword().getChild(0)));
 		setInstructionLabel(ctx, instr);
