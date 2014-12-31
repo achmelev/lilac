@@ -21,7 +21,7 @@ public abstract class AbstractJarForClassTestCase {
 	
 	protected void doJarTest() {
 
-		File f = getFile(getClazz());
+		File f = getFile();
 		log.info("Testing "+f.getAbsolutePath());
 		try {
 			JarFile jar = new JarFile(f);
@@ -62,10 +62,10 @@ public abstract class AbstractJarForClassTestCase {
 		return new File(urlS.substring(urlS.indexOf('/')+1, urlS.indexOf('!')));
 	}
 	
+	protected abstract File getFile();
 	
 	protected abstract void testClass(byte[] data, File jarFile);
 	
-	protected abstract Class getClazz();
 	
 	protected boolean filter(String name) {
 		return true;
