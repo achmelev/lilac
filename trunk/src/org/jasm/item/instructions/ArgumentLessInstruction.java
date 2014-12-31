@@ -60,6 +60,13 @@ public class ArgumentLessInstruction extends AbstractInstruction  {
 		
 	}
 
-	
+	public boolean isReturn() {
+		return opCode == OpCodes.areturn ||
+			   opCode == OpCodes.dreturn ||
+			   opCode == OpCodes.freturn ||
+			   opCode == OpCodes.ireturn ||
+			   opCode == OpCodes.lreturn ||
+			   opCode == OpCodes.return_;
+	}
 
 }

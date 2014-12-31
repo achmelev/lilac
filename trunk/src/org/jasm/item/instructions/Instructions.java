@@ -19,6 +19,8 @@ import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.DebugLocalVariable;
 import org.jasm.item.attribute.LocalVariableTableAttributeContent;
+import org.jasm.item.instructions.verify.Verifier;
+import org.jasm.item.instructions.verify.VerifyException;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.map.KeyToListMap;
 import org.jasm.parser.ISymbolTableEntry;
@@ -557,6 +559,19 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		return calculatedMaxLocals;
 	}
 	
-	
+	public void verifyByteCode() {
+		Verifier ver = new Verifier();
+		ver.setParent(this);
+		try {
+			ver.setParent(this);
+			ver.verify();
+		} catch (VerifyException e) {
+			if (e.getInstructionIndex()>=0) {
+				AbstractInstruction instr = get(e.getInstructionIndex());
+				instr.emitError(null, "verification error - "+e.getMessage());
+			}
+			
+		}
+	}
 
 }

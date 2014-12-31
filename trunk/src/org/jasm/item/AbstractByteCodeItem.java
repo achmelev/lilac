@@ -109,7 +109,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	}
 	
 	private <U> void getDescendants(List<U> result, IBytecodeItem item, Class<U> type) {
-		if (type.isAssignableFrom(type)) {
+		if (type.isAssignableFrom(item.getClass())) {
 			result.add((U)item);
 		}
 		if (item instanceof IContainerBytecodeItem) {

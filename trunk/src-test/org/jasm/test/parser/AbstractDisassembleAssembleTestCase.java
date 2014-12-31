@@ -78,6 +78,7 @@ public abstract class AbstractDisassembleAssembleTestCase {
 		clazz.setResolver(path);
 		clazz.verify(new VerifierParams());
 		if (parser.getErrorMessages().size() > 0) {
+			log.error("code:\n "+data);
 			parser.printErrors();
 			Assert.fail("Parsing failed!");
 		}
