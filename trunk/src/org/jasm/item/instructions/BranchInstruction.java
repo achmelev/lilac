@@ -5,6 +5,7 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.verifier.VerifierParams;
 
 public class BranchInstruction extends AbstractInstruction implements IReferencingInstruction {
 	
@@ -15,14 +16,19 @@ public class BranchInstruction extends AbstractInstruction implements IReferenci
 	
 	
 	
-	public BranchInstruction(short opCode, AbstractInstruction inst) {
-		super(opCode);
+	public BranchInstruction(short opCode, AbstractInstruction inst, boolean wide) {
+		super(opCode, wide);
 		this.targetInst = inst;
 	}
 
 	@Override
 	public int getLength() {
-		return 3;
+		if (isWide()) {
+			return 5;
+		} else {
+			return 3;
+		}
+		
 	}
 
 	@Override
@@ -47,12 +53,20 @@ public class BranchInstruction extends AbstractInstruction implements IReferenci
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
-		targetOffset = source.readShort(offset);
+		if (!isWide()) {
+			targetOffset = source.readShort(offset);
+		} else {
+			targetOffset = source.readInt(offset);
+		}
 	}
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
-		target.writeShort(offset, (short)(targetInst.getOffsetInCode()-this.getOffsetInCode()));
+		if (!isWide()) {
+			target.writeShort(offset, (short)(targetInst.getOffsetInCode()-this.getOffsetInCode()));
+		} else {
+			target.writeInt(offset, (short)(targetInst.getOffsetInCode()-this.getOffsetInCode()));
+		}
 	}
 
 	@Override
@@ -69,6 +83,7 @@ public class BranchInstruction extends AbstractInstruction implements IReferenci
 	protected void doResolveAfterParse() {
 		Instructions instrs = (Instructions)getParent();
 		this.targetInst = instrs.checkAndLoadFromSymbolTable(this, targetReference);
+		
 	}
 
 	public void setTargetReference(SymbolReference targetReference) {
@@ -86,6 +101,14 @@ public class BranchInstruction extends AbstractInstruction implements IReferenci
 			if (shortV != null) {
 				targetInst = shortV;
 			}
+		}
+	}
+
+	@Override
+	protected void doVerify(VerifierParams params) {
+		int offset = targetInst.getOffsetInCode()-this.getOffsetInCode();
+		if (!isWide() && (offset>Short.MAX_VALUE || offset<Short.MIN_VALUE)) {
+			emitError(targetReference, "The target too far. Consider to use the wide modifier");
 		}
 	}
 	

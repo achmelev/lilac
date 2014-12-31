@@ -82,7 +82,9 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		} else if (OpCodes.isConstantPoolInstruction(opCode)) {
 			return new ConstantPoolInstruction(opCode, null);
 		} else if (OpCodes.isBranchInstruction(opCode)) {
-			return new BranchInstruction(opCode, null);
+			return new BranchInstruction(opCode, null, false);
+		} else if (OpCodes.isWideBranchInstruction(opCode)) {
+			return new BranchInstruction(opCode, null, true);
 		} else if (OpCodes.ldc == opCode) {
 			return new LdcInstruction(null);
 		} else if (OpCodes.bipush == opCode) {
