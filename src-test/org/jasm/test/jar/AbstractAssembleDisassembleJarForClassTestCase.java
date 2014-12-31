@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
@@ -88,6 +89,22 @@ public abstract class AbstractAssembleDisassembleJarForClassTestCase extends
 			clp.logStatus();
 		}
 		
+	}
+	
+	private File getFile(Class clazz) {
+		String resName = clazz.getName().replace('.', '/')+".class";
+		URL url = Thread.currentThread().getContextClassLoader().getResource(resName);
+		String urlS = url.toString();
+		
+		
+		return new File(urlS.substring(urlS.indexOf('/')+1, urlS.indexOf('!')));
+	}
+	
+	protected abstract Class getClazz();
+
+	@Override
+	protected File getFile() {
+		return getFile(getClazz());
 	}
 	
 	

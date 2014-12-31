@@ -3,6 +3,9 @@ package org.jasm.item.instructions.verify;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.OpCodes;
+
 class Subroutine {
 	
 	private Verifier parent = null;
@@ -19,7 +22,19 @@ class Subroutine {
 		this.main = main;
 	}
 	
-	
+	void calculate() {
+		Set<Integer> allInstructions = parent.getAllReachable(start);
+		for (Integer i: allInstructions) {
+			AbstractInstruction instr = parent.getInstructionAt(i);
+			if (instr.getOpCode() == OpCodes.ret) {
+				rets.add(i);
+			} else if (instr.getOpCode() == OpCodes.jsr 
+					|| instr.getOpCode() == OpCodes.jsr_w) {
+				subroutineCalls.add(i);
+			}
+			instructions.add(i);
+		}
+	}
 
 
 	@Override
@@ -47,6 +62,31 @@ class Subroutine {
 			return false;
 		return true;
 	}
+
+	public boolean isMain() {
+		return main;
+	}
+
+	public Integer getStart() {
+		return start;
+	}
+
+	public Set<Integer> getRets() {
+		return rets;
+	}
+
+	public Set<Integer> getSubroutineCalls() {
+		return subroutineCalls;
+	}
+
+	public void setParent(Verifier parent) {
+		this.parent = parent;
+	}
+
+	public Set<Integer> getInstructions() {
+		return instructions;
+	}
+	
 	
 	
 	
