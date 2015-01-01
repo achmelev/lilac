@@ -20,7 +20,7 @@ import org.jasm.resolver.JarFileClassPathEntry;
 import org.jasm.type.verifier.VerifierParams;
 import org.junit.Assert;
 
-public abstract class AbstractAssembleDisassembleJarForClassTestCase extends
+public abstract class AbstractAssembleDisassembleJarTestCase extends
 		AbstractJarTestCase {
 	
 	@Override
@@ -100,12 +100,6 @@ public abstract class AbstractAssembleDisassembleJarForClassTestCase extends
 		return new File(urlS.substring(urlS.indexOf('/')+1, urlS.indexOf('!')));
 	}
 	
-	protected abstract Class getClazz();
-
-	@Override
-	protected File getFile() {
-		return getFile(getClazz());
-	}
 	
 	
 	
