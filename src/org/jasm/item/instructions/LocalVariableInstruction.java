@@ -53,7 +53,7 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 		if (isWide()) {
 			return super.getPrintName();
 		} else {
-			if (localVariableIndex<=3) {
+			if (localVariableIndex<=3 && getOpCode() != OpCodes.ret) {
 				return "normal "+super.getPrintName(); 
 			} else {
 				return super.getPrintName();
@@ -142,7 +142,7 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 		if (shortReplacement != null) {
 			return shortReplacement;
 		} else {
-			if ((localVariableIndex>=0 && localVariableIndex<=3) && !isWide() && !forceNormal) {
+			if ((localVariableIndex>=0 && localVariableIndex<=3) && !isWide() && !forceNormal && getOpCode() != OpCodes.ret) {
 				short code = OpCodes.getOpcodeForName(OpCodes.getNameForOpcode(getOpCode())+"_"+localVariableIndex);
 				shortReplacement = new ShortLocalVariableInstruction(code);
 				return  shortReplacement;

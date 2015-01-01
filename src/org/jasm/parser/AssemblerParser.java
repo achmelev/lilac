@@ -16,6 +16,7 @@ import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -263,6 +264,7 @@ import org.jasm.parser.JavaAssemblerParser.ParameterTypeBoundTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.ParameterTypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.ParameterannotationContext;
 import org.jasm.parser.JavaAssemblerParser.PushopContext;
+import org.jasm.parser.JavaAssemblerParser.RetopContext;
 import org.jasm.parser.JavaAssemblerParser.SameExtendedStackmapFrameContext;
 import org.jasm.parser.JavaAssemblerParser.SameLocalsExtendedStackmapFrameContext;
 import org.jasm.parser.JavaAssemblerParser.SameLocalsStackmapFrameContext;
@@ -355,7 +357,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		lexer.removeErrorListeners();
 		lexer.addErrorListener(errorListener);
 		/*for (Token tok: lexer.getAllTokens()) {
-			log.debug(tok.getType() +" "+tok.getText());
+			log.info(tok.getType() +" "+tok.getText());
 		}*/
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		JavaAssemblerParser parser = new JavaAssemblerParser(tokens);
@@ -1123,7 +1125,23 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 	
 	
+	
+	
 
+
+	@Override
+	public void enterRetop(RetopContext ctx) {
+		String name = ctx.retop_keyword().getText();
+		
+		Short code = OpCodes.getOpcodeForName(name);
+		
+		LocalVariableInstruction instr = new LocalVariableInstruction(code, false, -1);
+		
+		instr.setLocalVariableReference(createSymbolReference(ctx.Identifier()));
+		instr.setSourceLocation(createSourceLocation((TerminalNode)ctx.retop_keyword().getChild(0)));
+		setInstructionLabel(ctx, instr);
+		addInstruction(instr);
+	}
 
 	@Override
 	public void enterPushop(PushopContext ctx) {

@@ -15,6 +15,7 @@ import org.jasm.item.instructions.AbstractSwitchInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;
 import org.jasm.item.instructions.BranchInstruction;
 import org.jasm.item.instructions.Instructions;
+import org.jasm.item.instructions.LocalVariableInstruction;
 import org.jasm.item.instructions.OpCodes;
 
 
@@ -134,7 +135,7 @@ public class Verifier {
 				}
 			} else if (instr instanceof ArgumentLessInstruction) {
 				ArgumentLessInstruction ai = (ArgumentLessInstruction)instr;
-				if (ai.isReturn() || ai.getOpCode() == OpCodes.ret || ai.getOpCode() == OpCodes.athrow) {
+				if (ai.isReturn() || ai.getOpCode() == OpCodes.athrow) {
 					//Returns and throws don't have followers
 				} else {
 					int nextIndex = instr.getIndex()+1;
@@ -144,6 +145,18 @@ public class Verifier {
 						instrFollowers.add(nextIndex);
 					}
 					
+				}
+			} else if (instr instanceof LocalVariableInstruction ) {
+				LocalVariableInstruction li = (LocalVariableInstruction)instr;
+				if (li.getOpCode() == OpCodes.ret) {
+					//Subroutines have a special handling
+				} else {
+					int nextIndex = instr.getIndex()+1;
+					if (nextIndex>=parent.getSize()) {
+						fallOffs.add(instr.getIndex());
+					} else {
+						instrFollowers.add(nextIndex);
+					}
 				}
 			} else {
 				int nextIndex = instr.getIndex()+1;

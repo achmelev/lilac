@@ -379,7 +379,6 @@ public class OpCodes {
 			argumentLessInstructions.add(nop);
 			argumentLessInstructions.add(pop);
 			argumentLessInstructions.add(pop2);
-			argumentLessInstructions.add(ret);
 			argumentLessInstructions.add(return_);
 			argumentLessInstructions.add(saload);
 			argumentLessInstructions.add(sastore);
@@ -396,6 +395,7 @@ public class OpCodes {
 			localVariableInstructions.add(istore);
 			localVariableInstructions.add(lload);
 			localVariableInstructions.add(lstore);
+			localVariableInstructions.add(ret);
 			
 			//Short-Versions of the local variable instructions (without argument)
 			shortLocalVariableInstructions.add(aload_0);
