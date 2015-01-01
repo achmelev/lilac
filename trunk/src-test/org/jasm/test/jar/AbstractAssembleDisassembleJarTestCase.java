@@ -68,13 +68,24 @@ public abstract class AbstractAssembleDisassembleJarTestCase extends
 			clp.add(new JarFileClassPathEntry(jarFile));
 			clp.add(new ClassLoaderClasspathEntry(this.getClass().getClassLoader()));
 		}
-		clazz.setResolver(clp);
-		clazz.verify(params);
-		if (parser.getErrorMessages().size() > 0) {
+		if (clazz == null) {
 			log.error("code: \n"+data);
-			parser.printErrors();
+			if (parser.getErrorMessages().size() > 0) {
+				log.error("code: \n"+data);
+				parser.printErrors();
+				Assert.fail("Parsing failed on:");
+			}
 			Assert.fail("Parsing failed on:");
+		} else {
+			clazz.setResolver(clp);
+			clazz.verify(params);
+			if (parser.getErrorMessages().size() > 0) {
+				log.error("code: \n"+data);
+				parser.printErrors();
+				Assert.fail("Parsing failed on:");
+			}
 		}
+		
 		
 		byte [] data2 = new byte[clazz.getLength()];
 		ByteArrayByteBuffer bbuf2 = new ByteArrayByteBuffer(data2);
