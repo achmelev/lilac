@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jasm.JasmConsts;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.parser.literals.SymbolReference;
 
@@ -121,10 +122,13 @@ public class LocalVariablesPool {
 		return size;
 	}
 	
-	public LocalVariable checkAndLoad(AbstractByteCodeItem caller,SymbolReference ref, char type) {
+	public LocalVariable checkAndLoad(AbstractByteCodeItem caller,SymbolReference ref, char type, boolean returnAddressAllowed) {
 		if (nameToVar.containsKey(ref.getSymbolName())) {
 			LocalVariable var = nameToVar.get(ref.getSymbolName());
-			if (var.getType() == type || type == 0) {
+			if (var.getType() == type 
+				|| 
+				(returnAddressAllowed && var.getType() ==  JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS && type == JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE)
+				|| type == 0) {
 				return var;
 			} else {
 				if (caller != null) {
