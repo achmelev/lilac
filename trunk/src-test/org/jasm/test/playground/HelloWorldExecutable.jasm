@@ -1,0 +1,72 @@
+public super class {
+  version 50_0;
+  name HelloWorldExecutable; // org/jasm/test/playground/HelloWorldExecutable
+  extends Object; // java/lang/Object
+  implements IExecutable; // org/jasm/test/playground/IExecutable
+   //Constants
+  const classref HelloWorldExecutable HelloWorldExecutable_name; // org/jasm/test/playground/HelloWorldExecutable
+  const utf8 HelloWorldExecutable_name "org/jasm/test/playground/HelloWorldExecutable";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const classref IExecutable IExecutable_name; // org/jasm/test/playground/IExecutable
+  const utf8 IExecutable_name "org/jasm/test/playground/IExecutable";
+  const utf8 init0_name "<init>";
+  const utf8 method_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref init0 Object, init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype init0_nat init0_name, method_desc; // name=<init> type=()V
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/HelloWorldExecutable;";
+  const utf8 execute_name "execute";
+  const fieldref out System, out_nat; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;
+  const classref System System_name; // java/lang/System
+  const utf8 System_name "java/lang/System";
+  const nameandtype out_nat out_name, out_desc; // name=out type=Ljava/io/PrintStream;
+  const utf8 out_name "out";
+  const utf8 out_desc "Ljava/io/PrintStream;";
+  const string string_22 utf8_23; // "Hello World!"
+  const utf8 utf8_23 "Hello World!";
+  const methodref println PrintStream, println_nat; // class=java/io/PrintStream, name=println, descriptor=(Ljava/lang/String;)V
+  const classref PrintStream PrintStream_name; // java/io/PrintStream
+  const utf8 PrintStream_name "java/io/PrintStream";
+  const nameandtype println_nat println_name, println_desc; // name=println type=(Ljava/lang/String;)V
+  const utf8 println_name "println";
+  const utf8 println_desc "(Ljava/lang/String;)V";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "HelloWorldExecutable.java";
+  source file source_file_name; // HelloWorldExecutable.java
+   //Fields
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor method_desc; // ()V
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial init0; // class=java/lang/Object, name=<init>, descriptor=()V
+    return;
+  }
+  public method {
+    name execute_name; // execute
+    descriptor method_desc; // ()V
+    maxstack 2;
+    //Variables
+    var object this;
+    var returnadress retAdress;
+    //Instructions
+    jsr subroutine;
+    main: getstatic out; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;
+    ldc string_22; // "Hello World!"
+    invokevirtual println; // class=java/io/PrintStream, name=println, descriptor=(Ljava/lang/String;)V
+    return;
+    
+    subroutine: astore retAdress;
+    ret retAdress;
+    
+    
+  }
+}

@@ -16,7 +16,7 @@ public class DebugLocalVariableType extends DebugLocalVariable {
 	protected void checkDescriptor() {
 		Instructions instr = ((CodeAttributeContent)getParent().getParent().getParent().getParent()).getInstructions();
 		//TODO - Parsing signatures
-		variable = instr.getVariablesPool().checkAndLoad(this, variableReference, getVariableType());
+		variable = instr.getVariablesPool().checkAndLoad(this, variableReference, getVariableType(), false);
 		if (variable != null) {
 			index = variable.getIndex();
 		}

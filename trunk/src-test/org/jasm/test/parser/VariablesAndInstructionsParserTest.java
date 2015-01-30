@@ -69,27 +69,27 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		
 		Assert.assertEquals(8, pool.calculateSize());
 		
-		LocalVariable var = pool.checkAndLoad(null,new SymbolReference(0, 0, "o1"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE);
+		LocalVariable var = pool.checkAndLoad(null,new SymbolReference(0, 0, "o1"), JasmConsts.LOCAL_VARIABLE_TYPE_REFERENCE, false);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(0, var.getIndex());
 		
-		var = pool.checkAndLoad(null,new SymbolReference(0, 0, "d1"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE);
+		var = pool.checkAndLoad(null,new SymbolReference(0, 0, "d1"), JasmConsts.LOCAL_VARIABLE_TYPE_DOUBLE, false);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(1, var.getIndex());
 		
-		var = pool.checkAndLoad(null,new SymbolReference(0, 0, "f1"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT);
+		var = pool.checkAndLoad(null,new SymbolReference(0, 0, "f1"), JasmConsts.LOCAL_VARIABLE_TYPE_FLOAT, false);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(2, var.getIndex());
 		
-		var = pool.checkAndLoad(null,new SymbolReference(0, 0, "i1"), JasmConsts.LOCAL_VARIABLE_TYPE_INT);
+		var = pool.checkAndLoad(null,new SymbolReference(0, 0, "i1"), JasmConsts.LOCAL_VARIABLE_TYPE_INT, false);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(3, var.getIndex());
 		
-		var = pool.checkAndLoad(null,new SymbolReference(0, 0, "l1"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG);
+		var = pool.checkAndLoad(null,new SymbolReference(0, 0, "l1"), JasmConsts.LOCAL_VARIABLE_TYPE_LONG, false);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(5, var.getIndex());
 		
-		var = pool.checkAndLoad(null,new SymbolReference(0, 0, "r1"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS);
+		var = pool.checkAndLoad(null,new SymbolReference(0, 0, "r1"), JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS, false);
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		

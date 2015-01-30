@@ -96,7 +96,8 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 	protected void doResolveAfterParse() {
 		LocalVariablesPool lvPool = ((Instructions)getParent()).getVariablesPool();
 		char type = OpCodes.getNameForOpcode(getOpCode()).charAt(0);
-		LocalVariable var = lvPool.checkAndLoad(this,localVariableReference, type);
+		boolean returnAddressAllowed = OpCodes.getNameForOpcode(getOpCode()).startsWith("astore");
+		LocalVariable var = lvPool.checkAndLoad(this,localVariableReference, type, returnAddressAllowed);
 		if (var != null) {
 			if (isWide() || var.getIndex()<=255) {
 				this.localVariableIndex = var.getIndex();

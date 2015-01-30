@@ -118,7 +118,7 @@ public class LocalVariableAnnotationTargetTypeMember extends AbstractByteCodeIte
 			endInstruction = code.getInstructions().checkAndLoadFromSymbolTable(this, endInstructionReference);
 		}
 		if (variableReference != null) {
-			variable = code.getInstructions().getVariablesPool().checkAndLoad(this, variableReference, (char)0);
+			variable = code.getInstructions().getVariablesPool().checkAndLoad(this, variableReference, (char)0, false);
 			if (variable != null) {
 				index = variable.getIndex();
 			}

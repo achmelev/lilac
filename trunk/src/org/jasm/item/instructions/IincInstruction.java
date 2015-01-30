@@ -87,7 +87,7 @@ public class IincInstruction extends AbstractInstruction implements ILocalVariab
 		int minValue = isWide()?Short.MIN_VALUE:Byte.MIN_VALUE;
 		int maxValue = isWide()?Short.MAX_VALUE:Byte.MAX_VALUE;
 		LocalVariablesPool lvPool = ((Instructions)getParent()).getVariablesPool();
-		LocalVariable var = lvPool.checkAndLoad(this,localVariableReference, 'i');
+		LocalVariable var = lvPool.checkAndLoad(this,localVariableReference, 'i', false);
 		if (var != null) {
 			if (isWide() || var.getIndex()<=255) {
 				this.localVariableIndex = var.getIndex();
