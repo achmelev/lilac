@@ -1,0 +1,117 @@
+public super class {
+  version 50_0;
+  name JsrRetExecutable; 
+  extends Object; 
+  implements IExecutable; 
+   //Constants
+  const classref JsrRetExecutable JsrRetExecutable_name; 
+  const utf8 JsrRetExecutable_name "org/jasm/test/playground/JsrRetExecutable";
+  const classref Object Object_name;
+  const utf8 Object_name "java/lang/Object";
+  const classref IExecutable IExecutable_name;
+  const utf8 IExecutable_name "org/jasm/test/playground/IExecutable";
+  const utf8 init0_name "<init>";
+  const utf8 method_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref init0 Object, init0_nat;
+  const nameandtype init0_nat init0_name, method_desc;
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/JsrRetExecutable;";
+  const utf8 execute_name "execute";
+  const fieldref out System, out_nat;
+  const classref System System_name;
+  const utf8 System_name "java/lang/System";
+  const nameandtype out_nat out_name, out_desc;
+  const utf8 out_name "out";
+  const utf8 out_desc "Ljava/io/PrintStream;";
+  const methodref println PrintStream, println_nat;
+  const classref PrintStream PrintStream_name;
+  const utf8 PrintStream_name "java/io/PrintStream";
+  const nameandtype println_nat println_name, println_desc;
+  const utf8 println_name "println";
+  const utf8 println_desc "(Ljava/lang/String;)V";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "JsrRetExecutable.jasm";
+  source file source_file_name;
+  
+  const utf8 retUtf8 "RETURN";
+  const string retString retUtf8;
+  const utf8 ret2Utf8 "RETURN2";
+  const string ret2String ret2Utf8;
+  const utf8 ret3Utf8 "RETURN3";
+  const string ret3String ret3Utf8;
+  
+  const classref Throwable Throwable_name; 
+  const utf8 Throwable_name "java/lang/Throwable";
+  
+  const classref IllegalArgumentException IllegalArgumentException_name; 
+  const utf8 IllegalArgumentException_name "java/lang/IllegalArgumentException";
+  
+  const classref InstantiationException InstantiationException_name; 
+  const utf8 InstantiationException_name "java/lang/InstantiationException";
+  
+  
+   //Fields
+   //Methods
+  public method {
+    name init0_name;
+    descriptor method_desc;
+    maxstack 1;
+    
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial init0;
+    return;
+  }
+  
+  public method {
+    name execute_name;
+    descriptor method_desc;
+    maxstack 10;
+    //Variables
+    var returnadress retAdress;
+    
+    //Instructions
+    
+    iconst_1;
+    jsr subroutine; 
+    iconst_0;
+    jsr subroutine2;
+    goto mend;
+    
+    subroutine2:
+    
+    astore retAdress;   
+    getstatic out;
+    ldc ret2String;    
+    invokevirtual println;
+    iconst_0;
+    if_icmpeq mend;
+    ret retAdress;
+    
+    
+    subroutine:
+   
+    astore retAdress;  
+    
+    second: 
+    getstatic out;
+    ldc retString;    
+    invokevirtual println;
+    iconst_0;
+    if_icmpeq mend;
+    ret retAdress;
+
+    mend: 
+    
+    getstatic out;
+    ldc ret3String;    
+    invokevirtual println;
+    
+    return;
+    
+    
+  }
+}
