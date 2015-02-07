@@ -70,11 +70,8 @@ public abstract class AbstractAssembleDisassembleMavenJarTestCase extends
 			}
 		}
 		clazz.setResolver(classPath);
-		//params.setCheckReferences(false);
 		clazz.verify(params);
 		if (parser.getErrorMessages().size() > 0) {
-			
-			
 			log.error("code: \n"+data);
 			parser.printErrors();
 			Assert.fail("Parsing failed");
