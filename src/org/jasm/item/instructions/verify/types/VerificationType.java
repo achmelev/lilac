@@ -1,5 +1,7 @@
 package org.jasm.item.instructions.verify.types;
 
+import org.jasm.type.descriptor.TypeDescriptor;
+
 
 public abstract class VerificationType {
 	
@@ -10,6 +12,7 @@ public abstract class VerificationType {
 	public static final VerificationType LONG = new LongType();
 	public static final VerificationType NULL = new NullType();
 	public static final VerificationType UNINITIALIZED_THIS = new UninitializedThisType();
+	public static final ObjectValueType OBJECT = new ObjectValueType(new TypeDescriptor("Ljava/lang/Object;"), null);
 	
 	
 	public boolean isAssignableFrom(VerificationType from) {
