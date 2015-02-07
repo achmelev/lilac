@@ -1,51 +1,57 @@
-package org.jasm.item.instructions.types;
+package org.jasm.item.instructions.verify.types;
 
-public class IntType extends VerificationType {
+
+public class TopType extends VerificationType {
 	
-	public IntType() {
+	TopType() {
 		
 	}
 
 	@Override
 	protected boolean isAssignableFromDouble(DoubleType from) {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected boolean isAssignableFromFloat(FloatType from) {
-		return false;
+		return true;
+	}
+
+	@Override
+	protected boolean isAssignableFromInt(IntType from) {
+		return true;
 	}
 
 	@Override
 	protected boolean isAssignableFromLong(LongType from) {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected boolean isAssignableFromNull(NullType from) {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected boolean isAssignableFromObjectValue(ObjectValueType from) {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected boolean isAssignableFromTop(TopType from) {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected boolean isAssignableFromUninitializedThis(
 			UninitializedThisType from) {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected boolean isAssignableFromUninitializedValue(
 			UninitializedValueType from) {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -55,6 +61,11 @@ public class IntType extends VerificationType {
 
 	@Override
 	protected VerificationType mergeWithFloat(FloatType from) {
+		return TOP;
+	}
+
+	@Override
+	protected VerificationType mergeWithInt(IntType from) {
 		return TOP;
 	}
 
@@ -88,16 +99,6 @@ public class IntType extends VerificationType {
 	protected VerificationType mergeWithUninitializedValue(
 			UninitializedValueType from) {
 		return TOP;
-	}
-
-	@Override
-	protected boolean isAssignableFromInt(IntType from) {
-		return true;
-	}
-
-	@Override
-	protected VerificationType mergeWithInt(IntType from) {
-		return this;
 	}
 
 }

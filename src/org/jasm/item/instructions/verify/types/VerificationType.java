@@ -1,4 +1,5 @@
-package org.jasm.item.instructions.types;
+package org.jasm.item.instructions.verify.types;
+
 
 public abstract class VerificationType {
 	

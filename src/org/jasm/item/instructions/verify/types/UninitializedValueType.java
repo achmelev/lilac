@@ -1,9 +1,18 @@
-package org.jasm.item.instructions.types;
+package org.jasm.item.instructions.verify.types;
 
-public class FloatType extends VerificationType {
+import org.jasm.type.descriptor.TypeDescriptor;
+
+public class UninitializedValueType extends VerificationType {
 	
-	public FloatType() {
-
+	private TypeDescriptor desc;
+	private int instructionIndex = -1;
+	
+	public UninitializedValueType(TypeDescriptor desc,int instructionIndex) {
+		this.desc = desc;
+		this.instructionIndex = instructionIndex;
+		if (!desc.isObject()) {
+			throw new IllegalArgumentException("only object types allowed: "+desc.getValue());
+		}
 	}
 
 	@Override
@@ -13,7 +22,12 @@ public class FloatType extends VerificationType {
 
 	@Override
 	protected boolean isAssignableFromFloat(FloatType from) {
-		return true;
+		return false;
+	}
+
+	@Override
+	protected boolean isAssignableFromInt(IntType from) {
+		return false;
 	}
 
 	@Override
@@ -45,7 +59,7 @@ public class FloatType extends VerificationType {
 	@Override
 	protected boolean isAssignableFromUninitializedValue(
 			UninitializedValueType from) {
-		return false;
+		return from.equals(this);
 	}
 
 	@Override
@@ -55,7 +69,12 @@ public class FloatType extends VerificationType {
 
 	@Override
 	protected VerificationType mergeWithFloat(FloatType from) {
-		return this;
+		return TOP;
+	}
+
+	@Override
+	protected VerificationType mergeWithInt(IntType from) {
+		return TOP;
 	}
 
 	@Override
@@ -87,17 +106,28 @@ public class FloatType extends VerificationType {
 	@Override
 	protected VerificationType mergeWithUninitializedValue(
 			UninitializedValueType from) {
-		return TOP;
+		if (from.equals(this)) {
+			return this;
+		} else {
+			return TOP;
+		}
 	}
 
-	@Override
-	protected boolean isAssignableFromInt(IntType from) {
-		return false;
-	}
 
 	@Override
-	protected VerificationType mergeWithInt(IntType from) {
-		return TOP;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UninitializedValueType other = (UninitializedValueType) obj;
+		if (instructionIndex != other.instructionIndex)
+			return false;
+		return true;
 	}
+	
+	
 
 }

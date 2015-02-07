@@ -1,18 +1,10 @@
-package org.jasm.item.instructions.types;
+package org.jasm.item.instructions.verify.types;
 
-import org.jasm.type.descriptor.TypeDescriptor;
 
-public class UninitializedValueType extends VerificationType {
+public class NullType extends VerificationType {
 	
-	private TypeDescriptor desc;
-	private int instructionIndex = -1;
-	
-	public UninitializedValueType(TypeDescriptor desc,int instructionIndex) {
-		this.desc = desc;
-		this.instructionIndex = instructionIndex;
-		if (!desc.isObject()) {
-			throw new IllegalArgumentException("only object types allowed: "+desc.getValue());
-		}
+	public NullType() {
+		
 	}
 
 	@Override
@@ -37,7 +29,7 @@ public class UninitializedValueType extends VerificationType {
 
 	@Override
 	protected boolean isAssignableFromNull(NullType from) {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -59,7 +51,7 @@ public class UninitializedValueType extends VerificationType {
 	@Override
 	protected boolean isAssignableFromUninitializedValue(
 			UninitializedValueType from) {
-		return from.equals(this);
+		return false;
 	}
 
 	@Override
@@ -84,12 +76,12 @@ public class UninitializedValueType extends VerificationType {
 
 	@Override
 	protected VerificationType mergeWithNull(NullType from) {
-		return TOP;
+		return this;
 	}
 
 	@Override
 	protected VerificationType mergeWithObjectValue(ObjectValueType from) {
-		return TOP;
+		return from;
 	}
 
 	@Override
@@ -106,28 +98,7 @@ public class UninitializedValueType extends VerificationType {
 	@Override
 	protected VerificationType mergeWithUninitializedValue(
 			UninitializedValueType from) {
-		if (from.equals(this)) {
-			return this;
-		} else {
-			return TOP;
-		}
+		return TOP;
 	}
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UninitializedValueType other = (UninitializedValueType) obj;
-		if (instructionIndex != other.instructionIndex)
-			return false;
-		return true;
-	}
-	
-	
 
 }
