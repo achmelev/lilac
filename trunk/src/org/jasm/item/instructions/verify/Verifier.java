@@ -17,9 +17,10 @@ import org.jasm.item.instructions.LocalVariableInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.verify.error.BadCodeException;
 import org.jasm.item.instructions.verify.error.FallOffException;
+import org.jasm.item.instructions.verify.types.IClassQuery;
 import org.jasm.type.verifier.VerifierParams;
 
-public class Verifier {
+public class Verifier implements IClassQuery {
 	
 	private Instructions parent;
 	
@@ -180,6 +181,24 @@ public class Verifier {
 			instr.getOpCode() == OpCodes.ret) {
 			throw new BadCodeException(instr.getIndex());
 		}
+	}
+
+	@Override
+	public boolean isInterface(String className) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	//Class Query
+
+	@Override
+	public boolean isAssignable(String classTo, String classFrom) {
+		return false;
+	}
+
+	@Override
+	public String merge(String classTo, String classFrom) {
+		return null;
 	}
 	
 

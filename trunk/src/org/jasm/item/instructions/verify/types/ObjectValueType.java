@@ -4,13 +4,16 @@ import org.jasm.type.descriptor.TypeDescriptor;
 
 public class ObjectValueType extends VerificationType {
 	
-	private TypeDescriptor desc;
 	
-	public ObjectValueType(TypeDescriptor desc) {
+	private TypeDescriptor desc;
+	private IClassQuery query;
+	
+	public ObjectValueType(TypeDescriptor desc, IClassQuery query) {
 		this.desc = desc;
 		if (!(desc.isObject() || desc.isArray())) {
 			throw new IllegalArgumentException("only object and array types allowed: "+desc.getValue());
 		}
+		this.query = query;
 	}
 
 	@Override
@@ -40,8 +43,42 @@ public class ObjectValueType extends VerificationType {
 
 	@Override
 	protected boolean isAssignableFromObjectValue(ObjectValueType from) {
-		// TODO 
-		return false;
+		if (this.equals(from)) {
+			return true;
+		}
+		if (this.equals(VerificationType.OBJECT)) {
+			return true;
+		} else if (desc.isObject() && query.isInterface(desc.getClassName())) {
+			return true;
+		} else {
+			if (from.getDesc().isObject() && query.isInterface(from.getDesc().getClassName())) {
+				return false;
+			}
+			
+			if (this.getDesc().isArray()) {
+				if (from.getDesc().isArray()) {
+					if (this.getDesc().getComponentType().isPrimitive()) {
+						return from.getDesc().equals(this.getDesc());
+					} else {
+						if (from.getDesc().getComponentType().isPrimitive()) {
+							return false;
+						} else {
+							ObjectValueType newThis = new ObjectValueType(this.getDesc().getComponentType(), query);
+							ObjectValueType newFrom = new ObjectValueType(from.getDesc().getComponentType(), query);
+							return newThis.isAssignableFrom(newFrom);
+						}
+					}
+				} else {
+					return false;
+				}
+			} else {
+				if (from.getDesc().isArray()) {
+					return false;
+				} else {
+					return query.isAssignable(this.getDesc().getClassName(), from.getDesc().getClassName());
+				}
+			}
+		}
 	}
 
 	@Override
@@ -88,8 +125,46 @@ public class ObjectValueType extends VerificationType {
 
 	@Override
 	protected VerificationType mergeWithObjectValue(ObjectValueType from) {
-		// TODO
-		return null;
+		if (this.equals(VerificationType.OBJECT)) {
+			return this;
+		}
+		if (from.equals(VerificationType.OBJECT)) {
+			return from;
+		}
+		
+		if (this.getDesc().isObject() && query.isInterface(this.getDesc().getClassName())) {
+			return VerificationType.OBJECT.cloneWithQuery(query);
+		}
+		
+		if (from.getDesc().isObject() && query.isInterface(from.getDesc().getClassName())) {
+			return VerificationType.OBJECT.cloneWithQuery(query);
+		}
+		
+		if (this.getDesc().isArray()) {
+			if (from.getDesc().isArray()) {
+				TypeDescriptor thisComponent = this.getDesc().getComponentType();
+				TypeDescriptor fromComponent = from.getDesc().getComponentType();
+				if (thisComponent.isPrimitive() || fromComponent.isPrimitive()) {
+					if (thisComponent.equals(fromComponent)) {
+						return this;
+					} else {
+						return VerificationType.OBJECT.cloneWithQuery(query);
+					}
+				} else {
+					ObjectValueType componentMerge = (ObjectValueType)new ObjectValueType(thisComponent, query).mergeWith(new ObjectValueType(fromComponent, query));
+					return new ObjectValueType(new TypeDescriptor("["+componentMerge.getDesc().getValue()), query);
+				}
+			} else {
+				return VerificationType.OBJECT.cloneWithQuery(query);
+			}
+		} else {
+			if (from.getDesc().isArray()) {
+				return VerificationType.OBJECT.cloneWithQuery(query);
+			} else {
+				String rootClass = query.merge(this.getDesc().getClassName(), from.getDesc().getClassName());
+				return new ObjectValueType(new TypeDescriptor("L"+rootClass+";"), query);
+			}
+		}
 	}
 
 	@Override
@@ -127,6 +202,25 @@ public class ObjectValueType extends VerificationType {
 			return false;
 		return true;
 	}
+
+	public TypeDescriptor getDesc() {
+		return desc;
+	}
+
+	public void setQuery(IClassQuery query) {
+		this.query = query;
+	}
+
+	public ObjectValueType cloneWithQuery(IClassQuery query) {
+		return new ObjectValueType(desc, query);
+	}
+
+	@Override
+	public String toString() {
+		return "ObjectValueType [desc=" + desc + "]";
+	}
+	
+	
 	
 	
 

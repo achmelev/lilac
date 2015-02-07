@@ -578,10 +578,13 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	}
 	
 	private void emitCodeVerifyError(VerifyException e) {
+		int index = 0;
 		if (e.getInstructionIndex()>=0) {
-			AbstractInstruction instr = get(e.getInstructionIndex());
-			instr.emitError(null, "verification error - "+e.getMessage());
+			index = e.getInstructionIndex();
 		}
+		AbstractInstruction instr = get(index);
+		instr.emitError(null, "verification error - "+e.getMessage());
+		
 	}
 
 }
