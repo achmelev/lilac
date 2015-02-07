@@ -19,8 +19,10 @@ import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.DebugLocalVariable;
 import org.jasm.item.attribute.LocalVariableTableAttributeContent;
+import org.jasm.item.clazz.Clazz;
 import org.jasm.item.instructions.verify.Verifier;
 import org.jasm.item.instructions.verify.VerifyException;
+import org.jasm.item.instructions.verify.error.BadCodeException;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.map.KeyToListMap;
 import org.jasm.parser.ISymbolTableEntry;
@@ -62,7 +64,6 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		items = new ArrayList<>();
 		localVariableReferences = new HashSet<>();
 		instructionReferences = new KeyToListMap<>();
-		
 	}
 	
 	
@@ -559,18 +560,27 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		return calculatedMaxLocals;
 	}
 	
-	public void verifyByteCode() {
+	public void verifyByteCode(VerifierParams params) {
 		Verifier ver = new Verifier();
 		ver.setParent(this);
+		Clazz cl = getAncestor(Clazz.class);
+		double version = cl.getDecimalVersion().doubleValue();
 		try {
 			ver.setParent(this);
-			ver.verify();
-		} catch (VerifyException e) {
-			if (e.getInstructionIndex()>=0) {
-				AbstractInstruction instr = get(e.getInstructionIndex());
-				instr.emitError(null, "verification error - "+e.getMessage());
+			ver.verify(params);
+		} catch (BadCodeException e) {
+			if (version > 50.0) {
+				emitCodeVerifyError(e);
 			}
-			
+		} catch (VerifyException e) {
+			emitCodeVerifyError(e);
+		}
+	}
+	
+	private void emitCodeVerifyError(VerifyException e) {
+		if (e.getInstructionIndex()>=0) {
+			AbstractInstruction instr = get(e.getInstructionIndex());
+			instr.emitError(null, "verification error - "+e.getMessage());
 		}
 	}
 

@@ -287,7 +287,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			if (getParser().getErrorMessages().size()== 0) {
 				List<Instructions> instrs = this.getDescendants(Instructions.class);
 				for (Instructions instr: instrs) {
-					instr.verifyByteCode();
+					instr.verifyByteCode(params);
 				}
 				
 			}

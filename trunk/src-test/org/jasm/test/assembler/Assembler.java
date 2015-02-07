@@ -65,7 +65,7 @@ public class Assembler {
 		clp.add(new ClazzClassPathEntry(clazz));
 		clp.add(new ClassLoaderClasspathEntry(Thread.currentThread().getContextClassLoader()));
 		clazz.setResolver(clp);
-		//clazz.verify(params);
+		clazz.verify(params);
 		if (parser.getErrorMessages().size() > 0) {
 			parser.printErrors();
 			throw new AssemblerClassLoaderException("invalid assembler file", rName, parser.getErrorMessages());

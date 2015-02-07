@@ -1,10 +1,8 @@
 package org.jasm.item.instructions.verify;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.jasm.item.attribute.CodeAttributeContent;
@@ -17,52 +15,42 @@ import org.jasm.item.instructions.BranchInstruction;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.LocalVariableInstruction;
 import org.jasm.item.instructions.OpCodes;
-
-
-
+import org.jasm.item.instructions.verify.error.BadCodeException;
+import org.jasm.item.instructions.verify.error.FallOffException;
+import org.jasm.type.verifier.VerifierParams;
 
 public class Verifier {
 	
 	private Instructions parent;
-	private Map<Integer, Subroutine> subroutines = new HashMap<Integer, Subroutine>();
-	private Map<Integer, Subroutine> subroutineRets = new HashMap<Integer, Subroutine>();
+	
 	
 	List<Set<Integer>> followers = new ArrayList<Set<Integer>>();
-	Set<Integer> deadInstructions = new HashSet();
-	Set<Integer> fallOffs = new HashSet<Integer>();
 	List<Set<ExceptionHandler>> exceptionHandlers = new ArrayList<Set<ExceptionHandler>>();
 	
 	public void setParent(Instructions parent) {
 		this.parent = parent;
 	}
 	
-	AbstractInstruction getInstructionAt(int index) {
+	private AbstractInstruction getInstructionAt(int index) {
 		return parent.get(index);
 	}
 	
-	public Set<Integer> getAllFollowersFor(int index) {
+	private Set<Integer> getAllFollowersFor(int index) {
 		Set<Integer> result = new HashSet<Integer>();
 		result.addAll(followers.get(index));
 		for (ExceptionHandler handler: exceptionHandlers.get(index)) {
-			result.add(handler.getIndex());
+			result.add(handler.getHandlerInstruction().getIndex());
 		}
 		
 		return result;
 	}
 	
-	public Set<Integer> getAllReachable(int index) {
+	private Set<Integer> getAllReachable(int index) {
 		Set<Integer> result = new HashSet<Integer>();
 		getAllReachable(index, result);
 		return result;
 	}
-	
-	public Set<Integer> getAllReachable() {
-		Set<Integer> result = new HashSet<Integer>();
-		for (Integer i: subroutines.keySet()) {
-			result.addAll(subroutines.get(i).getInstructions());
-		}
-		return result;
-	}
+
 	
 	private void getAllReachable(int index, Set<Integer> result) {
 		List<Integer> unvisited = new ArrayList<Integer>();
@@ -70,7 +58,7 @@ public class Verifier {
 		while (unvisited.size() > 0) {
 			Integer i = unvisited.remove((int)0);
 			result.add(i);
-			for (Integer f: followers.get(i)) {
+			for (Integer f: getAllFollowersFor(i)) {
 				if (!unvisited.contains(f) && !result.contains(f)) {
 					unvisited.add(f);
 				}
@@ -79,35 +67,22 @@ public class Verifier {
 		
 	}
 	
-	public void verify() {
+	public void verify(VerifierParams params) {
 		calculateFollowers();
-		calculateSubroutines();
-		checkFallOffs();
+		checkForBadCode();
+		checkAllReachable();
+		
 		
 	}
 	
-	private void calculateSubroutines() {
-		calculateSubroutine(0, true);
-	}
-	
-	private void calculateSubroutine(int start, boolean main) {
-		Subroutine r = new  Subroutine(start, main);
-		r.setParent(this);
-		if (!subroutines.containsKey(start)) {
-			r.calculate();
-			subroutines.put(start, r);
-			for (Integer ret: r.getRets()) {
-				if (!subroutineRets.containsKey(ret)) {
-					subroutineRets.put(ret, r);
-				} else {
-					throw new VerifyException(ret, "multiple subroutines must not share the same ret");
-				}
-			}
-			for (Integer call: r.getSubroutineCalls()) {
-				calculateSubroutine(call, false);
-			}
+	private void checkForBadCode() {
+		for (int i=0;i<parent.getSize(); i++) {
+			AbstractInstruction instr = parent.get(i);
+			checkForBadCode(instr);
 		}
 	}
+	
+	
 	
 	private void calculateFollowers() {
 		followers = new ArrayList<Set<Integer>>();
@@ -123,9 +98,19 @@ public class Verifier {
 			if (instr instanceof BranchInstruction) {
 				BranchInstruction bi = (BranchInstruction)instr;
 				if (instr.getOpCode() == OpCodes.jsr || instr.getOpCode() == OpCodes.jsr_w) {
-					//Subroutines have a special handling
+					//No Subroutines
 				} else {
 					instrFollowers.add(bi.getTargetInst().getIndex());
+				}
+				if (instr.getOpCode() == OpCodes.goto_ || instr.getOpCode() == OpCodes.goto_w) {
+					
+				} else {
+					int nextIndex = instr.getIndex()+1;
+					if (nextIndex>=parent.getSize()) {
+						throw new FallOffException(nextIndex-1);
+					} else {
+						instrFollowers.add(nextIndex);
+					}
 				}
 			} else if (instr instanceof AbstractSwitchInstruction) {
 				AbstractSwitchInstruction ai = (AbstractSwitchInstruction)instr;
@@ -140,7 +125,7 @@ public class Verifier {
 				} else {
 					int nextIndex = instr.getIndex()+1;
 					if (nextIndex>=parent.getSize()) {
-						fallOffs.add(instr.getIndex());
+						throw new FallOffException(nextIndex-1);
 					} else {
 						instrFollowers.add(nextIndex);
 					}
@@ -153,7 +138,7 @@ public class Verifier {
 				} else {
 					int nextIndex = instr.getIndex()+1;
 					if (nextIndex>=parent.getSize()) {
-						fallOffs.add(instr.getIndex());
+						throw new FallOffException(instr.getIndex());
 					} else {
 						instrFollowers.add(nextIndex);
 					}
@@ -161,7 +146,7 @@ public class Verifier {
 			} else {
 				int nextIndex = instr.getIndex()+1;
 				if (nextIndex>=parent.getSize()) {
-					fallOffs.add(instr.getIndex());
+					throw new FallOffException(instr.getIndex());
 				} else {
 					instrFollowers.add(nextIndex);
 				}
@@ -178,12 +163,22 @@ public class Verifier {
 		}
 	}
 	
-	private void checkFallOffs() {
-		Set<Integer> reachables = getAllReachable();
-		for (Integer i: fallOffs) {
-			if (reachables.contains(i)) {
-				throw new VerifyException(i, "execution falls here off the code end");
+	private void checkAllReachable() {
+		Set<Integer> reachables = getAllReachable(0);
+		for (int i=0;i<parent.getSize(); i++) {
+			if (!reachables.contains(i)) {
+				throw new VerifyException(i, "dead code");
 			}
+		}
+	}
+	
+	
+	
+	private void checkForBadCode(AbstractInstruction instr) {
+		if (instr.getOpCode() == OpCodes.jsr || 
+			instr.getOpCode() == OpCodes.jsr_w||
+			instr.getOpCode() == OpCodes.ret) {
+			throw new BadCodeException(instr.getIndex());
 		}
 	}
 	

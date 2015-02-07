@@ -5,7 +5,7 @@ package org.jasm.test.jar;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
+//@Ignore
 public class RuntimeAssembleDisassembleTest extends
 		AbstractAssembleDisassembleJarForClassTestCase {
 
@@ -28,7 +28,7 @@ public class RuntimeAssembleDisassembleTest extends
 				//TODO - perhaps allow for different number of params in the descriptor and and param annotations attribute
 				&& !name.equals("com/sun/xml/internal/ws/binding/WebServiceFeatureList$MergedFeatures.class")
 				/*&& 
-				name.equals("com/sun/org/apache/xalan/internal/xsltc/compiler/AbsolutePathPattern.class")*/;
+				name.equals("sun/rmi/transport/DGCImpl_Stub.class")*/;
 	}
 	
 	
