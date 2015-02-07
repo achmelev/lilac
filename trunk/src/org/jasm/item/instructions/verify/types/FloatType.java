@@ -1,9 +1,10 @@
-package org.jasm.item.instructions.types;
+package org.jasm.item.instructions.verify.types;
 
-public class NullType extends VerificationType {
+
+public class FloatType extends VerificationType {
 	
-	public NullType() {
-		
+	public FloatType() {
+
 	}
 
 	@Override
@@ -13,12 +14,7 @@ public class NullType extends VerificationType {
 
 	@Override
 	protected boolean isAssignableFromFloat(FloatType from) {
-		return false;
-	}
-
-	@Override
-	protected boolean isAssignableFromInt(IntType from) {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -28,7 +24,7 @@ public class NullType extends VerificationType {
 
 	@Override
 	protected boolean isAssignableFromNull(NullType from) {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -60,12 +56,7 @@ public class NullType extends VerificationType {
 
 	@Override
 	protected VerificationType mergeWithFloat(FloatType from) {
-		return TOP;
-	}
-
-	@Override
-	protected VerificationType mergeWithInt(IntType from) {
-		return TOP;
+		return this;
 	}
 
 	@Override
@@ -75,12 +66,12 @@ public class NullType extends VerificationType {
 
 	@Override
 	protected VerificationType mergeWithNull(NullType from) {
-		return this;
+		return TOP;
 	}
 
 	@Override
 	protected VerificationType mergeWithObjectValue(ObjectValueType from) {
-		return from;
+		return TOP;
 	}
 
 	@Override
@@ -97,6 +88,16 @@ public class NullType extends VerificationType {
 	@Override
 	protected VerificationType mergeWithUninitializedValue(
 			UninitializedValueType from) {
+		return TOP;
+	}
+
+	@Override
+	protected boolean isAssignableFromInt(IntType from) {
+		return false;
+	}
+
+	@Override
+	protected VerificationType mergeWithInt(IntType from) {
 		return TOP;
 	}
 

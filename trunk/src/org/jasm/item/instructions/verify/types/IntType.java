@@ -1,8 +1,9 @@
-package org.jasm.item.instructions.types;
+package org.jasm.item.instructions.verify.types;
 
-public class LongType extends VerificationType {
+
+public class IntType extends VerificationType {
 	
-	public LongType() {
+	public IntType() {
 		
 	}
 
@@ -17,13 +18,8 @@ public class LongType extends VerificationType {
 	}
 
 	@Override
-	protected boolean isAssignableFromInt(IntType from) {
-		return false;
-	}
-
-	@Override
 	protected boolean isAssignableFromLong(LongType from) {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -64,13 +60,8 @@ public class LongType extends VerificationType {
 	}
 
 	@Override
-	protected VerificationType mergeWithInt(IntType from) {
-		return TOP;
-	}
-
-	@Override
 	protected VerificationType mergeWithLong(LongType from) {
-		return this;
+		return TOP;
 	}
 
 	@Override
@@ -98,6 +89,16 @@ public class LongType extends VerificationType {
 	protected VerificationType mergeWithUninitializedValue(
 			UninitializedValueType from) {
 		return TOP;
+	}
+
+	@Override
+	protected boolean isAssignableFromInt(IntType from) {
+		return true;
+	}
+
+	@Override
+	protected VerificationType mergeWithInt(IntType from) {
+		return this;
 	}
 
 }

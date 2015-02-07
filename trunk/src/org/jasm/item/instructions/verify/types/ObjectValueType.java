@@ -1,18 +1,30 @@
-package org.jasm.item.instructions.types;
+package org.jasm.item.instructions.verify.types;
 
-public class DoubleType extends VerificationType {
+import org.jasm.type.descriptor.TypeDescriptor;
+
+public class ObjectValueType extends VerificationType {
 	
-	public DoubleType() {
-
+	private TypeDescriptor desc;
+	
+	public ObjectValueType(TypeDescriptor desc) {
+		this.desc = desc;
+		if (!(desc.isObject() || desc.isArray())) {
+			throw new IllegalArgumentException("only object and array types allowed: "+desc.getValue());
+		}
 	}
 
 	@Override
 	protected boolean isAssignableFromDouble(DoubleType from) {
-		return true;
+		return false;
 	}
 
 	@Override
 	protected boolean isAssignableFromFloat(FloatType from) {
+		return false;
+	}
+
+	@Override
+	protected boolean isAssignableFromInt(IntType from) {
 		return false;
 	}
 
@@ -23,11 +35,12 @@ public class DoubleType extends VerificationType {
 
 	@Override
 	protected boolean isAssignableFromNull(NullType from) {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected boolean isAssignableFromObjectValue(ObjectValueType from) {
+		// TODO 
 		return false;
 	}
 
@@ -50,11 +63,16 @@ public class DoubleType extends VerificationType {
 
 	@Override
 	protected VerificationType mergeWithDouble(DoubleType from) {
-		return this;
+		return TOP;
 	}
 
 	@Override
 	protected VerificationType mergeWithFloat(FloatType from) {
+		return TOP;
+	}
+
+	@Override
+	protected VerificationType mergeWithInt(IntType from) {
 		return TOP;
 	}
 
@@ -65,12 +83,13 @@ public class DoubleType extends VerificationType {
 
 	@Override
 	protected VerificationType mergeWithNull(NullType from) {
-		return TOP;
+		return this;
 	}
 
 	@Override
 	protected VerificationType mergeWithObjectValue(ObjectValueType from) {
-		return TOP;
+		// TODO
+		return null;
 	}
 
 	@Override
@@ -90,14 +109,25 @@ public class DoubleType extends VerificationType {
 		return TOP;
 	}
 
-	@Override
-	protected boolean isAssignableFromInt(IntType from) {
-		return false;
-	}
+	
 
 	@Override
-	protected VerificationType mergeWithInt(IntType from) {
-		return TOP;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ObjectValueType other = (ObjectValueType) obj;
+		if (desc == null) {
+			if (other.desc != null)
+				return false;
+		} else if (!desc.equals(other.desc))
+			return false;
+		return true;
 	}
+	
+	
 
 }

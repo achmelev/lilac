@@ -1,8 +1,8 @@
 package org.jasm.test.verify;
 
-import org.jasm.item.instructions.types.ObjectValueType;
-import org.jasm.item.instructions.types.UninitializedValueType;
-import org.jasm.item.instructions.types.VerificationType;
+import org.jasm.item.instructions.verify.types.ObjectValueType;
+import org.jasm.item.instructions.verify.types.UninitializedValueType;
+import org.jasm.item.instructions.verify.types.VerificationType;
 import org.jasm.type.descriptor.TypeDescriptor;
 import org.junit.Assert;
 import org.junit.Test;

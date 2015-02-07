@@ -1,44 +1,45 @@
-package org.jasm.item.instructions.types;
+package org.jasm.item.instructions.verify.types;
 
-public class TopType extends VerificationType {
+
+public class UninitializedThisType extends VerificationType {
 	
-	TopType() {
+	public UninitializedThisType() {
 		
 	}
 
 	@Override
 	protected boolean isAssignableFromDouble(DoubleType from) {
-		return true;
+		return false;
 	}
 
 	@Override
 	protected boolean isAssignableFromFloat(FloatType from) {
-		return true;
+		return false;
 	}
 
 	@Override
 	protected boolean isAssignableFromInt(IntType from) {
-		return true;
+		return false;
 	}
 
 	@Override
 	protected boolean isAssignableFromLong(LongType from) {
-		return true;
+		return false;
 	}
 
 	@Override
 	protected boolean isAssignableFromNull(NullType from) {
-		return true;
+		return false;
 	}
 
 	@Override
 	protected boolean isAssignableFromObjectValue(ObjectValueType from) {
-		return true;
+		return false;
 	}
 
 	@Override
 	protected boolean isAssignableFromTop(TopType from) {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class TopType extends VerificationType {
 	@Override
 	protected boolean isAssignableFromUninitializedValue(
 			UninitializedValueType from) {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -91,7 +92,7 @@ public class TopType extends VerificationType {
 	@Override
 	protected VerificationType mergeWithUninitializedThis(
 			UninitializedThisType from) {
-		return TOP;
+		return this;
 	}
 
 	@Override
