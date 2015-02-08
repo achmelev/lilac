@@ -8,6 +8,7 @@ import org.jasm.item.instructions.verify.error.InconsistentRegisterValueExceptio
 import org.jasm.item.instructions.verify.error.InconsistentStackSizeException;
 import org.jasm.item.instructions.verify.error.InconsistentStackValueException;
 import org.jasm.item.instructions.verify.error.StackOverflowException;
+import org.jasm.item.instructions.verify.error.UnexpectedRegisterTypeException;
 import org.jasm.item.instructions.verify.error.UnexpectedStackTypeException;
 import org.jasm.item.instructions.verify.types.VerificationType;
 
@@ -18,7 +19,11 @@ public class Frame {
 	private List<VerificationType> locals;
 	private Stack<VerificationType> stack;
 	
+	private int currentStackSize = 0;
+	
 	public Frame(int maxLocals, int maxStackSize) {
+		locals = new ArrayList<VerificationType>();
+		stack = new Stack<VerificationType>();
 		this.maxStackSize = maxStackSize;
 		for (int i=0;i<maxLocals; i++) {
 			locals.add(VerificationType.TOP);
@@ -35,9 +40,10 @@ public class Frame {
 	
 
 	public void push(VerificationType type) {
-		if (stack.size() == maxStackSize) {
+		if (currentStackSize+type.getSize() > maxStackSize) {
 			throw new StackOverflowException(-1);
 		}
+		currentStackSize+=type.getSize();
 		stack.push(type);
 	}
 	
@@ -45,9 +51,12 @@ public class Frame {
 		if (stack.size() == 0) {
 			throw new StackOverflowException(-1);
 		}
-		VerificationType value = stack.pop();
+		VerificationType value = stack.peek();
+		
 		if (expected.isAssignableFrom(value)) {
-		   return value;
+			stack.pop();
+			currentStackSize-=value.getSize();
+			return value;
 		} else {
 			throw new UnexpectedStackTypeException(-1, expected, value);
 		}
@@ -57,14 +66,14 @@ public class Frame {
 		if (register<=0 || register>=locals.size()) {
 			throw new IllegalArgumentException("illegal register index: "+register);
 		}
-		if ((expected.equals(VerificationType.DOUBLE) || expected.equals(VerificationType.LONG) 
+		if ((expected.getSize() == 2 
 				&& register>=locals.size()-1))  {
 			throw new IllegalArgumentException("illegal register index for two word types: "+register);
 		}
 		
 		VerificationType value = locals.get(register);
 		if (!expected.isAssignableFrom(value)) {
-			throw new InconsistentRegisterValueException(-1, register, expected, value);
+			throw new UnexpectedRegisterTypeException(-1, register, expected, value);
 		}
 		push(value);
 		return value;
@@ -74,13 +83,13 @@ public class Frame {
 		if (register<=0 || register>=locals.size()) {
 			throw new IllegalArgumentException("illegal register index: "+register);
 		}
-		if ((expected.equals(VerificationType.DOUBLE) || expected.equals(VerificationType.LONG) 
-				&& register>=locals.size()-1))  {
+		if (expected.getSize() == 2
+				&& register>=locals.size()-1)  {
 			throw new IllegalArgumentException("illegal register index for two word types: "+register);
 		}
 		VerificationType value = pop(expected);
 		locals.set(register, value);
-		if ((value.equals(VerificationType.DOUBLE) || value.equals(VerificationType.LONG)))  {
+		if (expected.getSize() == 2)  {
 			locals.set(register+1, VerificationType.TOP);
 		} else {
 			if (register>0 && 
@@ -164,7 +173,7 @@ public class Frame {
 	}
 	
 	public int getCurrentStackSize() {
-		return stack.size();
+		return currentStackSize;
 	}
 	
 	public void replaceAllOccurences(VerificationType oldValue,VerificationType newValue) {
@@ -181,7 +190,14 @@ public class Frame {
 		}
 	}
 	
+	//Nur für Tests
+	public VerificationType getTypeOnStack(int index) {
+		return stack.get(index);
+	}
 	
+	public VerificationType getTypeInRegister(int index) {
+		return locals.get(index);
+	}
 	
 
 }
