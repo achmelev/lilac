@@ -1,5 +1,10 @@
 package org.jasm.test.verify;
 
+import org.jasm.item.instructions.verify.Frame;
+import org.jasm.item.instructions.verify.error.InconsistentStackValueException;
+import org.jasm.item.instructions.verify.error.StackOverflowException;
+import org.jasm.item.instructions.verify.error.UnexpectedRegisterTypeException;
+import org.jasm.item.instructions.verify.error.UnexpectedStackTypeException;
 import org.jasm.item.instructions.verify.error.UnknownClassException;
 import org.jasm.item.instructions.verify.types.IClassQuery;
 import org.jasm.item.instructions.verify.types.ObjectValueType;
@@ -9,7 +14,7 @@ import org.jasm.type.descriptor.TypeDescriptor;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class VerificationTypeTest implements IClassQuery {
+public class VerificationTest implements IClassQuery {
 	
 	@Test
 	public void testSimpleTypeAssign() {
@@ -251,6 +256,107 @@ public class VerificationTypeTest implements IClassQuery {
 		Assert.assertEquals(new ObjectValueType(new TypeDescriptor("[Ljava/lang/Object;"),this), new ObjectValueType(new TypeDescriptor("[Ljava/io/LineNumberReader;"), this).mergeWith(new ObjectValueType(new TypeDescriptor("[Ljava/lang/Runnable;"), this)));
 		Assert.assertEquals(VerificationType.OBJECT, new ObjectValueType(new TypeDescriptor("[Ljava/io/LineNumberReader;"), this).mergeWith(new ObjectValueType(new TypeDescriptor("[I"), this)));
 		Assert.assertEquals(new ObjectValueType(new TypeDescriptor("[Ljava/io/Reader;"),this), new ObjectValueType(new TypeDescriptor("[Ljava/io/LineNumberReader;"), this).mergeWith(new ObjectValueType(new TypeDescriptor("[Ljava/io/PushbackReader;"), this)));
+	}
+	
+	@Test
+	public void copyFrameTest() {
+		Frame frame = new Frame(10, 5);
+		frame.push(new ObjectValueType(new TypeDescriptor("Ljava/lang/String;"), this));
+		frame.push(VerificationType.LONG);
+		frame.push(VerificationType.LONG);
+		
+		Assert.assertTrue(frame.copy().theSame(frame));
+	}
+	
+	@Test
+	public void frameOperationsTest() {
+		Frame frame = new Frame(10, 5);
+		frame.push(VerificationType.INT);
+		frame.push(VerificationType.FLOAT);
+		frame.push(VerificationType.LONG);
+		Assert.assertEquals(VerificationType.INT, frame.getTypeOnStack(0));
+		Assert.assertEquals(VerificationType.FLOAT, frame.getTypeOnStack(1));
+		Assert.assertEquals(VerificationType.LONG, frame.getTypeOnStack(2));
+		Assert.assertEquals(frame.getCurrentStackSize(), 4);
+		for (int i=0;i<5; i++) {
+			frame.getTypeInRegister(i).equals(VerificationType.TOP);
+		}
+		
+		try {
+			frame.push(VerificationType.DOUBLE);
+			Assert.fail("Expected exception!");
+		} catch (StackOverflowException e) {
+			//
+		} 
+		
+		try {
+			frame.pop(VerificationType.INT);
+			Assert.fail("Expected exception!");
+		} catch (UnexpectedStackTypeException e) {
+			//
+		}
+		
+		frame.pop(VerificationType.LONG);
+		Assert.assertEquals(frame.getCurrentStackSize(), 2);
+		frame.push(VerificationType.UNINITIALIZED_THIS);
+		
+		frame.store(VerificationType.UNINITIALIZED_THIS,3);
+		
+		for (int i=0;i<10; i++) {
+			if (i==3) {
+				Assert.assertEquals(frame.getTypeInRegister(i),VerificationType.UNINITIALIZED_THIS);
+			} else {
+				Assert.assertEquals(frame.getTypeInRegister(i),VerificationType.TOP);
+			}
+			
+		}
+		
+		frame.push(VerificationType.DOUBLE);
+		
+		try {
+			frame.store(VerificationType.LONG, 2);
+			Assert.fail("Expected exception!");
+		} catch (UnexpectedStackTypeException e) {
+			//
+		}
+		
+		frame.store(VerificationType.DOUBLE, 2);
+		
+		
+		
+		for (int i=0;i<10; i++) {
+			if (i==2) {
+				Assert.assertEquals(frame.getTypeInRegister(i),VerificationType.DOUBLE);
+			} else {
+				Assert.assertEquals(frame.getTypeInRegister(i),VerificationType.TOP);
+			}
+			
+		}
+		
+		frame.store(VerificationType.FLOAT, 3);
+		
+		for (int i=0;i<10; i++) {
+			if (i==3) {
+				Assert.assertEquals(frame.getTypeInRegister(i),VerificationType.FLOAT);
+			} else {
+				Assert.assertEquals(frame.getTypeInRegister(i),VerificationType.TOP);
+			}
+			
+		}
+		
+		try {
+			frame.load(VerificationType.INT, 3);
+			Assert.fail("Expected exception!");
+		} catch (UnexpectedRegisterTypeException e) {
+			//
+		}
+		
+		frame.load(VerificationType.FLOAT, 3);
+		Assert.assertEquals(frame.getCurrentStackSize(), 2);
+		Assert.assertEquals(VerificationType.INT, frame.getTypeOnStack(0));
+		Assert.assertEquals(VerificationType.FLOAT, frame.getTypeOnStack(1));
+		
+		
 	}
 	
 	@Override
