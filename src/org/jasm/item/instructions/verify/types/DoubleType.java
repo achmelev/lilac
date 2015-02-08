@@ -101,4 +101,14 @@ public class DoubleType extends VerificationType {
 		return TOP;
 	}
 
+	@Override
+	public int getSize() {
+		return 2;
+	}
+	
+	@Override
+	public String toString() {
+		return "double";
+	}
+
 }

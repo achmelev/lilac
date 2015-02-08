@@ -127,6 +127,16 @@ public class UninitializedValueType extends VerificationType {
 			return false;
 		return true;
 	}
+
+	@Override
+	public int getSize() {
+		return 1;
+	}
+	
+	@Override
+	public String toString() {
+		return "uninitialized_value["+instructionIndex+","+desc.getValue()+"]";
+	}
 	
 	
 

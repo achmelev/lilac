@@ -215,9 +215,16 @@ public class ObjectValueType extends VerificationType {
 		return new ObjectValueType(desc, query);
 	}
 
+	
+
+	@Override
+	public int getSize() {
+		return 1;
+	}
+	
 	@Override
 	public String toString() {
-		return "ObjectValueType [desc=" + desc + "]";
+		return desc.toString();
 	}
 	
 	

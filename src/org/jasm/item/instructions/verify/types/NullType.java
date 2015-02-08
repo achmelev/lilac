@@ -101,4 +101,14 @@ public class NullType extends VerificationType {
 		return TOP;
 	}
 
+	@Override
+	public int getSize() {
+		return 1;
+	}
+	
+	@Override
+	public String toString() {
+		return "null";
+	}
+
 }

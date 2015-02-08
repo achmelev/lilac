@@ -84,5 +84,5 @@ public abstract class VerificationType {
 	protected abstract VerificationType mergeWithUninitializedThis(UninitializedThisType from);
 	protected abstract VerificationType mergeWithUninitializedValue(UninitializedValueType from);
 	
-
+	public abstract int getSize();
 }
