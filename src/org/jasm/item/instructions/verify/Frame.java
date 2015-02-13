@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import org.jasm.item.instructions.verify.error.InconsistentRegisterValueException;
 import org.jasm.item.instructions.verify.error.InconsistentStackSizeException;
-import org.jasm.item.instructions.verify.error.InconsistentStackValueException;
 import org.jasm.item.instructions.verify.error.StackOverflowException;
 import org.jasm.item.instructions.verify.error.UnexpectedRegisterTypeException;
 import org.jasm.item.instructions.verify.error.UnexpectedStackTypeException;
@@ -21,6 +19,8 @@ public class Frame {
 	
 	private int currentStackSize = 0;
 	
+	private int activeLocals = 0;
+	
 	public Frame(int maxLocals, int maxStackSize) {
 		locals = new ArrayList<VerificationType>();
 		stack = new Stack<VerificationType>();
@@ -28,6 +28,7 @@ public class Frame {
 		for (int i=0;i<maxLocals; i++) {
 			locals.add(VerificationType.TOP);
 		}
+		this.activeLocals = calculateActiveLocals();
 	}
 	
 	private Frame(List<VerificationType> locals, Stack<VerificationType> stack, int maxStackSize) {
@@ -36,6 +37,7 @@ public class Frame {
 		this.stack = new Stack<VerificationType>();
 		this.stack.addAll(stack);
 		this.maxStackSize = maxStackSize;
+		this.activeLocals = calculateActiveLocals();
 	}
 	
 
@@ -58,7 +60,7 @@ public class Frame {
 			currentStackSize-=value.getSize();
 			return value;
 		} else {
-			throw new UnexpectedStackTypeException(-1, expected, value);
+			throw new UnexpectedStackTypeException(-1, stack.size()-1,expected, value);
 		}
 	}
 	
@@ -89,8 +91,10 @@ public class Frame {
 		}
 		VerificationType value = pop(expected);
 		locals.set(register, value);
+		int activeLocalsCandidate = register+1;
 		if (expected.getSize() == 2)  {
 			locals.set(register+1, VerificationType.TOP);
+			activeLocalsCandidate++;
 		} else {
 			if (register>0 && 
 					(locals.get(register-1).equals(VerificationType.DOUBLE) || locals.get(register-1).equals(VerificationType.LONG))) {
@@ -98,9 +102,10 @@ public class Frame {
 			}
 		}
 		
+		activeLocals = Math.max(activeLocalsCandidate, activeLocals);
 	}
 	
-	public void isAssignableFrom(Frame other) {
+	public boolean isAssignableFrom(Frame other) {
 		if (other.locals.size() !=this.locals.size()) {
 			throw new IllegalArgumentException("inconsistent locals sizes "+other.locals.size()+"!="+locals.size());
 		}
@@ -110,15 +115,17 @@ public class Frame {
 		
 		for (int i=0;i<this.stack.size(); i++) {
 			if (!this.stack.get(i).isAssignableFrom(other.stack.get(i))) {
-				throw new InconsistentStackValueException(-1, i, this.stack.get(i), other.stack.get(i));
+				throw new UnexpectedStackTypeException(-1, i, this.stack.get(i), other.stack.get(i));
 			}
 		}
 		
 		for (int i=0;i<this.locals.size(); i++) {
 			if (!this.locals.get(i).isAssignableFrom(other.locals.get(i))) {
-				throw new InconsistentStackValueException(-1, i, this.locals.get(i), other.locals.get(i));
+				throw new UnexpectedRegisterTypeException(-1, i, this.locals.get(i), other.locals.get(i));
 			}
 		}
+		
+		return true;
 	}
 	
 	public Frame merge(Frame other) {
@@ -149,7 +156,7 @@ public class Frame {
 
 
 
-	public boolean theSame(Frame  other) {
+	public boolean same(Frame  other) {
 		if (other.locals.size() !=this.locals.size()) {
 			throw new IllegalArgumentException("inconsistent locals sizes "+other.locals.size()+"!="+locals.size());
 		}
@@ -176,6 +183,10 @@ public class Frame {
 		return currentStackSize;
 	}
 	
+	public int getActiveLocals() {
+		return activeLocals;
+	}
+
 	public void replaceAllOccurences(VerificationType oldValue,VerificationType newValue) {
 		for (int i=0;i<this.stack.size(); i++) {
 			if (this.stack.get(i).equals(oldValue)) {
@@ -197,6 +208,34 @@ public class Frame {
 	
 	public VerificationType getTypeInRegister(int index) {
 		return locals.get(index);
+	}
+	
+	private int calculateActiveLocals() {
+		int result = locals.size();
+		while (result>0 && locals.get(result-1) == VerificationType.TOP) {
+			result--;
+		}
+		if (result == 0) {
+			return 0;
+		} else {
+			if (locals.get(result-1).getSize() == 2) {
+				if (result == locals.size()) {
+					throw new IllegalStateException("two words type in the last register");
+				}
+				result++;
+			}
+		}
+		return result;
+		
+	}
+	
+	/**
+	 * Only for Tests
+	 */
+	public static Frame createFrame(List<VerificationType> locals, List<VerificationType> stackValues, int maxStackSize) {
+		Stack<VerificationType> values = new Stack<VerificationType>();
+		values.addAll(stackValues);
+		return new Frame(locals, values,maxStackSize);
 	}
 	
 

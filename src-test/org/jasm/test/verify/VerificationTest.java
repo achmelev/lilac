@@ -1,7 +1,10 @@
 package org.jasm.test.verify;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jasm.item.instructions.verify.Frame;
-import org.jasm.item.instructions.verify.error.InconsistentStackValueException;
+import org.jasm.item.instructions.verify.error.InconsistentStackSizeException;
 import org.jasm.item.instructions.verify.error.StackOverflowException;
 import org.jasm.item.instructions.verify.error.UnexpectedRegisterTypeException;
 import org.jasm.item.instructions.verify.error.UnexpectedStackTypeException;
@@ -265,7 +268,7 @@ public class VerificationTest implements IClassQuery {
 		frame.push(VerificationType.LONG);
 		frame.push(VerificationType.LONG);
 		
-		Assert.assertTrue(frame.copy().theSame(frame));
+		Assert.assertTrue(frame.copy().same(frame));
 	}
 	
 	@Test
@@ -281,6 +284,7 @@ public class VerificationTest implements IClassQuery {
 		for (int i=0;i<5; i++) {
 			frame.getTypeInRegister(i).equals(VerificationType.TOP);
 		}
+		Assert.assertEquals(0, frame.getActiveLocals());
 		
 		try {
 			frame.push(VerificationType.DOUBLE);
@@ -311,6 +315,8 @@ public class VerificationTest implements IClassQuery {
 			
 		}
 		
+		Assert.assertEquals(4, frame.getActiveLocals());
+		
 		frame.push(VerificationType.DOUBLE);
 		
 		try {
@@ -323,7 +329,6 @@ public class VerificationTest implements IClassQuery {
 		frame.store(VerificationType.DOUBLE, 2);
 		
 		
-		
 		for (int i=0;i<10; i++) {
 			if (i==2) {
 				Assert.assertEquals(frame.getTypeInRegister(i),VerificationType.DOUBLE);
@@ -332,6 +337,8 @@ public class VerificationTest implements IClassQuery {
 			}
 			
 		}
+		
+		Assert.assertEquals(4, frame.getActiveLocals());
 		
 		frame.store(VerificationType.FLOAT, 3);
 		
@@ -343,6 +350,8 @@ public class VerificationTest implements IClassQuery {
 			}
 			
 		}
+		
+		Assert.assertEquals(4, frame.getActiveLocals());
 		
 		try {
 			frame.load(VerificationType.INT, 3);
@@ -358,6 +367,117 @@ public class VerificationTest implements IClassQuery {
 		
 		
 	}
+	
+	@Test
+	public void isAssignableFrameTest() {
+		Frame frame1 = new Frame(10,10);
+		Frame frame2 = new Frame(10,10);
+		
+		Assert.assertTrue(frame1.isAssignableFrom(frame2));
+		
+		frame1.push(VerificationType.INT);
+		frame1.push(VerificationType.DOUBLE);
+		frame1.push(new ObjectValueType(new TypeDescriptor("Ljava/lang/Runnable;"), this));
+		
+		try {
+			frame1.isAssignableFrom(frame2);
+			Assert.fail("Expected exception!");
+		} catch (InconsistentStackSizeException e) {
+			
+		}
+		
+		frame2.push(VerificationType.INT);
+		frame2.push(VerificationType.DOUBLE);
+		frame2.push(VerificationType.LONG);
+		
+		try {
+			frame1.isAssignableFrom(frame2);
+			Assert.fail("Expected exception!");
+		} catch (UnexpectedStackTypeException e) {
+			
+		}
+		
+		frame2.pop(VerificationType.LONG);
+		
+		frame2.push(new ObjectValueType(new TypeDescriptor("Ljava/lang/String;"), this));
+		
+		Assert.assertTrue(frame1.isAssignableFrom(frame2));
+		
+		frame1.push(VerificationType.INT);
+		frame1.store(VerificationType.INT, 1);
+		
+		try {
+			frame1.isAssignableFrom(frame2);
+			Assert.fail("Expected exception!");
+		} catch (UnexpectedRegisterTypeException e) {
+			
+		}
+		
+		frame2.push(VerificationType.INT);
+		frame2.store(VerificationType.INT, 1);
+		
+		Assert.assertTrue(frame1.isAssignableFrom(frame2));
+		
+		frame2.push(VerificationType.DOUBLE);
+		frame2.store(VerificationType.DOUBLE, 2);
+		
+		Assert.assertTrue(frame1.isAssignableFrom(frame2));
+		
+	}
+	
+	@Test
+	public void mergeFrameTest() {
+		
+		
+		List<VerificationType> vars12 = new ArrayList<VerificationType>();
+		vars12.add(VerificationType.INT);
+		vars12.add(VerificationType.DOUBLE);
+		vars12.add(VerificationType.TOP);
+		vars12.add(new ObjectValueType(new TypeDescriptor("Ljava/lang/Runnable;"), this));
+		vars12.add(new UninitializedValueType(new TypeDescriptor("Ljava/lang/Runnable;"), 5));
+		vars12.add(VerificationType.UNINITIALIZED_THIS);
+		vars12.add(new ObjectValueType(new TypeDescriptor("Ljava/lang/Runnable;"), this));
+		vars12.add(VerificationType.LONG);
+		vars12.add(VerificationType.TOP);
+		vars12.add(VerificationType.FLOAT);
+		
+		List<VerificationType> vars2 = new ArrayList<VerificationType>();
+		vars2.add(VerificationType.INT);
+		vars2.add(VerificationType.LONG);
+		vars2.add(VerificationType.TOP);
+		vars2.add(new ObjectValueType(new TypeDescriptor("Ljava/lang/String;"), this));
+		vars2.add(new UninitializedValueType(new TypeDescriptor("Ljava/lang/Runnable;"), 2));
+		vars2.add(VerificationType.UNINITIALIZED_THIS);
+		vars2.add(VerificationType.NULL);
+		vars2.add(VerificationType.TOP);
+		vars2.add(VerificationType.TOP);
+		vars2.add(VerificationType.TOP);
+		
+		List<VerificationType> vars3 = new ArrayList<VerificationType>();
+		vars3.add(VerificationType.INT);
+		vars3.add(VerificationType.TOP);
+		vars3.add(VerificationType.TOP);
+		vars3.add(new ObjectValueType(new TypeDescriptor("Ljava/lang/Object;"), this));
+		vars3.add(VerificationType.TOP);
+		vars3.add(VerificationType.UNINITIALIZED_THIS);
+		vars3.add(new ObjectValueType(new TypeDescriptor("Ljava/lang/Runnable;"), this));
+		vars3.add(VerificationType.TOP);
+		vars3.add(VerificationType.TOP);
+		vars3.add(VerificationType.TOP);
+		
+		Frame frame1 = Frame.createFrame(vars12, vars12, 10);
+		Frame frame2 = Frame.createFrame(vars2, vars2, 10);
+		Frame frame3 = Frame.createFrame(vars3, vars3, 10);
+		
+		Assert.assertTrue(frame1.merge(frame2).same(frame3));
+		Assert.assertEquals(7, frame1.merge(frame2).getActiveLocals());
+		
+		
+		
+		
+		
+	}
+	
 	
 	@Override
 	public boolean isInterface(String className) {
@@ -378,6 +498,7 @@ public class VerificationTest implements IClassQuery {
 			return isAssignable(classTo, fromClass.getSuperclass().getName().replace('.', '/'));
 		}
 	}
+	
 
 	@Override
 	public String merge(String classTo, String classFrom) {
