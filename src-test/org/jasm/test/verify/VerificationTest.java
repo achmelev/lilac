@@ -6,6 +6,11 @@ import java.util.List;
 import org.jasm.item.instructions.verify.Frame;
 import org.jasm.item.instructions.verify.error.InconsistentStackSizeException;
 import org.jasm.item.instructions.verify.error.StackOverflowException;
+import org.jasm.item.instructions.verify.error.StackmapAppendOverflowException;
+import org.jasm.item.instructions.verify.error.StackmapChopUnderflowException;
+import org.jasm.item.instructions.verify.error.StackmapFullLocalsOverflowException;
+import org.jasm.item.instructions.verify.error.StackmapFullStackOverflowException;
+import org.jasm.item.instructions.verify.error.StackmapSameLocalsStackOverflowException;
 import org.jasm.item.instructions.verify.error.UnexpectedRegisterTypeException;
 import org.jasm.item.instructions.verify.error.UnexpectedStackTypeException;
 import org.jasm.item.instructions.verify.error.UnknownClassException;
@@ -466,9 +471,9 @@ public class VerificationTest implements IClassQuery {
 		vars3.add(VerificationType.TOP);
 		vars3.add(VerificationType.TOP);
 		
-		Frame frame1 = Frame.createFrame(vars12, vars12, 10);
-		Frame frame2 = Frame.createFrame(vars2, vars2, 10);
-		Frame frame3 = Frame.createFrame(vars3, vars3, 10);
+		Frame frame1 = Frame.createFrame(vars12, vars12, 12);
+		Frame frame2 = Frame.createFrame(vars2, vars2, 12);
+		Frame frame3 = Frame.createFrame(vars3, vars3, 12);
 		
 		Assert.assertTrue(frame1.merge(frame2).same(frame3));
 		Assert.assertEquals(7, frame1.merge(frame2).getActiveLocals());
@@ -521,6 +526,135 @@ public class VerificationTest implements IClassQuery {
 		frame1 = Frame.createInitialFrame("org/jasm/test/verify/Dummy", true, false, 4, 1, new MethodDescriptor(descriptor), this);
 		frame2 = Frame.createFrame(locals, stack, 1);
 		Assert.assertTrue(frame1.same(frame2));
+		
+	}
+	
+	@Test
+	public void applyStackMapTest() {
+		List<VerificationType> locals = new ArrayList<VerificationType>();
+		for (int i=0;i<5; i++) {
+			locals.add(VerificationType.TOP);
+		}
+		List<VerificationType> stack = new ArrayList<VerificationType>();
+		
+		Frame frame = Frame.createFrame(locals, stack, 5);
+		
+		locals = new ArrayList<VerificationType>();
+		locals.add(VerificationType.LONG);
+		locals.add(VerificationType.INT);
+		locals.add(VerificationType.NULL);
+		locals.add(VerificationType.DOUBLE);
+	
+		
+		try {
+			frame.applyStackmapAppend(locals);
+			Assert.fail("Expected exception!");
+		} catch (StackmapAppendOverflowException e) {
+			//ignore
+		}
+		
+		locals = new ArrayList<VerificationType>();
+		locals.add(VerificationType.LONG);
+		locals.add(VerificationType.INT);
+		locals.add(VerificationType.DOUBLE);
+		frame = frame.applyStackmapAppend(locals);
+		
+		locals = new ArrayList<VerificationType>();
+		locals.add(VerificationType.LONG);
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.INT);
+		locals.add(VerificationType.DOUBLE);
+		locals.add(VerificationType.TOP);
+		Frame result = Frame.createFrame(locals, new ArrayList<VerificationType>(), 5);
+		
+		Assert.assertTrue(result.same(frame));
+		
+		try {
+			frame.applyStackmapChop(6);
+			Assert.fail("Expected exception!");
+		} catch (StackmapChopUnderflowException e) {
+			//ignore
+		}
+		
+		frame = frame.applyStackmapChop(2);
+		
+		locals = new ArrayList<VerificationType>();
+		locals.add(VerificationType.LONG);
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.INT);
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.TOP);
+		
+		result = Frame.createFrame(locals, new ArrayList<VerificationType>(), 5);
+		
+		Assert.assertTrue(result.same(frame));
+		
+		locals = new ArrayList<VerificationType>();
+		locals.add(VerificationType.LONG);
+		locals.add(VerificationType.INT);
+		locals.add(VerificationType.DOUBLE);
+		locals.add(VerificationType.NULL);
+		
+		stack = new ArrayList<VerificationType>();
+		stack.add(VerificationType.LONG);
+		stack.add(VerificationType.INT);
+		stack.add(VerificationType.DOUBLE);
+		
+		try {
+			frame = frame.applyStackmapFull(locals, stack);
+			Assert.fail("Expected exception!");
+		} catch (StackmapFullLocalsOverflowException e) {
+			//ignore
+		}
+		
+		locals.remove(locals.size()-1);
+		stack.add(VerificationType.NULL);
+		
+		try {
+			frame = frame.applyStackmapFull(locals, stack);
+			Assert.fail("Expected exception!");
+		} catch (StackmapFullStackOverflowException e) {
+			//ignore
+		}
+		
+		stack.remove(stack.size()-1);
+		
+		frame = frame.applyStackmapFull(locals, stack);
+		
+		locals = new ArrayList<VerificationType>();
+		locals.add(VerificationType.LONG);
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.INT);
+		locals.add(VerificationType.DOUBLE);
+		locals.add(VerificationType.TOP);
+		
+		stack = new ArrayList<VerificationType>();
+		stack.add(VerificationType.LONG);
+		stack.add(VerificationType.INT);
+		stack.add(VerificationType.DOUBLE);
+		
+		result = Frame.createFrame(locals, stack, 5);
+		
+		Assert.assertTrue(result.same(frame));
+		
+		frame = Frame.createFrame(locals, new ArrayList<VerificationType>(), 1);
+		try {
+			frame.applyStackmapSameLocalsOneStackItem(VerificationType.DOUBLE);
+			Assert.fail("Expected exception!");
+		} catch (StackmapSameLocalsStackOverflowException e) {
+			//ognore
+		}
+		
+		frame =frame.applyStackmapSameLocalsOneStackItem(VerificationType.NULL);
+		
+		stack = new ArrayList<VerificationType>();
+		stack.add(VerificationType.NULL);
+		result = Frame.createFrame(locals, stack, 5);
+		
+		Assert.assertTrue(result.same(frame));
+		
+		
+		
 		
 	}
 	

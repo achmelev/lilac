@@ -6,6 +6,11 @@ import java.util.Stack;
 
 import org.jasm.item.instructions.verify.error.InconsistentStackSizeException;
 import org.jasm.item.instructions.verify.error.StackOverflowException;
+import org.jasm.item.instructions.verify.error.StackmapAppendOverflowException;
+import org.jasm.item.instructions.verify.error.StackmapChopUnderflowException;
+import org.jasm.item.instructions.verify.error.StackmapFullLocalsOverflowException;
+import org.jasm.item.instructions.verify.error.StackmapFullStackOverflowException;
+import org.jasm.item.instructions.verify.error.StackmapSameLocalsStackOverflowException;
 import org.jasm.item.instructions.verify.error.UnexpectedRegisterTypeException;
 import org.jasm.item.instructions.verify.error.UnexpectedStackTypeException;
 import org.jasm.item.instructions.verify.types.IClassQuery;
@@ -42,7 +47,13 @@ public class Frame {
 		this.stack.addAll(stack);
 		this.maxStackSize = maxStackSize;
 		this.activeLocals = calculateActiveLocals();
-		this.currentStackSize = stack.size();
+		this.currentStackSize = 0;
+		for (VerificationType t: stack) {
+			this.currentStackSize+=t.getSize();
+		}
+		if (currentStackSize>maxStackSize) {
+			throw new IllegalArgumentException(currentStackSize+">"+maxStackSize);
+		}
 	}
 	
 
@@ -252,6 +263,91 @@ public class Frame {
 		}
 		Stack<VerificationType> stack = new Stack<VerificationType>();
 		return new Frame(locals, stack, maxStack);
+	}
+	
+	public Frame applyStackmapSameLocalsOneStackItem(VerificationType stackItem) {
+		Stack<VerificationType> stack = new Stack<VerificationType>();
+		stack.push(stackItem);
+		if (stackItem.getSize()>maxStackSize) {
+			throw new StackmapSameLocalsStackOverflowException(-1, maxStackSize, stackItem.getSize());
+		}
+		return new Frame(locals, stack,maxStackSize);
+	}
+	
+	public Frame applyStackmapChop(int chop) {
+		if (chop>activeLocals) {
+			throw new StackmapChopUnderflowException(-1,activeLocals,chop);
+		}
+		List<VerificationType> newLocals = new ArrayList<VerificationType>();
+		for (int i=0;i<activeLocals-chop; i++) {
+			newLocals.add(locals.get(i));
+		}
+		for (int i=0;i<(locals.size()-(activeLocals-chop)); i++) {
+			newLocals.add(VerificationType.TOP);
+		}
+		Stack<VerificationType> stack = new Stack<VerificationType>();
+		return new Frame(newLocals, stack,maxStackSize);
+		
+	}
+	
+	public Frame applyStackmapAppend(List<VerificationType> appendLocals) {
+		int appendSize = 0;
+		for (VerificationType t: appendLocals) {
+			appendSize+=t.getSize();
+		}
+		if (activeLocals+appendSize>locals.size()) {
+			throw new StackmapAppendOverflowException(-1,appendSize, activeLocals,locals.size());
+		}
+		List<VerificationType> newLocals = new ArrayList<VerificationType>();
+		for (int i=0;i<activeLocals; i++) {
+			newLocals.add(locals.get(i));
+		}
+		for (VerificationType t: appendLocals) {
+			newLocals.add(t);
+			if (t.getSize() == 2) {
+				newLocals.add(VerificationType.TOP);
+			}
+		}
+		Stack<VerificationType> stack = new Stack<VerificationType>();
+		return new Frame(newLocals, stack,maxStackSize);
+		
+	}
+	
+	public Frame applyStackmapFull(List<VerificationType> fullLocals, List<VerificationType> fullStack) {
+		int fullLocalsSize = 0;
+		for (VerificationType t: fullLocals) {
+			fullLocalsSize+=t.getSize();
+		}
+		
+		int fullStackSize = 0;
+		for (VerificationType t: fullStack) {
+			fullStackSize+=t.getSize();
+		}
+		
+		if (fullLocalsSize>locals.size()) {
+			throw new StackmapFullLocalsOverflowException(-1, locals.size(), fullLocalsSize);
+		}
+		
+		if (fullStackSize>maxStackSize) {
+			throw new StackmapFullStackOverflowException(-1, maxStackSize, fullStackSize);
+		}
+		
+		List<VerificationType> newLocals = new ArrayList<VerificationType>();
+		for (VerificationType t: fullLocals) {
+			newLocals.add(t);
+			if (t.getSize() == 2) {
+				newLocals.add(VerificationType.TOP);
+			}
+		}
+		for (int i=0;i<locals.size()-newLocals.size(); i++) {
+			newLocals.add(VerificationType.TOP);
+		}
+		Stack<VerificationType> stack = new Stack<VerificationType>();
+		for (VerificationType t: fullStack) {
+			stack.push(t);
+		}
+		return new Frame(newLocals, stack,maxStackSize);
+		
 	}
 	
 	private static VerificationType createTypeFromDescriptor(TypeDescriptor desc, IClassQuery query) {
