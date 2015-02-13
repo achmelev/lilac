@@ -224,6 +224,14 @@ public class TypeDescriptor {
 		}
 	}
 	
+	public int getTypeSize() {
+		if (isLong || isDouble) {
+			return 2;
+		} else {
+			return 1;
+		}
+	}
+	
 	
 
 }
