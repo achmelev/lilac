@@ -8,7 +8,11 @@ import org.jasm.item.instructions.verify.error.InconsistentStackSizeException;
 import org.jasm.item.instructions.verify.error.StackOverflowException;
 import org.jasm.item.instructions.verify.error.UnexpectedRegisterTypeException;
 import org.jasm.item.instructions.verify.error.UnexpectedStackTypeException;
+import org.jasm.item.instructions.verify.types.IClassQuery;
+import org.jasm.item.instructions.verify.types.ObjectValueType;
 import org.jasm.item.instructions.verify.types.VerificationType;
+import org.jasm.type.descriptor.MethodDescriptor;
+import org.jasm.type.descriptor.TypeDescriptor;
 
 public class Frame {
 	
@@ -38,6 +42,7 @@ public class Frame {
 		this.stack.addAll(stack);
 		this.maxStackSize = maxStackSize;
 		this.activeLocals = calculateActiveLocals();
+		this.currentStackSize = stack.size();
 	}
 	
 
@@ -201,15 +206,6 @@ public class Frame {
 		}
 	}
 	
-	//Nur für Tests
-	public VerificationType getTypeOnStack(int index) {
-		return stack.get(index);
-	}
-	
-	public VerificationType getTypeInRegister(int index) {
-		return locals.get(index);
-	}
-	
 	private int calculateActiveLocals() {
 		int result = locals.size();
 		while (result>0 && locals.get(result-1) == VerificationType.TOP) {
@@ -229,9 +225,70 @@ public class Frame {
 		
 	}
 	
+	public static Frame createInitialFrame(String className, boolean isConstructor, boolean isStatic, int maxLocals,int maxStack,MethodDescriptor desc, IClassQuery classQuery) {
+		if (isConstructor && isStatic) {
+			throw new IllegalArgumentException("There are no static constructors");
+		}
+		List<VerificationType> locals = new ArrayList<VerificationType>();
+		if (!isStatic) {
+			if (isConstructor) {
+				locals.add(VerificationType.UNINITIALIZED_THIS);
+			} else {
+				locals.add(new ObjectValueType(new TypeDescriptor("L"+className+";"), classQuery));
+			}
+		}
+		for (TypeDescriptor typeDesc: desc.getParameters()) {
+			VerificationType type = createTypeFromDescriptor(typeDesc, classQuery);
+			locals.add(type);
+			if (type.getSize()==2) {
+				locals.add(VerificationType.TOP);
+			}
+		}
+		if (maxLocals<locals.size()) {
+			throw new IllegalArgumentException("max locals: "+maxLocals+"<"+locals.size());
+		}
+		for (int i=0;i<maxLocals-locals.size(); i++) {
+			locals.add(VerificationType.TOP);
+		}
+		Stack<VerificationType> stack = new Stack<VerificationType>();
+		return new Frame(locals, stack, maxStack);
+	}
+	
+	private static VerificationType createTypeFromDescriptor(TypeDescriptor desc, IClassQuery query) {
+		if (desc.isArray()) {
+			return new ObjectValueType(desc, query);
+		} else if (desc.isBoolean()) {
+			return VerificationType.INT;
+		} else if (desc.isByte()) {
+			return VerificationType.INT;
+		} else if (desc.isDouble()) {
+			return VerificationType.DOUBLE;
+		} else if (desc.isFloat()) {
+			return VerificationType.FLOAT;
+		} else if (desc.isInteger()) {
+			return VerificationType.INT;
+		} else if (desc.isLong()) {
+			return VerificationType.LONG;
+		} else if (desc.isObject()) {
+			return new ObjectValueType(desc, query);
+		} else if (desc.isShort()) {
+			return VerificationType.INT;
+		} else {
+			throw new IllegalStateException("Unknwohn descriptor type: "+desc);
+		}
+	}
+	
 	/**
 	 * Only for Tests
 	 */
+	public VerificationType getTypeOnStack(int index) {
+		return stack.get(index);
+	}
+	
+	public VerificationType getTypeInRegister(int index) {
+		return locals.get(index);
+	}
+	
 	public static Frame createFrame(List<VerificationType> locals, List<VerificationType> stackValues, int maxStackSize) {
 		Stack<VerificationType> values = new Stack<VerificationType>();
 		values.addAll(stackValues);

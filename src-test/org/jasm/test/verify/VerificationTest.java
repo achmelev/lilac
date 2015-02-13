@@ -13,6 +13,7 @@ import org.jasm.item.instructions.verify.types.IClassQuery;
 import org.jasm.item.instructions.verify.types.ObjectValueType;
 import org.jasm.item.instructions.verify.types.UninitializedValueType;
 import org.jasm.item.instructions.verify.types.VerificationType;
+import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
 import org.junit.Assert;
 import org.junit.Test;
@@ -475,6 +476,51 @@ public class VerificationTest implements IClassQuery {
 		
 		
 		
+		
+	}
+	
+	@Test
+	public void initialFrameTest() {
+		String descriptor = "()V";
+		List<VerificationType> stack = new ArrayList<VerificationType>(); 
+		List<VerificationType> locals = new ArrayList<VerificationType>();
+		locals.add(new ObjectValueType("Lorg/jasm/test/verify/Dummy;", this));
+		Frame frame1 = Frame.createInitialFrame("org/jasm/test/verify/Dummy", false, false, 1, 1, new MethodDescriptor(descriptor), this);
+		Frame frame2 = Frame.createFrame(locals, stack, 1);
+		Assert.assertTrue(frame1.same(frame2));
+		
+		descriptor = "()V";
+		locals = new ArrayList<VerificationType>();
+		frame1 = Frame.createInitialFrame("org/jasm/test/verify/Dummy", false, true, 0, 1, new MethodDescriptor(descriptor), this);
+		frame2 = Frame.createFrame(locals, stack, 1);
+		Assert.assertTrue(frame1.same(frame2));
+		
+		descriptor = "(BLjava/lang/Runnable;)V";
+		locals = new ArrayList<VerificationType>();
+		locals.add(new ObjectValueType("Lorg/jasm/test/verify/Dummy;", this));
+		locals.add(VerificationType.INT);
+		locals.add(new ObjectValueType("Ljava/lang/Runnable;", this));
+		frame1 = Frame.createInitialFrame("org/jasm/test/verify/Dummy", false, false, 3, 1, new MethodDescriptor(descriptor), this);
+		frame2 = Frame.createFrame(locals, stack, 1);
+		Assert.assertTrue(frame1.same(frame2));
+		
+		descriptor = "(BLjava/lang/Runnable;)V";
+		locals = new ArrayList<VerificationType>();
+		locals.add(VerificationType.INT);
+		locals.add(new ObjectValueType("Ljava/lang/Runnable;", this));
+		frame1 = Frame.createInitialFrame("org/jasm/test/verify/Dummy", false, true, 2, 1, new MethodDescriptor(descriptor), this);
+		frame2 = Frame.createFrame(locals, stack, 1);
+		Assert.assertTrue(frame1.same(frame2));
+		
+		descriptor = "(DLjava/lang/Runnable;)V";
+		locals = new ArrayList<VerificationType>();
+		locals.add(VerificationType.UNINITIALIZED_THIS);
+		locals.add(VerificationType.DOUBLE);
+		locals.add(VerificationType.TOP);
+		locals.add(new ObjectValueType("Ljava/lang/Runnable;", this));
+		frame1 = Frame.createInitialFrame("org/jasm/test/verify/Dummy", true, false, 4, 1, new MethodDescriptor(descriptor), this);
+		frame2 = Frame.createFrame(locals, stack, 1);
+		Assert.assertTrue(frame1.same(frame2));
 		
 	}
 	
