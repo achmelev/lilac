@@ -60,6 +60,13 @@ public class MethodDescriptor {
 		return value;
 	}
 	
+	public int calculateParamsLength() {
+		int result = 0;
+		for (TypeDescriptor td: parameters) {
+			result+=td.getTypeSize();
+		}
+		return result;
+	}
 	
 	
 

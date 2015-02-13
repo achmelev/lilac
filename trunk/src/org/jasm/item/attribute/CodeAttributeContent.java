@@ -158,6 +158,9 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 			}
 			
 			int calculatedMaxLocals = instructions.getVariablesPool().calculateSize();
+			Method m = getAncestor(Method.class);
+			int maxLocalsFromDescriptor = m.getMethodDescriptor().calculateParamsLength();
+			calculatedMaxLocals = Math.max(calculatedMaxLocals, maxLocalsFromDescriptor);
 			if (maxLocalsLiteral != null) {
 				Integer value = maxLocalsLiteral.checkAndLoadValue(this);
 				if (value != null && value>=0 && value < 65536) {
@@ -169,7 +172,7 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 					emitError(maxStackLiteral, "max locals out of bounds");
 				}
 			} else {
-				maxLocals = instructions.getVariablesPool().calculateSize();
+				maxLocals = calculatedMaxLocals;
 			}
 		}
 		
