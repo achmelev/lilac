@@ -5,7 +5,7 @@ package org.jasm.test.jar;
 import org.junit.Ignore;
 import org.junit.Test;
 
-//@Ignore
+@Ignore
 public class RuntimeAssembleDisassembleTest extends
 		AbstractAssembleDisassembleJarForClassTestCase {
 
