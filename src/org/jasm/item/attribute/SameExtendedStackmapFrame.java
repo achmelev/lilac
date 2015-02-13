@@ -71,7 +71,9 @@ public class SameExtendedStackmapFrame extends AbstractStackmapFrame {
 
 	@Override
 	protected void doResolveBodyAfterParse() {
-		
+		if (calculateDeltaOffset()<0) {
+			emitError(instructionReference, "instruction out of allowed interval");
+		}
 	}
 
 	@Override
@@ -80,7 +82,7 @@ public class SameExtendedStackmapFrame extends AbstractStackmapFrame {
 	}
 
 	@Override
-	protected short calculateTag(short tagRangeBegin) {
+	protected short calculateTag() {
 		return tagRangeBegin;
 	}
 

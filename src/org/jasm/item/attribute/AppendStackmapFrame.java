@@ -86,12 +86,15 @@ public class AppendStackmapFrame extends AbstractStackmapFrame implements IConta
 
 	@Override
 	protected void doResolveBodyAfterParse() {
+		if (calculateDeltaOffset()<0) {
+			emitError(instructionReference, "instruction out of allowed interval");
+		}
 		if (localsList == null) {
 			localsList = new ArrayList<AbstractStackmapVariableinfo>();
 		}
 		locals = localsList.toArray(new AbstractStackmapVariableinfo[0]);
 		
-		if (calculateTag((short)0)<252 || calculateTag((short)0)>254) {
+		if (calculateTag()<252 || calculateTag()>254) {
 			emitError(null, "number of locals out of bounds");
 		}
 		
@@ -107,7 +110,7 @@ public class AppendStackmapFrame extends AbstractStackmapFrame implements IConta
 	}
 
 	@Override
-	protected short calculateTag(short tagRangeBegin) {
+	protected short calculateTag() {
 		return (short)(251+locals.length);
 	}
 

@@ -12,7 +12,7 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem impleme
 	protected short tagValue; 
 	protected short tagRangeBegin = -1;
 	protected int deltaOffset = -1;
-	private SymbolReference instructionReference;
+	protected SymbolReference instructionReference;
 	private AbstractInstruction instruction;
 	
 	public AbstractStackmapFrame(short tagRangeBegin) {
@@ -32,7 +32,7 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem impleme
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
-		target.writeUnsignedByte(offset, calculateTag(tagRangeBegin));
+		target.writeUnsignedByte(offset, calculateTag());
 		doWriteBody(target, offset);
 	}
 	
@@ -50,7 +50,7 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem impleme
 	protected int calculateDeltaOffset() {
 		StackMapAttributeContent stackmap = (StackMapAttributeContent)getParent();
 		int index = stackmap.indexOf(this);
-		if (stackmap.indexOf(this) == 0) {
+		if (index == 0) {
 			return instruction.getOffsetInCode();
 		} else {
 			AbstractStackmapFrame prev = stackmap.get(index-1);
@@ -73,13 +73,23 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem impleme
 	protected void doResolveAfterParse() {
 		CodeAttributeContent code = getAncestor(CodeAttributeContent.class);
 		instruction = code.getInstructions().checkAndLoadFromSymbolTable(this, instructionReference);
-		doResolveBodyAfterParse();
+		StackMapAttributeContent stackmap = (StackMapAttributeContent)getParent();
+		int index = stackmap.indexOf(this);
+		if (index == 0 && instruction != null) {
+			doResolveBodyAfterParse();
+		} else if (index > 0) {
+			AbstractStackmapFrame prev = stackmap.get(index-1);
+			if (instruction != null && prev.getInstruction() != null) {
+				doResolveBodyAfterParse();
+			}
+		}
+		
 	}
 	
 	protected abstract void doResolveBody();
 	protected abstract void doResolveBodyAfterParse();
 	protected abstract boolean offsetCodedInTag();
-	protected abstract short calculateTag(short tagRangeBegin);
+	protected abstract short calculateTag();
 
 	public AbstractInstruction getInstruction() {
 		return instruction;

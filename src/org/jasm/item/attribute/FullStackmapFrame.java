@@ -113,6 +113,9 @@ public class FullStackmapFrame extends AbstractStackmapFrame implements IContain
 
 	@Override
 	protected void doResolveBodyAfterParse() {
+		if (calculateDeltaOffset()<0) {
+			emitError(instructionReference, "instruction out of allowed interval");
+		}
 		if (localsList == null) {
 			localsList = new ArrayList<AbstractStackmapVariableinfo>();
 		}
@@ -136,7 +139,7 @@ public class FullStackmapFrame extends AbstractStackmapFrame implements IContain
 	}
 
 	@Override
-	protected short calculateTag(short tagRangeBegin) {
+	protected short calculateTag() {
 		return tagRangeBegin;
 	}
 

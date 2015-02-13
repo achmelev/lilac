@@ -1,5 +1,8 @@
 package org.jasm.item.attribute;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.item.AbstractBytecodeItemList;
 
@@ -31,6 +34,27 @@ public class StackMapAttributeContent extends AbstractBytecodeItemList<AbstractS
 		} else {
 			throw new IllegalArgumentException("unknown tag value: "+value);
 		}
+	}
+	
+	
+
+	@Override
+	protected void doResolveAfterParse() {
+		super.doResolveAfterParse();
+		if (!hasErrors()) {
+			Set<Integer> targets = new HashSet<Integer>();
+			for (int i=0;i<getSize(); i++) {
+				AbstractStackmapFrame frame = get(i);
+				int index = frame.getInstruction().getIndex();
+				if (targets.contains(index)) {
+					frame.emitError(null, "double stackmap declaration");
+				} else {
+					targets.add(index);
+				}
+				
+			}
+		}
+		
 	}
 
 	@Override
