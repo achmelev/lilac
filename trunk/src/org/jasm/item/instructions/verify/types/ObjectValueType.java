@@ -8,6 +8,10 @@ public class ObjectValueType extends VerificationType {
 	private TypeDescriptor desc;
 	private IClassQuery query;
 	
+	public ObjectValueType(String desc, IClassQuery query) {
+		this(new TypeDescriptor(desc),query);
+	}
+	
 	public ObjectValueType(TypeDescriptor desc, IClassQuery query) {
 		this.desc = desc;
 		if (!(desc.isObject() || desc.isArray())) {
