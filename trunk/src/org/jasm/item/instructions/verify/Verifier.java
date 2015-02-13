@@ -1,13 +1,23 @@
 package org.jasm.item.instructions.verify;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+
+
+
+import org.jasm.item.IErrorEmitter;
+import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.ExceptionHandler;
 import org.jasm.item.attribute.ExceptionHandlerTable;
+import org.jasm.item.attribute.StackMapAttributeContent;
+import org.jasm.item.clazz.Clazz;
+import org.jasm.item.clazz.Method;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.AbstractSwitchInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;
@@ -17,19 +27,34 @@ import org.jasm.item.instructions.LocalVariableInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.verify.error.BadCodeException;
 import org.jasm.item.instructions.verify.error.FallOffException;
+import org.jasm.item.instructions.verify.error.MissingStackmapsDeclaration;
+import org.jasm.item.instructions.verify.error.UnknownClassException;
 import org.jasm.item.instructions.verify.types.IClassQuery;
+import org.jasm.parser.SourceLocation;
+import org.jasm.parser.literals.AbstractLiteral;
+import org.jasm.resolver.ExternalClassInfo;
 import org.jasm.type.verifier.VerifierParams;
 
 public class Verifier implements IClassQuery {
 	
 	private Instructions parent;
 	
+	private Clazz clazz;
+	private Method method;
+	private CodeAttributeContent code;
 	
-	List<Set<Integer>> followers = new ArrayList<Set<Integer>>();
-	List<Set<ExceptionHandler>> exceptionHandlers = new ArrayList<Set<ExceptionHandler>>();
+	
+	private List<Set<Integer>> followers = new ArrayList<Set<Integer>>();
+	private List<Set<ExceptionHandler>> exceptionHandlers = new ArrayList<Set<ExceptionHandler>>();
+	private Set<Integer> branchTargets = new HashSet<Integer>();
+	private Set<Integer> exceptionTargets = new HashSet<Integer>();
+	private Map<Integer, Frame> stackMapFrames = new HashMap<Integer, Frame>(); 
 	
 	public void setParent(Instructions parent) {
 		this.parent = parent;
+		this.clazz = parent.getAncestor(Clazz.class);
+		this.method = parent.getAncestor(Method.class);
+		this.code = parent.getAncestor(CodeAttributeContent.class);
 	}
 	
 	private AbstractInstruction getInstructionAt(int index) {
@@ -72,8 +97,26 @@ public class Verifier implements IClassQuery {
 		calculateFollowers();
 		checkForBadCode();
 		checkAllReachable();
+		double version = clazz.getDecimalVersion().doubleValue();
+		if (version>=50) {
+			try {
+				doTypeChecking();
+			} catch (VerifyException e) {
+				
+				if (version>50) {
+					throw e;
+				}
+			}
+		}
 		
 		
+	}
+	
+	private void doTypeChecking() {
+		List<Attribute> attrs = code.getAttributes().getAttributesByContentType(StackMapAttributeContent.class);
+		if (attrs.size() == 0 && !(branchTargets.isEmpty() && exceptionTargets.isEmpty())) {
+			throw new MissingStackmapsDeclaration();
+		}
 	}
 	
 	private void checkForBadCode() {
@@ -102,6 +145,7 @@ public class Verifier implements IClassQuery {
 					//No Subroutines
 				} else {
 					instrFollowers.add(bi.getTargetInst().getIndex());
+					branchTargets.add(bi.getTargetInst().getIndex());
 				}
 				if (instr.getOpCode() == OpCodes.goto_ || instr.getOpCode() == OpCodes.goto_w) {
 					
@@ -116,8 +160,10 @@ public class Verifier implements IClassQuery {
 			} else if (instr instanceof AbstractSwitchInstruction) {
 				AbstractSwitchInstruction ai = (AbstractSwitchInstruction)instr;
 				instrFollowers.add(ai.getDefaultTarget().getIndex());
+				branchTargets.add(ai.getDefaultTarget().getIndex());
 				for (AbstractInstruction instr1: ai.getTargets()) {
 					instrFollowers.add(instr1.getIndex());
+					branchTargets.add(instr1.getIndex());
 				}
 			} else if (instr instanceof ArgumentLessInstruction) {
 				ArgumentLessInstruction ai = (ArgumentLessInstruction)instr;
@@ -158,6 +204,7 @@ public class Verifier implements IClassQuery {
 		ExceptionHandlerTable table = ((CodeAttributeContent)parent.getParent()).getExceptionTable();
 		for (int i=0;i<table.getSize(); i++) {
 			ExceptionHandler handler = table.get(i);
+			exceptionTargets.add(handler.getHandlerInstruction().getIndex());
 			for (int j=handler.getStartInstruction().getIndex(); j<=handler.getEndInstruction().getIndex();  j++) {
 				exceptionHandlers.get(j).add(handler);
 			}
@@ -193,12 +240,49 @@ public class Verifier implements IClassQuery {
 
 	@Override
 	public boolean isAssignable(String classTo, String classFrom) {
-		return false;
+		
+		ExternalClassInfo classToInfo = getClass(classTo);
+		ExternalClassInfo classFromInfo = getClass(classFrom);
+
+		return classToInfo.isAssignableTo(classFromInfo);
 	}
 
 	@Override
 	public String merge(String classTo, String classFrom) {
-		return null;
+		if (classTo.equals(classFrom)) {
+			return classTo;
+		} else if (classTo.equals("java/lang/Object") || classFrom.equals("java/lang/Object")) {
+			return "java/lang/Object";
+		} else {
+			
+			while (!isAssignable(classTo, classFrom)) {
+				ExternalClassInfo cl = getClass(classTo);
+				classTo = cl.getSuperName();
+			}
+			return classTo;
+		}
+	}
+	
+	private ExternalClassInfo getClass(String name) {
+		IErrorEmitter dummyEmitter = new IErrorEmitter() {
+			
+			@Override
+			public void emitErrorOnLocation(SourceLocation sl, String message) {
+				
+				
+			}
+			
+			@Override
+			public void emitError(AbstractLiteral literal, String message) {
+				
+				
+			}
+		};
+		ExternalClassInfo result = clazz.checkAndLoadClassInfo(dummyEmitter, null, name, false);
+		if (result == null) {
+			throw new UnknownClassException(-1, name);
+		}
+		return result;
 	}
 	
 

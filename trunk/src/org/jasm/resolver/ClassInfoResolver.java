@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.IErrorEmitter;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.MethodDescriptor;
@@ -25,7 +26,7 @@ public class ClassInfoResolver  {
 	private List<String> polymorphicNames = null;
 	
 	
-	public ExternalClassInfo resolve(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className, boolean checkAccess)  {
+	public ExternalClassInfo resolve(Clazz clazz, IErrorEmitter caller, SymbolReference symbol, String className, boolean checkAccess)  {
 		
 		if (notFounds.contains(className)) {
 			return null;
@@ -73,7 +74,7 @@ public class ClassInfoResolver  {
 		
 	}
 	
-	private ExternalClassInfo resolveArray(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className) {
+	private ExternalClassInfo resolveArray(Clazz clazz, IErrorEmitter caller, SymbolReference symbol, String className) {
 		ExternalClassInfo result = new ExternalClassInfo();
 		TypeDescriptor desc = new TypeDescriptor(className);
 		result.descriptor = desc;
@@ -103,7 +104,7 @@ public class ClassInfoResolver  {
 		
 	}
 	
-	private ExternalClassInfo resolveClass(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className) {
+	private ExternalClassInfo resolveClass(Clazz clazz, IErrorEmitter caller, SymbolReference symbol, String className) {
 		ExternalClassInfo result = findClass(className);
 		if (result == null) {
 			caller.emitError(symbol, "unknown class "+className);

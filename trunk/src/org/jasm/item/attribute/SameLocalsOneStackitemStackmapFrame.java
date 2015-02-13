@@ -8,6 +8,7 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.item.instructions.verify.Frame;
 import org.jasm.type.verifier.VerifierParams;
 
 public class SameLocalsOneStackitemStackmapFrame extends AbstractStackmapFrame implements IContainerBytecodeItem<IBytecodeItem>, IStackmapVariableinfoContainer {
@@ -78,6 +79,10 @@ public class SameLocalsOneStackitemStackmapFrame extends AbstractStackmapFrame i
 
 	@Override
 	protected void doResolveBodyAfterParse() {
+		int tag = calculateTag();
+		if (tag<64 || tag>127) {
+			emitError(instructionReference, "instruction out of allowed interval");
+		}
 		if (stackitemsList != null && stackitemsList.size() == 1) {
 			stackitemInfo = stackitemsList.get(0);
 			stackitemInfo.resolve();
@@ -92,7 +97,7 @@ public class SameLocalsOneStackitemStackmapFrame extends AbstractStackmapFrame i
 	}
 
 	@Override
-	protected short calculateTag(short tagRangeBegin) {
+	protected short calculateTag() {
 		return (short)(tagRangeBegin+calculateDeltaOffset());
 	}
 

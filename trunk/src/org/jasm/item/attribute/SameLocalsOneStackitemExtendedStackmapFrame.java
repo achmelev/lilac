@@ -81,6 +81,9 @@ public class SameLocalsOneStackitemExtendedStackmapFrame extends AbstractStackma
 
 	@Override
 	protected void doResolveBodyAfterParse() {
+		if (calculateDeltaOffset()<0) {
+			emitError(instructionReference, "instruction out of allowed interval");
+		}
 		if (stackitemsList != null && stackitemsList.size() == 1) {
 			stackitemInfo = stackitemsList.get(0);
 			stackitemInfo.resolve();
@@ -97,7 +100,7 @@ public class SameLocalsOneStackitemExtendedStackmapFrame extends AbstractStackma
 	}
 
 	@Override
-	protected short calculateTag(short tagRangeBegin) {
+	protected short calculateTag() {
 		return tagRangeBegin;
 	}
 

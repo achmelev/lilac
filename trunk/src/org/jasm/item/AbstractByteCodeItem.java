@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 
 
-public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable {
+public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable, IErrorEmitter {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
@@ -181,6 +181,10 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see org.jasm.item.IErrorEmitter#emitError(org.jasm.parser.literals.AbstractLiteral, java.lang.String)
+	 */
+	@Override
 	public void emitError(AbstractLiteral literal, String message) {
 		if (literal !=  null) {
 			getRoot().getParser().emitError(literal.getLine(), literal.getCharPosition(), message);
@@ -192,6 +196,10 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable 
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.jasm.item.IErrorEmitter#emitErrorOnLocation(org.jasm.parser.SourceLocation, java.lang.String)
+	 */
+	@Override
 	public void emitErrorOnLocation(SourceLocation sl, String message) {
 		getRoot().getParser().emitError(sl.getLine(), sl.getCharPosition(), message);
 		hasResolveErrors = true;

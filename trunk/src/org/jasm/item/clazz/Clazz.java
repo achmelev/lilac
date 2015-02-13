@@ -14,6 +14,7 @@ import org.jasm.bytebuffer.print.SimplePrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
+import org.jasm.item.IErrorEmitter;
 import org.jasm.item.attribute.Attributes;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
@@ -647,7 +648,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	}
 	
 	
-	public ExternalClassInfo checkAndLoadClassInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, boolean checkAccess) {
+	public ExternalClassInfo checkAndLoadClassInfo(IErrorEmitter caller, SymbolReference symbol, String className, boolean checkAccess) {
 		return getResolver().resolve(this, caller, symbol, className, checkAccess);
 	}
 	

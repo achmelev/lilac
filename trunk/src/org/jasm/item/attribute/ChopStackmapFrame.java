@@ -75,6 +75,9 @@ public class ChopStackmapFrame extends AbstractStackmapFrame {
 
 	@Override
 	protected void doResolveBodyAfterParse() {
+		if (calculateDeltaOffset()<0) {
+			emitError(instructionReference, "instruction out of allowed interval");
+		}
 		if (kLiteral.isValid()) {
 			int iValue = kLiteral.getValue();
 			if (iValue<1 || iValue>3) {
@@ -93,7 +96,7 @@ public class ChopStackmapFrame extends AbstractStackmapFrame {
 	}
 
 	@Override
-	protected short calculateTag(short tagRangeBegin) {
+	protected short calculateTag() {
 		return (short)(251-k);
 	}
 
