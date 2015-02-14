@@ -505,7 +505,9 @@ public class VerificationTest implements IClassQuery {
 		locals.add(new ObjectValueType("Lorg/jasm/test/verify/Dummy;", this));
 		locals.add(VerificationType.INT);
 		locals.add(new ObjectValueType("Ljava/lang/Runnable;", this));
-		frame1 = Frame.createInitialFrame("org/jasm/test/verify/Dummy", false, false, 3, 1, new MethodDescriptor(descriptor), this);
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.TOP);
+		frame1 = Frame.createInitialFrame("org/jasm/test/verify/Dummy", false, false, 5, 1, new MethodDescriptor(descriptor), this);
 		frame2 = Frame.createFrame(locals, stack, 1);
 		Assert.assertTrue(frame1.same(frame2));
 		
@@ -581,7 +583,7 @@ public class VerificationTest implements IClassQuery {
 		locals = new ArrayList<VerificationType>();
 		locals.add(VerificationType.LONG);
 		locals.add(VerificationType.TOP);
-		locals.add(VerificationType.INT);
+		locals.add(VerificationType.TOP);
 		locals.add(VerificationType.TOP);
 		locals.add(VerificationType.TOP);
 		
@@ -694,6 +696,47 @@ public class VerificationTest implements IClassQuery {
 			}
 			return classTo;
 		}
+	}
+	
+	@Test
+	public void applyStackMapTest2() {
+		String descriptor = "(IJLjava/lang/Runnable;)V";
+		Frame fr = Frame.createInitialFrame("java/lang/Dummy", false, true, 10, 5,new MethodDescriptor(descriptor), this);
+		List<VerificationType> locals = new ArrayList<VerificationType>();
+		locals.add(VerificationType.INT);
+		locals.add(VerificationType.LONG);
+		locals.add(VerificationType.TOP);
+		locals.add(new ObjectValueType("Ljava/lang/Runnable;", this));
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.TOP);
+		
+		List<VerificationType> stack = new ArrayList<VerificationType>();
+		
+		Assert.assertTrue(fr.same(Frame.createFrame(locals, stack, 5)));
+		
+		List<VerificationType> appendLocals = new ArrayList<VerificationType>();
+		appendLocals.add(VerificationType.INT);
+		appendLocals.add(VerificationType.LONG);
+		appendLocals.add(VerificationType.FLOAT);
+		fr = fr.applyStackmapAppend(appendLocals);
+		locals.set(4, VerificationType.INT);
+		locals.set(5, VerificationType.LONG);
+		locals.set(6, VerificationType.TOP);
+		locals.set(7, VerificationType.FLOAT);
+		
+		Assert.assertTrue(fr.same(Frame.createFrame(locals, stack, 5)));
+		
+		fr = fr.applyStackmapChop(2);
+		locals.set(5, VerificationType.TOP);
+		locals.set(6, VerificationType.TOP);
+		locals.set(7, VerificationType.TOP);
+		
+		Assert.assertTrue(fr.same(Frame.createFrame(locals, stack, 5)));
+		
 	}
 	
 	private Class getClass(String className) {

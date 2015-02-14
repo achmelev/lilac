@@ -77,6 +77,7 @@ public abstract class AbstractDisassembleAssembleTestCase {
 		path.add(new ClassLoaderClasspathEntry(this.getClass().getClassLoader()));
 		clazz.setResolver(path);
 		clazz.verify(new VerifierParams());
+		
 		if (parser.getErrorMessages().size() > 0) {
 			log.error("code:\n "+data);
 			parser.printErrors();

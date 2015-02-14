@@ -123,6 +123,12 @@ public class Method extends AbstractClassMember<MethodModifier> {
 			getRoot().checkAndLoadMethodDescriptor(this, descriptorReference, methodDescriptor);
 		}
 	}
+
+	@Override
+	protected void doResolve() {
+		super.doResolve();
+		methodDescriptor = new MethodDescriptor(getDescriptor().getValue());
+	}
 	
 	
 	

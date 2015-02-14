@@ -258,11 +258,9 @@ public class Frame {
 		if (maxLocals<locals.size()) {
 			throw new IllegalArgumentException("max locals: "+maxLocals+"<"+locals.size());
 		}
-		for (int i=0;i<maxLocals-locals.size(); i++) {
-			locals.add(VerificationType.TOP);
-		}
+		
 		Stack<VerificationType> stack = new Stack<VerificationType>();
-		return new Frame(locals, stack, maxStack);
+		return new Frame(appendTopsIgNecessary(locals, maxLocals), stack, maxStack);
 	}
 	
 	public Frame applyStackmapSameLocalsOneStackItem(VerificationType stackItem) {
@@ -274,20 +272,49 @@ public class Frame {
 		return new Frame(locals, stack,maxStackSize);
 	}
 	
+	
 	public Frame applyStackmapChop(int chop) {
-		if (chop>activeLocals) {
+		//calculating current number of vars
+		int numberOfVariables = 0;
+		for (int i=0;i<activeLocals; i++) {
+			if (i==0) {
+				numberOfVariables++;
+			} else {
+				if (!(locals.get(i-1).getSize() == 2)) {
+					numberOfVariables++;
+				}
+			}
+		}
+		//checking chop size
+		if (chop>numberOfVariables) {
 			throw new StackmapChopUnderflowException(-1,activeLocals,chop);
 		}
+		//Creating new locals 
 		List<VerificationType> newLocals = new ArrayList<VerificationType>();
-		for (int i=0;i<activeLocals-chop; i++) {
+		int newNumberOfVariables = 0;
+		int i=0;
+		while (newNumberOfVariables<numberOfVariables-chop) {
 			newLocals.add(locals.get(i));
+			if (locals.get(i).getSize() == 2) {
+				newLocals.add(VerificationType.TOP);
+				i++;
+			}
+			newNumberOfVariables++;
+			i++;
 		}
-		for (int i=0;i<(locals.size()-(activeLocals-chop)); i++) {
-			newLocals.add(VerificationType.TOP);
-		}
-		Stack<VerificationType> stack = new Stack<VerificationType>();
-		return new Frame(newLocals, stack,maxStackSize);
 		
+		Stack<VerificationType> stack = new Stack<VerificationType>();
+		return new Frame(appendTopsIgNecessary(newLocals, locals.size()), stack,maxStackSize);
+		
+	}
+	
+	private static List<VerificationType> appendTopsIgNecessary(List<VerificationType> locals, int maxLocals) {
+		int size = locals.size();
+		for (int i=0;i<maxLocals-size; i++) {
+			locals.add(VerificationType.TOP);
+		}
+		
+		return locals;
 	}
 	
 	public Frame applyStackmapAppend(List<VerificationType> appendLocals) {
@@ -309,43 +336,44 @@ public class Frame {
 			}
 		}
 		Stack<VerificationType> stack = new Stack<VerificationType>();
-		return new Frame(newLocals, stack,maxStackSize);
+		return new Frame(appendTopsIgNecessary(newLocals, locals.size()), stack,maxStackSize);
 		
 	}
 	
-	public Frame applyStackmapFull(List<VerificationType> fullLocals, List<VerificationType> fullStack) {
-		int fullLocalsSize = 0;
-		for (VerificationType t: fullLocals) {
-			fullLocalsSize+=t.getSize();
+	private int calculateVarsSize(List<VerificationType> vars) {
+		int result = 0;
+		for (VerificationType t: vars) {
+			result+=t.getSize();
 		}
-		
-		int fullStackSize = 0;
-		for (VerificationType t: fullStack) {
-			fullStackSize+=t.getSize();
-		}
-		
-		if (fullLocalsSize>locals.size()) {
-			throw new StackmapFullLocalsOverflowException(-1, locals.size(), fullLocalsSize);
-		}
-		
-		if (fullStackSize>maxStackSize) {
-			throw new StackmapFullStackOverflowException(-1, maxStackSize, fullStackSize);
-		}
-		
-		List<VerificationType> newLocals = new ArrayList<VerificationType>();
-		for (VerificationType t: fullLocals) {
-			newLocals.add(t);
+		return result;
+	}
+	
+	private List<VerificationType> createLocalsFromVarList(List<VerificationType> vars) {
+		List<VerificationType> result = new ArrayList<VerificationType>();
+		for (VerificationType t: vars) {
+			result.add(t);
 			if (t.getSize() == 2) {
-				newLocals.add(VerificationType.TOP);
+				result.add(VerificationType.TOP);
 			}
 		}
-		for (int i=0;i<locals.size()-newLocals.size(); i++) {
-			newLocals.add(VerificationType.TOP);
+		return appendTopsIgNecessary(result, locals.size());
+	}
+	
+	
+	public Frame applyStackmapFull(List<VerificationType> fullLocals, List<VerificationType> fullStack) {
+		
+		if (calculateVarsSize(fullLocals)>locals.size()) {
+			throw new StackmapFullLocalsOverflowException(-1, locals.size(), calculateVarsSize(fullLocals));
 		}
+		
+		if (calculateVarsSize(fullStack)>maxStackSize) {
+			throw new StackmapFullStackOverflowException(-1, maxStackSize, calculateVarsSize(fullStack));
+		}
+		
+		List<VerificationType> newLocals = createLocalsFromVarList(fullLocals);
 		Stack<VerificationType> stack = new Stack<VerificationType>();
-		for (VerificationType t: fullStack) {
-			stack.push(t);
-		}
+		stack.addAll(fullStack);
+		
 		return new Frame(newLocals, stack,maxStackSize);
 		
 	}
@@ -354,6 +382,8 @@ public class Frame {
 		if (desc.isArray()) {
 			return new ObjectValueType(desc, query);
 		} else if (desc.isBoolean()) {
+			return VerificationType.INT;
+		} else if (desc.isCharacter()) {
 			return VerificationType.INT;
 		} else if (desc.isByte()) {
 			return VerificationType.INT;
@@ -370,7 +400,7 @@ public class Frame {
 		} else if (desc.isShort()) {
 			return VerificationType.INT;
 		} else {
-			throw new IllegalStateException("Unknwohn descriptor type: "+desc);
+			throw new IllegalStateException("Unknowhn descriptor type: "+desc);
 		}
 	}
 	

@@ -5,15 +5,19 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.IInstructionReference;
+import org.jasm.item.instructions.OpCodes;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.verifier.VerifierParams;
+
+
 
 
 public class UninitializedStackmapVariableinfo extends AbstractStackmapVariableinfo implements IInstructionReference {
 	
 	private int instructionOffset;
-	private AbstractInstruction instruction;
+	private ConstantPoolInstruction instruction;
 	private SymbolReference instructionReference;
 
 	public UninitializedStackmapVariableinfo() {
@@ -58,7 +62,7 @@ public class UninitializedStackmapVariableinfo extends AbstractStackmapVariablei
 	@Override
 	protected void doResolve() {
 		CodeAttributeContent code = getAncestor(CodeAttributeContent.class);
-		instruction = code.getInstructions().getInstructionAtOffset(instructionOffset);
+		instruction = (ConstantPoolInstruction)code.getInstructions().getInstructionAtOffset(instructionOffset);
 	}
 	
 	@Override
@@ -70,7 +74,12 @@ public class UninitializedStackmapVariableinfo extends AbstractStackmapVariablei
 	@Override
 	protected void doResolveAfterParse() {
 		CodeAttributeContent code = getAncestor(CodeAttributeContent.class);
-		instruction = code.getInstructions().checkAndLoadFromSymbolTable(this, instructionReference);
+		AbstractInstruction instruction = code.getInstructions().checkAndLoadFromSymbolTable(this, instructionReference);
+		if (instruction != null && !(instruction.getOpCode() == OpCodes.new_)) {
+			emitError(instructionReference, "the referenced instruction must be new");
+		} else {
+			this.instruction = (ConstantPoolInstruction)instruction;
+		}
 	}
 
 	@Override
@@ -91,6 +100,11 @@ public class UninitializedStackmapVariableinfo extends AbstractStackmapVariablei
 	public void setInstructionReference(SymbolReference instructionReference) {
 		this.instructionReference = instructionReference;
 	}
+
+	public ConstantPoolInstruction getInstruction() {
+		return instruction;
+	}
+	
 	
 	
 

@@ -28,7 +28,7 @@ public class RuntimeAssembleDisassembleTest extends
 				//TODO - perhaps allow for different number of params in the descriptor and and param annotations attribute
 				&& !name.equals("com/sun/xml/internal/ws/binding/WebServiceFeatureList$MergedFeatures.class")
 				/*&& 
-				name.equals("sun/rmi/transport/DGCImpl_Stub.class")*/;
+				name.equals("com/sun/jmx/snmp/IPAcl/ParserTokenManager.class")*/;
 	}
 	
 	

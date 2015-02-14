@@ -14,4 +14,7 @@ public class Class2AssembleDisassembleTest extends AbstractDisassembleAssembleTe
 		doTest();
 	}
 
+	
+	
+
 }
