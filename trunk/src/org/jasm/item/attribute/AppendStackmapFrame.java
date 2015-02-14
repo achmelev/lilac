@@ -154,4 +154,10 @@ public class AppendStackmapFrame extends AbstractStackmapFrame implements IConta
 		
 	}
 
+	public AbstractStackmapVariableinfo[] getLocals() {
+		return locals;
+	}
+	
+	
+
 }

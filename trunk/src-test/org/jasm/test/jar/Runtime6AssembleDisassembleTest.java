@@ -30,8 +30,7 @@ public class Runtime6AssembleDisassembleTest extends
 	
 	@Override
 	protected boolean filter(String name) {
-		//return name.equals("java/util/ResourceBundle.class");
-		return true;
+		return !name.contains("package-info");
 	}
 	
 	

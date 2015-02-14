@@ -208,4 +208,13 @@ public class FullStackmapFrame extends AbstractStackmapFrame implements IContain
 		
 	}
 
+	public AbstractStackmapVariableinfo[] getLocals() {
+		return locals;
+	}
+
+	public AbstractStackmapVariableinfo[] getStackItems() {
+		return stackItems;
+	}
+	
+	
 }

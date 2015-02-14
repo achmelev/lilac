@@ -483,19 +483,6 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 				}
 			}
 		}
-		
-		if (isAfterParse()) {
-			calculatedMaxLocals = variablesPool.calculateSize();
-		} else {
-			calculatedMaxLocals = 0;
-			for (LocalVariable var: localVariableReferences) {
-				calculatedMaxLocals = Math.max(calculatedMaxLocals, var.getIndex()+var.getLength());
-			}
-		}
-		
-		
-		
-		
 				
 	}
 	
@@ -556,7 +543,15 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	}
 
 
-	public int getCalculatedMaxLocals() {
+	public int calculateMaxLocals() {
+		if (isAfterParse()) {
+			calculatedMaxLocals = variablesPool.calculateSize();
+		} else {
+			calculatedMaxLocals = 0;
+			for (LocalVariable var: localVariableReferences) {
+				calculatedMaxLocals = Math.max(calculatedMaxLocals, var.getIndex()+var.getLength());
+			}
+		}
 		return calculatedMaxLocals;
 	}
 	

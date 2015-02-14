@@ -141,6 +141,10 @@ public class SameLocalsOneStackitemExtendedStackmapFrame extends AbstractStackma
 		stackitemsList.add(info);
 	}
 
+	public AbstractStackmapVariableinfo getStackitemInfo() {
+		return stackitemInfo;
+	}
+
 	
 	
 	

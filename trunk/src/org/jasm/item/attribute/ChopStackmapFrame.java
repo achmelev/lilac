@@ -103,6 +103,10 @@ public class ChopStackmapFrame extends AbstractStackmapFrame {
 	public void setkLiteral(IntegerLiteral kLiteral) {
 		this.kLiteral = kLiteral;
 	}
+
+	public short getK() {
+		return k;
+	}
 	
 	
 	

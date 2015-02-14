@@ -10,29 +10,86 @@ import java.util.Set;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import org.jasm.item.IErrorEmitter;
+import org.jasm.item.attribute.AbstractStackmapFrame;
+import org.jasm.item.attribute.AbstractStackmapVariableinfo;
+import org.jasm.item.attribute.AppendStackmapFrame;
 import org.jasm.item.attribute.Attribute;
+import org.jasm.item.attribute.ChopStackmapFrame;
 import org.jasm.item.attribute.CodeAttributeContent;
+import org.jasm.item.attribute.DoubleStackmapVariableinfo;
 import org.jasm.item.attribute.ExceptionHandler;
 import org.jasm.item.attribute.ExceptionHandlerTable;
+import org.jasm.item.attribute.FloatStackmapVariableinfo;
+import org.jasm.item.attribute.FullStackmapFrame;
+import org.jasm.item.attribute.IntegerStackmapVariableinfo;
+import org.jasm.item.attribute.LongStackmapVariableinfo;
+import org.jasm.item.attribute.NullStackmapVariableinfo;
+import org.jasm.item.attribute.ObjectStackmapVariableinfo;
+import org.jasm.item.attribute.SameExtendedStackmapFrame;
+import org.jasm.item.attribute.SameLocalsOneStackitemExtendedStackmapFrame;
+import org.jasm.item.attribute.SameLocalsOneStackitemStackmapFrame;
+import org.jasm.item.attribute.SameStackmapFrame;
 import org.jasm.item.attribute.StackMapAttributeContent;
+import org.jasm.item.attribute.TopStackmapVariableinfo;
+import org.jasm.item.attribute.UninitializedStackmapVariableinfo;
+import org.jasm.item.attribute.UninitializedThisStackmapVariableinfo;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Method;
+import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.AbstractSwitchInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;
 import org.jasm.item.instructions.BranchInstruction;
+import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.LocalVariableInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.verify.error.BadCodeException;
 import org.jasm.item.instructions.verify.error.FallOffException;
+import org.jasm.item.instructions.verify.error.MissingStackmapException;
 import org.jasm.item.instructions.verify.error.MissingStackmapsDeclaration;
 import org.jasm.item.instructions.verify.error.UnknownClassException;
 import org.jasm.item.instructions.verify.types.IClassQuery;
+import org.jasm.item.instructions.verify.types.ObjectValueType;
+import org.jasm.item.instructions.verify.types.UninitializedValueType;
+import org.jasm.item.instructions.verify.types.VerificationType;
 import org.jasm.parser.SourceLocation;
 import org.jasm.parser.literals.AbstractLiteral;
 import org.jasm.resolver.ExternalClassInfo;
+import org.jasm.type.descriptor.MethodDescriptor;
+import org.jasm.type.descriptor.TypeDescriptor;
 import org.jasm.type.verifier.VerifierParams;
 
 public class Verifier implements IClassQuery {
@@ -49,6 +106,12 @@ public class Verifier implements IClassQuery {
 	private Set<Integer> branchTargets = new HashSet<Integer>();
 	private Set<Integer> exceptionTargets = new HashSet<Integer>();
 	private Map<Integer, Frame> stackMapFrames = new HashMap<Integer, Frame>(); 
+	
+	private int currentInstructionIndex = -1;
+	
+	private boolean hasStackMapDeclaration;
+	
+	private Frame initialFrame = null;
 	
 	public void setParent(Instructions parent) {
 		this.parent = parent;
@@ -94,28 +157,161 @@ public class Verifier implements IClassQuery {
 	}
 	
 	public void verify(VerifierParams params) {
-		calculateFollowers();
-		checkForBadCode();
-		checkAllReachable();
-		double version = clazz.getDecimalVersion().doubleValue();
-		if (version>=50) {
+		try {
+			double version = clazz.getDecimalVersion().doubleValue();
+			calculateFollowers();
 			try {
-				doTypeChecking();
-			} catch (VerifyException e) {
-				
+				checkForBadCode();
+			} catch (BadCodeException e) {
 				if (version>50) {
 					throw e;
+				} else {
+					return;
 				}
 			}
+			checkAllReachable();
+			createInitialFrame();
+			if (version>=50) {
+				try {
+					doTypeChecking();
+				} catch (VerifyException e) {
+					if (version>50) {
+						throw e;
+					}
+				}
+			}
+		} catch (VerifyException e) {
+			emitCodeVerifyError(e);
 		}
 		
 		
+	}
+	
+	private void createInitialFrame() {
+		String className = clazz.getThisClass().getClassNameReference().getValue();
+		boolean isConstructor = method.getName().getValue().equals("<init>");
+		boolean isStatic = method.getModifier().isStatic();
+		MethodDescriptor desc = method.getMethodDescriptor();
+		int maxLocals = code.getMaxLocals();
+		int maxStack = code.getMaxStack();
+		if (maxStack < 0) {
+			maxStack = Integer.MAX_VALUE;
+		}
+		
+		initialFrame = Frame.createInitialFrame(className, isConstructor, isStatic, maxLocals, maxStack, desc, this);
 	}
 	
 	private void doTypeChecking() {
 		List<Attribute> attrs = code.getAttributes().getAttributesByContentType(StackMapAttributeContent.class);
 		if (attrs.size() == 0 && !(branchTargets.isEmpty() && exceptionTargets.isEmpty())) {
 			throw new MissingStackmapsDeclaration();
+		}
+		if (attrs.size() == 2) {
+			throw new IllegalStateException("multiple stackmaps declared!");
+		}
+		hasStackMapDeclaration = (attrs.size() == 1);
+		if (hasStackMapDeclaration) {
+			createStackmapFrames((StackMapAttributeContent)attrs.get(0).getContent());
+		}
+		for (Integer b: branchTargets) {
+			if (!stackMapFrames.containsKey(b)) {
+				throw new MissingStackmapException(b);
+			}
+		}
+		for (Integer b: exceptionTargets) {
+			if (!stackMapFrames.containsKey(b)) {
+				throw new MissingStackmapException(b);
+			}
+		}
+	}
+	
+	private void createStackmapFrames(StackMapAttributeContent stackmapContent) {
+		Frame previousFrame = initialFrame;
+		for (int i=0;i<stackmapContent.getSize(); i++) {
+			AbstractStackmapFrame stackMapFrame = stackmapContent.get(i);
+			int index = stackMapFrame.getInstruction().getIndex();
+			currentInstructionIndex = index;
+			if (stackMapFrames.containsKey(index)) {
+				throw new IllegalStateException("index "+index+" already has a stack frame!");
+			}
+			Frame fr = createFrameFromStackFrame(previousFrame, stackMapFrame);
+			stackMapFrames.put(index, fr);
+			previousFrame = fr;getClass();
+			currentInstructionIndex = -1;
+		}
+		
+	}
+	
+	private Frame createFrameFromStackFrame(Frame previousFrame, AbstractStackmapFrame stackMapFrame) {
+		if (stackMapFrame instanceof SameStackmapFrame) {
+			return previousFrame.copy();
+		} else if (stackMapFrame instanceof SameExtendedStackmapFrame) {
+			return previousFrame.copy();
+		} else if (stackMapFrame instanceof SameLocalsOneStackitemStackmapFrame) {
+			SameLocalsOneStackitemStackmapFrame slo = (SameLocalsOneStackitemStackmapFrame)stackMapFrame;
+			return previousFrame.applyStackmapSameLocalsOneStackItem(createVerificationTypeFromStackMap(slo.getStackitemInfo()));
+		} else if (stackMapFrame instanceof SameLocalsOneStackitemExtendedStackmapFrame) {
+			SameLocalsOneStackitemExtendedStackmapFrame slo = (SameLocalsOneStackitemExtendedStackmapFrame)stackMapFrame;
+			return previousFrame.applyStackmapSameLocalsOneStackItem(createVerificationTypeFromStackMap(slo.getStackitemInfo()));
+		} else if (stackMapFrame instanceof ChopStackmapFrame) {
+			ChopStackmapFrame slo = (ChopStackmapFrame)stackMapFrame;
+			return previousFrame.applyStackmapChop(slo.getK());
+		} else if (stackMapFrame instanceof AppendStackmapFrame) {
+			AppendStackmapFrame slo = (AppendStackmapFrame)stackMapFrame;
+			List<VerificationType> locals = new ArrayList<VerificationType>();
+			for (AbstractStackmapVariableinfo info: slo.getLocals()) {
+				locals.add(createVerificationTypeFromStackMap(info));
+			}
+			return previousFrame.applyStackmapAppend(locals);
+		} else if (stackMapFrame instanceof FullStackmapFrame) {
+			FullStackmapFrame slo = (FullStackmapFrame)stackMapFrame;
+			List<VerificationType> locals = new ArrayList<VerificationType>();
+			for (AbstractStackmapVariableinfo info: slo.getLocals()) {
+				locals.add(createVerificationTypeFromStackMap(info));
+			}
+			List<VerificationType> stack = new ArrayList<VerificationType>();
+			for (AbstractStackmapVariableinfo info: slo.getStackItems()) {
+				stack.add(createVerificationTypeFromStackMap(info));
+			}
+			return previousFrame.applyStackmapFull(locals, stack);
+		} else {
+			throw new IllegalArgumentException("unknown stackmap frame type: "+stackMapFrame);
+		}
+	}
+	
+	private VerificationType createVerificationTypeFromStackMap(AbstractStackmapVariableinfo info) {
+		if (info instanceof DoubleStackmapVariableinfo) {
+			return VerificationType.DOUBLE;
+		} else if (info instanceof FloatStackmapVariableinfo) {
+			return VerificationType.FLOAT;
+		} else if (info instanceof IntegerStackmapVariableinfo) {
+			return VerificationType.INT;
+		} else if (info instanceof LongStackmapVariableinfo) {
+			return VerificationType.LONG;
+		} else if (info instanceof NullStackmapVariableinfo) {
+			return VerificationType.NULL;
+		} else if (info instanceof ObjectStackmapVariableinfo) {
+			ObjectStackmapVariableinfo osvi = (ObjectStackmapVariableinfo)info;
+			ClassInfo cli = osvi.getClassInfo();
+			if (cli.isArray()) {
+				return new ObjectValueType(new TypeDescriptor(cli.getClassName()), this);
+			} else {
+				return new ObjectValueType(new TypeDescriptor("L"+cli.getClassName()+";"), this);
+			}
+		} else if (info instanceof TopStackmapVariableinfo) {
+			return VerificationType.TOP;
+		} else if (info instanceof UninitializedStackmapVariableinfo) {
+			UninitializedStackmapVariableinfo usv = (UninitializedStackmapVariableinfo)info;
+			ConstantPoolInstruction instr = usv.getInstruction(); 
+			ClassInfo cli = (ClassInfo)instr.getCpEntry();
+			if (cli.isArray()) {
+				throw new IllegalStateException("new isn't allowed for class types");
+			}
+			return new UninitializedValueType(new TypeDescriptor("L"+cli.getClassName()+";"), instr.getIndex());
+		} else if (info instanceof UninitializedThisStackmapVariableinfo) {
+			return VerificationType.UNINITIALIZED_THIS;
+		} else {
+			throw new IllegalArgumentException("Unknown stackmap variable info: "+info);
 		}
 	}
 	
@@ -232,8 +428,8 @@ public class Verifier implements IClassQuery {
 
 	@Override
 	public boolean isInterface(String className) {
-		// TODO Auto-generated method stub
-		return false;
+		ExternalClassInfo classInfo = getClass(className);
+		return classInfo.getModifier().isInterface();
 	}
 	
 	//Class Query
@@ -283,6 +479,18 @@ public class Verifier implements IClassQuery {
 			throw new UnknownClassException(-1, name);
 		}
 		return result;
+	}
+	
+	private void emitCodeVerifyError(VerifyException e) {
+		int index = 0;
+		if (e.getInstructionIndex()>=0) {
+			index = e.getInstructionIndex();
+		} else if (currentInstructionIndex>=0) {
+			index = currentInstructionIndex;
+		} 
+		AbstractInstruction instr = getInstructionAt(index);
+		instr.emitError(null, "code verification error - "+e.getMessage());
+		
 	}
 	
 

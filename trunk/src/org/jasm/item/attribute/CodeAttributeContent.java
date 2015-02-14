@@ -86,7 +86,7 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 		List<IPrintable> result = new ArrayList<>();
 		result.add(attributes);
 		result.add(new SimplePrintable(null, "maxstack", maxStack+"", null));
-		if (instructions.getCalculatedMaxLocals() != maxLocals) {
+		if (calculateMaxLocals() != maxLocals) {
 			result.add(new SimplePrintable(null, "maxlocals", maxLocals+"", null));
 		}
 		result.add(exceptionTable);
@@ -138,6 +138,14 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 		}
 		
 	}
+	
+	private int calculateMaxLocals() {
+		int calculatedMaxLocals = instructions.calculateMaxLocals();
+		Method m = getAncestor(Method.class);
+		int maxLocalsFromDescriptor = m.getMethodDescriptor().calculateParamsLength();
+		calculatedMaxLocals = Math.max(calculatedMaxLocals, maxLocalsFromDescriptor);
+		return calculatedMaxLocals;
+	}
 
 	@Override
 	protected void doResolveAfterParse() {
@@ -157,10 +165,7 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 				//TODO - maxStack berechnen
 			}
 			
-			int calculatedMaxLocals = instructions.getVariablesPool().calculateSize();
-			Method m = getAncestor(Method.class);
-			int maxLocalsFromDescriptor = m.getMethodDescriptor().calculateParamsLength();
-			calculatedMaxLocals = Math.max(calculatedMaxLocals, maxLocalsFromDescriptor);
+			int calculatedMaxLocals = calculateMaxLocals();
 			if (maxLocalsLiteral != null) {
 				Integer value = maxLocalsLiteral.checkAndLoadValue(this);
 				if (value != null && value>=0 && value < 65536) {

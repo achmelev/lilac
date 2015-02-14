@@ -146,6 +146,7 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 			if ((localVariableIndex>=0 && localVariableIndex<=3) && !isWide() && !forceNormal && getOpCode() != OpCodes.ret) {
 				short code = OpCodes.getOpcodeForName(OpCodes.getNameForOpcode(getOpCode())+"_"+localVariableIndex);
 				shortReplacement = new ShortLocalVariableInstruction(code);
+				shortReplacement.setSourceLocation(this.getSourceLocation());
 				return  shortReplacement;
 			} else {
 				return null;
