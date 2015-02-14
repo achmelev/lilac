@@ -119,8 +119,20 @@ public class Method extends AbstractClassMember<MethodModifier> {
 
 	@Override
 	protected void doVerify(VerifierParams params) {
+		
 		if (methodDescriptor != null) {
 			getRoot().checkAndLoadMethodDescriptor(this, descriptorReference, methodDescriptor);
+			String name = getName().getValue();
+			if (name.equals("<init>") && !methodDescriptor.isVoid()) {
+				emitError(descriptorReference, "constructor with illegal signature");
+			}
+			if (name.equals("<clinit>") && !(methodDescriptor.isVoid() && methodDescriptor.getParameters().size()==0)) {
+				emitError(descriptorReference, "class or interface initialization method with illegal signature");
+			}
+			if (name.equals("<clinit>") && (getRoot().getDecimalVersion().doubleValue()>=51.0) && !getModifier().isStatic()) {
+				emitError(descriptorReference, "class or interface initialization method must be static");
+			}
+			
 		}
 	}
 

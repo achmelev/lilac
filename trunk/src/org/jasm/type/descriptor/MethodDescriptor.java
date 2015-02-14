@@ -69,7 +69,7 @@ public class MethodDescriptor {
 	}
 	
 	public boolean isVoid() {
-		return (returnType != null);
+		return (returnType == null);
 	}
 	
 

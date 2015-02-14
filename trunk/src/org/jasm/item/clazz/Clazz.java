@@ -269,7 +269,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 				for (int i=0;i<interfaces.size(); i++) {
 					verifyInterface(interfaceSymbols.get(i), interfaces.get(i));
 				}
-				me = checkAndLoadClassInfo(this, thisClassSymbol, this.getThisClass().getClassName(), true);
+				me = ExternalClassInfo.createFromClass(this);
 				resolvedMyself = getParser().getErrorMessages().size() == 0;
 			}
 			return resolvedMyself;
@@ -688,6 +688,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	public org.jasm.resolver.ExternalClassInfo getMe() {
 		return me;
 	}
+
+	public void setMe(org.jasm.resolver.ExternalClassInfo me) {
+		this.me = me;
+	}
+	
 	
 	
 

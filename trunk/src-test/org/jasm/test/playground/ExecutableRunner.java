@@ -1,6 +1,7 @@
 package org.jasm.test.playground;
 
 import org.jasm.loader.AssemblerClassLoader;
+import org.jasm.type.verifier.VerifierParams;
 
 public class ExecutableRunner {
 
@@ -8,7 +9,11 @@ public class ExecutableRunner {
 		
 		try {
 			String name = args[0];
-			ClassLoader loader = new AssemblerClassLoader(Thread.currentThread().getContextClassLoader());
+			VerifierParams params = null;
+			if (args.length > 1) {
+				params = new VerifierParams();
+			}
+			ClassLoader loader = new AssemblerClassLoader(Thread.currentThread().getContextClassLoader(), params);
 			IExecutable executable = (IExecutable) loader.loadClass(name).newInstance();
 			executable.execute();
 		} catch (Throwable e) {
