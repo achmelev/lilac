@@ -21,6 +21,9 @@ import org.jasm.item.constantpool.MethodTypeInfo;
 import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.resolver.AbstractInfo;
+import org.jasm.resolver.ExternalClassInfo;
+import org.jasm.resolver.MethodInfo;
 import org.jasm.type.verifier.VerifierParams;
 
 public class ConstantPoolInstruction extends AbstractInstruction implements IConstantPoolReference {
@@ -28,6 +31,7 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 	private int cpEntryIndex = -1;
 	private SymbolReference cpEntryReference = null;
 	protected AbstractConstantPoolEntry cpEntry = null; 
+	private AbstractInfo info;
 	
 	private static Map<Short, Class[]> allowedTypes = null;
 	
@@ -119,17 +123,32 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 	@Override
 	protected void doVerify(VerifierParams params) {
 		if (cpEntry instanceof ClassInfo) {
-			getRoot().checkAndLoadClassInfo(this, cpEntryReference, ((ClassInfo)cpEntry).getClassName(), true);
+			info = getRoot().checkAndLoadClassInfo(this, cpEntryReference, ((ClassInfo)cpEntry).getClassName(), true);
 		} else if (cpEntry instanceof FieldrefInfo) {
-			getRoot().checkAndLoadFieldInfo(this, cpEntryReference, ((FieldrefInfo)cpEntry).getClassName(), ((FieldrefInfo)cpEntry).getName(), ((FieldrefInfo)cpEntry).getDescriptor(), true);
+			info = getRoot().checkAndLoadFieldInfo(this, cpEntryReference, ((FieldrefInfo)cpEntry).getClassName(), ((FieldrefInfo)cpEntry).getName(), ((FieldrefInfo)cpEntry).getDescriptor(), true);
 		} else if (cpEntry instanceof MethodrefInfo) {
-			getRoot().checkAndLoadMethodInfo(this, cpEntryReference, ((MethodrefInfo)cpEntry).getClassName(), ((MethodrefInfo)cpEntry).getName(), ((MethodrefInfo)cpEntry).getDescriptor(), true);
+			info = getRoot().checkAndLoadMethodInfo(this, cpEntryReference, ((MethodrefInfo)cpEntry).getClassName(), ((MethodrefInfo)cpEntry).getName(), ((MethodrefInfo)cpEntry).getDescriptor(), true);
 		} else if (cpEntry instanceof InterfaceMethodrefInfo) {
-			getRoot().checkAndLoadInterfaceMethodInfo(this, cpEntryReference, ((InterfaceMethodrefInfo)cpEntry).getClassName(), ((InterfaceMethodrefInfo)cpEntry).getName(), ((InterfaceMethodrefInfo)cpEntry).getDescriptor(), true);
+			info = getRoot().checkAndLoadInterfaceMethodInfo(this, cpEntryReference, ((InterfaceMethodrefInfo)cpEntry).getClassName(), ((InterfaceMethodrefInfo)cpEntry).getName(), ((InterfaceMethodrefInfo)cpEntry).getDescriptor(), true);
 		}
 		
 		//TODO - Checking for appropriate arguments
 	}
+	
+	private void verifyInstructions() {
+		if (this.getOpCode() == OpCodes.new_) {
+			ExternalClassInfo cli = (ExternalClassInfo)info;
+			if (cli.isArray()) {
+				emitError(cpEntryReference, "arrays aren't allowed with this instruction");
+			} 
+		} else if (this.getOpCode() == OpCodes.invokeinterface) {
+			MethodInfo mi = (MethodInfo)info;
+			if (mi.getParent().getModifier().isInterface()) {
+				emitError(cpEntryReference, "only interface methods allowed with this instruction");
+			}
+		}
+	}
+	
 
 	public AbstractConstantPoolEntry getCpEntry() {
 		return cpEntry;

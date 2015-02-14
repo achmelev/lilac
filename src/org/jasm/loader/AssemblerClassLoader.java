@@ -18,14 +18,17 @@ public class AssemblerClassLoader extends ClassLoader {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
+	private VerifierParams params;
 	
 	
-	public AssemblerClassLoader() {
-		super();
+	
+	public AssemblerClassLoader(VerifierParams params) {
+		this.params = params;
 	}
 
-	public AssemblerClassLoader(ClassLoader parent) {
+	public AssemblerClassLoader(ClassLoader parent, VerifierParams params) {
 		super(parent);
+		this.params = params;
 	}
 
 	@Override
@@ -75,12 +78,15 @@ public class AssemblerClassLoader extends ClassLoader {
 			parser.printErrors();
 			throw new AssemblerClassLoaderException("invalid assembler file", rName, parser.getErrorMessages());
 		}
-		VerifierParams params = new VerifierParams();
 		ClassInfoResolver clp = new ClassInfoResolver();
 		clp.add(new ClazzClassPathEntry(clazz));
 		clp.add(new ClassLoaderClasspathEntry(this));
+		
 		clazz.setResolver(clp);
-		//clazz.verify(params);
+		
+		if (params != null) {
+			clazz.verify(params);
+		}
 		if (parser.getErrorMessages().size() > 0) {
 			parser.printErrors();
 			throw new AssemblerClassLoaderException("invalid assembler file", rName, parser.getErrorMessages());

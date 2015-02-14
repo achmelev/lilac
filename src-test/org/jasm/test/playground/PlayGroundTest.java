@@ -97,7 +97,7 @@ public class PlayGroundTest {
 
 	
 	private ClassLoader createClassLoader() {
-		return new AssemblerClassLoader(Thread.currentThread().getContextClassLoader());
+		return new AssemblerClassLoader(Thread.currentThread().getContextClassLoader(), null);
 	}
 
 }
