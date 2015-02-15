@@ -12,6 +12,7 @@ public class OpCodes {
 	
 	private static Map<String, Short> nameToOpcode = new HashMap<>();
 	private static Map<Short, String> opcodeToName = new HashMap<>();
+	private static List<String> variableNames = new ArrayList<String>();
 	private static List<Short> argumentLessInstructions = new ArrayList<>();
 	private static List<Short> localVariableInstructions = new ArrayList<>();
 	private static List<Short> shortLocalVariableInstructions = new ArrayList<>();
@@ -241,6 +242,7 @@ public class OpCodes {
 			for (Field f: fields) {
 				if (Modifier.isStatic(f.getModifiers()) && f.getType().equals(Short.TYPE)) {
 					String name = f.getName();
+					variableNames.add(name);
 					if (name.endsWith("_")) {
 						name = name.substring(0, name.length()-1);
 					}
@@ -603,6 +605,12 @@ public class OpCodes {
 		initialize();
 		return wideInstructionsFormat1.contains(opCode);
 	}
+	
+	public static List<String> getVariableNames() {
+		initialize();
+		return variableNames;
+	}
+	
 
 	public static void main(String[] args) {
 		initialize();

@@ -492,6 +492,10 @@ public class Verifier implements IClassQuery {
 		instr.emitError(null, "code verification error - "+e.getMessage());
 		
 	}
-	
 
+	public Method getMethod() {
+		return method;
+	}
+	
+	
 }

@@ -5,14 +5,14 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 
-public class ShortLocalVariableInstruction extends AbstractInstruction implements ILocalVariableReference {
+public class ShortLocalVariableInstruction extends AbstractInstruction implements ILocalVariableReference, IRegisterIndexInstruction {
 	
 	private short localVariableIndex = -1;
 	
 	
 	public ShortLocalVariableInstruction(short opCode) {
 		super(opCode);
-		this.localVariableIndex = getInstructionIndex();
+		this.localVariableIndex = getVariableIndex();
 		
 	}
 
@@ -54,7 +54,7 @@ public class ShortLocalVariableInstruction extends AbstractInstruction implement
 
 	@Override
 	protected void doResolve() {
-		this.localVariableIndex = getInstructionIndex();
+		this.localVariableIndex = getVariableIndex();
 	}
 	
 	@Override
@@ -78,10 +78,15 @@ public class ShortLocalVariableInstruction extends AbstractInstruction implement
 		return name.substring(0,name.indexOf("_"));
 	}
 	
-	private short getInstructionIndex() {
+	private short getVariableIndex() {
 		String name = OpCodes.getNameForOpcode(getOpCode());
 		
 		return new Integer(name.substring(name.indexOf("_")+1,name.length())).shortValue();
+	}
+
+	@Override
+	public int getRegisterIndex() {
+		return localVariableIndex;
 	}
 	
 }
