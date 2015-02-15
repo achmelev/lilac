@@ -67,7 +67,9 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 			} else {
 				descriptor = desc;
 			}
-		} 
+		} else {
+			descriptor = new TypeDescriptor("L"+className+";");
+		}
 		return true;
 	}
 

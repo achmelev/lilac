@@ -6,7 +6,7 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.parser.literals.SymbolReference;
 
-public class LocalVariableInstruction extends AbstractInstruction implements ILocalVariableReference {
+public class LocalVariableInstruction extends AbstractInstruction implements ILocalVariableReference, IRegisterIndexInstruction {
 	
 	private int localVariableIndex = -1;
 	private LocalVariable localVariable = null;
@@ -153,6 +153,12 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 			}
 		}
 		
+	}
+
+
+	@Override
+	public int getRegisterIndex() {
+		return localVariableIndex;
 	}
 	
 

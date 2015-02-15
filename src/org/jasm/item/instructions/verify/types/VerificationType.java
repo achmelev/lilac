@@ -12,7 +12,9 @@ public abstract class VerificationType {
 	public static final VerificationType LONG = new LongType();
 	public static final VerificationType NULL = new NullType();
 	public static final VerificationType UNINITIALIZED_THIS = new UninitializedThisType();
-	public static final ObjectValueType OBJECT = new ObjectValueType(new TypeDescriptor("Ljava/lang/Object;"), null);
+	public static final ObjectValueType  OBJECT = new ObjectValueType(new TypeDescriptor("Ljava/lang/Object;"), null);
+	public static final ObjectValueType  THROWABLE = new ObjectValueType(new TypeDescriptor("Ljava/lang/Throwable;"), null);
+	public static final ReferenceType REFERENCE = new ReferenceType();
 	
 	
 	public boolean isAssignableFrom(VerificationType from) {
