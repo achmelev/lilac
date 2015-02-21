@@ -14,7 +14,13 @@ public abstract class VerificationType {
 	public static final VerificationType UNINITIALIZED_THIS = new UninitializedThisType();
 	public static final ObjectValueType  OBJECT = new ObjectValueType(new TypeDescriptor("Ljava/lang/Object;"), null);
 	public static final ObjectValueType  THROWABLE = new ObjectValueType(new TypeDescriptor("Ljava/lang/Throwable;"), null);
+	public static final ObjectValueType  STRING = new ObjectValueType(new TypeDescriptor("Ljava/lang/String;"), null);
+	public static final ObjectValueType  METHOD_TYPE = new ObjectValueType(new TypeDescriptor("Ljava/lang/invoke/MethodType;"), null);
+	public static final ObjectValueType  METHOD_HANDLE = new ObjectValueType(new TypeDescriptor("Ljava/lang/invoke/MethodHandle;"), null);
+	public static final ObjectValueType  CLASS = new ObjectValueType(new TypeDescriptor("Ljava/lang/Class;"), null);
 	public static final ReferenceType REFERENCE = new ReferenceType();
+	public static final OneWordType ONE_WORD = new OneWordType();
+	public static final TwoWordType TWO_WORD = new TwoWordType();
 	
 	
 	public boolean isAssignableFrom(VerificationType from) {
@@ -87,4 +93,30 @@ public abstract class VerificationType {
 	protected abstract VerificationType mergeWithUninitializedValue(UninitializedValueType from);
 	
 	public abstract int getSize();
+	
+	public static VerificationType createTypeFromDescriptor(TypeDescriptor desc, IClassQuery query) {
+		if (desc.isArray()) {
+			return new ObjectValueType(desc, query);
+		} else if (desc.isBoolean()) {
+			return VerificationType.INT;
+		} else if (desc.isCharacter()) {
+			return VerificationType.INT;
+		} else if (desc.isByte()) {
+			return VerificationType.INT;
+		} else if (desc.isDouble()) {
+			return VerificationType.DOUBLE;
+		} else if (desc.isFloat()) {
+			return VerificationType.FLOAT;
+		} else if (desc.isInteger()) {
+			return VerificationType.INT;
+		} else if (desc.isLong()) {
+			return VerificationType.LONG;
+		} else if (desc.isObject()) {
+			return new ObjectValueType(desc, query);
+		} else if (desc.isShort()) {
+			return VerificationType.INT;
+		} else {
+			throw new IllegalStateException("Unknowhn descriptor type: "+desc);
+		}
+	}
 }

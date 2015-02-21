@@ -496,6 +496,12 @@ public class Verifier implements IClassQuery {
 	public Method getMethod() {
 		return method;
 	}
+
+	public Clazz getClazz() {
+		return clazz;
+	}
+	
+	
 	
 	
 }

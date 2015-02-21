@@ -153,6 +153,11 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 	public AbstractConstantPoolEntry getCpEntry() {
 		return cpEntry;
 	}
+
+	public AbstractInfo getInfo() {
+		return info;
+	}
+	
 	
 	
 	

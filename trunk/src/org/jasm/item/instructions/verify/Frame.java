@@ -80,6 +80,19 @@ public class Frame {
 		}
 	}
 	
+	public VerificationType peek(VerificationType expected) {
+		if (stack.size() == 0) {
+			throw new StackOverflowException(-1);
+		}
+		VerificationType value = stack.peek();
+		
+		if (expected.isAssignableFrom(value)) {
+			return value;
+		} else {
+			throw new UnexpectedStackTypeException(-1, stack.size()-1,expected, value);
+		}
+	}
+	
 	public VerificationType load(VerificationType expected, int register) {
 		if (register<=0 || register>=locals.size()) {
 			throw new IllegalArgumentException("illegal register index: "+register);
@@ -97,18 +110,40 @@ public class Frame {
 		return value;
 	}
 	
+	public void checkRegister(int register, VerificationType expected) {
+		VerificationType value = locals.get(register);
+		if (!expected.isAssignableFrom(value)) {
+			throw new UnexpectedRegisterTypeException(-1, register, expected, value);
+		}
+	}
+	
+	public boolean isOnStack(VerificationType t) {
+		for (int i=0;i<stack.size(); i++) {
+			if (stack.get(i).equals(t)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public void store(VerificationType expected, int register) {
+		VerificationType value = pop(expected);
+		setRegisterValue(value, register);
+		
+	}
+	
+	public void setRegisterValue(VerificationType value, int register) {
 		if (register<=0 || register>=locals.size()) {
 			throw new IllegalArgumentException("illegal register index: "+register);
 		}
-		if (expected.getSize() == 2
+		if (value.getSize() == 2
 				&& register>=locals.size()-1)  {
 			throw new IllegalArgumentException("illegal register index for two word types: "+register);
 		}
-		VerificationType value = pop(expected);
 		locals.set(register, value);
 		int activeLocalsCandidate = register+1;
-		if (expected.getSize() == 2)  {
+		if (value.getSize() == 2)  {
 			locals.set(register+1, VerificationType.TOP);
 			activeLocalsCandidate++;
 		} else {
@@ -119,6 +154,14 @@ public class Frame {
 		}
 		
 		activeLocals = Math.max(activeLocalsCandidate, activeLocals);
+	}
+	
+	public void replaceAllRegisterOccurences(VerificationType oldValue, VerificationType newValue) {
+		for (int i=0;i<locals.size(); i++) {
+			if (locals.get(i).equals(oldValue)) {
+				setRegisterValue(newValue, i);
+			}
+		}
 	}
 	
 	public boolean isAssignableFrom(Frame other) {
@@ -204,15 +247,14 @@ public class Frame {
 	}
 
 	public void replaceAllOccurences(VerificationType oldValue,VerificationType newValue) {
+		replaceAllRegisterOccurences(oldValue, newValue);
+		replaceAllStackOccurences(oldValue, newValue);
+	}
+	
+	public void replaceAllStackOccurences(VerificationType oldValue,VerificationType newValue) {
 		for (int i=0;i<this.stack.size(); i++) {
 			if (this.stack.get(i).equals(oldValue)) {
 				this.stack.set(i,newValue);
-			}
-		}
-		
-		for (int i=0;i<this.locals.size(); i++) {
-			if (this.locals.get(i).equals(oldValue)) {
-				this.locals.set(i,newValue);
 			}
 		}
 	}
@@ -249,7 +291,7 @@ public class Frame {
 			}
 		}
 		for (TypeDescriptor typeDesc: desc.getParameters()) {
-			VerificationType type = createTypeFromDescriptor(typeDesc, classQuery);
+			VerificationType type = VerificationType.createTypeFromDescriptor(typeDesc, classQuery);
 			locals.add(type);
 			if (type.getSize()==2) {
 				locals.add(VerificationType.TOP);
@@ -378,31 +420,7 @@ public class Frame {
 		
 	}
 	
-	private static VerificationType createTypeFromDescriptor(TypeDescriptor desc, IClassQuery query) {
-		if (desc.isArray()) {
-			return new ObjectValueType(desc, query);
-		} else if (desc.isBoolean()) {
-			return VerificationType.INT;
-		} else if (desc.isCharacter()) {
-			return VerificationType.INT;
-		} else if (desc.isByte()) {
-			return VerificationType.INT;
-		} else if (desc.isDouble()) {
-			return VerificationType.DOUBLE;
-		} else if (desc.isFloat()) {
-			return VerificationType.FLOAT;
-		} else if (desc.isInteger()) {
-			return VerificationType.INT;
-		} else if (desc.isLong()) {
-			return VerificationType.LONG;
-		} else if (desc.isObject()) {
-			return new ObjectValueType(desc, query);
-		} else if (desc.isShort()) {
-			return VerificationType.INT;
-		} else {
-			throw new IllegalStateException("Unknowhn descriptor type: "+desc);
-		}
-	}
+	
 	
 	/**
 	 * Only for Tests

@@ -8,7 +8,7 @@ import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.parser.literals.IntegerLiteral;
 import org.jasm.parser.literals.SymbolReference;
 
-public class IincInstruction extends AbstractInstruction implements ILocalVariableReference {
+public class IincInstruction extends AbstractInstruction implements ILocalVariableReference, IRegisterIndexInstruction {
 	
 	private SymbolReference localVariableReference = null;
 	private int localVariableIndex = -1;
@@ -132,6 +132,12 @@ public class IincInstruction extends AbstractInstruction implements ILocalVariab
 
 	public short getValue() {
 		return value;
+	}
+
+
+	@Override
+	public int getRegisterIndex() {
+		return localVariableIndex;
 	}
 	
 	

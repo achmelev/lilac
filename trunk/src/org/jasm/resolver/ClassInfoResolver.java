@@ -110,6 +110,7 @@ public class ClassInfoResolver  {
 			caller.emitError(symbol, "unknown class "+className);
 			return null;
 		} else {
+			result.descriptor = new TypeDescriptor("L"+className+";");
 			if (result.superName != null) {
 				ExternalClassInfo superInfo = resolve(clazz, caller, symbol, result.superName, false);
 				if (superInfo != null) {
