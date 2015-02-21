@@ -1,16 +1,29 @@
 package org.jasm.item.instructions.verify;
 
+import java.lang.invoke.MethodHandleInfo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
+import org.jasm.item.constantpool.DoubleInfo;
+import org.jasm.item.constantpool.FieldrefInfo;
+import org.jasm.item.constantpool.FloatInfo;
+import org.jasm.item.constantpool.IntegerInfo;
+import org.jasm.item.constantpool.LongInfo;
+import org.jasm.item.constantpool.MethodTypeInfo;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.IRegisterIndexInstruction;
+import org.jasm.item.instructions.IincInstruction;
+import org.jasm.item.instructions.MultianewarrayInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.verify.types.ObjectValueType;
+import org.jasm.item.instructions.verify.types.UninitializedValueType;
 import org.jasm.item.instructions.verify.types.VerificationType;
+import org.jasm.resolver.ExternalClassInfo;
+import org.jasm.resolver.FieldInfo;
 import org.jasm.type.descriptor.TypeDescriptor;
 
 
@@ -890,28 +903,19 @@ public class Interpreter {
 	}
 
 	public Frame executeD2f(AbstractInstruction instr, Frame inputFrame) {
-	  inputFrame.pop(VerificationType.DOUBLE);
-	  inputFrame.push(VerificationType.FLOAT);
-	  return inputFrame;
+	  return executeConversion(VerificationType.DOUBLE, VerificationType.FLOAT, inputFrame);
 	}
 
 	public Frame executeD2i(AbstractInstruction instr, Frame inputFrame) {
-	  inputFrame.pop(VerificationType.DOUBLE);
-	  inputFrame.push(VerificationType.INT);
-	  return inputFrame;
+		return executeConversion(VerificationType.DOUBLE, VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeD2l(AbstractInstruction instr, Frame inputFrame) {
-	  inputFrame.pop(VerificationType.DOUBLE);
-	  inputFrame.push(VerificationType.LONG);
-	  return inputFrame;
+	  return executeConversion(VerificationType.DOUBLE, VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeDadd(AbstractInstruction instr, Frame inputFrame) {
-	  inputFrame.pop(VerificationType.DOUBLE);
-	  inputFrame.pop(VerificationType.DOUBLE);
-	  inputFrame.push(VerificationType.DOUBLE);
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.DOUBLE, inputFrame);
 	}
 
 	public Frame executeDaload(AbstractInstruction instr, Frame inputFrame) {
@@ -971,17 +975,11 @@ public class Interpreter {
 	}
 
 	public Frame executeDcmpg(AbstractInstruction instr, Frame inputFrame) {
-	  inputFrame.pop(VerificationType.DOUBLE);
-	  inputFrame.pop(VerificationType.DOUBLE);
-	  inputFrame.push(VerificationType.INT);
-	  return inputFrame;
+	  return executeCompare(VerificationType.DOUBLE, inputFrame);
 	}
 
 	public Frame executeDcmpl(AbstractInstruction instr, Frame inputFrame) {
-	  inputFrame.pop(VerificationType.DOUBLE);
-      inputFrame.pop(VerificationType.DOUBLE);
-	  inputFrame.push(VerificationType.INT);
-	  return inputFrame;
+	  return executeCompare(VerificationType.DOUBLE, inputFrame);
 	}
 
 	public Frame executeDconst_0(AbstractInstruction instr, Frame inputFrame) {
@@ -995,10 +993,7 @@ public class Interpreter {
 	}
 
 	public Frame executeDdiv(AbstractInstruction instr, Frame inputFrame) {
-	  inputFrame.pop(VerificationType.DOUBLE);
-	  inputFrame.pop(VerificationType.DOUBLE);
-	  inputFrame.push(VerificationType.DOUBLE);
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.DOUBLE, inputFrame);
 	}
 
 	public Frame executeDload(AbstractInstruction instr, Frame inputFrame) {
@@ -1022,457 +1017,596 @@ public class Interpreter {
 	}
 
 	public Frame executeDmul(AbstractInstruction instr, Frame inputFrame) {
-	  inputFrame.pop(VerificationType.DOUBLE);
-	  inputFrame.pop(VerificationType.DOUBLE);
-	  inputFrame.push(VerificationType.DOUBLE);
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.DOUBLE, inputFrame);
 	}
 
 	public Frame executeDneg(AbstractInstruction instr, Frame inputFrame) {
-	  inputFrame.pop(VerificationType.DOUBLE);
-	  inputFrame.push(VerificationType.DOUBLE);
-	  return inputFrame;
+	  return executeOneTier(VerificationType.DOUBLE, inputFrame);
 	}
 
 	public Frame executeDrem(AbstractInstruction instr, Frame inputFrame) {
-		inputFrame.pop(VerificationType.DOUBLE);
-		inputFrame.pop(VerificationType.DOUBLE);
-		inputFrame.push(VerificationType.DOUBLE);
-		return inputFrame;
+		return executeTwoTier(VerificationType.DOUBLE, inputFrame);
 	}
 
 	public Frame executeDreturn(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		inputFrame.pop(VerificationType.DOUBLE);
+	  	return inputFrame;
 	}
 
 	public Frame executeDstore(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.DOUBLE);
 	}
 
 	public Frame executeDstore_0(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.DOUBLE);
 	}
 
 	public Frame executeDstore_1(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.DOUBLE);
 	}
 
 	public Frame executeDstore_2(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.DOUBLE);
 	}
 
 	public Frame executeDstore_3(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.DOUBLE);
 	}
 
 	public Frame executeDsub(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.DOUBLE, inputFrame);
 	}
 
 	public Frame executeDup(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  VerificationType t = inputFrame.pop(VerificationType.ONE_WORD);
+	  inputFrame.push(t);
+	  inputFrame.push(t);
 	  return inputFrame;
 	}
 
 	public Frame executeDup2(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  VerificationType v1 = inputFrame.pop(VerificationType.TOP);
+	  if (VerificationType.TWO_WORD.isAssignableFrom(v1)) {
+		  inputFrame.push(v1);
+		  inputFrame.push(v1);
+	  } else {
+		  VerificationType v2 = inputFrame.pop(VerificationType.ONE_WORD);
+		  inputFrame.push(v2);
+		  inputFrame.push(v1);
+		  inputFrame.push(v2);
+		  inputFrame.push(v1);
+	  }
 	  return inputFrame;
 	}
 
 	public Frame executeDup2_x1(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+		VerificationType v1 = inputFrame.pop(VerificationType.TOP);
+	    if (VerificationType.TWO_WORD.isAssignableFrom(v1)) {
+	      VerificationType v2 = inputFrame.pop(VerificationType.ONE_WORD);
+		  inputFrame.push(v1);
+		  inputFrame.push(v2);
+		  inputFrame.push(v1);
+	    } else {
+		  VerificationType v2 = inputFrame.pop(VerificationType.ONE_WORD);
+		  VerificationType v3 = inputFrame.pop(VerificationType.ONE_WORD);
+		  inputFrame.push(v2);
+		  inputFrame.push(v1);
+		  inputFrame.push(v3);
+		  inputFrame.push(v2);
+		  inputFrame.push(v1);
+	    }
 	  return inputFrame;
 	}
 
 	public Frame executeDup2_x2(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  VerificationType v1 = inputFrame.pop(VerificationType.TOP);
+	  if (VerificationType.TWO_WORD.isAssignableFrom(v1)) {
+		  VerificationType v2 = inputFrame.pop(VerificationType.TOP);
+		  if (VerificationType.TWO_WORD.isAssignableFrom(v2)) {
+			  inputFrame.push(v1);
+			  inputFrame.push(v2);
+			  inputFrame.push(v1);
+		  } else {
+			  VerificationType v3 = inputFrame.pop(VerificationType.ONE_WORD);
+			  inputFrame.push(v1);
+			  inputFrame.push(v3);
+			  inputFrame.push(v2);
+			  inputFrame.push(v1);
+		  }
+	  } else {
+		  VerificationType v2 = inputFrame.pop(VerificationType.ONE_WORD);
+		  VerificationType v3 = inputFrame.pop(VerificationType.TOP);
+		  if (VerificationType.TWO_WORD.isAssignableFrom(v3)) {
+			  inputFrame.push(v2);
+			  inputFrame.push(v1);
+			  inputFrame.push(v3);
+			  inputFrame.push(v2);
+			  inputFrame.push(v1);
+		  } else {
+			  VerificationType v4 = inputFrame.pop(VerificationType.ONE_WORD);
+			  inputFrame.push(v2);
+			  inputFrame.push(v1);
+			  inputFrame.push(v4);
+			  inputFrame.push(v3);
+			  inputFrame.push(v2);
+			  inputFrame.push(v1);
+		  }
+	  }
 	  return inputFrame;
 	}
 
 	public Frame executeDup_x1(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  VerificationType v1 = inputFrame.pop(VerificationType.ONE_WORD);
+	  VerificationType v2 = inputFrame.pop(VerificationType.ONE_WORD);
+	  inputFrame.push(v1);
+	  inputFrame.push(v2);
+	  inputFrame.push(v1);
 	  return inputFrame;
 	}
 
 	public Frame executeDup_x2(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  VerificationType v1 = inputFrame.pop(VerificationType.ONE_WORD);
+	  VerificationType v2 = inputFrame.pop(VerificationType.TOP);
+	  if (VerificationType.TWO_WORD.isAssignableFrom(v2)) {
+		  inputFrame.push(v1);
+		  inputFrame.push(v2);
+		  inputFrame.push(v1);
+	  } else {
+		  VerificationType v3 = inputFrame.pop(VerificationType.ONE_WORD);
+		  inputFrame.push(v1);
+		  inputFrame.push(v3);
+		  inputFrame.push(v2);
+		  inputFrame.push(v1);
+	  }
 	  return inputFrame;
 	}
 
 	public Frame executeF2d(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeConversion(VerificationType.FLOAT, VerificationType.DOUBLE, inputFrame);
 	}
 
 	public Frame executeF2i(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeConversion(VerificationType.FLOAT, VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeF2l(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeConversion(VerificationType.FLOAT, VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeFadd(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.FLOAT, inputFrame);
 	}
 
 	public Frame executeFaload(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  ArrayHandler arrayHandler = new ArrayHandler() {
+			
+			@Override
+			public VerificationType getComponentVerificationType() {
+				return VerificationType.FLOAT;
+			}
+			
+			@Override
+			public VerificationType getComponentVerificationType(
+					TypeDescriptor componentDescriptor) {
+				return VerificationType.FLOAT;
+			}
+			
+			@Override
+			public String getComponentTypeLabel() {
+				return "float";
+			}
+			
+			@Override
+			public boolean checkComponentType(TypeDescriptor componentDescriptor) {
+				return componentDescriptor.isFloat();
+			}
+		};
+	  return executeArrayLoad(instr, inputFrame, arrayHandler);
 	}
 
 	public Frame executeFastore(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		ArrayHandler arrayHandler = new ArrayHandler() {
+			
+			@Override
+			public VerificationType getComponentVerificationType() {
+				return VerificationType.FLOAT;
+			}
+			
+			@Override
+			public VerificationType getComponentVerificationType(
+					TypeDescriptor componentDescriptor) {
+				return VerificationType.FLOAT;
+			}
+			
+			@Override
+			public String getComponentTypeLabel() {
+				return "float";
+			}
+			
+			@Override
+			public boolean checkComponentType(TypeDescriptor componentDescriptor) {
+				return componentDescriptor.isFloat();
+			}
+		};
+	  return executeArrayStore(instr, inputFrame, arrayHandler);
 	}
 
 	public Frame executeFcmpg(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeCompare(VerificationType.FLOAT, inputFrame);
 	}
 
 	public Frame executeFcmpl(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeCompare(VerificationType.FLOAT, inputFrame);
 	}
 
 	public Frame executeFconst_0(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.push(VerificationType.FLOAT);
 	  return inputFrame;
 	}
 
 	public Frame executeFconst_1(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.push(VerificationType.FLOAT);
 	  return inputFrame;
 	}
 
 	public Frame executeFconst_2(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.push(VerificationType.FLOAT);
 	  return inputFrame;
 	}
 
 	public Frame executeFdiv(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.FLOAT, inputFrame);
 	}
 
 	public Frame executeFload(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeLoad(instr, inputFrame, VerificationType.FLOAT);
 	}
 
 	public Frame executeFload_0(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeLoad(instr, inputFrame, VerificationType.FLOAT);
 	}
 
 	public Frame executeFload_1(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeLoad(instr, inputFrame, VerificationType.FLOAT);
 	}
 
 	public Frame executeFload_2(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeLoad(instr, inputFrame, VerificationType.FLOAT);
 	}
 
 	public Frame executeFload_3(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeLoad(instr, inputFrame, VerificationType.FLOAT);
 	}
 
 	public Frame executeFmul(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.FLOAT, inputFrame);
 	}
 
 	public Frame executeFneg(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeOneTier(VerificationType.FLOAT, inputFrame);
 	}
 
 	public Frame executeFrem(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.FLOAT, inputFrame);
 	}
 
 	public Frame executeFreturn(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.FLOAT);
 	  return inputFrame;
 	}
 
 	public Frame executeFstore(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	   return executeStore(instr, inputFrame, VerificationType.FLOAT);
 	}
 
 	public Frame executeFstore_0(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.FLOAT);
 	}
 
 	public Frame executeFstore_1(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.FLOAT);
 	}
 
 	public Frame executeFstore_2(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.FLOAT);
 	}
 
 	public Frame executeFstore_3(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.FLOAT);
 	}
 
 	public Frame executeFsub(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	   return executeStore(instr, inputFrame, VerificationType.FLOAT);
 	}
 
 	public Frame executeGetfield(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+	  FieldInfo fi = (FieldInfo)cpi.getInfo();
+	  if (fi.getModifier().isStatic()) {
+		  throw new IllegalStateException("illegal state - getfield on static field!");
+	  }
+	  ExternalClassInfo cl = fi.getParent();
+	  if (cl.getDescriptor().isArray()) {
+		  throw new IllegalStateException("illegal state - expected class or interface but got array!");
+	  }
+	  inputFrame.pop(new ObjectValueType(cl.getDescriptor(), parent));
+	  inputFrame.push(VerificationType.createTypeFromDescriptor(fi.getDescriptor(), parent));
 	  return inputFrame;
 	}
 
 	public Frame executeGetstatic(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	   ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+	   FieldInfo fi = (FieldInfo)cpi.getInfo();
+	   if (!fi.getModifier().isStatic()) {
+		  throw new IllegalStateException("illegal state - getstatic on static field!");
+	   }
+	   ExternalClassInfo cl = fi.getParent();
+	   if (cl.getDescriptor().isArray()) {
+		  throw new IllegalStateException("illegal state - expected class or interface but got array!");
+	   }
+	   inputFrame.push(VerificationType.createTypeFromDescriptor(fi.getDescriptor(), parent));
+	   return inputFrame;
 	}
 
 	public Frame executeGoto_(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
 	  return inputFrame;
 	}
 
 	public Frame executeGoto_w(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
 	  return inputFrame;
 	}
 
 	public Frame executeI2b(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeOneTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeI2c(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeOneTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeI2d(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeConversion(VerificationType.INT, VerificationType.DOUBLE, inputFrame);
 	}
 
 	public Frame executeI2f(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeConversion(VerificationType.INT, VerificationType.FLOAT, inputFrame);
 	}
 
 	public Frame executeI2l(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeConversion(VerificationType.INT, VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeI2s(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeOneTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeIadd(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeIaload(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		ArrayHandler arrayHandler = new ArrayHandler() {
+			
+			@Override
+			public VerificationType getComponentVerificationType() {
+				return VerificationType.INT;
+			}
+			
+			@Override
+			public VerificationType getComponentVerificationType(
+					TypeDescriptor componentDescriptor) {
+				return VerificationType.INT;
+			}
+			
+			@Override
+			public String getComponentTypeLabel() {
+				return "int";
+			}
+			
+			@Override
+			public boolean checkComponentType(TypeDescriptor componentDescriptor) {
+				return componentDescriptor.isInteger();
+			}
+		};
+	  return executeArrayLoad(instr, inputFrame, arrayHandler);
 	}
 
 	public Frame executeIand(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeIastore(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		ArrayHandler arrayHandler = new ArrayHandler() {
+			
+			@Override
+			public VerificationType getComponentVerificationType() {
+				return VerificationType.INT;
+			}
+			
+			@Override
+			public VerificationType getComponentVerificationType(
+					TypeDescriptor componentDescriptor) {
+				return VerificationType.INT;
+			}
+			
+			@Override
+			public String getComponentTypeLabel() {
+				return "int";
+			}
+			
+			@Override
+			public boolean checkComponentType(TypeDescriptor componentDescriptor) {
+				return componentDescriptor.isInteger();
+			}
+		};
+	    return executeArrayStore(instr, inputFrame, arrayHandler);
 	}
 
 	public Frame executeIconst_0(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.push(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIconst_1(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.push(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIconst_2(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.push(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIconst_3(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.push(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIconst_4(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.push(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIconst_5(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.push(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIconst_m1(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.push(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIdiv(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeIf_acmpeq(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.REFERENCE);
+	  inputFrame.pop(VerificationType.REFERENCE);
 	  return inputFrame;
 	}
 
 	public Frame executeIf_acmpne(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.REFERENCE);
+	  inputFrame.pop(VerificationType.REFERENCE);
 	  return inputFrame;
 	}
 
 	public Frame executeIf_icmpeq(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIf_icmpge(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIf_icmpgt(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIf_icmple(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIf_icmplt(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIf_icmpne(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+      inputFrame.pop(VerificationType.INT);
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIfeq(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIfge(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIfgt(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIfle(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIflt(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIfne(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIfnonnull(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.REFERENCE);
 	  return inputFrame;
 	}
 
 	public Frame executeIfnull(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.REFERENCE);
 	  return inputFrame;
 	}
 
 	public Frame executeIinc(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  IincInstruction iinc = (IincInstruction)instr;
+	  int index = iinc.getRegisterIndex();
+	  inputFrame.checkRegister(index, VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIload(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeLoad(instr, inputFrame, VerificationType.INT);
 	}
 
 	public Frame executeIload_0(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeLoad(instr, inputFrame, VerificationType.INT);
 	}
 
 	public Frame executeIload_1(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeLoad(instr, inputFrame, VerificationType.INT);
 	}
 
 	public Frame executeIload_2(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeLoad(instr, inputFrame, VerificationType.INT);
 	}
 
 	public Frame executeIload_3(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeLoad(instr, inputFrame, VerificationType.INT);
 	}
 
 	public Frame executeImul(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeTwoTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeIneg(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeOneTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeInstanceof_(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.OBJECT);
+	  inputFrame.push(VerificationType.INT);
 	  return inputFrame;
 	}
 
@@ -1502,343 +1636,465 @@ public class Interpreter {
 	}
 
 	public Frame executeIor(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeIrem(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeIreturn(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeIshl(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	   return executeTwoTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeIshr(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeIstore(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.INT);
 	}
 
 	public Frame executeIstore_0(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeStore(instr, inputFrame, VerificationType.INT);
 	}
 
 	public Frame executeIstore_1(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeStore(instr, inputFrame, VerificationType.INT);
 	}
 
 	public Frame executeIstore_2(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeStore(instr, inputFrame, VerificationType.INT);
 	}
 
 	public Frame executeIstore_3(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeStore(instr, inputFrame, VerificationType.INT);
 	}
 
 	public Frame executeIsub(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeIushr(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeIxor(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeJsr(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  throw new IllegalStateException("jsr not allowed!");
 	}
 
 	public Frame executeJsr_w(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  throw new IllegalStateException("jsr not allowed!");
 	}
 
 	public Frame executeL2d(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeConversion(VerificationType.LONG, VerificationType.DOUBLE, inputFrame);
 	}
 
 	public Frame executeL2f(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeConversion(VerificationType.LONG, VerificationType.FLOAT, inputFrame);
 	}
 
 	public Frame executeL2i(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeConversion(VerificationType.LONG, VerificationType.INT, inputFrame);
 	}
 
 	public Frame executeLadd(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLaload(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		ArrayHandler arrayHandler = new ArrayHandler() {
+			
+			@Override
+			public VerificationType getComponentVerificationType() {
+				return VerificationType.LONG;
+			}
+			
+			@Override
+			public VerificationType getComponentVerificationType(
+					TypeDescriptor componentDescriptor) {
+				return VerificationType.LONG;
+			}
+			
+			@Override
+			public String getComponentTypeLabel() {
+				return "long";
+			}
+			
+			@Override
+			public boolean checkComponentType(TypeDescriptor componentDescriptor) {
+				return componentDescriptor.isLong();
+			}
+		};
+	  return executeArrayLoad(instr, inputFrame, arrayHandler);
 	}
 
 	public Frame executeLand(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLastore(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		ArrayHandler arrayHandler = new ArrayHandler() {
+			
+			@Override
+			public VerificationType getComponentVerificationType() {
+				return VerificationType.LONG;
+			}
+			
+			@Override
+			public VerificationType getComponentVerificationType(
+					TypeDescriptor componentDescriptor) {
+				return VerificationType.LONG;
+			}
+			
+			@Override
+			public String getComponentTypeLabel() {
+				return "long";
+			}
+			
+			@Override
+			public boolean checkComponentType(TypeDescriptor componentDescriptor) {
+				return componentDescriptor.isLong();
+			}
+		};
+	  return executeArrayStore(instr, inputFrame, arrayHandler);
 	}
 
 	public Frame executeLcmp(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeCompare(VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLconst_0(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.push(VerificationType.LONG);
 	  return inputFrame;
 	}
 
 	public Frame executeLconst_1(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.push(VerificationType.LONG);
 	  return inputFrame;
 	}
 
 	public Frame executeLdc(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+	  AbstractConstantPoolEntry entry = cpi.getCpEntry();
+	  if (entry instanceof IntegerInfo) {
+		  inputFrame.push(VerificationType.INT);
+	  } else if (entry instanceof FloatInfo) {
+		  inputFrame.push(VerificationType.FLOAT);
+	  } else if (entry instanceof ClassInfo) {
+		  inputFrame.push(VerificationType.CLASS);
+	  } else if (entry instanceof MethodTypeInfo) {
+		  inputFrame.push(VerificationType.METHOD_TYPE);
+	  } else if (entry instanceof MethodHandleInfo) {
+		  inputFrame.push(VerificationType.METHOD_HANDLE);
+	  } else {
+		  throw new IllegalStateException("Unexpected cost: "+entry.getClass().getName());
+	  }
 	  return inputFrame;
 	}
 
 	public Frame executeLdc2_w(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+		AbstractConstantPoolEntry entry = cpi.getCpEntry();
+		if (entry instanceof DoubleInfo) {
+		  inputFrame.push(VerificationType.DOUBLE);
+		} else if (entry instanceof LongInfo) {
+		  inputFrame.push(VerificationType.LONG);
+		} else {
+		  throw new IllegalStateException("Unexpected cost: "+entry.getClass().getName());
+		}
+		return inputFrame;
 	}
 
 	public Frame executeLdc_w(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeLdc(instr, inputFrame);
 	}
 
 	public Frame executeLdiv(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeTwoTier(VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLload(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeLoad(instr, inputFrame, VerificationType.LONG);
 	}
 
 	public Frame executeLload_0(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeLoad(instr, inputFrame, VerificationType.LONG);
 	}
 
 	public Frame executeLload_1(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeLoad(instr, inputFrame, VerificationType.LONG);
 	}
 
 	public Frame executeLload_2(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeLoad(instr, inputFrame, VerificationType.LONG);
 	}
 
 	public Frame executeLload_3(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeLoad(instr, inputFrame, VerificationType.LONG);
 	}
 
 	public Frame executeLmul(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeTwoTier(VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLneg(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeOneTier(VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLookupswitch(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeLor(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeTwoTier(VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLrem(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeTwoTier(VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLreturn(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.LONG);
 	  return inputFrame;
 	}
 
 	public Frame executeLshl(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeTwoTier(VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLshr(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeTwoTier(VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLstore(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.LONG);
 	}
 
 	public Frame executeLstore_0(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.LONG);
 	}
 
 	public Frame executeLstore_1(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.LONG);
 	}
 
 	public Frame executeLstore_2(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.LONG);
 	}
 
 	public Frame executeLstore_3(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  return executeStore(instr, inputFrame, VerificationType.LONG);
 	}
 
 	public Frame executeLsub(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeTwoTier(VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLushr(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeTwoTier(VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLxor(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		return executeTwoTier(VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeMonitorenter(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.REFERENCE);
 	  return inputFrame;
 	}
 
 	public Frame executeMonitorexit(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.REFERENCE);
 	  return inputFrame;
 	}
 
 	public Frame executeMultianewarray(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  MultianewarrayInstruction mi = (MultianewarrayInstruction)instr;
+	  ClassInfo cli = (ClassInfo)mi.getCpEntry();
+	  int dim = mi.getDimensions();
+	  if (!cli.getDescriptor().isArray() || cli.getDescriptor().getArrayDimension()<dim) {
+		  throw new IllegalStateException("illegal arguments");
+	  }
+	  ObjectValueType type = new ObjectValueType(cli.getDescriptor(), parent);
+	  inputFrame.push(type);
 	  return inputFrame;
 	}
 
 	public Frame executeNew_(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+	  ExternalClassInfo eci = (ExternalClassInfo)cpi.getInfo();
+	  if (eci.isArray() || eci.getModifier().isInterface()) {
+		  throw new IllegalStateException("expected class as argument");
+	  }
+	  UninitializedValueType uvt = new UninitializedValueType(eci.getDescriptor(), instr.getIndex());
+	  if (inputFrame.isOnStack(uvt)) {
+		  throw new VerifyException(instr.getIndex(), "uninitialized value already on the stack");
+	  } else {
+		  inputFrame.replaceAllRegisterOccurences(uvt, VerificationType.TOP);
+		  inputFrame.push(uvt);
+	  }
 	  return inputFrame;
 	}
 
 	public Frame executeNewarray(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+	  ClassInfo cli = (ClassInfo)cpi.getCpEntry();
+	  if (!cli.isArray() && cli.getDescriptor().getComponentType().isPrimitive()) {
+		  throw new IllegalStateException("unexpected type "+cli.getDescriptor());
+	  }
+	  ObjectValueType arrayType = new ObjectValueType(cli.getDescriptor(), parent);
+	  inputFrame.pop(VerificationType.INT);
+	  inputFrame.push(arrayType);
 	  return inputFrame;
 	}
 
 	public Frame executeNop(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
 	  return inputFrame;
 	}
 
 	public Frame executePop(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.ONE_WORD);
 	  return inputFrame;
 	}
 
 	public Frame executePop2(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.TWO_WORD);
 	  return inputFrame;
 	}
 
 	public Frame executePutfield(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+	  FieldInfo fi = (FieldInfo)cpi.getInfo();
+	  if (fi.getModifier().isStatic()) {
+	     throw new IllegalStateException("illegal state - putfield on static field!");
+	  }
+	  ExternalClassInfo cl = fi.getParent();
+	  if (cl.getDescriptor().isArray()) {
+		 throw new IllegalStateException("illegal state - expected class or interface but got array!");
+	  }
+	  
+	  inputFrame.pop(new ObjectValueType(fi.getDescriptor(), parent));
+	  VerificationType top = inputFrame.peek(VerificationType.REFERENCE);
+	  if (top.equals(VerificationType.UNINITIALIZED_THIS)) {
+		  TypeDescriptor expected = new TypeDescriptor("L"+parent.getClazz().getThisClass().getClassName()+";");
+		  if (!expected.equals(cl.getDescriptor())) {
+			  throw new VerifyException(instr.getIndex(), "illegal field access");
+		  }
+		  inputFrame.pop(VerificationType.UNINITIALIZED_THIS);
+	  } else  {
+		  inputFrame.pop(new ObjectValueType(cl.getDescriptor(), parent));
+	  }
 	  return inputFrame;
 	}
 
 	public Frame executePutstatic(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+	  FieldInfo fi = (FieldInfo)cpi.getInfo();
+	  if (fi.getModifier().isStatic()) {
+			  throw new IllegalStateException("illegal state - putstatic on non-static field!");
+	  }
+	  ExternalClassInfo cl = fi.getParent();
+	  if (cl.getDescriptor().isArray()) {
+		  throw new IllegalStateException("illegal state - expected class or interface but got array!");
+	  }
+	  inputFrame.pop(VerificationType.createTypeFromDescriptor(fi.getDescriptor(), parent));
 	  return inputFrame;
 	}
 
 	public Frame executeRet(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  throw new IllegalStateException("ret isn't allowed!");
 	}
 
 	public Frame executeReturn_(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
 	  return inputFrame;
 	}
 
 	public Frame executeSaload(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		ArrayHandler arrayHandler = new ArrayHandler() {
+			
+			@Override
+			public VerificationType getComponentVerificationType() {
+				return VerificationType.INT;
+			}
+			
+			@Override
+			public VerificationType getComponentVerificationType(
+					TypeDescriptor componentDescriptor) {
+				return VerificationType.INT;
+			}
+			
+			@Override
+			public String getComponentTypeLabel() {
+				return "short";
+			}
+			
+			@Override
+			public boolean checkComponentType(TypeDescriptor componentDescriptor) {
+				return componentDescriptor.isShort();
+			}
+		};
+		return executeArrayLoad(instr, inputFrame, arrayHandler);
 	}
 
 	public Frame executeSastore(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		ArrayHandler arrayHandler = new ArrayHandler() {
+			
+			@Override
+			public VerificationType getComponentVerificationType() {
+				return VerificationType.INT;
+			}
+			
+			@Override
+			public VerificationType getComponentVerificationType(
+					TypeDescriptor componentDescriptor) {
+				return VerificationType.INT;
+			}
+			
+			@Override
+			public String getComponentTypeLabel() {
+				return "short";
+			}
+			
+			@Override
+			public boolean checkComponentType(TypeDescriptor componentDescriptor) {
+				return componentDescriptor.isShort();
+			}
+		};
+		return executeArrayStore(instr, inputFrame, arrayHandler);
 	}
 
 	public Frame executeSipush(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.push(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeSwap(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  VerificationType v1 = inputFrame.pop(VerificationType.TOP);
+	  VerificationType v2 = inputFrame.pop(VerificationType.TOP);
+	  inputFrame.push(v1);
+	  inputFrame.push(v2);
 	  return inputFrame;
 	}
 
 	public Frame executeTableswitch(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  inputFrame.pop(VerificationType.INT);
 	  return inputFrame;
 	}
 
 	public Frame executeWide(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+	  throw new IllegalStateException("Schpuldn't be called!");
 	}
 
 	private Frame executeLoad(AbstractInstruction instr, Frame inputFrame, VerificationType expectedType) {
@@ -1850,6 +2106,32 @@ public class Interpreter {
 	private Frame executeStore(AbstractInstruction instr, Frame inputFrame, VerificationType expectedType) {
 		int index = ((IRegisterIndexInstruction)instr).getRegisterIndex();
 		inputFrame.store(expectedType, index);
+		return inputFrame;
+	}
+	
+	private Frame executeConversion(VerificationType from, VerificationType to, Frame inputFrame) {
+		inputFrame.pop(from);
+		inputFrame.push(to);
+		return inputFrame;
+	}
+	
+	private Frame executeTwoTier(VerificationType t, Frame inputFrame) {
+		inputFrame.pop(t);
+		inputFrame.pop(t);
+		inputFrame.push(t);
+		return inputFrame;
+	}
+	
+	private Frame executeOneTier(VerificationType t, Frame inputFrame) {
+		inputFrame.pop(t);
+		inputFrame.push(t);
+		return inputFrame;
+	}
+	
+	private Frame executeCompare(VerificationType t, Frame inputFrame) {
+		inputFrame.pop(t);
+		inputFrame.pop(t);
+		inputFrame.push(VerificationType.INT);
 		return inputFrame;
 	}
 	

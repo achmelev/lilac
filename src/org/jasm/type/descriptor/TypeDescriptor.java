@@ -124,6 +124,17 @@ public class TypeDescriptor {
 		return componentType;
 	}
 	
+	public int getArrayDimension() {
+		if (!isArray()) {
+			throw new IllegalStateException("isn't an array!");
+		}
+		if (componentType.isArray()) {
+			return 1+componentType.getArrayDimension();
+		} else {
+			return 1;
+		}
+	}
+	
 	
 	@Override
 	public String toString() {
