@@ -3,6 +3,7 @@ package org.jasm.item.instructions;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.parser.literals.IntegerLiteral;
+import org.jasm.resolver.ExternalClassInfo;
 
 public class MultianewarrayInstruction extends ConstantPoolInstruction {
 	
@@ -61,6 +62,20 @@ public class MultianewarrayInstruction extends ConstantPoolInstruction {
 	public ClassInfo getClassInfo() {
 		return (ClassInfo)cpEntry;
 	}
+
+	@Override
+	protected void verifyInstructions() {
+		ExternalClassInfo cli = (ExternalClassInfo)info;
+		if (!cli.isArray()) {
+			emitError(cpEntryReference, "the argument must be an array type");
+		}
+		int dim = cli.getDescriptor().getArrayDimension();
+		if (dim<dimensions) {
+			emitError(dimensionsLiteral, "inconsistent array dimensions");
+		}
+	}
+	
+	
 	
 	
 

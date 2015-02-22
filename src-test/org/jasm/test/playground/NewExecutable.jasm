@@ -1,0 +1,76 @@
+public super class {
+  version 52_0;
+  name NewExecutable; // org/jasm/test/playground/NewExecutable
+  extends Object; // java/lang/Object
+  implements IExecutable; // org/jasm/test/playground/IExecutable
+   //Constants
+  const classref NewExecutable NewExecutable_name; // org/jasm/test/playground/NewExecutable
+  const utf8 NewExecutable_name "org/jasm/test/playground/NewExecutable";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const classref IExecutable IExecutable_name; // org/jasm/test/playground/IExecutable
+  const utf8 IExecutable_name "org/jasm/test/playground/IExecutable";
+  const utf8 init0_name "<init>";
+  const utf8 method_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref init0 Object, init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype init0_nat init0_name, method_desc; // name=<init> type=()V
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/NewExecutable;";
+  const utf8 execute_name "execute";
+  const classref NewExecutable$1 NewExecutable$1_name; // org/jasm/test/playground/NewExecutable$1
+  const utf8 NewExecutable$1_name "org/jasm/test/playground/NewExecutable$1";
+  const methodref init0$0 NewExecutable$1, init0$0_nat; // class=org/jasm/test/playground/NewExecutable$1, name=<init>, descriptor=(Lorg/jasm/test/playground/NewExecutable;)V
+  const nameandtype init0$0_nat init0_name, init0_desc; // name=<init> type=(Lorg/jasm/test/playground/NewExecutable;)V
+  const utf8 init0_desc "(Lorg/jasm/test/playground/NewExecutable;)V";
+  const intfmethodref run Runnable, run_nat; // class=java/lang/Runnable, name=run, descriptor=()V
+  const classref Runnable Runnable_name; // java/lang/Runnable
+  const utf8 Runnable_name "java/lang/Runnable";
+  const nameandtype run_nat run_name, method_desc; // name=run type=()V
+  const utf8 run_name "run";
+  const utf8 instance_name "instance";
+  const utf8 instance_desc "Ljava/lang/Runnable;";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "NewExecutable.java";
+  const utf8 InnerClasses_utf8 "InnerClasses";
+  source file source_file_name; // NewExecutable.java
+  inner class {
+    inner NewExecutable$1; // org/jasm/test/playground/NewExecutable$1
+  }
+   //Fields
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor method_desc; // ()V
+    
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial init0; // class=java/lang/Object, name=<init>, descriptor=()V
+    return;
+  }
+  public method {
+    name execute_name; // execute
+    descriptor method_desc; // ()V
+    
+    maxstack 3;
+    //Variables
+    var object this;
+    var object instance;
+    //Instructions
+    //ir0: new NewExecutable$1; // org/jasm/test/playground/NewExecutable$1
+    ir0: new Runnable;
+    pop;
+    /*dup;
+    aload this;
+    invokespecial init0$0; // class=org/jasm/test/playground/NewExecutable$1, name=<init>, descriptor=(Lorg/jasm/test/playground/NewExecutable;)V
+    astore instance;
+    ir9: aload instance;
+    invokeinterface run; // class=java/lang/Runnable, name=run, descriptor=()V*/
+    ir15: return;
+  }
+}

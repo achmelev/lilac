@@ -1949,14 +1949,7 @@ public class Interpreter {
 	}
 
 	public Frame executeNewarray(AbstractInstruction instr, Frame inputFrame) {
-	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
-	  ClassInfo cli = (ClassInfo)cpi.getCpEntry();
-	  if (!cli.isArray() && cli.getDescriptor().getComponentType().isPrimitive()) {
-		  throw new IllegalStateException("unexpected type "+cli.getDescriptor());
-	  }
-	  ObjectValueType arrayType = new ObjectValueType(cli.getDescriptor(), parent);
-	  inputFrame.pop(VerificationType.INT);
-	  inputFrame.push(arrayType);
+	  //TODO
 	  return inputFrame;
 	}
 

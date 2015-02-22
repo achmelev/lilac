@@ -2,7 +2,7 @@ public super class {
   version 52_0;
   name InvokeExecutable; // org/jasm/test/playground/InvokeExecutable
   extends Object; // java/lang/Object
-  implements IExecutable; // org/jasm/test/playground/IExecutable
+  implements IExecutable, IInvokeExecutable; // org/jasm/test/playground/IExecutable, org/jasm/test/playground/IInvokeExecutable
    //Constants
   const classref InvokeExecutable InvokeExecutable_name; // org/jasm/test/playground/InvokeExecutable
   const utf8 InvokeExecutable_name "org/jasm/test/playground/InvokeExecutable";
@@ -10,9 +10,10 @@ public super class {
   const utf8 Object_name "java/lang/Object";
   const classref IExecutable IExecutable_name; // org/jasm/test/playground/IExecutable
   const utf8 IExecutable_name "org/jasm/test/playground/IExecutable";
+  const classref IInvokeExecutable IInvokeExecutable_name; // org/jasm/test/playground/IInvokeExecutable
+  const utf8 IInvokeExecutable_name "org/jasm/test/playground/IInvokeExecutable";
   const utf8 init0_name "<init>";
   const utf8 method_desc "()V";
-  const utf8 method_desc3 "()I";
   const utf8 Code_utf8 "Code";
   const methodref init0 Object, init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
   const nameandtype init0_nat init0_name, method_desc; // name=<init> type=()V
@@ -26,11 +27,11 @@ public super class {
   const utf8 add_name "add";
   const utf8 method_desc$0 "(II)I";
   const methodref init0$0 InvokeExecutable, init0_nat; // class=org/jasm/test/playground/InvokeExecutable, name=<init>, descriptor=()V
-  const methodref add2 InvokeExecutable, add2_nat; // class=org/jasm/test/playground/InvokeExecutable, name=add2, descriptor=(II)I
+  const intfmethodref add2 IInvokeExecutable, add2_nat; // class=org/jasm/test/playground/IInvokeExecutable, name=add2, descriptor=(II)I
   const nameandtype add2_nat add2_name, method_desc$0; // name=add2 type=(II)I
   const utf8 add2_name "add2";
-  const methodref add3 InvokeExecutable, add3_nat; // class=org/jasm/test/playground/InvokeExecutable, name=add3, descriptor=(II)J
-  const nameandtype add3_nat add2_name, add3_desc; // name=add3 type=(II)J
+  const intfmethodref add3 IInvokeExecutable, add3_nat; // class=org/jasm/test/playground/IInvokeExecutable, name=add3, descriptor=(II)J
+  const nameandtype add3_nat add3_name, add3_desc; // name=add3 type=(II)J
   const utf8 add3_name "add3";
   const utf8 add3_desc "(II)J";
   const fieldref out System, out_nat; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;
@@ -39,14 +40,16 @@ public super class {
   const nameandtype out_nat out_name, out_desc; // name=out type=Ljava/io/PrintStream;
   const utf8 out_name "out";
   const utf8 out_desc "Ljava/io/PrintStream;";
-  const string string_34 utf8_35; // "Done!"
-  const utf8 utf8_35 "Done!";
+  const string string_36 utf8_37; // "Done!"
+  const utf8 utf8_37 "Done!";
   const methodref println PrintStream, println_nat; // class=java/io/PrintStream, name=println, descriptor=(Ljava/lang/String;)V
   const classref PrintStream PrintStream_name; // java/io/PrintStream
   const utf8 PrintStream_name "java/io/PrintStream";
   const nameandtype println_nat println_name, println_desc; // name=println type=(Ljava/lang/String;)V
   const utf8 println_name "println";
   const utf8 println_desc "(Ljava/lang/String;)V";
+  const utf8 intf_name "intf";
+  const utf8 intf_desc "Lorg/jasm/test/playground/IInvokeExecutable;";
   const utf8 a_name "a";
   const utf8 type_desc "I";
   const utf8 b_name "b";
@@ -57,16 +60,23 @@ public super class {
    //Methods
   public method {
     name init0_name; // <init>
-    descriptor method_desc3; // ()V
-   
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 3;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/InvokeExecutable;
+    }
     maxstack 1;
     //Variables
     var object this;
+    var object this2;
     //Instructions
     ir0: aload this;
+    astore this2;
+	aload this2;
     invokespecial init0; // class=java/lang/Object, name=<init>, descriptor=()V
-    iconst_2;
-    ireturn;
+    return;
   }
   public method {
     name execute_name; // execute
@@ -74,16 +84,19 @@ public super class {
     line numbers {
       line ir0, 9;
       line ir6, 10;
-      line ir19, 11;
-      line ir32, 12;
-      line ir40, 15;
+      line ir14, 11;
+      line ir23, 12;
+      line ir32, 13;
+      line ir40, 16;
     }
     debug vars {
       var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/InvokeExecutable;
+      var intf, ir14, intf_name, intf_desc; // name=intf,  descriptor=Lorg/jasm/test/playground/IInvokeExecutable;
     }
     maxstack 3;
     //Variables
     var object this;
+    var object intf;
     //Instructions
     ir0: iconst_1;
     iconst_2;
@@ -92,25 +105,32 @@ public super class {
     ir6: new InvokeExecutable; // org/jasm/test/playground/InvokeExecutable
     dup;
     invokespecial init0$0; // class=org/jasm/test/playground/InvokeExecutable, name=<init>, descriptor=()V
+    astore intf;
+    ir14: aload intf;
     iconst_1;
     iconst_2;
-    invokevirtual add2; // class=org/jasm/test/playground/InvokeExecutable, name=add2, descriptor=(II)I
+    invokeinterface add2; // class=org/jasm/test/playground/IInvokeExecutable, name=add2, descriptor=(II)I
     pop;
-    ir19: new InvokeExecutable; // org/jasm/test/playground/InvokeExecutable
-    dup;
-    invokespecial init0$0; // class=org/jasm/test/playground/InvokeExecutable, name=<init>, descriptor=()V
+    ir23: aload intf;
     iconst_2;
     iconst_3;
-    invokevirtual add3; // class=org/jasm/test/playground/InvokeExecutable, name=add3, descriptor=(II)J
+    invokeinterface add3; // class=org/jasm/test/playground/IInvokeExecutable, name=add3, descriptor=(II)J
     pop2;
     ir32: getstatic out; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;
-    ldc string_34; // "Done!"
+    ldc string_36; // "Done!"
     invokevirtual println; // class=java/io/PrintStream, name=println, descriptor=(Ljava/lang/String;)V
     ir40: return;
   }
   public static method {
     name add_name; // add
     descriptor method_desc$0; // (II)I
+    line numbers {
+      line ir0, 19;
+    }
+    debug vars {
+      var a, ir0, a_name, type_desc; // name=a,  descriptor=I
+      var b, ir0, b_name, type_desc; // name=b,  descriptor=I
+    }
     maxstack 2;
     //Variables
     var int a;
@@ -124,6 +144,14 @@ public super class {
   public method {
     name add2_name; // add2
     descriptor method_desc$0; // (II)I
+    line numbers {
+      line ir0, 27;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/InvokeExecutable;
+      var a, ir0, a_name, type_desc; // name=a,  descriptor=I
+      var b, ir0, b_name, type_desc; // name=b,  descriptor=I
+    }
     maxstack 2;
     //Variables
     var object this;
@@ -135,10 +163,17 @@ public super class {
     iadd;
     ireturn;
   }
- 
   public method {
-    name add2_name; // add3
+    name add3_name; // add3
     descriptor add3_desc; // (II)J
+    line numbers {
+      line ir0, 35;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/InvokeExecutable;
+      var a, ir0, a_name, type_desc; // name=a,  descriptor=I
+      var b, ir0, b_name, type_desc; // name=b,  descriptor=I
+    }
     maxstack 2;
     //Variables
     var object this;
