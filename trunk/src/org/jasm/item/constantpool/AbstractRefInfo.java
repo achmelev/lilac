@@ -67,6 +67,12 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 					return false;
 				}
 			}
+		} else if (index == 0 && !isMethodRef()) {
+			ClassInfo cli = (ClassInfo)value;
+			if (cli.getDescriptor().isArray()) {
+				emitError(ref, "expected class or interface but got array");
+				return false;
+			}
 		}
 		return true;
 	}
@@ -78,11 +84,7 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 	
 	protected abstract boolean isMethodRef();
 
-	@Override
-	public short getTag() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 
 	@Override
 	protected String doGetDisassemblerLabel() {

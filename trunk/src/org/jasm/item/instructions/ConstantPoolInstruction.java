@@ -23,15 +23,16 @@ import org.jasm.item.constantpool.StringInfo;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.resolver.AbstractInfo;
 import org.jasm.resolver.ExternalClassInfo;
+import org.jasm.resolver.FieldInfo;
 import org.jasm.resolver.MethodInfo;
 import org.jasm.type.verifier.VerifierParams;
 
 public class ConstantPoolInstruction extends AbstractInstruction implements IConstantPoolReference {
 	
 	private int cpEntryIndex = -1;
-	private SymbolReference cpEntryReference = null;
+	protected SymbolReference cpEntryReference = null;
 	protected AbstractConstantPoolEntry cpEntry = null; 
-	private AbstractInfo info;
+	protected AbstractInfo info;
 	
 	private static Map<Short, Class[]> allowedTypes = null;
 	
@@ -122,6 +123,7 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 
 	@Override
 	protected void doVerify(VerifierParams params) {
+		//Loading classes/methods/arguments and checking access
 		if (cpEntry instanceof ClassInfo) {
 			info = getRoot().checkAndLoadClassInfo(this, cpEntryReference, ((ClassInfo)cpEntry).getClassName(), true);
 		} else if (cpEntry instanceof FieldrefInfo) {
@@ -130,23 +132,73 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 			info = getRoot().checkAndLoadMethodInfo(this, cpEntryReference, ((MethodrefInfo)cpEntry).getClassName(), ((MethodrefInfo)cpEntry).getName(), ((MethodrefInfo)cpEntry).getDescriptor(), true);
 		} else if (cpEntry instanceof InterfaceMethodrefInfo) {
 			info = getRoot().checkAndLoadInterfaceMethodInfo(this, cpEntryReference, ((InterfaceMethodrefInfo)cpEntry).getClassName(), ((InterfaceMethodrefInfo)cpEntry).getName(), ((InterfaceMethodrefInfo)cpEntry).getDescriptor(), true);
+			
 		}
 		
-		//TODO - Checking for appropriate arguments
+		//Checking Instruction arguments
+		verifyInstructions();
 	}
 	
-	private void verifyInstructions() {
-		if (this.getOpCode() == OpCodes.new_) {
+	protected void verifyInstructions() {
+		if (this.getOpCode() == OpCodes.getstatic || this.getOpCode() == OpCodes.putstatic) {
+			FieldInfo fi = (FieldInfo)info;
+			if (!fi.getModifier().isStatic()) {
+				emitError(cpEntryReference, "the field must be static");
+			}
+		} else if (this.getOpCode() == OpCodes.getfield || this.getOpCode() == OpCodes.putfield) {
+			FieldInfo fi = (FieldInfo)info;
+			if (fi.getModifier().isStatic()) {
+				emitError(cpEntryReference, "the field must be non-static");
+			}
+		}  else if (this.getOpCode() == OpCodes.new_) {
 			ExternalClassInfo cli = (ExternalClassInfo)info;
 			if (cli.isArray()) {
-				emitError(cpEntryReference, "arrays aren't allowed with this instruction");
+				emitError(cpEntryReference, "array instantiation with new");
+			}
+			if (cli.getModifier().isAbstract() || cli.getModifier().isInterface()) {
+				emitError(cpEntryReference, "instantiation of an abstract class or interface");
+			}
+		} else if (this.getOpCode() == OpCodes.invokestatic) {
+			MethodInfo mi = (MethodInfo)info;
+			if (!mi.getModifier().isStatic()) {
+				emitError(cpEntryReference, "method must be static");
+			}
+			if (mi.getName().equals("<init>")) {
+				emitError(cpEntryReference, "static invocation of a constructor");
+			} else if (mi.getName().equals("<clinit>")) {
+				emitError(cpEntryReference, "invocation of a class initialization method");
+			}
+		} else if (this.getOpCode() == OpCodes.invokevirtual) {
+			MethodInfo mi = (MethodInfo)info;
+			if (mi.getModifier().isStatic()) {
+				emitError(cpEntryReference, "method must be non-static");
 			} 
+			if (mi.getName().equals("<init>")) {
+				emitError(cpEntryReference, "virtual invocation of a constructor");
+			} else if (mi.getName().equals("<clinit>")) {
+				emitError(cpEntryReference, "invocation of a class initialization method");
+			}
 		} else if (this.getOpCode() == OpCodes.invokeinterface) {
 			MethodInfo mi = (MethodInfo)info;
-			if (mi.getParent().getModifier().isInterface()) {
-				emitError(cpEntryReference, "only interface methods allowed with this instruction");
+			if (mi.getModifier().isStatic()) {
+				emitError(cpEntryReference, "method must be non-static");
+			} 
+			if (mi.getName().equals("<init>")) {
+				emitError(cpEntryReference, "interface invocation of a constructor");
+			} else if (mi.getName().equals("<clinit>")) {
+				emitError(cpEntryReference, "invocation of a class initialization method");
 			}
+		} else if (this.getOpCode() == OpCodes.invokespecial) {
+			MethodInfo mi = (MethodInfo)info;
+			if (mi.getModifier().isStatic()) {
+				emitError(cpEntryReference, "method must be non-static");
+			} 
+			if (mi.getName().equals("<clinit>")) {
+				emitError(cpEntryReference, "invocation of a class initialization method");
+			}
+			
 		}
+		
 	}
 	
 

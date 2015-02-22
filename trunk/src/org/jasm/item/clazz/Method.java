@@ -132,8 +132,9 @@ public class Method extends AbstractClassMember<MethodModifier> {
 			if (name.equals("<clinit>") && (getRoot().getDecimalVersion().doubleValue()>=51.0) && !getModifier().isStatic()) {
 				emitError(descriptorReference, "class or interface initialization method must be static");
 			}
-			
+			super.doVerify(params);
 		}
+		
 	}
 
 	@Override
