@@ -1,19 +1,6 @@
 package org.jasm.item.instructions.verify.types;
 
-import org.jasm.type.descriptor.TypeDescriptor;
-
-public class UninitializedValueType extends VerificationType {
-	
-	private TypeDescriptor desc;
-	private int instructionIndex = -1;
-	
-	public UninitializedValueType(TypeDescriptor desc,int instructionIndex) {
-		this.desc = desc;
-		this.instructionIndex = instructionIndex;
-		if (!desc.isObject()) {
-			throw new IllegalArgumentException("only object types allowed: "+desc.getValue());
-		}
-	}
+public class Uninitialized extends VerificationType {
 
 	@Override
 	protected boolean isAssignableFromDouble(DoubleType from) {
@@ -47,101 +34,71 @@ public class UninitializedValueType extends VerificationType {
 
 	@Override
 	protected boolean isAssignableFromTop(TopType from) {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected boolean isAssignableFromUninitializedThis(
 			UninitializedThisType from) {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected boolean isAssignableFromUninitializedValue(
 			UninitializedValueType from) {
-		return from.equals(this);
+		return false;
 	}
 
 	@Override
 	protected VerificationType mergeWithDouble(DoubleType from) {
-		return TOP;
+		throw new IllegalStateException("merge not supported");
 	}
 
 	@Override
 	protected VerificationType mergeWithFloat(FloatType from) {
-		return TOP;
+		throw new IllegalStateException("merge not supported");
 	}
 
 	@Override
 	protected VerificationType mergeWithInt(IntType from) {
-		return TOP;
+		throw new IllegalStateException("merge not supported");
 	}
 
 	@Override
 	protected VerificationType mergeWithLong(LongType from) {
-		return TOP;
+		throw new IllegalStateException("merge not supported");
 	}
 
 	@Override
 	protected VerificationType mergeWithNull(NullType from) {
-		return TOP;
+		throw new IllegalStateException("merge not supported");
 	}
 
 	@Override
 	protected VerificationType mergeWithObjectValue(ObjectValueType from) {
-		return TOP;
+		throw new IllegalStateException("merge not supported");
 	}
 
 	@Override
 	protected VerificationType mergeWithTop(TopType from) {
-		return TOP;
+		throw new IllegalStateException("merge not supported");
 	}
 
 	@Override
 	protected VerificationType mergeWithUninitializedThis(
 			UninitializedThisType from) {
-		return TOP;
+		throw new IllegalStateException("merge not supported");
 	}
 
 	@Override
 	protected VerificationType mergeWithUninitializedValue(
 			UninitializedValueType from) {
-		if (from.equals(this)) {
-			return this;
-		} else {
-			return TOP;
-		}
-	}
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UninitializedValueType other = (UninitializedValueType) obj;
-		if (instructionIndex != other.instructionIndex)
-			return false;
-		return true;
+		throw new IllegalStateException("merge not supported");
 	}
 
 	@Override
 	public int getSize() {
 		return 1;
 	}
-	
-	@Override
-	public String toString() {
-		return "uninitialized_value["+instructionIndex+","+desc.getValue()+"]";
-	}
-
-	public TypeDescriptor getDesc() {
-		return desc;
-	}
-	
-	
 
 }

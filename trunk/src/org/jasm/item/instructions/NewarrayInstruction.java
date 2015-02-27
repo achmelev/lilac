@@ -5,10 +5,13 @@ import java.util.List;
 import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.type.descriptor.TypeDescriptor;
 
 public class NewarrayInstruction extends AbstractInstruction {
 	
 	private short type = -1;
+	
+	private TypeDescriptor desc;
 	
 	public NewarrayInstruction() {
 		super(OpCodes.newarray);
@@ -24,11 +27,13 @@ public class NewarrayInstruction extends AbstractInstruction {
 			throw new IllegalArgumentException(type+"");
 		}
 		this.type = type;
+		desc = createDescriptor(type);
 	}
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
 		type = source.readUnsignedByte(offset);
+		desc = createDescriptor(type);
 	}
 
 	@Override
@@ -95,6 +100,28 @@ public class NewarrayInstruction extends AbstractInstruction {
 		}
 	}
 	
+	private TypeDescriptor createDescriptor(short typeCode) {
+		if (type == JasmConsts.ARRAY_TYPE_BOOLEAN) {
+			return new TypeDescriptor("[Z");
+		} else if (type == JasmConsts.ARRAY_TYPE_BYTE) {
+			return new TypeDescriptor("[B");
+		} else if (type == JasmConsts.ARRAY_TYPE_CHAR) {
+			return new TypeDescriptor("[C");
+		} else if (type == JasmConsts.ARRAY_TYPE_DOUBLE) {
+			return new TypeDescriptor("[D");
+		} else if (type == JasmConsts.ARRAY_TYPE_FLOAT) {
+			return new TypeDescriptor("[F");
+		} else if (type == JasmConsts.ARRAY_TYPE_INT) {
+			return new TypeDescriptor("[I");
+		} else if (type == JasmConsts.ARRAY_TYPE_LONG) {
+			return new TypeDescriptor("[J");
+		} else if (type == JasmConsts.ARRAY_TYPE_SHORT) {
+			return new TypeDescriptor("[S");
+		} else {
+			throw new IllegalArgumentException(type+"");
+		}
+	}
+	
 	private static short getTypeCode(String typeName) {
 		if (typeName .equals(JasmConsts.TYPENAME_BOOLEAN)) {
 			return JasmConsts.ARRAY_TYPE_BOOLEAN;
@@ -119,6 +146,10 @@ public class NewarrayInstruction extends AbstractInstruction {
 
 	public short getType() {
 		return type;
+	}
+
+	public TypeDescriptor getDesc() {
+		return desc;
 	}
 	
 	

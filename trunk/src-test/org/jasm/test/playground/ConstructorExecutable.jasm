@@ -1,0 +1,85 @@
+public super class {
+  version 52_0;
+  name ConstructorExecutable; // org/jasm/test/playground/ConstructorExecutable
+  extends SuperConstructorExecutable; // org/jasm/test/playground/SuperConstructorExecutable
+   //Constants
+  const classref ConstructorExecutable ConstructorExecutable_name; // org/jasm/test/playground/ConstructorExecutable
+  const utf8 ConstructorExecutable_name "org/jasm/test/playground/ConstructorExecutable";
+  const classref SuperConstructorExecutable SuperConstructorExecutable_name; // org/jasm/test/playground/SuperConstructorExecutable
+  const utf8 SuperConstructorExecutable_name "org/jasm/test/playground/SuperConstructorExecutable";
+  const utf8 init0_name "<init>";
+  const utf8 method_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref initSuperConstructor SuperConstructorExecutable, init0_nat; // class=org/jasm/test/playground/SuperConstructorExecutable, name=<init>, descriptor=()V
+  const nameandtype init0_nat init0_name, method_desc; // name=<init> type=()V
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/ConstructorExecutable;";
+  const utf8 execute_name "execute";
+  const fieldref out System, out_nat; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;
+  const classref System System_name; // java/lang/System
+  const utf8 System_name "java/lang/System";
+  const nameandtype out_nat out_name, out_desc; // name=out type=Ljava/io/PrintStream;
+  const utf8 out_name "out";
+  const utf8 out_desc "Ljava/io/PrintStream;";
+  const fieldref value$0 ConstructorExecutable, value$0_nat; // class=org/jasm/test/playground/ConstructorExecutable, name=value, descriptor=I
+  const nameandtype value$0_nat value_name, value_desc; // name=value type=I
+  const utf8 value_name "value";
+  const utf8 value1_name "value1";
+  const utf8 value_desc "I";
+  const methodref println PrintStream, println_nat; // class=java/io/PrintStream, name=println, descriptor=(I)V
+  const classref PrintStream PrintStream_name; // java/io/PrintStream
+  const utf8 PrintStream_name "java/io/PrintStream";
+  const nameandtype println_nat println_name, println_desc; // name=println type=(I)V
+  const utf8 println_name "println";
+  const utf8 println_desc "(I)V";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "ConstructorExecutable.java";
+  source file source_file_name; // ConstructorExecutable.java
+  
+  const classref Object Object_name; 
+  const utf8 Object_name "java/lang/Object";
+  const methodref initObject Object, init0_nat;
+  
+  const methodref initConstructor ConstructorExecutable, init0_nat; 
+  
+  const fieldref value1 ConstructorExecutable, value1_nat; 
+  const nameandtype value1_nat value1_name, value_desc; 
+  
+   //Fields
+  public field {
+    name value1_name; // value1
+    descriptor value_desc; // I
+  }
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor method_desc; // ()V
+    
+    maxstack 10;
+    //Variables
+    var object this;
+    //Instructions
+    aload this;
+	iconst_1;
+	putfield value1;
+    ir0: aload this;
+    invokespecial initSuperConstructor;
+    return;
+  }
+  public method {
+    name execute_name; // execute
+    descriptor method_desc; // ()V
+   
+    maxstack 2;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: getstatic out; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;
+    aload this;
+    getfield value1; // class=org/jasm/test/playground/ConstructorExecutable, name=value, descriptor=I
+    invokevirtual println; // class=java/io/PrintStream, name=println, descriptor=(I)V
+    ir10: return;
+  }
+}

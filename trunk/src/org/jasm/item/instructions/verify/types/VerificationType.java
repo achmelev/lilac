@@ -12,6 +12,7 @@ public abstract class VerificationType {
 	public static final VerificationType LONG = new LongType();
 	public static final VerificationType NULL = new NullType();
 	public static final VerificationType UNINITIALIZED_THIS = new UninitializedThisType();
+	public static final VerificationType UNINITIALIZED = new Uninitialized();
 	public static final ObjectValueType  OBJECT = new ObjectValueType(new TypeDescriptor("Ljava/lang/Object;"), null);
 	public static final ObjectValueType  THROWABLE = new ObjectValueType(new TypeDescriptor("Ljava/lang/Throwable;"), null);
 	public static final ObjectValueType  STRING = new ObjectValueType(new TypeDescriptor("Ljava/lang/String;"), null);
@@ -119,4 +120,5 @@ public abstract class VerificationType {
 			throw new IllegalStateException("Unknowhn descriptor type: "+desc);
 		}
 	}
+	
 }
