@@ -1,6 +1,7 @@
 package org.jasm.test.playground;
 
 public class InvokeExecutable implements IExecutable, IInvokeExecutable {
+	
 
 	@Override
 	public void execute() {

@@ -94,10 +94,13 @@ public class InvokeDynamicInfo extends AbstractConstantPoolEntry implements INam
 	@Override
 	protected void doResolveAfterParse() {
 		nameAndType = getConstantPool().checkAndLoadFromSymbolTable(this, NameAndTypeInfo.class, nameAndTypeReference);
-		if (nameAndType.isField()) {
+		if (nameAndType != null && nameAndType.isField()) {
 			emitError(nameAndTypeReference, "expected a method descriptor");
 		}
 		method = getBootstrapMethodsAttributeContent().checkAndLoadFromSymbolTable(this, methodReference);
+		if (nameAndType != null && (nameAndType.getName().equals("<init>") || nameAndType.getName().equals("<clinit>"))) {
+			emitError(nameAndTypeReference, "illegal dynamic callsite name");
+		}
 	}
 	
 	private BootstrapMethodsAttributeContent getBootstrapMethodsAttributeContent() {

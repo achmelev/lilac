@@ -5,25 +5,32 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javassist.bytecode.Descriptor;
+
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.DoubleInfo;
 import org.jasm.item.constantpool.FieldrefInfo;
 import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IntegerInfo;
+import org.jasm.item.constantpool.InvokeDynamicInfo;
 import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.MethodTypeInfo;
+import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.IRegisterIndexInstruction;
 import org.jasm.item.instructions.IincInstruction;
 import org.jasm.item.instructions.MultianewarrayInstruction;
+import org.jasm.item.instructions.NewarrayInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.verify.types.ObjectValueType;
 import org.jasm.item.instructions.verify.types.UninitializedValueType;
 import org.jasm.item.instructions.verify.types.VerificationType;
 import org.jasm.resolver.ExternalClassInfo;
 import org.jasm.resolver.FieldInfo;
+import org.jasm.resolver.MethodInfo;
+import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
 
 
@@ -1611,28 +1618,101 @@ public class Interpreter {
 	}
 
 	public Frame executeInvokedynamic(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+	  InvokeDynamicInfo idi = (InvokeDynamicInfo)cpi.getCpEntry();
+	  MethodDescriptor md = idi.getNameAndType().getMethodDescriptor();
+	  invokeMethod(null, md, inputFrame);
 	  return inputFrame;
 	}
 
 	public Frame executeInvokeinterface(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+	  MethodrefInfo mi = (MethodrefInfo)cpi.getCpEntry();
+	  invokeMethod(mi.getClassReference().getDescriptor(), mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame);
 	  return inputFrame;
 	}
 
 	public Frame executeInvokespecial(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  String currentMethodName = parent.getMethod().getName().getValue();
+	  String currentClassName = parent.getClazz().getThisClass().getClassName();
+	  String superClassName = "";
+	  if (parent.getClazz().getSuperClass() != null) {
+		  superClassName = parent.getClazz().getSuperClass().getClassName();
+	  }
+	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+	  MethodrefInfo mi = (MethodrefInfo)cpi.getCpEntry();
+	  if (mi.getNameAndTypeReference().getName().equals("<init>")) {
+		  String methodClassName = mi.getClassReference().getClassName();
+		  MethodDescriptor method = mi.getNameAndTypeReference().getMethodDescriptor();
+		  List<VerificationType> params = new ArrayList<VerificationType>();
+		  if (!method.isVoid()) {
+			  throw new IllegalStateException("non-void constructor");
+		  }
+		  for (TypeDescriptor td: method.getParameters()) {
+			 params.add(VerificationType.createTypeFromDescriptor(td, parent));
+		  }
+		  for (int i=0;i<params.size(); i++) {
+			  inputFrame.pop(params.get(params.size()-i-1));
+		  }
+		  VerificationType this_ = inputFrame.pop(VerificationType.UNINITIALIZED);
+		  if (!currentMethodName.equals("<init>") && this_.equals(VerificationType.UNINITIALIZED_THIS)) {
+			  throw new IllegalStateException("uninitialized_this in a non-constructor method");
+		  }
+		  if (this_ instanceof UninitializedValueType) {
+			  TypeDescriptor desc = ((UninitializedValueType)this_).getDesc();
+			  if (!desc.isObject()) {
+				  throw new IllegalStateException("not object");
+			  }
+			  if (!desc.getClassName().equals(methodClassName)) {
+				  throw new VerifyException(instr.getIndex(), "wrong constructor call");
+			  }
+			  inputFrame.replaceAllOccurences(this_, new ObjectValueType(desc, parent));
+		  } else {
+			  if (methodClassName.equals(currentClassName) || methodClassName.equals(superClassName)) {
+				  inputFrame.replaceAllOccurences(this_, new ObjectValueType(new TypeDescriptor("L"+currentClassName+";"), parent));
+			  } else {
+				  throw new VerifyException(instr.getIndex(), "wrong constructor call");
+			  }
+		  }
+		  
+	  } else {
+		  invokeMethod(mi.getClassReference().getDescriptor(), mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame);
+	  }
 	  return inputFrame;
 	}
 
 	public Frame executeInvokestatic(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+		MethodrefInfo mi = (MethodrefInfo)cpi.getCpEntry();
+		invokeMethod(null, mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame);
+		return inputFrame;
 	}
 
 	public Frame executeInvokevirtual(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
-	  return inputFrame;
+		ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+		MethodrefInfo mi = (MethodrefInfo)cpi.getCpEntry();
+		invokeMethod(mi.getClassReference().getDescriptor(), mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame);
+		return inputFrame;
+	}
+	
+	private void invokeMethod(TypeDescriptor this_, MethodDescriptor method, Frame inputFrame) {
+		List<VerificationType> params = new ArrayList<VerificationType>();
+		if (this_ != null) {
+			params.add(VerificationType.createTypeFromDescriptor(this_, parent));
+		}
+		for (TypeDescriptor td: method.getParameters()) {
+			params.add(VerificationType.createTypeFromDescriptor(td, parent));
+		}
+		VerificationType rt = null;
+		if (!method.isVoid()) {
+			rt = VerificationType.createTypeFromDescriptor(method.getReturnType(), parent);
+		}
+		for (int i=0;i<params.size(); i++) {
+			inputFrame.pop(params.get(params.size()-i-1));
+		}
+		if (rt != null) {
+			inputFrame.push(rt);
+		}
 	}
 
 	public Frame executeIor(AbstractInstruction instr, Frame inputFrame) {
@@ -1928,6 +2008,9 @@ public class Interpreter {
 		  throw new IllegalStateException("illegal arguments");
 	  }
 	  ObjectValueType type = new ObjectValueType(cli.getDescriptor(), parent);
+	  for (int i=0;i<dim; i++) {
+		  inputFrame.pop(VerificationType.INT);
+	  }
 	  inputFrame.push(type);
 	  return inputFrame;
 	}
@@ -1949,7 +2032,9 @@ public class Interpreter {
 	}
 
 	public Frame executeNewarray(AbstractInstruction instr, Frame inputFrame) {
-	  //TODO
+	  NewarrayInstruction nei = (NewarrayInstruction)instr;
+	  inputFrame.pop(VerificationType.INT);
+	  inputFrame.push(VerificationType.createTypeFromDescriptor(nei.getDesc(), parent));
 	  return inputFrame;
 	}
 
