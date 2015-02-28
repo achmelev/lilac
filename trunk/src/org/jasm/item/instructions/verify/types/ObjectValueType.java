@@ -18,6 +18,7 @@ public class ObjectValueType extends VerificationType {
 			throw new IllegalArgumentException("only object and array types allowed: "+desc.getValue());
 		}
 		this.query = query;
+		
 	}
 
 	@Override
@@ -231,7 +232,9 @@ public class ObjectValueType extends VerificationType {
 		return desc.toString();
 	}
 	
-	
+	public ObjectValueType create(IClassQuery query) {
+		return new ObjectValueType(desc, query);
+	}
 	
 	
 

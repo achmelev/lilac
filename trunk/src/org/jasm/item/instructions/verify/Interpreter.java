@@ -13,14 +13,17 @@ import org.jasm.item.constantpool.DoubleInfo;
 import org.jasm.item.constantpool.FieldrefInfo;
 import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IntegerInfo;
+import org.jasm.item.constantpool.InterfaceMethodrefInfo;
 import org.jasm.item.constantpool.InvokeDynamicInfo;
 import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.MethodTypeInfo;
 import org.jasm.item.constantpool.MethodrefInfo;
+import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.IRegisterIndexInstruction;
 import org.jasm.item.instructions.IincInstruction;
+import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.MultianewarrayInstruction;
 import org.jasm.item.instructions.NewarrayInstruction;
 import org.jasm.item.instructions.OpCodes;
@@ -41,615 +44,414 @@ public class Interpreter {
 	
 	public Frame execute(AbstractInstruction instr, Frame inputFrame) {
 
-	  if (OpCodes.aaload==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAaload(instr,inputFrame);
-	  } else if (OpCodes.aastore==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAastore(instr,inputFrame);
-	  } else if (OpCodes.aconst_null==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAconst_null(instr,inputFrame);
-	  } else if (OpCodes.aload==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAload(instr,inputFrame);
-	  } else if (OpCodes.aload_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAload_0(instr,inputFrame);
-	  } else if (OpCodes.aload_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAload_1(instr,inputFrame);
-	  } else if (OpCodes.aload_2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAload_2(instr,inputFrame);
-	  } else if (OpCodes.aload_3==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAload_3(instr,inputFrame);
-	  } else if (OpCodes.anewarray==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAnewarray(instr,inputFrame);
-	  } else if (OpCodes.areturn==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAreturn(instr,inputFrame);
-	  } else if (OpCodes.arraylength==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeArraylength(instr,inputFrame);
-	  } else if (OpCodes.astore==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAstore(instr,inputFrame);
-	  } else if (OpCodes.astore_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAstore_0(instr,inputFrame);
-	  } else if (OpCodes.astore_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAstore_1(instr,inputFrame);
-	  } else if (OpCodes.astore_2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAstore_2(instr,inputFrame);
-	  } else if (OpCodes.astore_3==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAstore_3(instr,inputFrame);
-	  } else if (OpCodes.athrow==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeAthrow(instr,inputFrame);
-	  } else if (OpCodes.baload==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeBaload(instr,inputFrame);
-	  } else if (OpCodes.bastore==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeBastore(instr,inputFrame);
-	  } else if (OpCodes.bipush==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeBipush(instr,inputFrame);
-	  } else if (OpCodes.caload==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeCaload(instr,inputFrame);
-	  } else if (OpCodes.castore==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeCastore(instr,inputFrame);
-	  } else if (OpCodes.checkcast==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeCheckcast(instr,inputFrame);
-	  } else if (OpCodes.d2f==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeD2f(instr,inputFrame);
-	  } else if (OpCodes.d2i==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeD2i(instr,inputFrame);
-	  } else if (OpCodes.d2l==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeD2l(instr,inputFrame);
-	  } else if (OpCodes.dadd==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDadd(instr,inputFrame);
-	  } else if (OpCodes.daload==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDaload(instr,inputFrame);
-	  } else if (OpCodes.dastore==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDastore(instr,inputFrame);
-	  } else if (OpCodes.dcmpg==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDcmpg(instr,inputFrame);
-	  } else if (OpCodes.dcmpl==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDcmpl(instr,inputFrame);
-	  } else if (OpCodes.dconst_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDconst_0(instr,inputFrame);
-	  } else if (OpCodes.dconst_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDconst_1(instr,inputFrame);
-	  } else if (OpCodes.ddiv==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDdiv(instr,inputFrame);
-	  } else if (OpCodes.dload==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDload(instr,inputFrame);
-	  } else if (OpCodes.dload_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDload_0(instr,inputFrame);
-	  } else if (OpCodes.dload_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDload_1(instr,inputFrame);
-	  } else if (OpCodes.dload_2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDload_2(instr,inputFrame);
-	  } else if (OpCodes.dload_3==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDload_3(instr,inputFrame);
-	  } else if (OpCodes.dmul==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDmul(instr,inputFrame);
-	  } else if (OpCodes.dneg==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDneg(instr,inputFrame);
-	  } else if (OpCodes.drem==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDrem(instr,inputFrame);
-	  } else if (OpCodes.dreturn==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDreturn(instr,inputFrame);
-	  } else if (OpCodes.dstore==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDstore(instr,inputFrame);
-	  } else if (OpCodes.dstore_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDstore_0(instr,inputFrame);
-	  } else if (OpCodes.dstore_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDstore_1(instr,inputFrame);
-	  } else if (OpCodes.dstore_2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDstore_2(instr,inputFrame);
-	  } else if (OpCodes.dstore_3==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDstore_3(instr,inputFrame);
-	  } else if (OpCodes.dsub==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDsub(instr,inputFrame);
-	  } else if (OpCodes.dup==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDup(instr,inputFrame);
-	  } else if (OpCodes.dup2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDup2(instr,inputFrame);
-	  } else if (OpCodes.dup2_x1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDup2_x1(instr,inputFrame);
-	  } else if (OpCodes.dup2_x2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDup2_x2(instr,inputFrame);
-	  } else if (OpCodes.dup_x1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDup_x1(instr,inputFrame);
-	  } else if (OpCodes.dup_x2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeDup_x2(instr,inputFrame);
-	  } else if (OpCodes.f2d==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeF2d(instr,inputFrame);
-	  } else if (OpCodes.f2i==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeF2i(instr,inputFrame);
-	  } else if (OpCodes.f2l==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeF2l(instr,inputFrame);
-	  } else if (OpCodes.fadd==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFadd(instr,inputFrame);
-	  } else if (OpCodes.faload==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFaload(instr,inputFrame);
-	  } else if (OpCodes.fastore==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFastore(instr,inputFrame);
-	  } else if (OpCodes.fcmpg==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFcmpg(instr,inputFrame);
-	  } else if (OpCodes.fcmpl==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFcmpl(instr,inputFrame);
-	  } else if (OpCodes.fconst_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFconst_0(instr,inputFrame);
-	  } else if (OpCodes.fconst_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFconst_1(instr,inputFrame);
-	  } else if (OpCodes.fconst_2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFconst_2(instr,inputFrame);
-	  } else if (OpCodes.fdiv==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFdiv(instr,inputFrame);
-	  } else if (OpCodes.fload==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFload(instr,inputFrame);
-	  } else if (OpCodes.fload_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFload_0(instr,inputFrame);
-	  } else if (OpCodes.fload_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFload_1(instr,inputFrame);
-	  } else if (OpCodes.fload_2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFload_2(instr,inputFrame);
-	  } else if (OpCodes.fload_3==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFload_3(instr,inputFrame);
-	  } else if (OpCodes.fmul==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFmul(instr,inputFrame);
-	  } else if (OpCodes.fneg==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFneg(instr,inputFrame);
-	  } else if (OpCodes.frem==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFrem(instr,inputFrame);
-	  } else if (OpCodes.freturn==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFreturn(instr,inputFrame);
-	  } else if (OpCodes.fstore==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFstore(instr,inputFrame);
-	  } else if (OpCodes.fstore_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFstore_0(instr,inputFrame);
-	  } else if (OpCodes.fstore_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFstore_1(instr,inputFrame);
-	  } else if (OpCodes.fstore_2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFstore_2(instr,inputFrame);
-	  } else if (OpCodes.fstore_3==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFstore_3(instr,inputFrame);
-	  } else if (OpCodes.fsub==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeFsub(instr,inputFrame);
-	  } else if (OpCodes.getfield==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeGetfield(instr,inputFrame);
-	  } else if (OpCodes.getstatic==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeGetstatic(instr,inputFrame);
-	  } else if (OpCodes.goto_==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeGoto_(instr,inputFrame);
-	  } else if (OpCodes.goto_w==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeGoto_w(instr,inputFrame);
-	  } else if (OpCodes.i2b==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeI2b(instr,inputFrame);
-	  } else if (OpCodes.i2c==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeI2c(instr,inputFrame);
-	  } else if (OpCodes.i2d==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeI2d(instr,inputFrame);
-	  } else if (OpCodes.i2f==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeI2f(instr,inputFrame);
-	  } else if (OpCodes.i2l==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeI2l(instr,inputFrame);
-	  } else if (OpCodes.i2s==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeI2s(instr,inputFrame);
-	  } else if (OpCodes.iadd==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIadd(instr,inputFrame);
-	  } else if (OpCodes.iaload==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIaload(instr,inputFrame);
-	  } else if (OpCodes.iand==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIand(instr,inputFrame);
-	  } else if (OpCodes.iastore==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIastore(instr,inputFrame);
-	  } else if (OpCodes.iconst_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIconst_0(instr,inputFrame);
-	  } else if (OpCodes.iconst_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIconst_1(instr,inputFrame);
-	  } else if (OpCodes.iconst_2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIconst_2(instr,inputFrame);
-	  } else if (OpCodes.iconst_3==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIconst_3(instr,inputFrame);
-	  } else if (OpCodes.iconst_4==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIconst_4(instr,inputFrame);
-	  } else if (OpCodes.iconst_5==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIconst_5(instr,inputFrame);
-	  } else if (OpCodes.iconst_m1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIconst_m1(instr,inputFrame);
-	  } else if (OpCodes.idiv==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIdiv(instr,inputFrame);
-	  } else if (OpCodes.if_acmpeq==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIf_acmpeq(instr,inputFrame);
-	  } else if (OpCodes.if_acmpne==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIf_acmpne(instr,inputFrame);
-	  } else if (OpCodes.if_icmpeq==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIf_icmpeq(instr,inputFrame);
-	  } else if (OpCodes.if_icmpge==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIf_icmpge(instr,inputFrame);
-	  } else if (OpCodes.if_icmpgt==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIf_icmpgt(instr,inputFrame);
-	  } else if (OpCodes.if_icmple==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIf_icmple(instr,inputFrame);
-	  } else if (OpCodes.if_icmplt==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIf_icmplt(instr,inputFrame);
-	  } else if (OpCodes.if_icmpne==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIf_icmpne(instr,inputFrame);
-	  } else if (OpCodes.ifeq==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIfeq(instr,inputFrame);
-	  } else if (OpCodes.ifge==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIfge(instr,inputFrame);
-	  } else if (OpCodes.ifgt==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIfgt(instr,inputFrame);
-	  } else if (OpCodes.ifle==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIfle(instr,inputFrame);
-	  } else if (OpCodes.iflt==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIflt(instr,inputFrame);
-	  } else if (OpCodes.ifne==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIfne(instr,inputFrame);
-	  } else if (OpCodes.ifnonnull==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIfnonnull(instr,inputFrame);
-	  } else if (OpCodes.ifnull==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIfnull(instr,inputFrame);
-	  } else if (OpCodes.iinc==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIinc(instr,inputFrame);
-	  } else if (OpCodes.iload==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIload(instr,inputFrame);
-	  } else if (OpCodes.iload_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIload_0(instr,inputFrame);
-	  } else if (OpCodes.iload_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIload_1(instr,inputFrame);
-	  } else if (OpCodes.iload_2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIload_2(instr,inputFrame);
-	  } else if (OpCodes.iload_3==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIload_3(instr,inputFrame);
-	  } else if (OpCodes.imul==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeImul(instr,inputFrame);
-	  } else if (OpCodes.ineg==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIneg(instr,inputFrame);
-	  } else if (OpCodes.instanceof_==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeInstanceof_(instr,inputFrame);
-	  } else if (OpCodes.invokedynamic==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeInvokedynamic(instr,inputFrame);
-	  } else if (OpCodes.invokeinterface==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeInvokeinterface(instr,inputFrame);
-	  } else if (OpCodes.invokespecial==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeInvokespecial(instr,inputFrame);
-	  } else if (OpCodes.invokestatic==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeInvokestatic(instr,inputFrame);
-	  } else if (OpCodes.invokevirtual==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeInvokevirtual(instr,inputFrame);
-	  } else if (OpCodes.ior==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIor(instr,inputFrame);
-	  } else if (OpCodes.irem==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIrem(instr,inputFrame);
-	  } else if (OpCodes.ireturn==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIreturn(instr,inputFrame);
-	  } else if (OpCodes.ishl==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIshl(instr,inputFrame);
-	  } else if (OpCodes.ishr==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIshr(instr,inputFrame);
-	  } else if (OpCodes.istore==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIstore(instr,inputFrame);
-	  } else if (OpCodes.istore_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIstore_0(instr,inputFrame);
-	  } else if (OpCodes.istore_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIstore_1(instr,inputFrame);
-	  } else if (OpCodes.istore_2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIstore_2(instr,inputFrame);
-	  } else if (OpCodes.istore_3==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIstore_3(instr,inputFrame);
-	  } else if (OpCodes.isub==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIsub(instr,inputFrame);
-	  } else if (OpCodes.iushr==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIushr(instr,inputFrame);
-	  } else if (OpCodes.ixor==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeIxor(instr,inputFrame);
-	  } else if (OpCodes.jsr==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeJsr(instr,inputFrame);
-	  } else if (OpCodes.jsr_w==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeJsr_w(instr,inputFrame);
-	  } else if (OpCodes.l2d==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeL2d(instr,inputFrame);
-	  } else if (OpCodes.l2f==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeL2f(instr,inputFrame);
-	  } else if (OpCodes.l2i==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeL2i(instr,inputFrame);
-	  } else if (OpCodes.ladd==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLadd(instr,inputFrame);
-	  } else if (OpCodes.laload==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLaload(instr,inputFrame);
-	  } else if (OpCodes.land==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLand(instr,inputFrame);
-	  } else if (OpCodes.lastore==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLastore(instr,inputFrame);
-	  } else if (OpCodes.lcmp==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLcmp(instr,inputFrame);
-	  } else if (OpCodes.lconst_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLconst_0(instr,inputFrame);
-	  } else if (OpCodes.lconst_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLconst_1(instr,inputFrame);
-	  } else if (OpCodes.ldc==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLdc(instr,inputFrame);
-	  } else if (OpCodes.ldc2_w==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLdc2_w(instr,inputFrame);
-	  } else if (OpCodes.ldc_w==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLdc_w(instr,inputFrame);
-	  } else if (OpCodes.ldiv==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLdiv(instr,inputFrame);
-	  } else if (OpCodes.lload==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLload(instr,inputFrame);
-	  } else if (OpCodes.lload_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLload_0(instr,inputFrame);
-	  } else if (OpCodes.lload_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLload_1(instr,inputFrame);
-	  } else if (OpCodes.lload_2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLload_2(instr,inputFrame);
-	  } else if (OpCodes.lload_3==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLload_3(instr,inputFrame);
-	  } else if (OpCodes.lmul==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLmul(instr,inputFrame);
-	  } else if (OpCodes.lneg==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLneg(instr,inputFrame);
-	  } else if (OpCodes.lookupswitch==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLookupswitch(instr,inputFrame);
-	  } else if (OpCodes.lor==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLor(instr,inputFrame);
-	  } else if (OpCodes.lrem==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLrem(instr,inputFrame);
-	  } else if (OpCodes.lreturn==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLreturn(instr,inputFrame);
-	  } else if (OpCodes.lshl==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLshl(instr,inputFrame);
-	  } else if (OpCodes.lshr==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLshr(instr,inputFrame);
-	  } else if (OpCodes.lstore==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLstore(instr,inputFrame);
-	  } else if (OpCodes.lstore_0==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLstore_0(instr,inputFrame);
-	  } else if (OpCodes.lstore_1==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLstore_1(instr,inputFrame);
-	  } else if (OpCodes.lstore_2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLstore_2(instr,inputFrame);
-	  } else if (OpCodes.lstore_3==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLstore_3(instr,inputFrame);
-	  } else if (OpCodes.lsub==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLsub(instr,inputFrame);
-	  } else if (OpCodes.lushr==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLushr(instr,inputFrame);
-	  } else if (OpCodes.lxor==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeLxor(instr,inputFrame);
-	  } else if (OpCodes.monitorenter==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeMonitorenter(instr,inputFrame);
-	  } else if (OpCodes.monitorexit==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeMonitorexit(instr,inputFrame);
-	  } else if (OpCodes.multianewarray==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeMultianewarray(instr,inputFrame);
-	  } else if (OpCodes.new_==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeNew_(instr,inputFrame);
-	  } else if (OpCodes.newarray==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeNewarray(instr,inputFrame);
-	  } else if (OpCodes.nop==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeNop(instr,inputFrame);
-	  } else if (OpCodes.pop==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executePop(instr,inputFrame);
-	  } else if (OpCodes.pop2==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executePop2(instr,inputFrame);
-	  } else if (OpCodes.putfield==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executePutfield(instr,inputFrame);
-	  } else if (OpCodes.putstatic==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executePutstatic(instr,inputFrame);
-	  } else if (OpCodes.ret==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeRet(instr,inputFrame);
-	  } else if (OpCodes.return_==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeReturn_(instr,inputFrame);
-	  } else if (OpCodes.saload==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeSaload(instr,inputFrame);
-	  } else if (OpCodes.sastore==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeSastore(instr,inputFrame);
-	  } else if (OpCodes.sipush==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeSipush(instr,inputFrame);
-	  } else if (OpCodes.swap==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeSwap(instr,inputFrame);
-	  } else if (OpCodes.tableswitch==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeTableswitch(instr,inputFrame);
-	  } else if (OpCodes.wide==instr.getOpCode()) {
-	    inputFrame=inputFrame.copy();
-	    return executeWide(instr,inputFrame);
-	  } else {
-	    throw new IllegalArgumentException("unknown op code: "+Integer.toHexString(instr.getOpCode()));
-	  }
+		if (OpCodes.aaload==instr.getOpCode()) {
+		    return executeAaload(instr,inputFrame);
+		  } else if (OpCodes.aastore==instr.getOpCode()) {
+		    return executeAastore(instr,inputFrame);
+		  } else if (OpCodes.aconst_null==instr.getOpCode()) {
+		    return executeAconst_null(instr,inputFrame);
+		  } else if (OpCodes.aload==instr.getOpCode()) {
+		    return executeAload(instr,inputFrame);
+		  } else if (OpCodes.aload_0==instr.getOpCode()) {
+		    return executeAload_0(instr,inputFrame);
+		  } else if (OpCodes.aload_1==instr.getOpCode()) {
+		    return executeAload_1(instr,inputFrame);
+		  } else if (OpCodes.aload_2==instr.getOpCode()) {
+		    return executeAload_2(instr,inputFrame);
+		  } else if (OpCodes.aload_3==instr.getOpCode()) {
+		    return executeAload_3(instr,inputFrame);
+		  } else if (OpCodes.anewarray==instr.getOpCode()) {
+		    return executeAnewarray(instr,inputFrame);
+		  } else if (OpCodes.areturn==instr.getOpCode()) {
+		    return executeAreturn(instr,inputFrame);
+		  } else if (OpCodes.arraylength==instr.getOpCode()) {
+		    return executeArraylength(instr,inputFrame);
+		  } else if (OpCodes.astore==instr.getOpCode()) {
+		    return executeAstore(instr,inputFrame);
+		  } else if (OpCodes.astore_0==instr.getOpCode()) {
+		    return executeAstore_0(instr,inputFrame);
+		  } else if (OpCodes.astore_1==instr.getOpCode()) {
+		    return executeAstore_1(instr,inputFrame);
+		  } else if (OpCodes.astore_2==instr.getOpCode()) {
+		    return executeAstore_2(instr,inputFrame);
+		  } else if (OpCodes.astore_3==instr.getOpCode()) {
+		    return executeAstore_3(instr,inputFrame);
+		  } else if (OpCodes.athrow==instr.getOpCode()) {
+		    return executeAthrow(instr,inputFrame);
+		  } else if (OpCodes.baload==instr.getOpCode()) {
+		    return executeBaload(instr,inputFrame);
+		  } else if (OpCodes.bastore==instr.getOpCode()) {
+		    return executeBastore(instr,inputFrame);
+		  } else if (OpCodes.bipush==instr.getOpCode()) {
+		    return executeBipush(instr,inputFrame);
+		  } else if (OpCodes.caload==instr.getOpCode()) {
+		    return executeCaload(instr,inputFrame);
+		  } else if (OpCodes.castore==instr.getOpCode()) {
+		    return executeCastore(instr,inputFrame);
+		  } else if (OpCodes.checkcast==instr.getOpCode()) {
+		    return executeCheckcast(instr,inputFrame);
+		  } else if (OpCodes.d2f==instr.getOpCode()) {
+		    return executeD2f(instr,inputFrame);
+		  } else if (OpCodes.d2i==instr.getOpCode()) {
+		    return executeD2i(instr,inputFrame);
+		  } else if (OpCodes.d2l==instr.getOpCode()) {
+		    return executeD2l(instr,inputFrame);
+		  } else if (OpCodes.dadd==instr.getOpCode()) {
+		    return executeDadd(instr,inputFrame);
+		  } else if (OpCodes.daload==instr.getOpCode()) {
+		    return executeDaload(instr,inputFrame);
+		  } else if (OpCodes.dastore==instr.getOpCode()) {
+		    return executeDastore(instr,inputFrame);
+		  } else if (OpCodes.dcmpg==instr.getOpCode()) {
+		    return executeDcmpg(instr,inputFrame);
+		  } else if (OpCodes.dcmpl==instr.getOpCode()) {
+		    return executeDcmpl(instr,inputFrame);
+		  } else if (OpCodes.dconst_0==instr.getOpCode()) {
+		    return executeDconst_0(instr,inputFrame);
+		  } else if (OpCodes.dconst_1==instr.getOpCode()) {
+		    return executeDconst_1(instr,inputFrame);
+		  } else if (OpCodes.ddiv==instr.getOpCode()) {
+		    return executeDdiv(instr,inputFrame);
+		  } else if (OpCodes.dload==instr.getOpCode()) {
+		    return executeDload(instr,inputFrame);
+		  } else if (OpCodes.dload_0==instr.getOpCode()) {
+		    return executeDload_0(instr,inputFrame);
+		  } else if (OpCodes.dload_1==instr.getOpCode()) {
+		    return executeDload_1(instr,inputFrame);
+		  } else if (OpCodes.dload_2==instr.getOpCode()) {
+		    return executeDload_2(instr,inputFrame);
+		  } else if (OpCodes.dload_3==instr.getOpCode()) {
+		    return executeDload_3(instr,inputFrame);
+		  } else if (OpCodes.dmul==instr.getOpCode()) {
+		    return executeDmul(instr,inputFrame);
+		  } else if (OpCodes.dneg==instr.getOpCode()) {
+		    return executeDneg(instr,inputFrame);
+		  } else if (OpCodes.drem==instr.getOpCode()) {
+		    return executeDrem(instr,inputFrame);
+		  } else if (OpCodes.dreturn==instr.getOpCode()) {
+		    return executeDreturn(instr,inputFrame);
+		  } else if (OpCodes.dstore==instr.getOpCode()) {
+		    return executeDstore(instr,inputFrame);
+		  } else if (OpCodes.dstore_0==instr.getOpCode()) {
+		    return executeDstore_0(instr,inputFrame);
+		  } else if (OpCodes.dstore_1==instr.getOpCode()) {
+		    return executeDstore_1(instr,inputFrame);
+		  } else if (OpCodes.dstore_2==instr.getOpCode()) {
+		    return executeDstore_2(instr,inputFrame);
+		  } else if (OpCodes.dstore_3==instr.getOpCode()) {
+		    return executeDstore_3(instr,inputFrame);
+		  } else if (OpCodes.dsub==instr.getOpCode()) {
+		    return executeDsub(instr,inputFrame);
+		  } else if (OpCodes.dup==instr.getOpCode()) {
+		    return executeDup(instr,inputFrame);
+		  } else if (OpCodes.dup2==instr.getOpCode()) {
+		    return executeDup2(instr,inputFrame);
+		  } else if (OpCodes.dup2_x1==instr.getOpCode()) {
+		    return executeDup2_x1(instr,inputFrame);
+		  } else if (OpCodes.dup2_x2==instr.getOpCode()) {
+		    return executeDup2_x2(instr,inputFrame);
+		  } else if (OpCodes.dup_x1==instr.getOpCode()) {
+		    return executeDup_x1(instr,inputFrame);
+		  } else if (OpCodes.dup_x2==instr.getOpCode()) {
+		    return executeDup_x2(instr,inputFrame);
+		  } else if (OpCodes.f2d==instr.getOpCode()) {
+		    return executeF2d(instr,inputFrame);
+		  } else if (OpCodes.f2i==instr.getOpCode()) {
+		    return executeF2i(instr,inputFrame);
+		  } else if (OpCodes.f2l==instr.getOpCode()) {
+		    return executeF2l(instr,inputFrame);
+		  } else if (OpCodes.fadd==instr.getOpCode()) {
+		    return executeFadd(instr,inputFrame);
+		  } else if (OpCodes.faload==instr.getOpCode()) {
+		    return executeFaload(instr,inputFrame);
+		  } else if (OpCodes.fastore==instr.getOpCode()) {
+		    return executeFastore(instr,inputFrame);
+		  } else if (OpCodes.fcmpg==instr.getOpCode()) {
+		    return executeFcmpg(instr,inputFrame);
+		  } else if (OpCodes.fcmpl==instr.getOpCode()) {
+		    return executeFcmpl(instr,inputFrame);
+		  } else if (OpCodes.fconst_0==instr.getOpCode()) {
+		    return executeFconst_0(instr,inputFrame);
+		  } else if (OpCodes.fconst_1==instr.getOpCode()) {
+		    return executeFconst_1(instr,inputFrame);
+		  } else if (OpCodes.fconst_2==instr.getOpCode()) {
+		    return executeFconst_2(instr,inputFrame);
+		  } else if (OpCodes.fdiv==instr.getOpCode()) {
+		    return executeFdiv(instr,inputFrame);
+		  } else if (OpCodes.fload==instr.getOpCode()) {
+		    return executeFload(instr,inputFrame);
+		  } else if (OpCodes.fload_0==instr.getOpCode()) {
+		    return executeFload_0(instr,inputFrame);
+		  } else if (OpCodes.fload_1==instr.getOpCode()) {
+		    return executeFload_1(instr,inputFrame);
+		  } else if (OpCodes.fload_2==instr.getOpCode()) {
+		    return executeFload_2(instr,inputFrame);
+		  } else if (OpCodes.fload_3==instr.getOpCode()) {
+		    return executeFload_3(instr,inputFrame);
+		  } else if (OpCodes.fmul==instr.getOpCode()) {
+		    return executeFmul(instr,inputFrame);
+		  } else if (OpCodes.fneg==instr.getOpCode()) {
+		    return executeFneg(instr,inputFrame);
+		  } else if (OpCodes.frem==instr.getOpCode()) {
+		    return executeFrem(instr,inputFrame);
+		  } else if (OpCodes.freturn==instr.getOpCode()) {
+		    return executeFreturn(instr,inputFrame);
+		  } else if (OpCodes.fstore==instr.getOpCode()) {
+		    return executeFstore(instr,inputFrame);
+		  } else if (OpCodes.fstore_0==instr.getOpCode()) {
+		    return executeFstore_0(instr,inputFrame);
+		  } else if (OpCodes.fstore_1==instr.getOpCode()) {
+		    return executeFstore_1(instr,inputFrame);
+		  } else if (OpCodes.fstore_2==instr.getOpCode()) {
+		    return executeFstore_2(instr,inputFrame);
+		  } else if (OpCodes.fstore_3==instr.getOpCode()) {
+		    return executeFstore_3(instr,inputFrame);
+		  } else if (OpCodes.fsub==instr.getOpCode()) {
+		    return executeFsub(instr,inputFrame);
+		  } else if (OpCodes.getfield==instr.getOpCode()) {
+		    return executeGetfield(instr,inputFrame);
+		  } else if (OpCodes.getstatic==instr.getOpCode()) {
+		    return executeGetstatic(instr,inputFrame);
+		  } else if (OpCodes.goto_==instr.getOpCode()) {
+		    return executeGoto_(instr,inputFrame);
+		  } else if (OpCodes.goto_w==instr.getOpCode()) {
+		    return executeGoto_w(instr,inputFrame);
+		  } else if (OpCodes.i2b==instr.getOpCode()) {
+		    return executeI2b(instr,inputFrame);
+		  } else if (OpCodes.i2c==instr.getOpCode()) {
+		    return executeI2c(instr,inputFrame);
+		  } else if (OpCodes.i2d==instr.getOpCode()) {
+		    return executeI2d(instr,inputFrame);
+		  } else if (OpCodes.i2f==instr.getOpCode()) {
+		    return executeI2f(instr,inputFrame);
+		  } else if (OpCodes.i2l==instr.getOpCode()) {
+		    return executeI2l(instr,inputFrame);
+		  } else if (OpCodes.i2s==instr.getOpCode()) {
+		    return executeI2s(instr,inputFrame);
+		  } else if (OpCodes.iadd==instr.getOpCode()) {
+		    return executeIadd(instr,inputFrame);
+		  } else if (OpCodes.iaload==instr.getOpCode()) {
+		    return executeIaload(instr,inputFrame);
+		  } else if (OpCodes.iand==instr.getOpCode()) {
+		    return executeIand(instr,inputFrame);
+		  } else if (OpCodes.iastore==instr.getOpCode()) {
+		    return executeIastore(instr,inputFrame);
+		  } else if (OpCodes.iconst_0==instr.getOpCode()) {
+		    return executeIconst_0(instr,inputFrame);
+		  } else if (OpCodes.iconst_1==instr.getOpCode()) {
+		    return executeIconst_1(instr,inputFrame);
+		  } else if (OpCodes.iconst_2==instr.getOpCode()) {
+		    return executeIconst_2(instr,inputFrame);
+		  } else if (OpCodes.iconst_3==instr.getOpCode()) {
+		    return executeIconst_3(instr,inputFrame);
+		  } else if (OpCodes.iconst_4==instr.getOpCode()) {
+		    return executeIconst_4(instr,inputFrame);
+		  } else if (OpCodes.iconst_5==instr.getOpCode()) {
+		    return executeIconst_5(instr,inputFrame);
+		  } else if (OpCodes.iconst_m1==instr.getOpCode()) {
+		    return executeIconst_m1(instr,inputFrame);
+		  } else if (OpCodes.idiv==instr.getOpCode()) {
+		    return executeIdiv(instr,inputFrame);
+		  } else if (OpCodes.if_acmpeq==instr.getOpCode()) {
+		    return executeIf_acmpeq(instr,inputFrame);
+		  } else if (OpCodes.if_acmpne==instr.getOpCode()) {
+		    return executeIf_acmpne(instr,inputFrame);
+		  } else if (OpCodes.if_icmpeq==instr.getOpCode()) {
+		    return executeIf_icmpeq(instr,inputFrame);
+		  } else if (OpCodes.if_icmpge==instr.getOpCode()) {
+		    return executeIf_icmpge(instr,inputFrame);
+		  } else if (OpCodes.if_icmpgt==instr.getOpCode()) {
+		    return executeIf_icmpgt(instr,inputFrame);
+		  } else if (OpCodes.if_icmple==instr.getOpCode()) {
+		    return executeIf_icmple(instr,inputFrame);
+		  } else if (OpCodes.if_icmplt==instr.getOpCode()) {
+		    return executeIf_icmplt(instr,inputFrame);
+		  } else if (OpCodes.if_icmpne==instr.getOpCode()) {
+		    return executeIf_icmpne(instr,inputFrame);
+		  } else if (OpCodes.ifeq==instr.getOpCode()) {
+		    return executeIfeq(instr,inputFrame);
+		  } else if (OpCodes.ifge==instr.getOpCode()) {
+		    return executeIfge(instr,inputFrame);
+		  } else if (OpCodes.ifgt==instr.getOpCode()) {
+		    return executeIfgt(instr,inputFrame);
+		  } else if (OpCodes.ifle==instr.getOpCode()) {
+		    return executeIfle(instr,inputFrame);
+		  } else if (OpCodes.iflt==instr.getOpCode()) {
+		    return executeIflt(instr,inputFrame);
+		  } else if (OpCodes.ifne==instr.getOpCode()) {
+		    return executeIfne(instr,inputFrame);
+		  } else if (OpCodes.ifnonnull==instr.getOpCode()) {
+		    return executeIfnonnull(instr,inputFrame);
+		  } else if (OpCodes.ifnull==instr.getOpCode()) {
+		    return executeIfnull(instr,inputFrame);
+		  } else if (OpCodes.iinc==instr.getOpCode()) {
+		    return executeIinc(instr,inputFrame);
+		  } else if (OpCodes.iload==instr.getOpCode()) {
+		    return executeIload(instr,inputFrame);
+		  } else if (OpCodes.iload_0==instr.getOpCode()) {
+		    return executeIload_0(instr,inputFrame);
+		  } else if (OpCodes.iload_1==instr.getOpCode()) {
+		    return executeIload_1(instr,inputFrame);
+		  } else if (OpCodes.iload_2==instr.getOpCode()) {
+		    return executeIload_2(instr,inputFrame);
+		  } else if (OpCodes.iload_3==instr.getOpCode()) {
+		    return executeIload_3(instr,inputFrame);
+		  } else if (OpCodes.imul==instr.getOpCode()) {
+		    return executeImul(instr,inputFrame);
+		  } else if (OpCodes.ineg==instr.getOpCode()) {
+		    return executeIneg(instr,inputFrame);
+		  } else if (OpCodes.instanceof_==instr.getOpCode()) {
+		    return executeInstanceof_(instr,inputFrame);
+		  } else if (OpCodes.invokedynamic==instr.getOpCode()) {
+		    return executeInvokedynamic(instr,inputFrame);
+		  } else if (OpCodes.invokeinterface==instr.getOpCode()) {
+		    return executeInvokeinterface(instr,inputFrame);
+		  } else if (OpCodes.invokespecial==instr.getOpCode()) {
+		    return executeInvokespecial(instr,inputFrame);
+		  } else if (OpCodes.invokestatic==instr.getOpCode()) {
+		    return executeInvokestatic(instr,inputFrame);
+		  } else if (OpCodes.invokevirtual==instr.getOpCode()) {
+		    return executeInvokevirtual(instr,inputFrame);
+		  } else if (OpCodes.ior==instr.getOpCode()) {
+		    return executeIor(instr,inputFrame);
+		  } else if (OpCodes.irem==instr.getOpCode()) {
+		    return executeIrem(instr,inputFrame);
+		  } else if (OpCodes.ireturn==instr.getOpCode()) {
+		    return executeIreturn(instr,inputFrame);
+		  } else if (OpCodes.ishl==instr.getOpCode()) {
+		    return executeIshl(instr,inputFrame);
+		  } else if (OpCodes.ishr==instr.getOpCode()) {
+		    return executeIshr(instr,inputFrame);
+		  } else if (OpCodes.istore==instr.getOpCode()) {
+		    return executeIstore(instr,inputFrame);
+		  } else if (OpCodes.istore_0==instr.getOpCode()) {
+		    return executeIstore_0(instr,inputFrame);
+		  } else if (OpCodes.istore_1==instr.getOpCode()) {
+		    return executeIstore_1(instr,inputFrame);
+		  } else if (OpCodes.istore_2==instr.getOpCode()) {
+		    return executeIstore_2(instr,inputFrame);
+		  } else if (OpCodes.istore_3==instr.getOpCode()) {
+		    return executeIstore_3(instr,inputFrame);
+		  } else if (OpCodes.isub==instr.getOpCode()) {
+		    return executeIsub(instr,inputFrame);
+		  } else if (OpCodes.iushr==instr.getOpCode()) {
+		    return executeIushr(instr,inputFrame);
+		  } else if (OpCodes.ixor==instr.getOpCode()) {
+		    return executeIxor(instr,inputFrame);
+		  } else if (OpCodes.jsr==instr.getOpCode()) {
+		    return executeJsr(instr,inputFrame);
+		  } else if (OpCodes.jsr_w==instr.getOpCode()) {
+		    return executeJsr_w(instr,inputFrame);
+		  } else if (OpCodes.l2d==instr.getOpCode()) {
+		    return executeL2d(instr,inputFrame);
+		  } else if (OpCodes.l2f==instr.getOpCode()) {
+		    return executeL2f(instr,inputFrame);
+		  } else if (OpCodes.l2i==instr.getOpCode()) {
+		    return executeL2i(instr,inputFrame);
+		  } else if (OpCodes.ladd==instr.getOpCode()) {
+		    return executeLadd(instr,inputFrame);
+		  } else if (OpCodes.laload==instr.getOpCode()) {
+		    return executeLaload(instr,inputFrame);
+		  } else if (OpCodes.land==instr.getOpCode()) {
+		    return executeLand(instr,inputFrame);
+		  } else if (OpCodes.lastore==instr.getOpCode()) {
+		    return executeLastore(instr,inputFrame);
+		  } else if (OpCodes.lcmp==instr.getOpCode()) {
+		    return executeLcmp(instr,inputFrame);
+		  } else if (OpCodes.lconst_0==instr.getOpCode()) {
+		    return executeLconst_0(instr,inputFrame);
+		  } else if (OpCodes.lconst_1==instr.getOpCode()) {
+		    return executeLconst_1(instr,inputFrame);
+		  } else if (OpCodes.ldc==instr.getOpCode()) {
+		    return executeLdc(instr,inputFrame);
+		  } else if (OpCodes.ldc2_w==instr.getOpCode()) {
+		    return executeLdc2_w(instr,inputFrame);
+		  } else if (OpCodes.ldc_w==instr.getOpCode()) {
+		    return executeLdc_w(instr,inputFrame);
+		  } else if (OpCodes.ldiv==instr.getOpCode()) {
+		    return executeLdiv(instr,inputFrame);
+		  } else if (OpCodes.lload==instr.getOpCode()) {
+		    return executeLload(instr,inputFrame);
+		  } else if (OpCodes.lload_0==instr.getOpCode()) {
+		    return executeLload_0(instr,inputFrame);
+		  } else if (OpCodes.lload_1==instr.getOpCode()) {
+		    return executeLload_1(instr,inputFrame);
+		  } else if (OpCodes.lload_2==instr.getOpCode()) {
+		    return executeLload_2(instr,inputFrame);
+		  } else if (OpCodes.lload_3==instr.getOpCode()) {
+		    return executeLload_3(instr,inputFrame);
+		  } else if (OpCodes.lmul==instr.getOpCode()) {
+		    return executeLmul(instr,inputFrame);
+		  } else if (OpCodes.lneg==instr.getOpCode()) {
+		    return executeLneg(instr,inputFrame);
+		  } else if (OpCodes.lookupswitch==instr.getOpCode()) {
+		    return executeLookupswitch(instr,inputFrame);
+		  } else if (OpCodes.lor==instr.getOpCode()) {
+		    return executeLor(instr,inputFrame);
+		  } else if (OpCodes.lrem==instr.getOpCode()) {
+		    return executeLrem(instr,inputFrame);
+		  } else if (OpCodes.lreturn==instr.getOpCode()) {
+		    return executeLreturn(instr,inputFrame);
+		  } else if (OpCodes.lshl==instr.getOpCode()) {
+		    return executeLshl(instr,inputFrame);
+		  } else if (OpCodes.lshr==instr.getOpCode()) {
+		    return executeLshr(instr,inputFrame);
+		  } else if (OpCodes.lstore==instr.getOpCode()) {
+		    return executeLstore(instr,inputFrame);
+		  } else if (OpCodes.lstore_0==instr.getOpCode()) {
+		    return executeLstore_0(instr,inputFrame);
+		  } else if (OpCodes.lstore_1==instr.getOpCode()) {
+		    return executeLstore_1(instr,inputFrame);
+		  } else if (OpCodes.lstore_2==instr.getOpCode()) {
+		    return executeLstore_2(instr,inputFrame);
+		  } else if (OpCodes.lstore_3==instr.getOpCode()) {
+		    return executeLstore_3(instr,inputFrame);
+		  } else if (OpCodes.lsub==instr.getOpCode()) {
+		    return executeLsub(instr,inputFrame);
+		  } else if (OpCodes.lushr==instr.getOpCode()) {
+		    return executeLushr(instr,inputFrame);
+		  } else if (OpCodes.lxor==instr.getOpCode()) {
+		    return executeLxor(instr,inputFrame);
+		  } else if (OpCodes.monitorenter==instr.getOpCode()) {
+		    return executeMonitorenter(instr,inputFrame);
+		  } else if (OpCodes.monitorexit==instr.getOpCode()) {
+		    return executeMonitorexit(instr,inputFrame);
+		  } else if (OpCodes.multianewarray==instr.getOpCode()) {
+		    return executeMultianewarray(instr,inputFrame);
+		  } else if (OpCodes.new_==instr.getOpCode()) {
+		    return executeNew_(instr,inputFrame);
+		  } else if (OpCodes.newarray==instr.getOpCode()) {
+		    return executeNewarray(instr,inputFrame);
+		  } else if (OpCodes.nop==instr.getOpCode()) {
+		    return executeNop(instr,inputFrame);
+		  } else if (OpCodes.pop==instr.getOpCode()) {
+		    return executePop(instr,inputFrame);
+		  } else if (OpCodes.pop2==instr.getOpCode()) {
+		    return executePop2(instr,inputFrame);
+		  } else if (OpCodes.putfield==instr.getOpCode()) {
+		    return executePutfield(instr,inputFrame);
+		  } else if (OpCodes.putstatic==instr.getOpCode()) {
+		    return executePutstatic(instr,inputFrame);
+		  } else if (OpCodes.ret==instr.getOpCode()) {
+		    return executeRet(instr,inputFrame);
+		  } else if (OpCodes.return_==instr.getOpCode()) {
+		    return executeReturn_(instr,inputFrame);
+		  } else if (OpCodes.saload==instr.getOpCode()) {
+		    return executeSaload(instr,inputFrame);
+		  } else if (OpCodes.sastore==instr.getOpCode()) {
+		    return executeSastore(instr,inputFrame);
+		  } else if (OpCodes.sipush==instr.getOpCode()) {
+		    return executeSipush(instr,inputFrame);
+		  } else if (OpCodes.swap==instr.getOpCode()) {
+		    return executeSwap(instr,inputFrame);
+		  } else if (OpCodes.tableswitch==instr.getOpCode()) {
+		    return executeTableswitch(instr,inputFrame);
+		  } else if (OpCodes.wide==instr.getOpCode()) {
+		    return executeWide(instr,inputFrame);
+		  } else {
+		    throw new IllegalArgumentException("unknown op code: "+Integer.toHexString(instr.getOpCode()));
+		  }
+
 
 	}
 
@@ -674,7 +476,7 @@ public class Interpreter {
 			
 			@Override
 			public boolean checkComponentType(TypeDescriptor componentDescriptor) {
-				return componentDescriptor.isObject();
+				return componentDescriptor.isObject() || componentDescriptor.isArray();
 			}
 		};
 		
@@ -702,7 +504,7 @@ public class Interpreter {
 			
 			@Override
 			public boolean checkComponentType(TypeDescriptor componentDescriptor) {
-				return componentDescriptor.isObject();
+				return componentDescriptor.isObject() || componentDescriptor.isArray();
 			}
 		};
 		
@@ -744,7 +546,7 @@ public class Interpreter {
 
 	public Frame executeAreturn(AbstractInstruction instr, Frame inputFrame) {
 	  TypeDescriptor returnType = parent.getMethod().getMethodDescriptor().getReturnType();
-	  if (!returnType.isObject()) {
+	  if (!(returnType.isObject() || returnType.isArray())) {
 		  throw new VerifyException(instr.getIndex(), "instruction not allowed with return type "+returnType.getValue());
 	  }
 	  inputFrame.pop(new ObjectValueType(returnType, parent));
@@ -781,7 +583,7 @@ public class Interpreter {
 	}
 
 	public Frame executeAthrow(AbstractInstruction instr, Frame inputFrame) {
-	  inputFrame.pop(VerificationType.THROWABLE);
+	  inputFrame.pop(VerificationType.THROWABLE.create(parent));
 	  return inputFrame;
 	}
 
@@ -1323,7 +1125,7 @@ public class Interpreter {
 	}
 
 	public Frame executeFsub(AbstractInstruction instr, Frame inputFrame) {
-	   return executeStore(instr, inputFrame, VerificationType.FLOAT);
+	   return executeTwoTier(VerificationType.FLOAT, inputFrame);
 	}
 
 	public Frame executeGetfield(AbstractInstruction instr, Frame inputFrame) {
@@ -1627,7 +1429,7 @@ public class Interpreter {
 
 	public Frame executeInvokeinterface(AbstractInstruction instr, Frame inputFrame) {
 	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
-	  MethodrefInfo mi = (MethodrefInfo)cpi.getCpEntry();
+	  InterfaceMethodrefInfo mi = (InterfaceMethodrefInfo)cpi.getCpEntry();
 	  invokeMethod(mi.getClassReference().getDescriptor(), mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame);
 	  return inputFrame;
 	}
@@ -1865,22 +1667,9 @@ public class Interpreter {
 	}
 
 	public Frame executeLdc(AbstractInstruction instr, Frame inputFrame) {
-	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+	  LdcInstruction cpi = (LdcInstruction)instr;
 	  AbstractConstantPoolEntry entry = cpi.getCpEntry();
-	  if (entry instanceof IntegerInfo) {
-		  inputFrame.push(VerificationType.INT);
-	  } else if (entry instanceof FloatInfo) {
-		  inputFrame.push(VerificationType.FLOAT);
-	  } else if (entry instanceof ClassInfo) {
-		  inputFrame.push(VerificationType.CLASS);
-	  } else if (entry instanceof MethodTypeInfo) {
-		  inputFrame.push(VerificationType.METHOD_TYPE);
-	  } else if (entry instanceof MethodHandleInfo) {
-		  inputFrame.push(VerificationType.METHOD_HANDLE);
-	  } else {
-		  throw new IllegalStateException("Unexpected cost: "+entry.getClass().getName());
-	  }
-	  return inputFrame;
+	  return executeLdc(entry, inputFrame);
 	}
 
 	public Frame executeLdc2_w(AbstractInstruction instr, Frame inputFrame) {
@@ -1897,8 +1686,30 @@ public class Interpreter {
 	}
 
 	public Frame executeLdc_w(AbstractInstruction instr, Frame inputFrame) {
-	  return executeLdc(instr, inputFrame);
+	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
+	  AbstractConstantPoolEntry entry = cpi.getCpEntry();
+	  return executeLdc(entry, inputFrame);
 	}
+	
+	private Frame executeLdc(AbstractConstantPoolEntry entry, Frame inputFrame) {
+		  if (entry instanceof IntegerInfo) {
+			  inputFrame.push(VerificationType.INT);
+		  } else if (entry instanceof FloatInfo) {
+			  inputFrame.push(VerificationType.FLOAT);
+		  } else if (entry instanceof ClassInfo) {
+			  inputFrame.push(VerificationType.CLASS);
+		  } else if (entry instanceof StringInfo) {
+			  inputFrame.push(VerificationType.STRING.create(parent));
+		  } else if (entry instanceof MethodTypeInfo) {
+			  inputFrame.push(VerificationType.METHOD_TYPE.create(parent));
+		  } else if (entry instanceof MethodHandleInfo) {
+			  inputFrame.push(VerificationType.METHOD_HANDLE.create(parent));
+		  } else {
+			  throw new IllegalStateException("Unexpected const: "+entry.getClass().getName());
+		  }
+		  return inputFrame;
+	}
+
 
 	public Frame executeLdiv(AbstractInstruction instr, Frame inputFrame) {
 	  return executeTwoTier(VerificationType.LONG, inputFrame);
@@ -1951,11 +1762,11 @@ public class Interpreter {
 	}
 
 	public Frame executeLshl(AbstractInstruction instr, Frame inputFrame) {
-		return executeTwoTier(VerificationType.LONG, inputFrame);
+		return executeTwoTier(VerificationType.INT,VerificationType.LONG,inputFrame);
 	}
 
 	public Frame executeLshr(AbstractInstruction instr, Frame inputFrame) {
-		return executeTwoTier(VerificationType.LONG, inputFrame);
+		return executeTwoTier(VerificationType.INT,VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLstore(AbstractInstruction instr, Frame inputFrame) {
@@ -1983,7 +1794,7 @@ public class Interpreter {
 	}
 
 	public Frame executeLushr(AbstractInstruction instr, Frame inputFrame) {
-		return executeTwoTier(VerificationType.LONG, inputFrame);
+		return executeTwoTier(VerificationType.INT,VerificationType.LONG, inputFrame);
 	}
 
 	public Frame executeLxor(AbstractInstruction instr, Frame inputFrame) {
@@ -2063,7 +1874,7 @@ public class Interpreter {
 		 throw new IllegalStateException("illegal state - expected class or interface but got array!");
 	  }
 	  
-	  inputFrame.pop(new ObjectValueType(fi.getDescriptor(), parent));
+	  inputFrame.pop(VerificationType.createTypeFromDescriptor(fi.getDescriptor(), parent));
 	  VerificationType top = inputFrame.peek(VerificationType.REFERENCE);
 	  if (top.equals(VerificationType.UNINITIALIZED_THIS)) {
 		  TypeDescriptor expected = new TypeDescriptor("L"+parent.getClazz().getThisClass().getClassName()+";");
@@ -2080,7 +1891,7 @@ public class Interpreter {
 	public Frame executePutstatic(AbstractInstruction instr, Frame inputFrame) {
 	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
 	  FieldInfo fi = (FieldInfo)cpi.getInfo();
-	  if (fi.getModifier().isStatic()) {
+	  if (!fi.getModifier().isStatic()) {
 			  throw new IllegalStateException("illegal state - putstatic on non-static field!");
 	  }
 	  ExternalClassInfo cl = fi.getParent();
@@ -2200,6 +2011,13 @@ public class Interpreter {
 		return inputFrame;
 	}
 	
+	private Frame executeTwoTier(VerificationType t1, VerificationType t2, Frame inputFrame) {
+		inputFrame.pop(t1);
+		inputFrame.pop(t2);
+		inputFrame.push(t2);
+		return inputFrame;
+	}
+	
 	private Frame executeOneTier(VerificationType t, Frame inputFrame) {
 		inputFrame.pop(t);
 		inputFrame.push(t);
@@ -2274,7 +2092,7 @@ public class Interpreter {
 			
 			currentIndent = indent(currentIndent, false);
 			String methodName = "execute"+name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
-			print(currentIndent,"inputFrame=inputFrame.copy();");
+			//print(currentIndent,"inputFrame=inputFrame.copy();");
 			print(currentIndent,"return "+methodName+"(instr,inputFrame);");
 			currentIndent = indent(currentIndent, true);
 			index++;
@@ -2325,6 +2143,12 @@ public class Interpreter {
 	public static void printempty() {
 		System.out.println("");
 	}
+
+	public void setParent(Verifier parent) {
+		this.parent = parent;
+	}
+	
+	
 
 }
 

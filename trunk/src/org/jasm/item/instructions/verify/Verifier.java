@@ -41,6 +41,8 @@ import java.util.Set;
 
 
 
+
+
 import org.jasm.item.IErrorEmitter;
 import org.jasm.item.attribute.AbstractStackmapFrame;
 import org.jasm.item.attribute.AbstractStackmapVariableinfo;
@@ -78,6 +80,7 @@ import org.jasm.item.instructions.LocalVariableInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.verify.error.BadCodeException;
 import org.jasm.item.instructions.verify.error.FallOffException;
+import org.jasm.item.instructions.verify.error.LinearMethodException;
 import org.jasm.item.instructions.verify.error.MissingStackmapException;
 import org.jasm.item.instructions.verify.error.MissingStackmapsDeclaration;
 import org.jasm.item.instructions.verify.error.UnknownClassException;
@@ -99,6 +102,7 @@ public class Verifier implements IClassQuery {
 	private Clazz clazz;
 	private Method method;
 	private CodeAttributeContent code;
+	private Interpreter interpeter;
 	
 	
 	private List<Set<Integer>> followers = new ArrayList<Set<Integer>>();
@@ -118,6 +122,8 @@ public class Verifier implements IClassQuery {
 		this.clazz = parent.getAncestor(Clazz.class);
 		this.method = parent.getAncestor(Method.class);
 		this.code = parent.getAncestor(CodeAttributeContent.class);
+		this.interpeter = new Interpreter();
+		this.interpeter.setParent(this);
 	}
 	
 	private AbstractInstruction getInstructionAt(int index) {
@@ -178,10 +184,16 @@ public class Verifier implements IClassQuery {
 					if (version>50) {
 						throw e;
 					}
+				} catch (LinearMethodException e) {
+					throw e.getCause();
 				}
+			} else {
+				
 			}
 		} catch (VerifyException e) {
 			emitCodeVerifyError(e);
+		} catch (RuntimeException e) {
+			emitRuntimeError(e);
 		}
 		
 		
@@ -222,6 +234,40 @@ public class Verifier implements IClassQuery {
 			if (!stackMapFrames.containsKey(b)) {
 				throw new MissingStackmapException(b);
 			}
+		}
+		
+		if (branchTargets.size() == 0 && 
+				exceptionTargets.size() == 0 &&
+				stackMapFrames.size() == 0) {
+			checkLinearMethod();
+		}
+	}
+	
+	private void checkLinearMethod() {
+		
+		try {
+			Frame currentFrame = initialFrame.copy();
+			for (int i=0;i<parent.getSize(); i++) {
+				currentInstructionIndex = i;
+				AbstractInstruction instr = parent.get(currentInstructionIndex);
+				if (instr instanceof BranchInstruction) {
+					throw new IllegalStateException("Branch in a linear method");
+				}
+				if (instr instanceof AbstractSwitchInstruction)  {
+					throw new IllegalStateException("Switch in a linear method");
+				}
+				if (instr instanceof ArgumentLessInstruction) {
+					ArgumentLessInstruction ai = (ArgumentLessInstruction)instr;
+					if (ai.isReturn() && currentInstructionIndex <(parent.getSize()-1)) {
+						throw new IllegalStateException("return in the middle of a linear method");
+					}
+				}
+				interpeter.execute(instr, currentFrame);
+				
+			}
+		} catch (VerifyException e) {
+			//e.printStackTrace();
+			throw new LinearMethodException(e);
 		}
 	}
 	
@@ -440,7 +486,7 @@ public class Verifier implements IClassQuery {
 		ExternalClassInfo classToInfo = getClass(classTo);
 		ExternalClassInfo classFromInfo = getClass(classFrom);
 
-		return classToInfo.isAssignableTo(classFromInfo);
+		return classFromInfo.isAssignableTo(classToInfo);
 	}
 
 	@Override
@@ -490,6 +536,17 @@ public class Verifier implements IClassQuery {
 		} 
 		AbstractInstruction instr = getInstructionAt(index);
 		instr.emitError(null, "code verification error - "+e.getMessage());
+		
+	}
+	
+	private void emitRuntimeError(RuntimeException e) {
+		//e.printStackTrace();
+		int index = 0;
+		if (currentInstructionIndex>=0) {
+			index = currentInstructionIndex;
+		} 
+		AbstractInstruction instr = getInstructionAt(index);
+		instr.emitError(null, "code verification runtime error - "+e.getClass().getName()+":"+e.getMessage());
 		
 	}
 

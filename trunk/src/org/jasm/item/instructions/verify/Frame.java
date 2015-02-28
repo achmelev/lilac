@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import org.jasm.item.instructions.verify.error.InconsistentStackSizeException;
 import org.jasm.item.instructions.verify.error.StackOverflowException;
+import org.jasm.item.instructions.verify.error.StackUnderflowException;
 import org.jasm.item.instructions.verify.error.StackmapAppendOverflowException;
 import org.jasm.item.instructions.verify.error.StackmapChopUnderflowException;
 import org.jasm.item.instructions.verify.error.StackmapFullLocalsOverflowException;
@@ -67,7 +68,7 @@ public class Frame {
 	
 	public VerificationType pop(VerificationType expected) {
 		if (stack.size() == 0) {
-			throw new StackOverflowException(-1);
+			throw new StackUnderflowException(-1);
 		}
 		VerificationType value = stack.peek();
 		
@@ -94,7 +95,7 @@ public class Frame {
 	}
 	
 	public VerificationType load(VerificationType expected, int register) {
-		if (register<=0 || register>=locals.size()) {
+		if (register<0 || register>=locals.size()) {
 			throw new IllegalArgumentException("illegal register index: "+register);
 		}
 		if ((expected.getSize() == 2 
@@ -134,7 +135,7 @@ public class Frame {
 	}
 	
 	public void setRegisterValue(VerificationType value, int register) {
-		if (register<=0 || register>=locals.size()) {
+		if (register<0 || register>=locals.size()) {
 			throw new IllegalArgumentException("illegal register index: "+register);
 		}
 		if (value.getSize() == 2

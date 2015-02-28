@@ -88,6 +88,11 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 			getRoot().checkAndLoadClassInfo(this, cpEntryReference, ((ClassInfo)cpEntry).getClassName(), true);
 		}
 	}
+
+	public AbstractConstantPoolEntry getCpEntry() {
+		return cpEntry;
+	}
+	
 	
 	
 
