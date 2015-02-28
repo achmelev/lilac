@@ -46,7 +46,7 @@ public class Uninitialized extends VerificationType {
 	@Override
 	protected boolean isAssignableFromUninitializedValue(
 			UninitializedValueType from) {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -100,5 +100,12 @@ public class Uninitialized extends VerificationType {
 	public int getSize() {
 		return 1;
 	}
+
+	@Override
+	public String toString() {
+		return "Uninitialized";
+	}
+	
+	
 
 }
