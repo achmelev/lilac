@@ -270,6 +270,7 @@ public class OpCodes {
 			specialInstructions.add(invokedynamic);
 			specialInstructions.add(invokeinterface);
 			specialInstructions.add(ldc);
+			specialInstructions.add(ldc_w);
 			specialInstructions.add(lookupswitch);
 			specialInstructions.add(multianewarray);
 			specialInstructions.add(newarray);
@@ -453,7 +454,6 @@ public class OpCodes {
 			constantPoolInstructions.add(invokespecial);
 			constantPoolInstructions.add(invokestatic);
 			constantPoolInstructions.add(invokevirtual);
-			constantPoolInstructions.add(ldc_w);
 			constantPoolInstructions.add(ldc2_w);
 			constantPoolInstructions.add(new_);
 			constantPoolInstructions.add(putfield);

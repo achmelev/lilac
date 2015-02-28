@@ -52,6 +52,8 @@ public abstract class AbstractAssembleDisassembleMavenJarTestCase extends
 	
 	protected byte [] assemble(String data) {
 		
+		//log.error("code: \n"+data);
+		
 		ByteArrayOutputStream bo = new ByteArrayOutputStream();
 		PrintStream pr = new PrintStream(bo);
 		pr.print(data);
@@ -60,6 +62,11 @@ public abstract class AbstractAssembleDisassembleMavenJarTestCase extends
 		AssemblerParser parser = null;
 		parser = new AssemblerParser();
 		Clazz clazz =  parser.parse(bi);
+		if (parser.getErrorMessages().size() > 0) {
+			log.error("code: \n"+data);
+			parser.printErrors();
+			Assert.fail("Parsing failed");
+		}
 		VerifierParams params = new VerifierParams();
 		if (classPath == null) {
 			classPath = new ClassInfoResolver();

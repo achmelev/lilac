@@ -1686,9 +1686,7 @@ public class Interpreter {
 	}
 
 	public Frame executeLdc_w(AbstractInstruction instr, Frame inputFrame) {
-	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
-	  AbstractConstantPoolEntry entry = cpi.getCpEntry();
-	  return executeLdc(entry, inputFrame);
+	  return executeLdc(instr, inputFrame);
 	}
 	
 	private Frame executeLdc(AbstractConstantPoolEntry entry, Frame inputFrame) {

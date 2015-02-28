@@ -23,14 +23,18 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 	
 	
 	
-	public LdcInstruction(AbstractConstantPoolEntry entry) {
-		super(OpCodes.ldc);
-		this.cpEntry = entry;
+	
+	public LdcInstruction(boolean wide) {
+		if (wide) {
+			opCode = OpCodes.ldc_w;
+		} else {
+			opCode = OpCodes.ldc;
+		}
 	}
 
 	@Override
 	public int getLength() {
-		return 2;
+		return (this.opCode==OpCodes.ldc_w)?3:2;
 	}
 
 	@Override
@@ -47,6 +51,12 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 	public String getPrintArgs() {
 		return cpEntry.getSymbolName();
 	}
+	
+	@Override
+	public String getPrintName() {
+		boolean wideModifier = (this.cpEntry.getIndexInPool()<=255 && opCode == OpCodes.ldc_w);
+		return (wideModifier?"wide ":"")+OpCodes.getNameForOpcode(OpCodes.ldc);
+	}
 
 	@Override
 	public String getPrintComment() {
@@ -55,12 +65,22 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
-		cpEntryIndex = source.readUnsignedByte(offset);
+		if (opCode == OpCodes.ldc_w) {
+			cpEntryIndex = source.readUnsignedShort(offset);
+		} else {
+			cpEntryIndex = source.readUnsignedByte(offset);
+		}
+		
 	}
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
-		target.writeUnsignedByte(offset, (short)cpEntry.getIndexInPool());
+		if (opCode == OpCodes.ldc_w) {
+			target.writeUnsignedShort(offset, cpEntry.getIndexInPool());
+		} else {
+			target.writeUnsignedByte(offset, (short)cpEntry.getIndexInPool());
+		}
+		
 	}
 
 	@Override
@@ -71,6 +91,9 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 	@Override
 	protected void doResolveAfterParse() {
 		cpEntry = getConstantPool().checkAndLoadFromSymbolTable(this, new Class[]{StringInfo.class,IntegerInfo.class,FloatInfo.class,ClassInfo.class,MethodHandleInfo.class,MethodTypeInfo.class}, cpEntryReference);
+		if (cpEntry.getIndexInPool()>255) {
+			opCode = OpCodes.ldc_w;
+		}
 	}
 
 	@Override
