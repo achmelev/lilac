@@ -35,7 +35,7 @@ public class SpingCoreAssembleDisassembleTest extends
 
 	
 	/*protected boolean filter(String name) {
-		return "org/springframework/asm/ClassReader.class".equals(name);
+		return "org/springframework/cglib/core/TypeUtils.class".equals(name);
 	}*/
 
 }

@@ -217,6 +217,7 @@ import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacemethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacesContext;
 import org.jasm.parser.JavaAssemblerParser.LabeledIdentifierContext;
+import org.jasm.parser.JavaAssemblerParser.LdcopContext;
 import org.jasm.parser.JavaAssemblerParser.LinenumberContext;
 import org.jasm.parser.JavaAssemblerParser.LocalvaropContext;
 import org.jasm.parser.JavaAssemblerParser.LocalvartypeTargetTypeContext;
@@ -1070,18 +1071,10 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterConstantpoolop(ConstantpoolopContext ctx) {
 		TerminalNode nameNode = null;
-		
 		nameNode = (TerminalNode)ctx.constantpoolop_keyword().getChild(0);
 		
-		
 		String name = nameNode.getText();
-		if (name.equals("ldc")) {
-			LdcInstruction instr = new LdcInstruction(null);
-			instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
-			instr.setSourceLocation(createSourceLocation(nameNode));
-			setInstructionLabel(ctx, instr);
-			addInstruction(instr);
-		} else if (name.equals("invokeinterface")) {
+		if (name.equals("invokeinterface")) {
 			InvokeInterfaceInstruction instr = new InvokeInterfaceInstruction(OpCodes.invokeinterface, null);
 			instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
 			instr.setSourceLocation(createSourceLocation(nameNode));
@@ -1105,6 +1098,16 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	
 
+
+	@Override
+	public void enterLdcop(LdcopContext ctx) {
+		boolean isWide = ctx.WIDE() != null;
+		LdcInstruction instr = new LdcInstruction(isWide);
+		instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
+		instr.setSourceLocation(createSourceLocation(ctx.LDC()));
+		setInstructionLabel(ctx, instr);
+		addInstruction(instr);
+	}
 
 	@Override
 	public void enterLocalvarop(LocalvaropContext ctx) {
