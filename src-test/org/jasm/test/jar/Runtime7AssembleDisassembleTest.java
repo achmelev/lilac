@@ -34,7 +34,8 @@ public class Runtime7AssembleDisassembleTest extends
 		return !name.contains("package-info")
 				//TODO - perhaps allow for different number of params in the descriptor and and param annotations attribute
 				&& !name.equals("com/sun/xml/internal/ws/encoding/MtomCodec$ByteArrayBuffer.class")
-				&& !name.equals("com/sun/xml/internal/ws/binding/WebServiceFeatureList$MergedFeatures.class");
+				&& !name.equals("com/sun/xml/internal/ws/binding/WebServiceFeatureList$MergedFeatures.class")
+				/*&& name.equals("com/sun/imageio/plugins/jpeg/JFIFMarkerSegment$JFIFThumbPalette.class")*/;
 				
 	}
 	
