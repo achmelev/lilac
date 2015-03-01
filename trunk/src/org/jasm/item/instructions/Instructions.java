@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
+
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
@@ -57,6 +59,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	
 	private int calculatedMaxLocals = -1;
 	
+	private Verifier verifier;
+	
 	public Instructions() {
 		variablesPool = new LocalVariablesPool();
 		variablesPool.setParent(this);
@@ -64,6 +68,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		items = new ArrayList<>();
 		localVariableReferences = new HashSet<>();
 		instructionReferences = new KeyToListMap<>();
+		verifier = new Verifier();
+		verifier.setParent(this);
 	}
 	
 	
@@ -432,7 +438,6 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 				((IReferencingInstruction)instr).replaceLocalVarInstructonsWithShortVersions();
 			}
 		}
-		
 		setOffsets();
 	}
 
@@ -557,18 +562,13 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		return calculatedMaxLocals;
 	}
 	
+	public void verifyByteCodeStage1() {
+		verifier.verifyStage1();
+	}
+	
 	public void verifyByteCode(VerifierParams params) {
-		Verifier ver = new Verifier();
-		ver.setParent(this);
-		Clazz cl = getAncestor(Clazz.class);
-		double version = cl.getDecimalVersion().doubleValue();
 		try {
-			ver.setParent(this);
-			ver.verify(params);
-		} catch (BadCodeException e) {
-			if (version > 50.0) {
-				emitCodeVerifyError(e);
-			}
+			verifier.verify(params);
 		} catch (VerifyException e) {
 			emitCodeVerifyError(e);
 		}
@@ -583,5 +583,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		instr.emitError(null, "verification error - "+e.getMessage());
 		
 	}
+
+	
+	
 
 }

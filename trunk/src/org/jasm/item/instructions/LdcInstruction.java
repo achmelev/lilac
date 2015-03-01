@@ -91,7 +91,8 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 	@Override
 	protected void doResolveAfterParse() {
 		cpEntry = getConstantPool().checkAndLoadFromSymbolTable(this, new Class[]{StringInfo.class,IntegerInfo.class,FloatInfo.class,ClassInfo.class,MethodHandleInfo.class,MethodTypeInfo.class}, cpEntryReference);
-		if (cpEntry.getIndexInPool()>255) {
+		
+		if (cpEntry != null && cpEntry.getIndexInPool()>255) {
 			opCode = OpCodes.ldc_w;
 		}
 	}

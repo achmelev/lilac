@@ -43,6 +43,7 @@ import java.util.Set;
 
 
 
+
 import org.jasm.item.IErrorEmitter;
 import org.jasm.item.attribute.AbstractStackmapFrame;
 import org.jasm.item.attribute.AbstractStackmapVariableinfo;
@@ -117,11 +118,11 @@ public class Verifier implements IClassQuery {
 	
 	private Frame initialFrame = null;
 	
+	private boolean hasErrors;
+	private boolean hasUnsupportedCode;
+	
 	public void setParent(Instructions parent) {
 		this.parent = parent;
-		this.clazz = parent.getAncestor(Clazz.class);
-		this.method = parent.getAncestor(Method.class);
-		this.code = parent.getAncestor(CodeAttributeContent.class);
 		this.interpeter = new Interpreter();
 		this.interpeter.setParent(this);
 	}
@@ -162,20 +163,28 @@ public class Verifier implements IClassQuery {
 		
 	}
 	
+	public void verifyStage1() {
+		
+		this.clazz = parent.getAncestor(Clazz.class);
+		this.method = parent.getAncestor(Method.class);
+		this.code = parent.getAncestor(CodeAttributeContent.class);
+		
+		
+		double version = clazz.getDecimalVersion().doubleValue();
+		checkForBadCode(version);
+		if (!hasUnsupportedCode) {
+			calculateFollowers(); 
+			if (!hasErrors) {
+				checkAllReachable();
+			}
+			
+		}
+	}
+	
 	public void verify(VerifierParams params) {
 		try {
 			double version = clazz.getDecimalVersion().doubleValue();
-			calculateFollowers();
-			try {
-				checkForBadCode();
-			} catch (BadCodeException e) {
-				if (version>50) {
-					throw e;
-				} else {
-					return;
-				}
-			}
-			checkAllReachable();
+			
 			createInitialFrame();
 			if (version>=50) {
 				try {
@@ -361,10 +370,10 @@ public class Verifier implements IClassQuery {
 		}
 	}
 	
-	private void checkForBadCode() {
+	private void checkForBadCode(double version) {
 		for (int i=0;i<parent.getSize(); i++) {
 			AbstractInstruction instr = parent.get(i);
-			checkForBadCode(instr);
+			checkForBadCode(instr, version);
 		}
 	}
 	
@@ -384,7 +393,7 @@ public class Verifier implements IClassQuery {
 			if (instr instanceof BranchInstruction) {
 				BranchInstruction bi = (BranchInstruction)instr;
 				if (instr.getOpCode() == OpCodes.jsr || instr.getOpCode() == OpCodes.jsr_w) {
-					//No Subroutines
+					throw new IllegalStateException("Bad or unsupported code");
 				} else {
 					instrFollowers.add(bi.getTargetInst().getIndex());
 					branchTargets.add(bi.getTargetInst().getIndex());
@@ -394,7 +403,7 @@ public class Verifier implements IClassQuery {
 				} else {
 					int nextIndex = instr.getIndex()+1;
 					if (nextIndex>=parent.getSize()) {
-						throw new FallOffException(nextIndex-1);
+						emitStage1Error(instr, "inexpected code end");
 					} else {
 						instrFollowers.add(nextIndex);
 					}
@@ -414,7 +423,7 @@ public class Verifier implements IClassQuery {
 				} else {
 					int nextIndex = instr.getIndex()+1;
 					if (nextIndex>=parent.getSize()) {
-						throw new FallOffException(nextIndex-1);
+						emitStage1Error(instr, "inexpected code end");
 					} else {
 						instrFollowers.add(nextIndex);
 					}
@@ -423,11 +432,11 @@ public class Verifier implements IClassQuery {
 			} else if (instr instanceof LocalVariableInstruction ) {
 				LocalVariableInstruction li = (LocalVariableInstruction)instr;
 				if (li.getOpCode() == OpCodes.ret) {
-					//Subroutines have a special handling
+					throw new IllegalStateException("Bad or unsupported code");
 				} else {
 					int nextIndex = instr.getIndex()+1;
 					if (nextIndex>=parent.getSize()) {
-						throw new FallOffException(instr.getIndex());
+						emitStage1Error(instr, "inexpected code end");
 					} else {
 						instrFollowers.add(nextIndex);
 					}
@@ -435,7 +444,7 @@ public class Verifier implements IClassQuery {
 			} else {
 				int nextIndex = instr.getIndex()+1;
 				if (nextIndex>=parent.getSize()) {
-					throw new FallOffException(instr.getIndex());
+					emitStage1Error(instr, "inexpected code end");
 				} else {
 					instrFollowers.add(nextIndex);
 				}
@@ -443,7 +452,7 @@ public class Verifier implements IClassQuery {
 		}
 		
 		//Exception handlers
-		ExceptionHandlerTable table = ((CodeAttributeContent)parent.getParent()).getExceptionTable();
+		ExceptionHandlerTable table = code.getExceptionTable();
 		for (int i=0;i<table.getSize(); i++) {
 			ExceptionHandler handler = table.get(i);
 			exceptionTargets.add(handler.getHandlerInstruction().getIndex());
@@ -455,20 +464,80 @@ public class Verifier implements IClassQuery {
 	
 	private void checkAllReachable() {
 		Set<Integer> reachables = getAllReachable(0);
+		List<Integer> unreachables = new ArrayList<Integer>();
 		for (int i=0;i<parent.getSize(); i++) {
 			if (!reachables.contains(i)) {
-				throw new VerifyException(i, "dead code");
+				unreachables.add(i);
 			}
+		}
+		
+		while (unreachables.size()>0) {
+			emitStage1Error(getInstructionAt(unreachables.get(0)), "dead code");
+			reachables = getAllReachable(unreachables.get(0));
+			unreachables.removeAll(reachables);
 		}
 	}
 	
 	
 	
-	private void checkForBadCode(AbstractInstruction instr) {
+	private void checkForBadCode(AbstractInstruction instr, double version) {
 		if (instr.getOpCode() == OpCodes.jsr || 
 			instr.getOpCode() == OpCodes.jsr_w||
 			instr.getOpCode() == OpCodes.ret) {
-			throw new BadCodeException(instr.getIndex());
+			hasUnsupportedCode = true;
+			if (version>50.0) {
+				emitStage1Error(instr, "bad instruction");
+			}
+		}
+		if (instr instanceof ArgumentLessInstruction && ((ArgumentLessInstruction)instr).isReturn()) {
+			MethodDescriptor desc = method.getMethodDescriptor();
+			if (
+					(
+					(instr.getOpCode() == OpCodes.areturn) 
+					&& 
+					!desc.isVoid() && (desc.getReturnType().isArray() 
+					|| desc.getReturnType().isObject())
+					) ||
+					
+					(
+					(instr.getOpCode() == OpCodes.dreturn) 
+					&& 
+					!desc.isVoid() && (desc.getReturnType().isDouble())
+					) ||
+					
+					(
+					(instr.getOpCode() == OpCodes.freturn) 
+					&& 
+					!desc.isVoid() && (desc.getReturnType().isFloat())
+					) ||
+					
+					(
+					(instr.getOpCode() == OpCodes.ireturn) 
+					&& 
+					!desc.isVoid() && (desc.getReturnType().isByte() 
+							|| desc.getReturnType().isBoolean()
+							|| desc.getReturnType().isCharacter()
+							|| desc.getReturnType().isShort()
+							|| desc.getReturnType().isInteger())
+					) ||
+					(
+					(instr.getOpCode() == OpCodes.lreturn) 
+					&& 
+					!desc.isVoid() && (desc.getReturnType().isLong())
+					)
+					 ||
+					((instr.getOpCode() == OpCodes.return_) 
+					&& 
+					desc.isVoid()
+					)
+			) {
+			  //correct
+			
+			} else {
+				hasUnsupportedCode = true;
+				emitStage1Error(instr, "return instruction doesn't match the return type "+desc.getValue());	
+			}
+				
 		}
 	}
 
@@ -527,6 +596,11 @@ public class Verifier implements IClassQuery {
 		return result;
 	}
 	
+	private void emitStage1Error(AbstractInstruction instr, String message) {
+		hasErrors = true;
+		instr.emitError(null, message);
+	}
+	
 	private void emitCodeVerifyError(VerifyException e) {
 		int index = 0;
 		if (e.getInstructionIndex()>=0) {
@@ -556,6 +630,14 @@ public class Verifier implements IClassQuery {
 
 	public Clazz getClazz() {
 		return clazz;
+	}
+
+	public boolean isHasErrors() {
+		return hasErrors;
+	}
+
+	public boolean isHasUnsupportedCode() {
+		return hasUnsupportedCode;
 	}
 	
 	

@@ -1086,6 +1086,13 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			instr.setSourceLocation(createSourceLocation(nameNode));
 			setInstructionLabel(ctx, instr);
 			addInstruction(instr);
+		} else if (name.equals("ldc2")) {
+			Short code = OpCodes.ldc2_w;
+			ConstantPoolInstruction instr = new ConstantPoolInstruction(code, null);
+			instr.setCpEntryReference(createSymbolReference(ctx.Identifier()));
+			instr.setSourceLocation(createSourceLocation(nameNode));
+			setInstructionLabel(ctx, instr);
+			addInstruction(instr);
 		} else {
 			Short code = OpCodes.getOpcodeForName(name);
 			ConstantPoolInstruction instr = new ConstantPoolInstruction(code, null);

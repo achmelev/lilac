@@ -131,15 +131,15 @@ public super abstract class {
   	lookupswitch -1->label2_1, 
   				  10->label4,
   				  3->label5, 
-  				  default->label6;
-  	tableswitch -1->label2_1, 
+  				  default->labelt;
+  	labelt: tableswitch -1->label2_1, 
   				  1->label5,
   				  0->label4, 
-  				  default->label6; 
-  	goto label7;
+  				  default->labelg; 
+  	labelg: goto label7;
   	label6: nop;
-  	
-  	label7: return;
+  	aload o1;
+  	label7: areturn;
   	
   	//Exception handlers
   	try label2->label3 catch classref_ex go to label6;
