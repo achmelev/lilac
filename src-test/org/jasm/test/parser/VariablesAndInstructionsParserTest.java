@@ -93,7 +93,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		Assert.assertNotNull(var);
 		Assert.assertEquals(7, var.getIndex());
 		
-		Assert.assertEquals(50, code.getInstructions().getSize());
+		Assert.assertEquals(51, code.getInstructions().getSize());
 		
 		Assert.assertTrue(code.getInstructions().get(0).getOpCode() == OpCodes.nop);
 		Assert.assertSame(code.getInstructions().get(0), code.getInstructions().checkAndLoadFromSymbolTable(null,new SymbolReference(0, 0, "label1")));
@@ -192,7 +192,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		
 		Assert.assertEquals(code.getInstructions().get(45).getOpCode(), OpCodes.lookupswitch);
 		LookupSwitchInstruction lookupswitch = (LookupSwitchInstruction)code.getInstructions().get(45);
-		Assert.assertEquals(OpCodes.nop, lookupswitch.getDefaultTarget().getOpCode());
+		Assert.assertEquals(OpCodes.tableswitch, lookupswitch.getDefaultTarget().getOpCode());
 		Assert.assertEquals(3, lookupswitch.getValues().length);
 		Assert.assertEquals(-1, lookupswitch.getValues()[0]);
 		Assert.assertEquals(10, lookupswitch.getValues()[1]);
@@ -204,7 +204,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		
 		Assert.assertEquals(code.getInstructions().get(46).getOpCode(), OpCodes.tableswitch);
 		TableSwitchInstruction tableswitch = (TableSwitchInstruction)code.getInstructions().get(46);
-		Assert.assertEquals(OpCodes.nop, tableswitch.getDefaultTarget().getOpCode());
+		Assert.assertEquals(OpCodes.goto_, tableswitch.getDefaultTarget().getOpCode());
 		Assert.assertEquals(-1, tableswitch.getLow());
 		Assert.assertEquals(1, tableswitch.getHigh());
 		Assert.assertEquals(3, tableswitch.getTargets().length);
@@ -214,9 +214,9 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		
 		Assert.assertEquals(code.getInstructions().get(47).getOpCode(), OpCodes.goto_);
 		BranchInstruction goto_ = (BranchInstruction)code.getInstructions().get(47);
-		Assert.assertEquals(OpCodes.return_, goto_.getTargetInst().getOpCode());
+		Assert.assertEquals(OpCodes.areturn, goto_.getTargetInst().getOpCode());
 		
-		Assert.assertTrue(code.getInstructions().get(49).getOpCode() == OpCodes.return_);
+		Assert.assertTrue(code.getInstructions().get(50).getOpCode() == OpCodes.areturn);
 		
 		Assert.assertEquals(2, code.getExceptionTable().getSize());
 		ExceptionHandler handler = code.getExceptionTable().get(0);
@@ -229,7 +229,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		handler = code.getExceptionTable().get(1);
 		Assert.assertEquals(OpCodes.nop, handler.getStartInstruction().getOpCode());
 		Assert.assertEquals(OpCodes.nop, handler.getEndInstruction().getOpCode());
-		Assert.assertEquals(OpCodes.return_, handler.getHandlerInstruction().getOpCode());
+		Assert.assertEquals(OpCodes.areturn, handler.getHandlerInstruction().getOpCode());
 		Assert.assertNull(handler.getCatchType());
 		
 		LineNumberTableAttributeContent linenumbers = (LineNumberTableAttributeContent)code.getAttributes().get(1).getContent();
@@ -255,7 +255,7 @@ public class VariablesAndInstructionsParserTest extends AbstractParserTestCase {
 		dvar = debugvars.get(1);
 		Assert.assertEquals("d1",dvar.getVariable().getName().getContent());
 		Assert.assertEquals(OpCodes.nop,dvar.getStartInstruction().getOpCode());
-		Assert.assertEquals(OpCodes.return_,dvar.getEndIndsruction().getOpCode());
+		Assert.assertEquals(OpCodes.areturn,dvar.getEndIndsruction().getOpCode());
 		Assert.assertEquals("doubleVar",dvar.getName().getValue());
 		Assert.assertEquals("D",dvar.getDescriptor().getValue());
 	}

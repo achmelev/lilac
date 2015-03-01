@@ -681,9 +681,9 @@ public super class {
    	ldc IntB;
    	pop;
    	
-   	ldc2_w dConst;
+   	ldc2 dConst;
    	dstore dVar;
-   	ldc2_w lConst;
+   	ldc2 lConst;
    	lstore lVar;
    	
    	aload this;

@@ -1539,491 +1539,491 @@ public super class {
     astore a_1;
     ir2: fconst_1;
     fstore f_2;
-    ir4: ldc double_14; // 2.0
+    ir4: ldc2 double_14; // 2.0
     dstore d_3;
     ir8: iconst_3;
     istore i_5;
-    ir11: ldc long_16;
+    ir11: ldc2 long_16;
     lstore l_6;
     ir16: aconst_null;
     astore a_8;
     ir19: ldc float_18; // 6.0
     fstore f_9;
-    ir23: ldc double_19; // 7.0
+    ir23: ldc2 double_19; // 7.0
     dstore d_10;
     ir28: bipush 8;
     istore i_12;
-    ir32: ldc long_21;
+    ir32: ldc2 long_21;
     lstore l_13;
     ir37: aconst_null;
     astore a_15;
     ir40: ldc float_23; // 11.0
     fstore f_16;
-    ir44: ldc double_24; // 12.0
+    ir44: ldc2 double_24; // 12.0
     dstore d_17;
     ir49: bipush 13;
     istore i_19;
-    ir53: ldc long_26;
+    ir53: ldc2 long_26;
     lstore l_20;
     ir58: aconst_null;
     astore a_22;
     ir61: ldc float_28; // 16.0
     fstore f_23;
-    ir65: ldc double_29; // 17.0
+    ir65: ldc2 double_29; // 17.0
     dstore d_24;
     ir70: bipush 18;
     istore i_26;
-    ir74: ldc long_31;
+    ir74: ldc2 long_31;
     lstore l_27;
     ir79: aconst_null;
     astore a_29;
     ir82: ldc float_33; // 21.0
     fstore f_30;
-    ir86: ldc double_34; // 22.0
+    ir86: ldc2 double_34; // 22.0
     dstore d_31;
     ir91: bipush 23;
     istore i_33;
-    ir95: ldc long_36;
+    ir95: ldc2 long_36;
     lstore l_34;
     ir100: aconst_null;
     astore a_36;
     ir103: ldc float_38; // 26.0
     fstore f_37;
-    ir107: ldc double_39; // 27.0
+    ir107: ldc2 double_39; // 27.0
     dstore d_38;
     ir112: bipush 28;
     istore i_40;
-    ir116: ldc long_41;
+    ir116: ldc2 long_41;
     lstore l_41;
     ir121: aconst_null;
     astore a_43;
     ir124: ldc float_43; // 31.0
     fstore f_44;
-    ir128: ldc double_44; // 32.0
+    ir128: ldc2 double_44; // 32.0
     dstore d_45;
     ir133: bipush 33;
     istore i_47;
-    ir137: ldc long_46;
+    ir137: ldc2 long_46;
     lstore l_48;
     ir142: aconst_null;
     astore a_50;
     ir145: ldc float_48; // 36.0
     fstore f_51;
-    ir149: ldc double_49; // 37.0
+    ir149: ldc2 double_49; // 37.0
     dstore d_52;
     ir154: bipush 38;
     istore i_54;
-    ir158: ldc long_51;
+    ir158: ldc2 long_51;
     lstore l_55;
     ir163: aconst_null;
     astore a_57;
     ir166: ldc float_53; // 41.0
     fstore f_58;
-    ir170: ldc double_54; // 42.0
+    ir170: ldc2 double_54; // 42.0
     dstore d_59;
     ir175: bipush 43;
     istore i_61;
-    ir179: ldc long_56;
+    ir179: ldc2 long_56;
     lstore l_62;
     ir184: aconst_null;
     astore a_64;
     ir187: ldc float_58; // 46.0
     fstore f_65;
-    ir191: ldc double_59; // 47.0
+    ir191: ldc2 double_59; // 47.0
     dstore d_66;
     ir196: bipush 48;
     istore i_68;
-    ir200: ldc long_61;
+    ir200: ldc2 long_61;
     lstore l_69;
     ir205: aconst_null;
     astore a_71;
     ir208: ldc float_63; // 51.0
     fstore f_72;
-    ir212: ldc double_64; // 52.0
+    ir212: ldc2 double_64; // 52.0
     dstore d_73;
     ir217: bipush 53;
     istore i_75;
-    ir221: ldc long_66;
+    ir221: ldc2 long_66;
     lstore l_76;
     ir226: aconst_null;
     astore a_78;
     ir229: ldc float_68; // 56.0
     fstore f_79;
-    ir233: ldc double_69; // 57.0
+    ir233: ldc2 double_69; // 57.0
     dstore d_80;
     ir238: bipush 58;
     istore i_82;
-    ir242: ldc long_71;
+    ir242: ldc2 long_71;
     lstore l_83;
     ir247: aconst_null;
     astore a_85;
     ir250: ldc float_73; // 61.0
     fstore f_86;
-    ir254: ldc double_74; // 62.0
+    ir254: ldc2 double_74; // 62.0
     dstore d_87;
     ir259: bipush 63;
     istore i_89;
-    ir263: ldc long_76;
+    ir263: ldc2 long_76;
     lstore l_90;
     ir268: aconst_null;
     astore a_92;
     ir271: ldc float_78; // 66.0
     fstore f_93;
-    ir275: ldc double_79; // 67.0
+    ir275: ldc2 double_79; // 67.0
     dstore d_94;
     ir280: bipush 68;
     istore i_96;
-    ir284: ldc long_81;
+    ir284: ldc2 long_81;
     lstore l_97;
     ir289: aconst_null;
     astore a_99;
     ir292: ldc float_83; // 71.0
     fstore f_100;
-    ir296: ldc double_84; // 72.0
+    ir296: ldc2 double_84; // 72.0
     dstore d_101;
     ir301: bipush 73;
     istore i_103;
-    ir305: ldc long_86;
+    ir305: ldc2 long_86;
     lstore l_104;
     ir310: aconst_null;
     astore a_106;
     ir313: ldc float_88; // 76.0
     fstore f_107;
-    ir317: ldc double_89; // 77.0
+    ir317: ldc2 double_89; // 77.0
     dstore d_108;
     ir322: bipush 78;
     istore i_110;
-    ir326: ldc long_91;
+    ir326: ldc2 long_91;
     lstore l_111;
     ir331: aconst_null;
     astore a_113;
     ir334: ldc float_93; // 81.0
     fstore f_114;
-    ir338: ldc double_94; // 82.0
+    ir338: ldc2 double_94; // 82.0
     dstore d_115;
     ir343: bipush 83;
     istore i_117;
-    ir347: ldc long_96;
+    ir347: ldc2 long_96;
     lstore l_118;
     ir352: aconst_null;
     astore a_120;
     ir355: ldc float_98; // 86.0
     fstore f_121;
-    ir359: ldc double_99; // 87.0
+    ir359: ldc2 double_99; // 87.0
     dstore d_122;
     ir364: bipush 88;
     istore i_124;
-    ir368: ldc long_101;
+    ir368: ldc2 long_101;
     lstore l_125;
     ir373: aconst_null;
     astore a_127;
     ir376: ldc float_103; // 91.0
     fstore f_128;
-    ir380: ldc double_104; // 92.0
+    ir380: ldc2 double_104; // 92.0
     dstore d_129;
     ir385: bipush 93;
     istore i_131;
-    ir389: ldc long_106;
+    ir389: ldc2 long_106;
     lstore l_132;
     ir394: aconst_null;
     astore a_134;
     ir397: ldc float_108; // 96.0
     fstore f_135;
-    ir401: ldc double_109; // 97.0
+    ir401: ldc2 double_109; // 97.0
     dstore d_136;
     ir406: bipush 98;
     istore i_138;
-    ir410: ldc long_111;
+    ir410: ldc2 long_111;
     lstore l_139;
     ir415: aconst_null;
     astore a_141;
     ir418: ldc float_113; // 101.0
     fstore f_142;
-    ir422: ldc double_114; // 102.0
+    ir422: ldc2 double_114; // 102.0
     dstore d_143;
     ir427: bipush 103;
     istore i_145;
-    ir431: ldc long_116;
+    ir431: ldc2 long_116;
     lstore l_146;
     ir436: aconst_null;
     astore a_148;
     ir439: ldc float_118; // 106.0
     fstore f_149;
-    ir443: ldc double_119; // 107.0
+    ir443: ldc2 double_119; // 107.0
     dstore d_150;
     ir448: bipush 108;
     istore i_152;
-    ir452: ldc long_121;
+    ir452: ldc2 long_121;
     lstore l_153;
     ir457: aconst_null;
     astore a_155;
     ir460: ldc float_123; // 111.0
     fstore f_156;
-    ir464: ldc double_124; // 112.0
+    ir464: ldc2 double_124; // 112.0
     dstore d_157;
     ir469: bipush 113;
     istore i_159;
-    ir473: ldc long_126;
+    ir473: ldc2 long_126;
     lstore l_160;
     ir478: aconst_null;
     astore a_162;
     ir481: ldc float_128; // 116.0
     fstore f_163;
-    ir485: ldc double_129; // 117.0
+    ir485: ldc2 double_129; // 117.0
     dstore d_164;
     ir490: bipush 118;
     istore i_166;
-    ir494: ldc long_131;
+    ir494: ldc2 long_131;
     lstore l_167;
     ir499: aconst_null;
     astore a_169;
     ir502: ldc float_133; // 121.0
     fstore f_170;
-    ir506: ldc double_134; // 122.0
+    ir506: ldc2 double_134; // 122.0
     dstore d_171;
     ir511: bipush 123;
     istore i_173;
-    ir515: ldc long_136;
+    ir515: ldc2 long_136;
     lstore l_174;
     ir520: aconst_null;
     astore a_176;
     ir523: ldc float_138; // 126.0
     fstore f_177;
-    ir527: ldc double_139; // 127.0
+    ir527: ldc2 double_139; // 127.0
     dstore d_178;
     ir532: sipush 128;
     istore i_180;
-    ir537: ldc long_141;
+    ir537: ldc2 long_141;
     lstore l_181;
     ir542: aconst_null;
     astore a_183;
     ir545: ldc float_143; // 131.0
     fstore f_184;
-    ir549: ldc double_144; // 132.0
+    ir549: ldc2 double_144; // 132.0
     dstore d_185;
     ir554: sipush 133;
     istore i_187;
-    ir559: ldc long_146;
+    ir559: ldc2 long_146;
     lstore l_188;
     ir564: aconst_null;
     astore a_190;
     ir567: ldc float_148; // 136.0
     fstore f_191;
-    ir571: ldc double_149; // 137.0
+    ir571: ldc2 double_149; // 137.0
     dstore d_192;
     ir576: sipush 138;
     istore i_194;
-    ir581: ldc long_151;
+    ir581: ldc2 long_151;
     lstore l_195;
     ir586: aconst_null;
     astore a_197;
     ir589: ldc float_153; // 141.0
     fstore f_198;
-    ir593: ldc double_154; // 142.0
+    ir593: ldc2 double_154; // 142.0
     dstore d_199;
     ir598: sipush 143;
     istore i_201;
-    ir603: ldc long_156;
+    ir603: ldc2 long_156;
     lstore l_202;
     ir608: aconst_null;
     astore a_204;
     ir611: ldc float_158; // 146.0
     fstore f_205;
-    ir615: ldc double_159; // 147.0
+    ir615: ldc2 double_159; // 147.0
     dstore d_206;
     ir620: sipush 148;
     istore i_208;
-    ir625: ldc long_161;
+    ir625: ldc2 long_161;
     lstore l_209;
     ir630: aconst_null;
     astore a_211;
     ir633: ldc float_163; // 151.0
     fstore f_212;
-    ir637: ldc double_164; // 152.0
+    ir637: ldc2 double_164; // 152.0
     dstore d_213;
     ir642: sipush 153;
     istore i_215;
-    ir647: ldc long_166;
+    ir647: ldc2 long_166;
     lstore l_216;
     ir652: aconst_null;
     astore a_218;
     ir655: ldc float_168; // 156.0
     fstore f_219;
-    ir659: ldc double_169; // 157.0
+    ir659: ldc2 double_169; // 157.0
     dstore d_220;
     ir664: sipush 158;
     istore i_222;
-    ir669: ldc long_171;
+    ir669: ldc2 long_171;
     lstore l_223;
     ir674: aconst_null;
     astore a_225;
     ir677: ldc float_173; // 161.0
     fstore f_226;
-    ir681: ldc double_174; // 162.0
+    ir681: ldc2 double_174; // 162.0
     dstore d_227;
     ir686: sipush 163;
     istore i_229;
-    ir691: ldc long_176;
+    ir691: ldc2 long_176;
     lstore l_230;
     ir696: aconst_null;
     astore a_232;
     ir699: ldc float_178; // 166.0
     fstore f_233;
-    ir703: ldc double_179; // 167.0
+    ir703: ldc2 double_179; // 167.0
     dstore d_234;
     ir708: sipush 168;
     istore i_236;
-    ir713: ldc long_181;
+    ir713: ldc2 long_181;
     lstore l_237;
     ir718: aconst_null;
     astore a_239;
     ir721: ldc float_183; // 171.0
     fstore f_240;
-    ir725: ldc double_184; // 172.0
+    ir725: ldc2 double_184; // 172.0
     dstore d_241;
     ir730: sipush 173;
     istore i_243;
-    ir735: ldc long_186;
+    ir735: ldc2 long_186;
     lstore l_244;
     ir740: aconst_null;
     astore a_246;
     ir743: ldc float_188; // 176.0
     fstore f_247;
-    ir747: ldc double_189; // 177.0
+    ir747: ldc2 double_189; // 177.0
     dstore d_248;
     ir752: sipush 178;
     istore i_250;
-    ir757: ldc long_191;
+    ir757: ldc2 long_191;
     lstore l_251;
     ir762: aconst_null;
     astore a_253;
     ir765: ldc float_193; // 181.0
     fstore f_254;
-    ir769: ldc double_194; // 182.0
+    ir769: ldc2 double_194; // 182.0
     dstore d_255;
     ir774: sipush 183;
     wide istore i_257;
-    ir781: ldc long_196;
+    ir781: ldc2 long_196;
     wide lstore l_258;
     ir788: aconst_null;
     wide astore a_260;
     ir793: ldc float_198; // 186.0
     wide fstore f_261;
-    ir799: ldc double_199; // 187.0
+    ir799: ldc2 double_199; // 187.0
     wide dstore d_262;
     ir806: sipush 188;
     wide istore i_264;
-    ir813: ldc long_201;
+    ir813: ldc2 long_201;
     wide lstore l_265;
     ir820: aconst_null;
     wide astore a_267;
     ir825: ldc float_203; // 191.0
     wide fstore f_268;
-    ir831: ldc double_204; // 192.0
+    ir831: ldc2 double_204; // 192.0
     wide dstore d_269;
     ir838: sipush 193;
     wide istore i_271;
-    ir845: ldc long_206;
+    ir845: ldc2 long_206;
     wide lstore l_272;
     ir852: aconst_null;
     wide astore a_274;
     ir857: ldc float_208; // 196.0
     wide fstore f_275;
-    ir863: ldc double_209; // 197.0
+    ir863: ldc2 double_209; // 197.0
     wide dstore d_276;
     ir870: sipush 198;
     wide istore i_278;
-    ir877: ldc long_211;
+    ir877: ldc2 long_211;
     wide lstore l_279;
     ir884: aconst_null;
     wide astore a_281;
     ir889: ldc float_213; // 201.0
     wide fstore f_282;
-    ir895: ldc double_214; // 202.0
+    ir895: ldc2 double_214; // 202.0
     wide dstore d_283;
     ir902: sipush 203;
     wide istore i_285;
-    ir909: ldc long_216;
+    ir909: ldc2 long_216;
     wide lstore l_286;
     ir916: aconst_null;
     wide astore a_288;
     ir921: ldc float_218; // 206.0
     wide fstore f_289;
-    ir927: ldc double_219; // 207.0
+    ir927: ldc2 double_219; // 207.0
     wide dstore d_290;
     ir934: sipush 208;
     wide istore i_292;
-    ir941: ldc long_221;
+    ir941: ldc2 long_221;
     wide lstore l_293;
     ir948: aconst_null;
     wide astore a_295;
     ir953: ldc float_223; // 211.0
     wide fstore f_296;
-    ir959: ldc double_224; // 212.0
+    ir959: ldc2 double_224; // 212.0
     wide dstore d_297;
     ir966: sipush 213;
     wide istore i_299;
-    ir973: ldc long_226;
+    ir973: ldc2 long_226;
     wide lstore l_300;
     ir980: aconst_null;
     wide astore a_302;
     ir985: ldc float_228; // 216.0
     wide fstore f_303;
-    ir991: ldc double_229; // 217.0
+    ir991: ldc2 double_229; // 217.0
     wide dstore d_304;
     ir998: sipush 218;
     wide istore i_306;
-    ir1005: ldc long_231;
+    ir1005: ldc2 long_231;
     wide lstore l_307;
     ir1012: aconst_null;
     wide astore a_309;
     ir1017: ldc float_233; // 221.0
     wide fstore f_310;
-    ir1023: ldc double_234; // 222.0
+    ir1023: ldc2 double_234; // 222.0
     wide dstore d_311;
     ir1030: sipush 223;
     wide istore i_313;
-    ir1037: ldc long_236;
+    ir1037: ldc2 long_236;
     wide lstore l_314;
     ir1044: aconst_null;
     wide astore a_316;
     ir1049: ldc float_238; // 226.0
     wide fstore f_317;
-    ir1055: ldc double_239; // 227.0
+    ir1055: ldc2 double_239; // 227.0
     wide dstore d_318;
     ir1062: sipush 228;
     wide istore i_320;
-    ir1069: ldc long_241;
+    ir1069: ldc2 long_241;
     wide lstore l_321;
     ir1076: aconst_null;
     wide astore a_323;
     ir1081: ldc float_243; // 231.0
     wide fstore f_324;
-    ir1087: ldc double_244; // 232.0
+    ir1087: ldc2 double_244; // 232.0
     wide dstore d_325;
     ir1094: sipush 233;
     wide istore i_327;
-    ir1101: ldc long_246;
+    ir1101: ldc2 long_246;
     wide lstore l_328;
     ir1108: aconst_null;
     wide astore a_330;
     ir1113: ldc float_248; // 236.0
     wide fstore f_331;
-    ir1119: ldc double_249; // 237.0
+    ir1119: ldc2 double_249; // 237.0
     wide dstore d_332;
     ir1126: sipush 238;
     wide istore i_334;
-    ir1133: ldc long_251;
+    ir1133: ldc2 long_251;
     wide lstore l_335;
     ir1140: aconst_null;
     wide astore a_337;
     ir1145: ldc float_253; // 241.0
     wide fstore f_338;
-    ir1151: ldc double_254; // 242.0
+    ir1151: ldc2 double_254; // 242.0
     wide dstore d_339;
     ir1158: sipush 243;
     wide istore i_341;
-    ir1165: ldc long_256;
+    ir1165: ldc2 long_256;
     wide lstore l_342;
     ir1172: aconst_null;
     wide astore a_344;
@@ -2033,107 +2033,107 @@ public super class {
     wide dstore d_346;
     ir1191: sipush 248;
     wide istore i_348;
-    ir1198: ldc long_261;
+    ir1198: ldc2 long_261;
     wide lstore l_349;
     ir1205: aconst_null;
     wide astore a_351;
-    ir1210: ldc_w float_263; // 251.0
+    ir1210: ldc float_263; // 251.0
     wide fstore f_352;
-    ir1217: ldc double_264; // 252.0
+    ir1217: ldc2 double_264; // 252.0
     wide dstore d_353;
     ir1224: sipush 253;
     wide istore i_355;
-    ir1231: ldc long_266;
+    ir1231: ldc2 long_266;
     wide lstore l_356;
     ir1238: aconst_null;
     wide astore a_358;
-    ir1243: ldc_w float_268; // 256.0
+    ir1243: ldc float_268; // 256.0
     wide fstore f_359;
-    ir1250: ldc double_269; // 257.0
+    ir1250: ldc2 double_269; // 257.0
     wide dstore d_360;
     ir1257: sipush 258;
     wide istore i_362;
-    ir1264: ldc long_271;
+    ir1264: ldc2 long_271;
     wide lstore l_363;
     ir1271: aconst_null;
     wide astore a_365;
-    ir1276: ldc_w float_273; // 261.0
+    ir1276: ldc float_273; // 261.0
     wide fstore f_366;
-    ir1283: ldc double_274; // 262.0
+    ir1283: ldc2 double_274; // 262.0
     wide dstore d_367;
     ir1290: sipush 263;
     wide istore i_369;
-    ir1297: ldc long_276;
+    ir1297: ldc2 long_276;
     wide lstore l_370;
     ir1304: aconst_null;
     wide astore a_372;
-    ir1309: ldc_w float_278; // 266.0
+    ir1309: ldc float_278; // 266.0
     wide fstore f_373;
-    ir1316: ldc double_279; // 267.0
+    ir1316: ldc2 double_279; // 267.0
     wide dstore d_374;
     ir1323: sipush 268;
     wide istore i_376;
-    ir1330: ldc long_281;
+    ir1330: ldc2 long_281;
     wide lstore l_377;
     ir1337: aconst_null;
     wide astore a_379;
-    ir1342: ldc_w float_283; // 271.0
+    ir1342: ldc float_283; // 271.0
     wide fstore f_380;
-    ir1349: ldc double_284; // 272.0
+    ir1349: ldc2 double_284; // 272.0
     wide dstore d_381;
     ir1356: sipush 273;
     wide istore i_383;
-    ir1363: ldc long_286;
+    ir1363: ldc2 long_286;
     wide lstore l_384;
     ir1370: aconst_null;
     wide astore a_386;
-    ir1375: ldc_w float_288; // 276.0
+    ir1375: ldc float_288; // 276.0
     wide fstore f_387;
-    ir1382: ldc double_289; // 277.0
+    ir1382: ldc2 double_289; // 277.0
     wide dstore d_388;
     ir1389: sipush 278;
     wide istore i_390;
-    ir1396: ldc long_291;
+    ir1396: ldc2 long_291;
     wide lstore l_391;
     ir1403: aconst_null;
     wide astore a_393;
-    ir1408: ldc_w float_293; // 281.0
+    ir1408: ldc float_293; // 281.0
     wide fstore f_394;
-    ir1415: ldc double_294; // 282.0
+    ir1415: ldc2 double_294; // 282.0
     wide dstore d_395;
     ir1422: sipush 283;
     wide istore i_397;
-    ir1429: ldc long_296;
+    ir1429: ldc2 long_296;
     wide lstore l_398;
     ir1436: aconst_null;
     wide astore a_400;
-    ir1441: ldc_w float_298; // 286.0
+    ir1441: ldc float_298; // 286.0
     wide fstore f_401;
-    ir1448: ldc double_299; // 287.0
+    ir1448: ldc2 double_299; // 287.0
     wide dstore d_402;
     ir1455: sipush 288;
     wide istore i_404;
-    ir1462: ldc long_301;
+    ir1462: ldc2 long_301;
     wide lstore l_405;
     ir1469: aconst_null;
     wide astore a_407;
-    ir1474: ldc_w float_303; // 291.0
+    ir1474: ldc float_303; // 291.0
     wide fstore f_408;
-    ir1481: ldc double_304; // 292.0
+    ir1481: ldc2 double_304; // 292.0
     wide dstore d_409;
     ir1488: sipush 293;
     wide istore i_411;
-    ir1495: ldc long_306;
+    ir1495: ldc2 long_306;
     wide lstore l_412;
     ir1502: aconst_null;
     wide astore a_414;
-    ir1507: ldc_w float_308; // 296.0
+    ir1507: ldc float_308; // 296.0
     wide fstore f_415;
-    ir1514: ldc double_309; // 297.0
+    ir1514: ldc2 double_309; // 297.0
     wide dstore d_416;
     ir1521: sipush 298;
     wide istore i_418;
-    ir1528: ldc long_311;
+    ir1528: ldc2 long_311;
     wide lstore l_419;
     ir1535: wide iinc i_418, 1;
     ir1541: new classref_313; // java/lang/StringBuilder
@@ -2803,11 +2803,11 @@ public super class {
     ir11: getstatic fieldref_645; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;
     new classref_313; // java/lang/StringBuilder
     dup;
-    ldc_w string_651; // "Object o"
+    ldc string_651; // "Object o"
     invokespecial methodref_653; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
     iload i_1;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
-    ldc_w string_656; // "=null;"
+    ldc string_656; // "=null;"
     invokevirtual methodref_658; // class=java/lang/StringBuilder, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuilder;
     invokevirtual methodref_332; // class=java/lang/StringBuilder, name=toString, descriptor=()Ljava/lang/String;
     invokevirtual methodref_661; // class=java/io/PrintStream, name=println, descriptor=(Ljava/lang/String;)V
@@ -2820,15 +2820,15 @@ public super class {
     ir50: getstatic fieldref_645; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;
     new classref_313; // java/lang/StringBuilder
     dup;
-    ldc_w string_666; // "float f"
+    ldc string_666; // "float f"
     invokespecial methodref_653; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
     iload i_1;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
-    ldc_w string_668; // "="
+    ldc string_668; // "="
     invokevirtual methodref_658; // class=java/lang/StringBuilder, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuilder;
     iload i_1;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
-    ldc_w string_670; // ".0f;"
+    ldc string_670; // ".0f;"
     invokevirtual methodref_658; // class=java/lang/StringBuilder, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuilder;
     invokevirtual methodref_332; // class=java/lang/StringBuilder, name=toString, descriptor=()Ljava/lang/String;
     invokevirtual methodref_661; // class=java/io/PrintStream, name=println, descriptor=(Ljava/lang/String;)V
@@ -2841,15 +2841,15 @@ public super class {
     ir99: getstatic fieldref_645; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;
     new classref_313; // java/lang/StringBuilder
     dup;
-    ldc_w string_672; // "double d"
+    ldc string_672; // "double d"
     invokespecial methodref_653; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
     iload i_1;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
-    ldc_w string_668; // "="
+    ldc string_668; // "="
     invokevirtual methodref_658; // class=java/lang/StringBuilder, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuilder;
     iload i_1;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
-    ldc_w string_674; // ".0;"
+    ldc string_674; // ".0;"
     invokevirtual methodref_658; // class=java/lang/StringBuilder, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuilder;
     invokevirtual methodref_332; // class=java/lang/StringBuilder, name=toString, descriptor=()Ljava/lang/String;
     invokevirtual methodref_661; // class=java/io/PrintStream, name=println, descriptor=(Ljava/lang/String;)V
@@ -2862,15 +2862,15 @@ public super class {
     ir148: getstatic fieldref_645; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;
     new classref_313; // java/lang/StringBuilder
     dup;
-    ldc_w string_676; // "int i"
+    ldc string_676; // "int i"
     invokespecial methodref_653; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
     iload i_1;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
-    ldc_w string_668; // "="
+    ldc string_668; // "="
     invokevirtual methodref_658; // class=java/lang/StringBuilder, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuilder;
     iload i_1;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
-    ldc_w string_678; // ";"
+    ldc string_678; // ";"
     invokevirtual methodref_658; // class=java/lang/StringBuilder, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuilder;
     invokevirtual methodref_332; // class=java/lang/StringBuilder, name=toString, descriptor=()Ljava/lang/String;
     invokevirtual methodref_661; // class=java/io/PrintStream, name=println, descriptor=(Ljava/lang/String;)V
@@ -2883,15 +2883,15 @@ public super class {
     ir197: getstatic fieldref_645; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;
     new classref_313; // java/lang/StringBuilder
     dup;
-    ldc_w string_680; // "long l"
+    ldc string_680; // "long l"
     invokespecial methodref_653; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
     iload i_1;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
-    ldc_w string_668; // "="
+    ldc string_668; // "="
     invokevirtual methodref_658; // class=java/lang/StringBuilder, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuilder;
     iload i_1;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
-    ldc_w string_678; // ";"
+    ldc string_678; // ";"
     invokevirtual methodref_658; // class=java/lang/StringBuilder, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuilder;
     invokevirtual methodref_332; // class=java/lang/StringBuilder, name=toString, descriptor=()Ljava/lang/String;
     invokevirtual methodref_661; // class=java/io/PrintStream, name=println, descriptor=(Ljava/lang/String;)V
@@ -2900,21 +2900,21 @@ public super class {
     sipush 300;
     if_icmplt ir5;
     ir246: getstatic fieldref_645; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;
-    ldc_w string_682; // "String sum;"
+    ldc string_682; // "String sum;"
     invokevirtual methodref_661; // class=java/io/PrintStream, name=println, descriptor=(Ljava/lang/String;)V
     ir255: new classref_684; // java/lang/StringBuffer
     dup;
     invokespecial methodref_686; // class=java/lang/StringBuffer, name=<init>, descriptor=()V
     astore a_1;
     ir263: aload a_1;
-    ldc_w string_687; // "sum=\"\""
+    ldc string_687; // "sum=\"\""
     invokevirtual methodref_689; // class=java/lang/StringBuffer, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuffer;
     pop;
     ir271: iconst_0;
     istore i_2;
     ir273: goto ir443;
     ir276: aload a_1;
-    ldc_w string_692; // "+"
+    ldc string_692; // "+"
     invokevirtual methodref_689; // class=java/lang/StringBuffer, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuffer;
     pop;
     ir284: iload i_2;
@@ -2924,7 +2924,7 @@ public super class {
     ir290: aload a_1;
     new classref_313; // java/lang/StringBuilder
     dup;
-    ldc_w string_694; // "o"
+    ldc string_694; // "o"
     invokespecial methodref_653; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
     iload i_2;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
@@ -2940,7 +2940,7 @@ public super class {
     ir322: aload a_1;
     new classref_313; // java/lang/StringBuilder
     dup;
-    ldc_w string_696; // "f"
+    ldc string_696; // "f"
     invokespecial methodref_653; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
     iload i_2;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
@@ -2956,7 +2956,7 @@ public super class {
     ir354: aload a_1;
     new classref_313; // java/lang/StringBuilder
     dup;
-    ldc_w string_698; // "d"
+    ldc string_698; // "d"
     invokespecial methodref_653; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
     iload i_2;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
@@ -2972,7 +2972,7 @@ public super class {
     ir386: aload a_1;
     new classref_313; // java/lang/StringBuilder
     dup;
-    ldc_w string_700; // "i"
+    ldc string_700; // "i"
     invokespecial methodref_653; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
     iload i_2;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
@@ -2988,7 +2988,7 @@ public super class {
     ir418: aload a_1;
     new classref_313; // java/lang/StringBuilder
     dup;
-    ldc_w string_702; // "l"
+    ldc string_702; // "l"
     invokespecial methodref_653; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
     iload i_2;
     invokevirtual methodref_326; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
@@ -3000,7 +3000,7 @@ public super class {
     sipush 300;
     if_icmplt ir276;
     ir450: aload a_1;
-    ldc_w string_678; // ";"
+    ldc string_678; // ";"
     invokevirtual methodref_689; // class=java/lang/StringBuffer, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuffer;
     pop;
     ir458: getstatic fieldref_645; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;

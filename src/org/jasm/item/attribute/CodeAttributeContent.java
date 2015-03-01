@@ -180,6 +180,9 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 				maxLocals = calculatedMaxLocals;
 			}
 		}
+		if (!hasErrors()) {
+			instructions.verifyByteCodeStage1();
+		}
 		
 	}
 
