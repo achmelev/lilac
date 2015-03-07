@@ -46,7 +46,7 @@ public class SameLocalsOneStackitemExtendedStackmapFrame extends AbstractStackma
 
 	@Override
 	public String getPrintArgs() {
-		return getInstruction().getPrintLabel()+", "+createItemsListArg(new AbstractByteCodeItem[]{stackitemInfo});
+		return getInstruction().getPrintLabel()+", "+stackitemInfo.getPrintName();
 	}
 	
 	@Override

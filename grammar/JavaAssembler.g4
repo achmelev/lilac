@@ -350,8 +350,8 @@ stackmapframe: APPEND Identifier COMMA stackmapvarinfos SEMI #appendStackmapFram
 		       | FULL Identifier COMMA localstackmapvarinfos COMMA stackitemstackmapvarinfos SEMI #fullStackmapFrame
 		       | SAME Identifier SEMI #sameStackmapFrame
 		       | SAME EXTENDED Identifier SEMI #sameExtendedStackmapFrame
-		       | SAME LOCALS Identifier COMMA stackmapvarinfos SEMI #sameLocalsStackmapFrame
-		       | SAME LOCALS EXTENDED Identifier COMMA stackmapvarinfos SEMI #sameLocalsExtendedStackmapFrame
+		       | SAME LOCALS Identifier COMMA stackmapvarinfo SEMI #sameLocalsStackmapFrame
+		       | SAME LOCALS EXTENDED Identifier COMMA stackmapvarinfo SEMI #sameLocalsExtendedStackmapFrame
 		       ;
 		       
 stackmapvarinfos: LBRACE RBRACE #emptyStackmapvarinfos

@@ -376,7 +376,12 @@ public super class {
    		same extended ir18;
    		same extended ir19;
    		same extended ir20;
+   		same extended ir21;
+   		same extended ir22;
+   		full ir23, {object Object},{object RuntimeException};
    	}
+   	
+   	try begin->ir22 catch RuntimeException go to ir23;
     
     maxstack 10;
     //Variables
@@ -388,6 +393,8 @@ public super class {
     var double dVar;
     var object sVar;
     //Instructions
+    
+    begin:
     
     //aaload, aastore, aload, astore
     aload this;
@@ -894,7 +901,19 @@ public super class {
    	iload iVar;
    	if_icmplt ir20;
    	
-	ir20:
+   	ir20:
+   	iload iVar;
+   	lookupswitch default->ir21,0->ir21,1->ir21;
+   	
+	ir21:
+   	iload iVar;
+   	tableswitch default->ir22,0->ir22,1->ir22;
+   	
+	ir22:
+  
+    return;
+    
+    ir23:
   
     return;
   }

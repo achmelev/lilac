@@ -74,7 +74,7 @@ public super class {
       var e, ir7, e_name, e_desc; // name=e,  descriptor=Lorg/jasm/test/playground/ProberException;
     }
     stackmap {
-      same locals ir6, {object ProberException};
+      same locals ir6, object ProberException;
     }
     maxstack 2;
     maxlocals 3;

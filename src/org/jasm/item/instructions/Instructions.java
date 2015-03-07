@@ -426,16 +426,18 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		//Replacing local var instructions with short versions
 		for (int i=0;i<items.size(); i++) {
 			AbstractInstruction instr = items.get(i);
-			if (instr instanceof LocalVariableInstruction) {
-				ShortLocalVariableInstruction newInstr = ((LocalVariableInstruction)instr).createShortReplacement();
-				if (newInstr != null) {
-					newInstr.setParent(this);
-					items.set(i, newInstr);
-					symbolTable.replace(instr, newInstr);
-					newInstr.resolve();
+			if (!instr.hasErrors()) {
+				if (instr instanceof LocalVariableInstruction) {
+					ShortLocalVariableInstruction newInstr = ((LocalVariableInstruction)instr).createShortReplacement();
+					if (newInstr != null) {
+						newInstr.setParent(this);
+						items.set(i, newInstr);
+						symbolTable.replace(instr, newInstr);
+						newInstr.resolve();
+					}
+				} else if (instr instanceof IReferencingInstruction) {
+					((IReferencingInstruction)instr).replaceLocalVarInstructonsWithShortVersions();
 				}
-			} else if (instr instanceof IReferencingInstruction) {
-				((IReferencingInstruction)instr).replaceLocalVarInstructonsWithShortVersions();
 			}
 		}
 		setOffsets();

@@ -111,6 +111,16 @@ public class Frame {
 		return value;
 	}
 	
+	public Frame throwException(ObjectValueType t) {
+		if (VerificationType.THROWABLE.create(t.getQuery()).isAssignableFrom(t)) {
+			stack.clear();
+			stack.push(t);
+		} else {
+			throw new IllegalStateException(t.toString());
+		}
+		return this;
+	}
+	
 	public void checkRegister(int register, VerificationType expected) {
 		VerificationType value = locals.get(register);
 		if (!expected.isAssignableFrom(value)) {
