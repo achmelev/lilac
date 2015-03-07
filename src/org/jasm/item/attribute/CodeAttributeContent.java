@@ -153,7 +153,7 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 		exceptionTable.resolve();
 		attributes.resolve();
 		
-		if (!hasErrors()) {
+		if (getRoot().getParser().getErrorMessages().size() == 0) {
 			if (maxStackLiteral != null) {
 				Integer value = maxStackLiteral.checkAndLoadValue(this);
 				if (value != null && value>=0 && value < 65536) {
