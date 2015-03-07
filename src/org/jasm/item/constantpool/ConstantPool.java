@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jasm.disassembler.ClassNameGenerator;
 import org.jasm.disassembler.NameGenerator;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.AbstractTaggedBytecodeItemList;
@@ -28,6 +29,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	private SymbolTable symbolTable = new SymbolTable(null);
 	
 	private NameGenerator constNameGenerator = new NameGenerator();
+	private ClassNameGenerator classNameGenerator = new ClassNameGenerator();
 	
 	public ConstantPool() {
 		super(AbstractConstantPoolEntry.class, "org.jasm.item.constantpool");
@@ -381,6 +383,16 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		}
 	}
 	
+	public void createDisassemblerLabels() {
+		classNameGenerator.setThisClassName(this.getRoot().getThisClass().getClassName());
+		for (IBytecodeItem item: getItems()) {
+			if (item != null && (item instanceof ClassInfo)) {
+				ClassInfo cli = (ClassInfo)item;
+				cli.setDisassemblerLabel(classNameGenerator.createDisassemblerClassName(cli.getClassName()));
+			}
+		}
+	}
+	
 	
 	
 	@Override
@@ -417,6 +429,11 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 
 	public NameGenerator getConstNameGenerator() {
 		return constNameGenerator;
+	}
+
+
+	public ClassNameGenerator getClassNameGenerator() {
+		return classNameGenerator;
 	}
 	
 	

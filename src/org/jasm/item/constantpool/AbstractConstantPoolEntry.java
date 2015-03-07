@@ -87,6 +87,12 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 		return disassemblerLabel;
 	}
 	
+	
+	
+	public void setDisassemblerLabel(String disassemblerLabel) {
+		this.disassemblerLabel = disassemblerLabel;
+	}
+
 	public abstract String getConstTypeLabel();
 	protected abstract String doGetDisassemblerLabel();
 

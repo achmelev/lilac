@@ -1,5 +1,7 @@
 package org.jasm.item.constantpool;
 
+import org.jasm.disassembler.ClassNameGenerator;
+import org.jasm.disassembler.NameGenerator;
 import org.jasm.parser.literals.SymbolReference;
 
 public abstract class AbstractRefInfo extends AbstractReferenceEntry implements INameReferencingEntry, IDescriptorReferencingEntry {
@@ -88,8 +90,11 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 
 	@Override
 	protected String doGetDisassemblerLabel() {
+		String className = getClassReference().getDisassemblerLabel();
 		String result =  getNameAndTypeReference().getNameReference().getValue();
-		
+		if (!className.equals(ClassNameGenerator.THISCLASS) || NameGenerator.isKeyword(result)) {
+			result = className+"."+result;
+		}
 		return result;
 	}
 	

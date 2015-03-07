@@ -237,7 +237,7 @@ public class InnerClass extends AbstractByteCodeItem implements IUtf8ConstantPoo
 	}
 	
 	private void verifyName(SymbolReference ref,Utf8Info name) {
-		IdentifierUtils.checkIdentifier(this, ref, name);
+		IdentifierUtils.checkSimpleIdentifier(this, ref, name);
 	}
 
 

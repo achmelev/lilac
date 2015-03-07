@@ -310,6 +310,10 @@ public class NameGenerator {
 		return result;
 	}
 	
+	public static boolean isKeyword(String name) {
+		return keywords.contains(name) || name.equals("NaN");
+	}
+	
 	public static void main(String[] args) {
 		File f = new File("grammar/JavaAssembler.g4");
 		

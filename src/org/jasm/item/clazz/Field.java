@@ -45,7 +45,7 @@ public class Field extends AbstractClassMember<FieldModifier> {
 
 	@Override
 	protected void verifyName(SymbolReference ref, Utf8Info name) {
-		IdentifierUtils.checkIdentifier(this, ref, name);
+		IdentifierUtils.checkSimpleIdentifier(this, ref, name);
 	}
 	
 
