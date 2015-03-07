@@ -84,7 +84,8 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 
 	@Override
 	public String getPrintComment() {
-		return cpEntry.getPrintComment();
+		//return cpEntry.getPrintComment();
+		return null;
 	}
 
 	@Override

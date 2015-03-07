@@ -140,7 +140,7 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IUtf8Con
 		
 		
 		if (name != null) {
-			IdentifierUtils.checkIdentifier(this, nameReference, name);
+			IdentifierUtils.checkSimpleIdentifier(this, nameReference, name);
 		}
 		
 		checkDescriptor();

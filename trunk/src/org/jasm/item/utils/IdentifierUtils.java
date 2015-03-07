@@ -6,7 +6,7 @@ import org.jasm.parser.literals.SymbolReference;
 
 public class IdentifierUtils {
 	
-	public static boolean isValidIdentifier(String value) {
+	public static boolean isValidSimpleIdentifier(String value) {
 		if (value.length() == 0) {
 			return false;
 		}
@@ -27,13 +27,18 @@ public class IdentifierUtils {
 		
 	}
 	
-	public static boolean isValidJasmClassName(String name) {
-		String[] ids = name.split("/");
+	
+	public static boolean isValidIdentifier(String name) {
+		return isValidComplexIdentifier(name, "\\.");
+	}
+	
+	private static boolean isValidComplexIdentifier(String name, String splitChar) {
+		String[] ids = name.split(splitChar);
 		if (ids.length==0) {
 			return false;
 		} else {
 			for (String s: ids) {
-				if (!isValidIdentifier(s)) {
+				if (!isValidSimpleIdentifier(s)) {
 					return false;
 				} 
 			}
@@ -42,19 +47,12 @@ public class IdentifierUtils {
 		}
 	}
 	
+	public static boolean isValidJasmClassName(String name) {
+		return isValidComplexIdentifier(name,"/");
+	}
+	
 	public static boolean isValidJavaClassName(String name) {
-		String[] ids = name.split("\\.");
-		if (ids.length==0) {
-			return false;
-		} else {
-			for (String s: ids) {
-				if (!isValidIdentifier(s)) {
-					return false;
-				} 
-			}
-			
-			return true;
-		}
+		return isValidComplexIdentifier(name,"\\.");
 	}
 	
 	public static String convertToJavaClassName(String name) {
@@ -80,8 +78,17 @@ public class IdentifierUtils {
 		}
 	}
 	
+	public static boolean checkSimpleIdentifier(AbstractByteCodeItem source, SymbolReference ref, Utf8Info value) {
+		if (!IdentifierUtils.isValidSimpleIdentifier(value.getValue())) {
+			source.emitError(ref, "malformed simple identifier: "+value.getValue());
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	public static boolean checkMethodName(AbstractByteCodeItem source, SymbolReference ref, Utf8Info value) {
-		if (!IdentifierUtils.isValidIdentifier(value.getValue()) && !(value.getValue().equals("<init>") || value.getValue().equals("<clinit>"))) {
+		if (!IdentifierUtils.isValidSimpleIdentifier(value.getValue()) && !(value.getValue().equals("<init>") || value.getValue().equals("<clinit>"))) {
 			source.emitError(ref, "invalid method name: "+value.getValue());
 			return false;
 		} else {

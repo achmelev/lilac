@@ -93,7 +93,7 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 					if (!isField()) {
 						IdentifierUtils.checkMethodName(this, nameSymbolToVerify, nameToVerify);
 					} else {
-						IdentifierUtils.checkIdentifier(this, nameSymbolToVerify, nameToVerify);
+						IdentifierUtils.checkSimpleIdentifier(this, nameSymbolToVerify, nameToVerify);
 						
 					}
 				}

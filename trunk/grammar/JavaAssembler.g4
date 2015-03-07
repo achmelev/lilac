@@ -880,7 +880,9 @@ COLON           : ':';
 
 // Identifiers
 
-Identifier
+Identifier: SimpleIdentifier ('.' SimpleIdentifier)*;
+
+SimpleIdentifier
     :   JavaLetter JavaLetterOrDigit*
     ;
 

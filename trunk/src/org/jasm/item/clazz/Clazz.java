@@ -258,6 +258,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		methods.resolve();
 		attributes.resolve();
 		pool.resolveInvokeDynamics();
+		pool.createDisassemblerLabels();
 	}
 	
 	private Boolean resolvedMyself; 

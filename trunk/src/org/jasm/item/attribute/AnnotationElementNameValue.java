@@ -103,7 +103,7 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 	protected void doResolveAfterParse() {
 		this.name = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, nameReference);
 		if (name != null) {
-			IdentifierUtils.checkIdentifier(this, nameReference, name);
+			IdentifierUtils.checkSimpleIdentifier(this, nameReference, name);
 		}
 		value.resolve();
 	}
