@@ -41,19 +41,20 @@ public class StackMapAttributeContent extends AbstractBytecodeItemList<AbstractS
 	@Override
 	protected void doResolveAfterParse() {
 		super.doResolveAfterParse();
-		if (!hasErrors()) {
-			Set<Integer> targets = new HashSet<Integer>();
-			for (int i=0;i<getSize(); i++) {
-				AbstractStackmapFrame frame = get(i);
+		Set<Integer> targets = new HashSet<Integer>();
+		for (int i=0;i<getSize(); i++) {
+			AbstractStackmapFrame frame = get(i);
+			if (!frame.hasErrors()) {
 				int index = frame.getInstruction().getIndex();
 				if (targets.contains(index)) {
 					frame.emitError(null, "double stackmap declaration");
 				} else {
 					targets.add(index);
 				}
-				
 			}
+			
 		}
+		
 		
 	}
 
