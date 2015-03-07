@@ -44,6 +44,7 @@ import java.util.Set;
 
 
 
+
 import org.jasm.item.IErrorEmitter;
 import org.jasm.item.attribute.AbstractStackmapFrame;
 import org.jasm.item.attribute.AbstractStackmapVariableinfo;
@@ -84,6 +85,7 @@ import org.jasm.item.instructions.verify.error.FallOffException;
 import org.jasm.item.instructions.verify.error.LinearMethodException;
 import org.jasm.item.instructions.verify.error.MissingStackmapException;
 import org.jasm.item.instructions.verify.error.MissingStackmapsDeclaration;
+import org.jasm.item.instructions.verify.error.TypeCheckingException;
 import org.jasm.item.instructions.verify.error.UnknownClassException;
 import org.jasm.item.instructions.verify.types.IClassQuery;
 import org.jasm.item.instructions.verify.types.ObjectValueType;
@@ -195,6 +197,8 @@ public class Verifier implements IClassQuery {
 					}
 				} catch (LinearMethodException e) {
 					throw e.getCause();
+				} catch (TypeCheckingException e) {
+					throw e.getCause();
 				}
 			} else {
 				
@@ -222,9 +226,13 @@ public class Verifier implements IClassQuery {
 		initialFrame = Frame.createInitialFrame(className, isConstructor, isStatic, maxLocals, maxStack, desc, this);
 	}
 	
+	private boolean hasBranches() {
+		return !(branchTargets.isEmpty() && exceptionTargets.isEmpty());
+	}
+	
 	private void doTypeChecking() {
 		List<Attribute> attrs = code.getAttributes().getAttributesByContentType(StackMapAttributeContent.class);
-		if (attrs.size() == 0 && !(branchTargets.isEmpty() && exceptionTargets.isEmpty())) {
+		if (attrs.size() == 0 && hasBranches()) {
 			throw new MissingStackmapsDeclaration();
 		}
 		if (attrs.size() == 2) {
@@ -247,8 +255,10 @@ public class Verifier implements IClassQuery {
 		
 		if (branchTargets.size() == 0 && 
 				exceptionTargets.size() == 0 &&
-				stackMapFrames.size() == 0) {
+				!hasStackMapDeclaration) {
 			checkLinearMethod();
+		} else {
+			doRealTypeChecking();
 		}
 	}
 	
@@ -275,8 +285,35 @@ public class Verifier implements IClassQuery {
 				
 			}
 		} catch (VerifyException e) {
-			//e.printStackTrace();
 			throw new LinearMethodException(e);
+		}
+	}
+	
+	private void doRealTypeChecking() {
+		try {
+			Frame nextFrame = initialFrame.copy();
+			for (int i=0;i<parent.getSize(); i++) {
+				Frame currentFrame = nextFrame;
+				if (stackMapFrames.containsKey(i)) {
+					currentFrame = stackMapFrames.get(i).copy();
+				}
+				currentInstructionIndex = i;
+				AbstractInstruction instr = parent.get(currentInstructionIndex);
+				nextFrame = interpeter.execute(instr, currentFrame).copy();
+				Set<Integer> myFollowers = followers.get(i);
+				for (Integer f: myFollowers) {
+					if (stackMapFrames.containsKey(f)) {
+						Frame stackmapFrame = stackMapFrames.get(f);
+						if (!stackmapFrame.isAssignableFrom(currentFrame)) {
+							throw new VerifyException(currentInstructionIndex, "current stackframe isn't assignable to the stack frame at "+f);
+						}
+					}
+				}
+				
+				
+			}
+		} catch (VerifyException e) {
+			throw new TypeCheckingException(e);
 		}
 	}
 	
@@ -299,9 +336,9 @@ public class Verifier implements IClassQuery {
 	
 	private Frame createFrameFromStackFrame(Frame previousFrame, AbstractStackmapFrame stackMapFrame) {
 		if (stackMapFrame instanceof SameStackmapFrame) {
-			return previousFrame.copy();
+			return previousFrame.applyStackmapSame();
 		} else if (stackMapFrame instanceof SameExtendedStackmapFrame) {
-			return previousFrame.copy();
+			return previousFrame.applyStackmapSame();
 		} else if (stackMapFrame instanceof SameLocalsOneStackitemStackmapFrame) {
 			SameLocalsOneStackitemStackmapFrame slo = (SameLocalsOneStackitemStackmapFrame)stackMapFrame;
 			return previousFrame.applyStackmapSameLocalsOneStackItem(createVerificationTypeFromStackMap(slo.getStackitemInfo()));

@@ -274,7 +274,7 @@ public class VerificationTest implements IClassQuery {
 		frame.push(VerificationType.LONG);
 		frame.push(VerificationType.LONG);
 		
-		Assert.assertTrue(frame.copy().same(frame));
+		Assert.assertTrue(frame.copy().equals(frame));
 	}
 	
 	@Test
@@ -475,7 +475,7 @@ public class VerificationTest implements IClassQuery {
 		Frame frame2 = Frame.createFrame(vars2, vars2, 12);
 		Frame frame3 = Frame.createFrame(vars3, vars3, 12);
 		
-		Assert.assertTrue(frame1.merge(frame2).same(frame3));
+		Assert.assertTrue(frame1.merge(frame2).equals(frame3));
 		Assert.assertEquals(7, frame1.merge(frame2).getActiveLocals());
 		
 		
@@ -492,13 +492,13 @@ public class VerificationTest implements IClassQuery {
 		locals.add(new ObjectValueType("Lorg/jasm/test/verify/Dummy;", this));
 		Frame frame1 = Frame.createInitialFrame("org/jasm/test/verify/Dummy", false, false, 1, 1, new MethodDescriptor(descriptor), this);
 		Frame frame2 = Frame.createFrame(locals, stack, 1);
-		Assert.assertTrue(frame1.same(frame2));
+		Assert.assertTrue(frame1.equals(frame2));
 		
 		descriptor = "()V";
 		locals = new ArrayList<VerificationType>();
 		frame1 = Frame.createInitialFrame("org/jasm/test/verify/Dummy", false, true, 0, 1, new MethodDescriptor(descriptor), this);
 		frame2 = Frame.createFrame(locals, stack, 1);
-		Assert.assertTrue(frame1.same(frame2));
+		Assert.assertTrue(frame1.equals(frame2));
 		
 		descriptor = "(BLjava/lang/Runnable;)V";
 		locals = new ArrayList<VerificationType>();
@@ -509,7 +509,7 @@ public class VerificationTest implements IClassQuery {
 		locals.add(VerificationType.TOP);
 		frame1 = Frame.createInitialFrame("org/jasm/test/verify/Dummy", false, false, 5, 1, new MethodDescriptor(descriptor), this);
 		frame2 = Frame.createFrame(locals, stack, 1);
-		Assert.assertTrue(frame1.same(frame2));
+		Assert.assertTrue(frame1.equals(frame2));
 		
 		descriptor = "(BLjava/lang/Runnable;)V";
 		locals = new ArrayList<VerificationType>();
@@ -517,7 +517,7 @@ public class VerificationTest implements IClassQuery {
 		locals.add(new ObjectValueType("Ljava/lang/Runnable;", this));
 		frame1 = Frame.createInitialFrame("org/jasm/test/verify/Dummy", false, true, 2, 1, new MethodDescriptor(descriptor), this);
 		frame2 = Frame.createFrame(locals, stack, 1);
-		Assert.assertTrue(frame1.same(frame2));
+		Assert.assertTrue(frame1.equals(frame2));
 		
 		descriptor = "(DLjava/lang/Runnable;)V";
 		locals = new ArrayList<VerificationType>();
@@ -527,7 +527,7 @@ public class VerificationTest implements IClassQuery {
 		locals.add(new ObjectValueType("Ljava/lang/Runnable;", this));
 		frame1 = Frame.createInitialFrame("org/jasm/test/verify/Dummy", true, false, 4, 1, new MethodDescriptor(descriptor), this);
 		frame2 = Frame.createFrame(locals, stack, 1);
-		Assert.assertTrue(frame1.same(frame2));
+		Assert.assertTrue(frame1.equals(frame2));
 		
 	}
 	
@@ -569,7 +569,7 @@ public class VerificationTest implements IClassQuery {
 		locals.add(VerificationType.TOP);
 		Frame result = Frame.createFrame(locals, new ArrayList<VerificationType>(), 5);
 		
-		Assert.assertTrue(result.same(frame));
+		Assert.assertTrue(result.equals(frame));
 		
 		try {
 			frame.applyStackmapChop(6);
@@ -589,7 +589,7 @@ public class VerificationTest implements IClassQuery {
 		
 		result = Frame.createFrame(locals, new ArrayList<VerificationType>(), 5);
 		
-		Assert.assertTrue(result.same(frame));
+		Assert.assertTrue(result.equals(frame));
 		
 		locals = new ArrayList<VerificationType>();
 		locals.add(VerificationType.LONG);
@@ -637,7 +637,7 @@ public class VerificationTest implements IClassQuery {
 		
 		result = Frame.createFrame(locals, stack, 5);
 		
-		Assert.assertTrue(result.same(frame));
+		Assert.assertTrue(result.equals(frame));
 		
 		frame = Frame.createFrame(locals, new ArrayList<VerificationType>(), 1);
 		try {
@@ -653,7 +653,14 @@ public class VerificationTest implements IClassQuery {
 		stack.add(VerificationType.NULL);
 		result = Frame.createFrame(locals, stack, 5);
 		
-		Assert.assertTrue(result.same(frame));
+		Assert.assertTrue(result.equals(frame));
+		
+		frame =frame.applyStackmapSame();
+		
+		stack = new ArrayList<VerificationType>();
+		result = Frame.createFrame(locals, stack, 5);
+		
+		Assert.assertTrue(result.equals(frame));
 		
 		
 		
@@ -716,7 +723,7 @@ public class VerificationTest implements IClassQuery {
 		
 		List<VerificationType> stack = new ArrayList<VerificationType>();
 		
-		Assert.assertTrue(fr.same(Frame.createFrame(locals, stack, 5)));
+		Assert.assertTrue(fr.equals(Frame.createFrame(locals, stack, 5)));
 		
 		List<VerificationType> appendLocals = new ArrayList<VerificationType>();
 		appendLocals.add(VerificationType.INT);
@@ -728,14 +735,14 @@ public class VerificationTest implements IClassQuery {
 		locals.set(6, VerificationType.TOP);
 		locals.set(7, VerificationType.FLOAT);
 		
-		Assert.assertTrue(fr.same(Frame.createFrame(locals, stack, 5)));
+		Assert.assertTrue(fr.equals(Frame.createFrame(locals, stack, 5)));
 		
 		fr = fr.applyStackmapChop(2);
 		locals.set(5, VerificationType.TOP);
 		locals.set(6, VerificationType.TOP);
 		locals.set(7, VerificationType.TOP);
 		
-		Assert.assertTrue(fr.same(Frame.createFrame(locals, stack, 5)));
+		Assert.assertTrue(fr.equals(Frame.createFrame(locals, stack, 5)));
 		
 	}
 	
