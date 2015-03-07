@@ -216,7 +216,7 @@ public class Frame {
 
 
 
-	public boolean same(Frame  other) {
+	public boolean equals(Frame  other) {
 		if (other.locals.size() !=this.locals.size()) {
 			throw new IllegalArgumentException("inconsistent locals sizes "+other.locals.size()+"!="+locals.size());
 		}
@@ -312,6 +312,11 @@ public class Frame {
 		if (stackItem.getSize()>maxStackSize) {
 			throw new StackmapSameLocalsStackOverflowException(-1, maxStackSize, stackItem.getSize());
 		}
+		return new Frame(locals, stack,maxStackSize);
+	}
+	
+	public Frame applyStackmapSame() {
+		Stack<VerificationType> stack = new Stack<VerificationType>();
 		return new Frame(locals, stack,maxStackSize);
 	}
 	
