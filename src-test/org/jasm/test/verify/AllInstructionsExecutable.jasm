@@ -157,6 +157,8 @@ public super class {
   const utf8 exceptionMessage_content "message";
   const string exceptionMessage exceptionMessage_content;
   
+  const utf8 stackmap_name "StackMapTable";
+  
   
   
   
@@ -247,10 +249,13 @@ public super class {
   public method {
     name init0_name; 
     descriptor method_desc; 
+   	
    
     maxstack 3;
     //Variables
     var object this;
+    
+    
     
     //Instructions
     
@@ -349,6 +354,29 @@ public super class {
   public method {
     name execute_name; 
     descriptor method_desc; 
+    
+    //Attributes
+   	stackmap {
+   		full ir1, {object Object,object Object,int,long,float,double,object Object},{};
+   		same extended ir2;
+   		same extended ir3;
+   		same extended ir4;
+   		same extended ir5;
+   		same extended ir6;
+   		same extended ir7;
+   		same extended ir8;
+   		same extended ir10;
+   		same extended ir11;
+   		same extended ir12;
+   		same extended ir13;
+   		same extended ir14;
+   		same extended ir15;
+   		same extended ir16;
+   		same extended ir17;
+   		same extended ir18;
+   		same extended ir19;
+   		same extended ir20;
+   	}
     
     maxstack 10;
     //Variables
@@ -783,9 +811,95 @@ public super class {
    	aload this;
    	invokevirtual AllInstructionsExecutable.create;
    	astore objectVar;
+   	
+   	goto ir1;
+   	
+   	ir1:
+   	goto_w ir2;
+   	
+   	ir2:
+   	aload objectVar;
+   	aload objectVar;
+   	if_acmpeq ir3;
+   	
+   	ir3:
+   	aload objectVar;
+   	aload objectVar;
+   	if_acmpne ir4;
+   	
+   	ir4:
+   	aload objectVar;
+   	ifnonnull ir5;
+   	
+   	ir5:
+   	aload objectVar;
+   	ifnull ir6;
+   	
+   	ir6:
+   	iload iVar;
+   	ifgt ir7;
+   	
+   	ir7:
+   	iload iVar;
+   	ifge ir8;
+   	
+   	ir8:
+   	iload iVar;
+   	iflt ir10;
+   	
+   	ir10:
+   	iload iVar;
+   	ifle ir11;
+   	
+   	ir11:
+   	iload iVar;
+   	ifeq ir12;
+   	
+   	ir12:
+   	iload iVar;
+   	ifne ir13;
+   	
+   	ir13:
+   	iload iVar;
+   	iload iVar;
+   	if_icmpeq ir14;
+   	
+   	ir14:
+   	iload iVar;
+   	iload iVar;
+   	if_icmpne ir15;
+   	
+   	ir15:
+   	iload iVar;
+   	iload iVar;
+   	if_icmpne ir16;
+   	
+   	ir16:
+   	iload iVar;
+   	iload iVar;
+   	if_icmpgt ir17;
+   	
+   	ir17:
+   	iload iVar;
+   	iload iVar;
+   	if_icmpge ir18;
+   	
+   	ir18:
+   	iload iVar;
+   	iload iVar;
+   	if_icmple ir19;
+   	
+   	ir19:
+   	iload iVar;
+   	iload iVar;
+   	if_icmplt ir20;
+   	
+	ir20:
   
     return;
   }
+  
+  //goto_w,if_acmp*, if_icmp*,if*,ifnonnull,ifnull, lookupswitch
   
   private method {
   	 name throwException_name;

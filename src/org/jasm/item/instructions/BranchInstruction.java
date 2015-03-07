@@ -15,15 +15,19 @@ public class BranchInstruction extends AbstractInstruction implements IReferenci
 	private AbstractInstruction targetInst = null;
 	
 	
+	private boolean isWide;
+	
 	
 	public BranchInstruction(short opCode, AbstractInstruction inst, boolean wide) {
-		super(opCode, wide);
+		super(opCode, false);
 		this.targetInst = inst;
+		this.isWide = wide;
+		
 	}
 
 	@Override
 	public int getLength() {
-		if (isWide()) {
+		if (isWide) {
 			return 5;
 		} else {
 			return 3;
@@ -53,7 +57,7 @@ public class BranchInstruction extends AbstractInstruction implements IReferenci
 
 	@Override
 	public void read(IByteBuffer source, long offset) {
-		if (!isWide()) {
+		if (!isWide) {
 			targetOffset = source.readShort(offset);
 		} else {
 			targetOffset = source.readInt(offset);
@@ -62,10 +66,10 @@ public class BranchInstruction extends AbstractInstruction implements IReferenci
 
 	@Override
 	public void write(IByteBuffer target, long offset) {
-		if (!isWide()) {
+		if (!isWide) {
 			target.writeShort(offset, (short)(targetInst.getOffsetInCode()-this.getOffsetInCode()));
 		} else {
-			target.writeInt(offset, (short)(targetInst.getOffsetInCode()-this.getOffsetInCode()));
+			target.writeInt(offset, (targetInst.getOffsetInCode()-this.getOffsetInCode()));
 		}
 	}
 
