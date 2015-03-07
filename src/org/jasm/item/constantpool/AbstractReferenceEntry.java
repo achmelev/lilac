@@ -131,7 +131,7 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 			for (int i=0;i<referenceLabels.length; i++) {
 				
 				if (!reference[i].getClass().equals(expectedTypes[i].getClass())) {
-					emitError(referenceLabels[i], "wrong constant type, expected "+expectedTypes[i].getPrintName());
+					emitError(referenceLabels[i], "wrong constant type, expected "+expectedTypes[i].getConstTypeLabel());
 					
 				} else {
 					if (!reference[i].hasErrors()) {

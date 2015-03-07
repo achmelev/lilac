@@ -135,8 +135,10 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 			
 		}
 		
-		//Checking Instruction arguments
-		verifyInstructions();
+		if (info != null) {
+			verifyInstructions();
+		}
+		
 	}
 	
 	protected void verifyInstructions() {
@@ -152,6 +154,9 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 			}
 		}  else if (this.getOpCode() == OpCodes.new_) {
 			ExternalClassInfo cli = (ExternalClassInfo)info;
+			if (info == null) {
+				throw new IllegalStateException();
+			}
 			if (cli.isArray()) {
 				emitError(cpEntryReference, "array instantiation with new");
 			}
