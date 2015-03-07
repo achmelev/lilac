@@ -108,6 +108,60 @@ public super class {
   const double dConst 1.1;
   const string sConst execute_name;
   
+  //throwException
+  const utf8 throwException_name "throwException";
+  const utf8 throwException_desc "()V";
+  const nameandtype throwException_nt throwException_name,throwException_desc;
+  const methodref throwException AllInstructionsExecutable, throwException_nt;
+  
+  //fadd
+  const utf8 fadd_name "fadd";
+  const utf8 fadd_desc "(FF)F";
+  const nameandtype fadd_nt fadd_name,fadd_desc;
+  const methodref AllInstructionsExecutable.fadd AllInstructionsExecutable, fadd_nt;
+  
+  //iadd
+  const utf8 iadd_name "iadd";
+  const utf8 iadd_desc "(II)I";
+  const nameandtype iadd_nt iadd_name,iadd_desc;
+  const methodref AllInstructionsExecutable.iadd AllInstructionsExecutable, iadd_nt;
+  
+  //dadd
+  const utf8 dadd_name "dadd";
+  const utf8 dadd_desc "(DD)D";
+  const nameandtype dadd_nt dadd_name,dadd_desc;
+  const methodref AllInstructionsExecutable.dadd AllInstructionsExecutable, dadd_nt;
+  
+  //ladd
+  const utf8 ladd_name "ladd";
+  const utf8 ladd_desc "(JJ)J";
+  const nameandtype ladd_nt ladd_name,ladd_desc;
+  const methodref AllInstructionsExecutable.ladd AllInstructionsExecutable, ladd_nt;
+  
+  //create
+  const utf8 create_name "create";
+  const utf8 create_desc "()Lorg/jasm/test/playground/bean/IntB;";
+  const nameandtype create_nt create_name,create_desc;
+  const methodref AllInstructionsExecutable.create AllInstructionsExecutable, create_nt;
+  
+  
+  //RuntimeException and Constructor
+  const utf8 RuntimeException_name "java/lang/RuntimeException";
+  const classref RuntimeException RuntimeException_name;
+  const utf8 RuntimeException_init_name "<init>";
+  const utf8 RuntimeException_init_desc "(Ljava/lang/String;)V";
+  const nameandtype RuntimeException_init_nt RuntimeException_init_name, RuntimeException_init_desc;
+  const methodref  RuntimeException.init RuntimeException, RuntimeException_init_nt;
+  
+  //Message
+  const utf8 exceptionMessage_content "message";
+  const string exceptionMessage exceptionMessage_content;
+  
+  
+  
+  
+  
+  
    //Fields
   private field {
     name boolField_name; 
@@ -701,9 +755,141 @@ public super class {
    	swap;
    	istore iVar;
    	fstore fVar;
+   	
+   	//invoking
+   	fload fVar;
+   	fconst_1;
+   	invokestatic AllInstructionsExecutable.fadd;
+   	fstore fVar; 
+   	
+   	aload this;
+   	dload dVar;
+   	dconst_1;
+   	invokevirtual AllInstructionsExecutable.dadd;
+   	dstore dVar; 
+   	
+   	aload this;
+   	iload iVar;
+   	iconst_1;
+   	invokevirtual AllInstructionsExecutable.iadd;
+   	istore iVar;
+   	
+   	aload this;
+   	lload lVar;
+   	lconst_1;
+   	invokevirtual AllInstructionsExecutable.ladd;
+   	lstore lVar;
+   	
+   	aload this;
+   	invokevirtual AllInstructionsExecutable.create;
+   	astore objectVar;
   
     return;
   }
   
-  //athrow,goto, goto_w,if_acmp*, if_icmp*,if*,ifnonnull,ifnull, lookupswitch
+  private method {
+  	 name throwException_name;
+  	 descriptor throwException_desc;
+  	 
+  	 maxstack 5;
+  	 
+  	 //Variables
+  	 var object this;
+  	 
+  	 //Instructions
+  	 new RuntimeException;
+  	 dup;
+  	 ldc exceptionMessage;
+  	 invokespecial RuntimeException.init;
+  	 athrow;
+  }
+  
+  private static method {
+  	 name fadd_name;
+  	 descriptor fadd_desc;
+  	 
+  	 maxstack 5;
+  	 
+  	 //Variables
+  	 var float arg1;
+  	 var float arg2;
+  	 
+  	 //Instructions
+  	 fload arg1;
+  	 fload arg2;
+  	 fadd;
+  	 freturn;
+  }
+  
+  private method {
+  	 name iadd_name;
+  	 descriptor iadd_desc;
+  	 
+  	 maxstack 5;
+  	 
+  	 //Variables
+  	 var object this;
+  	 var int arg1;
+  	 var int arg2;
+  	 
+  	 //Instructions
+  	 iload arg1;
+  	 iload arg2;
+  	 iadd;
+  	 ireturn;
+  }
+  
+  private method {
+  	 name dadd_name;
+  	 descriptor dadd_desc;
+  	 
+  	 maxstack 5;
+  	 
+  	 //Variables
+  	 var object this;
+  	 var double arg1;
+  	 var double arg2;
+  	 
+  	 //Instructions
+  	 dload arg1;
+  	 dload arg2;
+  	 dadd;
+  	 dreturn;
+  }
+  
+  private method {
+  	 name ladd_name;
+  	 descriptor ladd_desc;
+  	 
+  	 maxstack 5;
+  	 
+  	 //Variables
+  	 var object this;
+  	 var long arg1;
+  	 var long arg2;
+  	 
+  	 //Instructions
+  	 lload arg1;
+  	 lload arg2;
+  	 ladd;
+  	 lreturn;
+  }
+  
+  private method {
+  	 name create_name;
+  	 descriptor create_desc;
+  	 
+  	 maxstack 5;
+  	 
+  	 //Variables
+  	 var object this;
+  	 
+  	 //Instructions
+  	 new IntB;
+  	 dup;
+  	 invokespecial  init0$0;
+  	 areturn;
+  }
+  
+  //goto, goto_w,if_acmp*, if_icmp*,if*,ifnonnull,ifnull, lookupswitch
 }
