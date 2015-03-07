@@ -388,7 +388,12 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		for (IBytecodeItem item: getItems()) {
 			if (item != null && (item instanceof ClassInfo)) {
 				ClassInfo cli = (ClassInfo)item;
-				cli.setDisassemblerLabel(classNameGenerator.createDisassemblerClassName(cli.getClassName()));
+				String label = classNameGenerator.createDisassemblerClassName(cli.getClassName());
+				if (label != null) {
+					label = constNameGenerator.generateName(label);
+					cli.setDisassemblerLabel(label);
+				}
+				
 			}
 		}
 	}

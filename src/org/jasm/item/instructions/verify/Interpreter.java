@@ -8,6 +8,7 @@ import java.util.List;
 import javassist.bytecode.Descriptor;
 
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.AbstractRefInfo;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.DoubleInfo;
 import org.jasm.item.constantpool.FieldrefInfo;
@@ -1442,7 +1443,7 @@ public class Interpreter {
 		  superClassName = parent.getClazz().getSuperClass().getClassName();
 	  }
 	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
-	  MethodrefInfo mi = (MethodrefInfo)cpi.getCpEntry();
+	  AbstractRefInfo mi = (AbstractRefInfo)cpi.getCpEntry();
 	  if (mi.getNameAndTypeReference().getName().equals("<init>")) {
 		  String methodClassName = mi.getClassReference().getClassName();
 		  MethodDescriptor method = mi.getNameAndTypeReference().getMethodDescriptor();
@@ -1485,7 +1486,7 @@ public class Interpreter {
 
 	public Frame executeInvokestatic(AbstractInstruction instr, Frame inputFrame) {
 		ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
-		MethodrefInfo mi = (MethodrefInfo)cpi.getCpEntry();
+		AbstractRefInfo mi = (AbstractRefInfo)cpi.getCpEntry();
 		invokeMethod(null, mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame);
 		return inputFrame;
 	}

@@ -2438,7 +2438,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (!pool.getSymbolTable().contains(entry.getSymbolName())) {
 			pool.getSymbolTable().add(entry);
 		} else {
-			emitError(entry.getSourceLocation().getLine(), entry.getSourceLocation().getCharPosition(), "dublicate constant declaration"+entry.getSymbolName());
+			emitError(entry.getSourceLocation().getLine(), entry.getSourceLocation().getCharPosition(), "dublicate constant declaration "+entry.getSymbolName());
 		}
 	}
 	
@@ -2448,7 +2448,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (!pool.getSymbolTable().contains(entry.getSymbolName())) {
 			pool.getSymbolTable().add(entry);
 		} else {
-			emitError(entry.getSourceLocation().getLine(), entry.getSourceLocation().getCharPosition(), "dublicate bootstrap method declaration"+entry.getSymbolName());
+			emitError(entry.getSourceLocation().getLine(), entry.getSourceLocation().getCharPosition(), "dublicate bootstrap method declaration "+entry.getSymbolName());
 		}
 	}
 	

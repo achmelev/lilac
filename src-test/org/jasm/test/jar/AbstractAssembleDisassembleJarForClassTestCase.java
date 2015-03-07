@@ -61,6 +61,11 @@ public abstract class AbstractAssembleDisassembleJarForClassTestCase extends
 		AssemblerParser parser = null;
 		parser = new AssemblerParser();
 		Clazz clazz =  parser.parse(bi);
+		if (parser.getErrorMessages().size() > 0) {
+			log.error("code: \n"+data);
+			parser.printErrors();
+			Assert.fail("Parsing failed on:");
+		}
 		VerifierParams params = new VerifierParams();
 		//params.setCheckReferences(false);
 		if (clp == null) {
