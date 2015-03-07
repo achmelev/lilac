@@ -215,6 +215,12 @@ public class ObjectValueType extends VerificationType {
 	public void setQuery(IClassQuery query) {
 		this.query = query;
 	}
+	
+	
+
+	public IClassQuery getQuery() {
+		return query;
+	}
 
 	public ObjectValueType cloneWithQuery(IClassQuery query) {
 		return new ObjectValueType(desc, query);

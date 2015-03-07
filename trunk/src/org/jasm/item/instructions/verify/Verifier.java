@@ -6,45 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import org.jasm.item.IErrorEmitter;
 import org.jasm.item.attribute.AbstractStackmapFrame;
 import org.jasm.item.attribute.AbstractStackmapVariableinfo;
@@ -304,10 +265,25 @@ public class Verifier implements IClassQuery {
 				for (Integer f: myFollowers) {
 					if (stackMapFrames.containsKey(f)) {
 						Frame stackmapFrame = stackMapFrames.get(f);
-						if (!stackmapFrame.isAssignableFrom(currentFrame)) {
+						if (!stackmapFrame.isAssignableFrom(nextFrame)) {
 							throw new VerifyException(currentInstructionIndex, "current stackframe isn't assignable to the stack frame at "+f);
 						}
 					}
+				}
+				
+				for (ExceptionHandler handler: exceptionHandlers.get(i)) {
+					ClassInfo exception = handler.getCatchType();
+					ObjectValueType exceptionType;
+					if (exception != null) {
+						exceptionType = new ObjectValueType("L"+exception.getClassName()+";", this);
+					} else {
+						exceptionType = VerificationType.THROWABLE.create(this);
+					}
+					Frame stackmapFrame = stackMapFrames.get(handler.getHandlerInstruction().getIndex());
+					if (!stackmapFrame.isAssignableFrom(nextFrame.copy().throwException(exceptionType))) {
+						throw new VerifyException(currentInstructionIndex, "current stackframe isn't assignable to the stack frame at "+handler.getHandlerInstruction().getIndex());
+					}
+					
 				}
 				
 				
@@ -651,7 +627,7 @@ public class Verifier implements IClassQuery {
 	}
 	
 	private void emitRuntimeError(RuntimeException e) {
-		//e.printStackTrace();
+		e.printStackTrace();
 		int index = 0;
 		if (currentInstructionIndex>=0) {
 			index = currentInstructionIndex;
