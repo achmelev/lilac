@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.jasm.item.IErrorEmitter;
 import org.jasm.item.attribute.AbstractStackmapFrame;
 import org.jasm.item.attribute.AbstractStackmapVariableinfo;
@@ -47,6 +48,7 @@ import org.jasm.item.instructions.verify.error.LinearMethodException;
 import org.jasm.item.instructions.verify.error.MissingStackmapException;
 import org.jasm.item.instructions.verify.error.MissingStackmapsDeclaration;
 import org.jasm.item.instructions.verify.error.TypeCheckingException;
+import org.jasm.item.instructions.verify.error.TypeInferencingException;
 import org.jasm.item.instructions.verify.error.UnknownClassException;
 import org.jasm.item.instructions.verify.types.IClassQuery;
 import org.jasm.item.instructions.verify.types.ObjectValueType;
@@ -73,7 +75,9 @@ public class Verifier implements IClassQuery {
 	private List<Set<ExceptionHandler>> exceptionHandlers = new ArrayList<Set<ExceptionHandler>>();
 	private Set<Integer> branchTargets = new HashSet<Integer>();
 	private Set<Integer> exceptionTargets = new HashSet<Integer>();
-	private Map<Integer, Frame> stackMapFrames = new HashMap<Integer, Frame>(); 
+	private Map<Integer, Frame> stackMapFrames = new HashMap<Integer, Frame>();
+	
+	private Map<Integer, Frame> inferencedFrames = new HashMap<Integer, Frame>();
 	
 	private int currentInstructionIndex = -1;
 	
@@ -155,6 +159,14 @@ public class Verifier implements IClassQuery {
 				} catch (VerifyException e) {
 					if (version>50) {
 						throw e;
+					} else {
+						try {
+							doTypeInferencing();
+						} catch (TypeInferencingException e1) {
+							throw e1.getCause();
+						} catch (LinearMethodException e1) {
+							throw e1.getCause();
+						}
 					}
 				} catch (LinearMethodException e) {
 					throw e.getCause();
@@ -162,6 +174,13 @@ public class Verifier implements IClassQuery {
 					throw e.getCause();
 				}
 			} else {
+				try {
+					doTypeInferencing();
+				} catch (TypeInferencingException e) {
+					throw e.getCause();
+				} catch (LinearMethodException e) {
+					throw e.getCause();
+				}
 				
 			}
 		} catch (VerifyException e) {
@@ -220,6 +239,15 @@ public class Verifier implements IClassQuery {
 			checkLinearMethod();
 		} else {
 			doRealTypeChecking();
+		}
+	}
+	
+	public void doTypeInferencing() {
+		if (branchTargets.size() == 0 && 
+				exceptionTargets.size() == 0) {
+			checkLinearMethod();
+		} else {
+			doRealTypeInferencing();
 		}
 	}
 	
@@ -290,6 +318,65 @@ public class Verifier implements IClassQuery {
 			}
 		} catch (VerifyException e) {
 			throw new TypeCheckingException(e);
+		}
+	}
+	
+	private void doRealTypeInferencing() {
+		try {
+			Frame firstFrame = initialFrame.copy();
+			inferencedFrames.put(0, firstFrame);
+			Set<Integer> changed = new HashSet<Integer>();
+			changed.add(0);
+			while (changed.isEmpty()) {
+				currentInstructionIndex = changed.iterator().next();
+				AbstractInstruction instr = parent.get(currentInstructionIndex);
+				changed.remove(currentInstructionIndex);
+				Frame currentFrame = inferencedFrames.get(currentInstructionIndex);
+				Set<Integer> myFollowers = followers.get(currentInstructionIndex);
+				Set<ExceptionHandler> myExceptionHandlers = exceptionHandlers.get(currentInstructionIndex);
+				Frame nextFrame = interpeter.execute(instr, currentFrame.copy());
+				for (int f: myFollowers) {
+					Frame followerFrame = inferencedFrames.get(f);
+					if (followerFrame == null) {
+						changed.add(f);
+						inferencedFrames.put(f, nextFrame.copy());
+					} else if (followerFrame.equals(nextFrame)) {
+						
+					} else {
+						changed.add(f);
+						inferencedFrames.put(f, nextFrame.merge(nextFrame));
+					}
+				}
+				
+				for (ExceptionHandler h: myExceptionHandlers) {
+					ClassInfo exception = h.getCatchType();
+					ObjectValueType exceptionType;
+					if (exception != null) {
+						exceptionType = new ObjectValueType("L"+exception.getClassName()+";", this);
+					} else {
+						exceptionType = VerificationType.THROWABLE.create(this);
+					}
+					int index = h.getHandlerInstruction().getIndex();
+					Frame followerFrame = inferencedFrames.get(index);
+					Frame exceptionFrame = currentFrame.copy().throwException(exceptionType);
+					if (followerFrame == null) {
+						changed.add(index);
+						inferencedFrames.put(index, exceptionFrame);
+					} else if (followerFrame.equals(exceptionFrame)) {
+						
+					} else {
+						changed.add(index);
+						inferencedFrames.put(index, exceptionFrame.merge(followerFrame));
+					}
+				}
+			}
+			
+			if ((inferencedFrames.size() == parent.getSize())) {
+				throw new IllegalStateException(inferencedFrames.size()+"!="+parent.getSize());
+			}
+			
+		} catch (VerifyException e) {
+			throw new TypeInferencingException(e);
 		}
 	}
 	

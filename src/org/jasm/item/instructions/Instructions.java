@@ -570,7 +570,9 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	
 	public void verifyByteCode(VerifierParams params) {
 		try {
-			verifier.verify(params);
+			if (!verifier.isHasErrors() && !verifier.isHasUnsupportedCode()) {
+				verifier.verify(params);
+			}
 		} catch (VerifyException e) {
 			emitCodeVerifyError(e);
 		}
