@@ -10,6 +10,7 @@ import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
+import org.jasm.parser.SimpleParserErrorListener;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +23,10 @@ public abstract class AbstractParseAndLoadTestCase {
 	private Clazz parse() {
 		InputStream inp = this.getClass().getClassLoader().getResourceAsStream("org/jasm/test/parser/"+getDateiName());
 		parser = new AssemblerParser();
+		parser.addErrorListener(new SimpleParserErrorListener());
 		Clazz clazz =  parser.parse(inp);
-		if (parser.getErrorMessages().size() > 0) {
-			parser.printErrors();
+		if (parser.getErrorCounter() > 0) {
+			parser.flushErrors();
 			Assert.fail("Parsing failed!");
 		}
 		return clazz;
@@ -33,9 +35,10 @@ public abstract class AbstractParseAndLoadTestCase {
 	private Clazz parse(String s) {
 		Reader inp = new StringReader(s);
 		parser = new AssemblerParser();
+		parser.addErrorListener(new SimpleParserErrorListener());
 		Clazz clazz =  parser.parse(inp);
-		if (parser.getErrorMessages().size() > 0) {
-			parser.printErrors();
+		if (parser.getErrorCounter() > 0) {
+			parser.flushErrors();;
 			Assert.fail("Parsing disassembled failed!");
 		}
 		return clazz;

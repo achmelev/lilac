@@ -20,11 +20,8 @@ public class SignatureParserTest extends AbstractParserTestCase {
 	
 	@Test
 	public void test() {
-		Clazz clazz = parse();
-		if (parser.getErrorMessages().size() > 0) {
-			parser.printErrors();
-			Assert.fail("Parsing failed!");
-		} 
+		Clazz clazz = doTest();
+		
 		
 		Assert.assertNotNull(clazz);
 		
