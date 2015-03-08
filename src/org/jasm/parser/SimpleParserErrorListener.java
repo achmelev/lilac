@@ -9,7 +9,7 @@ public class SimpleParserErrorListener implements IParserErrorListener {
 
 	@Override
 	public void error(int line, int charPos, String msg) {
-		new ErrorMessage(line, charPos, msg);
+		errors.add(new ErrorMessage(line, charPos, msg));
 		
 	}
 

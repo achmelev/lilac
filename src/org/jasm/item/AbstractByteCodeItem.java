@@ -49,7 +49,11 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 		}
 		
 		if (isAfterParse()) {
-			doResolveAfterParse();
+			try {
+				doResolveAfterParse();
+			} catch (Throwable e) {
+				getRoot().getParser().emitInternalError(this, e);
+			}
 		} else {
 			doResolve();
 		}
@@ -71,8 +75,13 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 			throw new IllegalStateException("Verify can be called only once on the same instance");
 		}
 		
-		doVerify(params);
+		try {
+			doVerify(params);
+		} catch (Throwable e) {
+			getRoot().getParser().emitInternalError(this, e);
+		}
 		this.verified = true;
+		
 	}
 	
 	protected abstract void doResolve();
