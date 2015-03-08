@@ -6,7 +6,7 @@ public super class {
    //Constants
   const classref AllInstructionsExecutable AllInstructionsExecutable_name; 
   const utf8 AllInstructionsExecutable_name "org/jasm/test/verify/AllInstructionsExecutable";
-  const classref Object Object_namee; 
+  const classref Object Object_name; 
   const utf8 Object_name "java/lang/Object";
   const classref IExecutable IExecutable_name; 
   const utf8 IExecutable_name "org/jasm/test/playground/IExecutable";
