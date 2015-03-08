@@ -23,6 +23,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.jasm.JasmConsts;
+import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.AbstractAnnotationsAttributeContent;
 import org.jasm.item.attribute.AbstractParameterAnnotationsAttributeContent;
@@ -305,6 +306,8 @@ import org.jasm.parser.literals.VersionLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sun.xml.internal.bind.v2.runtime.Location;
+
 
 
 
@@ -331,6 +334,12 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		for (IParserErrorListener listener: errorListeners) {
 			listener.error(line, charPos, msg);
 		}
+	}
+	
+	public void emitInternalError(AbstractByteCodeItem source, Throwable e) {
+		errorCounter++;
+		SourceLocation loc = source.getNextSourceLocation();
+		log.error("Got internal error at "+loc.getLine()+"/"+loc.getCharPosition()+" in "+source.getClass().getName(),e);
 	}
 	
 	public void flushErrors() {
