@@ -14,6 +14,7 @@ import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
+import org.jasm.parser.SimpleParserErrorListener;
 import org.jasm.resolver.ClassInfoResolver;
 import org.jasm.resolver.ClassLoaderClasspathEntry;
 import org.jasm.resolver.JarFileClassPathEntry;
@@ -60,6 +61,7 @@ public abstract class AbstractAssembleDisassembleJarTestCase extends
 		
 		AssemblerParser parser = null;
 		parser = new AssemblerParser();
+		parser.addErrorListener(new SimpleParserErrorListener());
 		Clazz clazz =  parser.parse(bi);
 		VerifierParams params = new VerifierParams();
 		//params.setCheckReferences(false);
@@ -70,18 +72,18 @@ public abstract class AbstractAssembleDisassembleJarTestCase extends
 		}
 		if (clazz == null) {
 			log.error("code: \n"+data);
-			if (parser.getErrorMessages().size() > 0) {
+			if (parser.getErrorCounter() > 0) {
 				log.error("code: \n"+data);
-				parser.printErrors();
+				parser.flushErrors();
 				Assert.fail("Parsing failed on:");
 			}
 			Assert.fail("Parsing failed on:");
 		} else {
 			clazz.setResolver(clp);
 			clazz.verify(params);
-			if (parser.getErrorMessages().size() > 0) {
+			if (parser.getErrorCounter() > 0) {
 				log.error("code: \n"+data);
-				parser.printErrors();
+				parser.flushErrors();
 				Assert.fail("Parsing failed on:");
 			}
 		}

@@ -12,6 +12,7 @@ import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
+import org.jasm.parser.SimpleParserErrorListener;
 import org.jasm.resolver.ClassInfoResolver;
 import org.jasm.resolver.ClassLoaderClasspathEntry;
 import org.jasm.type.verifier.VerifierParams;
@@ -72,15 +73,16 @@ public abstract class AbstractDisassembleAssembleTestCase {
 		ByteArrayInputStream bi = new ByteArrayInputStream(bo.toByteArray());
 		
 		parser = new AssemblerParser();
+		parser.addErrorListener(new SimpleParserErrorListener());
 		Clazz clazz =  parser.parse(bi);
 		ClassInfoResolver path = new ClassInfoResolver();
 		path.add(new ClassLoaderClasspathEntry(this.getClass().getClassLoader()));
 		clazz.setResolver(path);
 		clazz.verify(new VerifierParams());
 		
-		if (parser.getErrorMessages().size() > 0) {
+		if (parser.getErrorCounter() > 0) {
 			log.error("code:\n "+data);
-			parser.printErrors();
+			parser.flushErrors();
 			Assert.fail("Parsing failed!");
 		}
 		

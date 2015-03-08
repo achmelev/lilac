@@ -11,6 +11,7 @@ import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.loader.AssemblerClassLoaderException;
 import org.jasm.parser.AssemblerParser;
+import org.jasm.parser.SimpleParserErrorListener;
 import org.jasm.resolver.ClassInfoResolver;
 import org.jasm.resolver.ClassLoaderClasspathEntry;
 import org.jasm.resolver.ClazzClassPathEntry;
@@ -55,10 +56,11 @@ public class Assembler {
 	
 	protected static byte[] assemble(InputStream inp,  String rName) {
 		AssemblerParser parser = new AssemblerParser();
+		parser.addErrorListener(new SimpleParserErrorListener());
 		Clazz clazz =  parser.parse(inp);
-		if (parser.getErrorMessages().size() > 0) {
-			parser.printErrors();
-			throw new AssemblerClassLoaderException("invalid assembler file", rName, parser.getErrorMessages());
+		if (parser.getErrorCounter() > 0) {
+			parser.flushErrors();
+			throw new AssemblerClassLoaderException("invalid assembler file", rName);
 		}
 		VerifierParams params = new VerifierParams();
 		ClassInfoResolver clp = new ClassInfoResolver();
@@ -66,9 +68,9 @@ public class Assembler {
 		clp.add(new ClassLoaderClasspathEntry(Thread.currentThread().getContextClassLoader()));
 		clazz.setResolver(clp);
 		clazz.verify(params);
-		if (parser.getErrorMessages().size() > 0) {
-			parser.printErrors();
-			throw new AssemblerClassLoaderException("invalid assembler file", rName, parser.getErrorMessages());
+		if (parser.getErrorCounter()>0) {
+			parser.flushErrors();;
+			throw new AssemblerClassLoaderException("invalid assembler file", rName);
 		}
 		byte [] data = new byte[clazz.getLength()];
 		ByteArrayByteBuffer bbuf = new ByteArrayByteBuffer(data);

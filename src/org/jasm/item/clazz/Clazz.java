@@ -271,7 +271,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 					verifyInterface(interfaceSymbols.get(i), interfaces.get(i));
 				}
 				me = ExternalClassInfo.createFromClass(this);
-				resolvedMyself = getParser().getErrorMessages().size() == 0;
+				resolvedMyself = getParser().getErrorCounter() == 0;
 			}
 			return resolvedMyself;
 		} else {
@@ -286,7 +286,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			pool.verify(params);
 			methods.verify(params);
 			attributes.verify(params);
-			if (getParser().getErrorMessages().size()== 0) {
+			if (getParser().getErrorCounter() == 0) {
 				List<Instructions> instrs = this.getDescendants(Instructions.class);
 				for (Instructions instr: instrs) {
 					instr.verifyByteCode(params);

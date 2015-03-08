@@ -314,16 +314,37 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
-	private List<ErrorMessage> errorMessages = new ArrayList<>();
+	private List<IParserErrorListener> errorListeners = new ArrayList<IParserErrorListener>();
 	
 	private Clazz result = null;
 	
 	Stack<IBytecodeItem> stack = new Stack<>();
-
-	public List<ErrorMessage> getErrorMessages() {
-		return errorMessages;
+	
+	private int errorCounter = 0;
+	
+	public void addErrorListener(IParserErrorListener listener) {
+		errorListeners.add(listener);
 	}
 	
+	public void emitError(int line, int charPos, String msg) {
+		errorCounter++;
+		for (IParserErrorListener listener: errorListeners) {
+			listener.error(line, charPos, msg);
+		}
+	}
+	
+	public void flushErrors() {
+		for (IParserErrorListener listener: errorListeners) {
+			listener.flush();
+		}
+	}
+	
+	
+	
+	public int getErrorCounter() {
+		return errorCounter;
+	}
+
 	public Clazz parse(InputStream inp) {
 		ANTLRInputStream input = null;
 		try {
@@ -350,7 +371,10 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	private  Clazz doParse(ANTLRInputStream input) {
 		
 		result = null;
-		errorMessages.clear();
+		errorCounter = 0;
+		for (IParserErrorListener listener: errorListeners) {
+			listener.clear();
+		}
 		stack.clear();
 		
 		SyntaxErrorListener errorListener = new SyntaxErrorListener(this);
@@ -377,14 +401,14 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			log.debug("tree: "+tree.toStringTree());
 		}*/
 		
-		if (errorMessages.size() == 0) {
+		if (errorCounter == 0) {
 			//Walk tree an create class
 			ParseTreeWalker walker = new ParseTreeWalker();
 			walker.walk(this, tree);
-			if (errorMessages.size() == 0) {
+			if (errorCounter == 0) {
 				Clazz clazz = result;
 				clazz.resolve();
-				if (clazz.getParser().getErrorMessages().size() == 0) {
+				if (errorCounter == 0) {
 					clazz.updateMetadata();
 				}
 				
@@ -398,19 +422,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		return result;
 	}
 	
-	public void printErrors() {
-		if (getErrorMessages().size() > 0) {
-			StringBuffer buf = new StringBuffer();
-			for (ErrorMessage erm: getErrorMessages()) {
-				buf.append(erm.toString());
-				buf.append("\n");
-			}
-			log.error("\nsyntax error messages:\n"+buf.toString());
-		}
-		
-	}
-
-
 	@Override
 	public void enterClazz(ClazzContext ctx) {
 		Clazz clazz = new Clazz();
@@ -2057,18 +2068,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 
 
-	public void emitError(int line, int charPosition, String message) {
-		errorMessages.add(new ErrorMessage(line, charPosition, message));
-	}
-	
-	
-	
-	
-
-	
-
-	
-
 	@Override
 	public void enterInnerclass(InnerclassContext ctx) {
 		InnerClass innerClass = new InnerClass();
@@ -2420,7 +2419,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 
 	public void emitError(TerminalNode node, String message) {
-		errorMessages.add(new ErrorMessage(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), message));
+		emitError(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), message);
 	}
 	
 	private <T extends ParserRuleContext> T getAncestor(ParserRuleContext context, Class<T> clazz) {
@@ -2558,7 +2557,7 @@ class SyntaxErrorListener extends BaseErrorListener {
 	public void syntaxError(Recognizer<?, ?> recognizer,
 			Object offendingSymbol, int line, int charPositionInLine,
 			String msg, RecognitionException e) {
-		parent.getErrorMessages().add(new ErrorMessage(line, charPositionInLine, msg));
+		parent.emitError(line, charPositionInLine, msg);
 		if (log.isDebugEnabled()) {
 			log.debug("offending symbol: "+offendingSymbol);
 			if (e instanceof NoViableAltException) {
