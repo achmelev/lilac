@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import org.jasm.item.attribute.AbstractStackmapFrame;
+import org.jasm.item.attribute.SameExtendedStackmapFrame;
+import org.jasm.item.attribute.SameStackmapFrame;
 import org.jasm.item.instructions.verify.error.InconsistentStackSizeException;
 import org.jasm.item.instructions.verify.error.StackOverflowException;
 import org.jasm.item.instructions.verify.error.StackUnderflowException;
@@ -144,7 +147,7 @@ public class Frame {
 		
 	}
 	
-	public void setRegisterValue(VerificationType value, int register) {
+	private void setRegisterValue(VerificationType value, int register) {
 		if (register<0 || register>=locals.size()) {
 			throw new IllegalArgumentException("illegal register index: "+register);
 		}
@@ -241,7 +244,7 @@ public class Frame {
 		}
 		
 		for (int i=0;i<this.locals.size(); i++) {
-			if (!this.locals.get(i).isAssignableFrom(other.locals.get(i))) {
+			if (!this.locals.get(i).equals(other.locals.get(i))) {
 				return false;
 			}
 		}
@@ -330,8 +333,7 @@ public class Frame {
 		return new Frame(locals, stack,maxStackSize);
 	}
 	
-	
-	public Frame applyStackmapChop(int chop) {
+	private int calculateNumberOfVariables() {
 		//calculating current number of vars
 		int numberOfVariables = 0;
 		for (int i=0;i<activeLocals; i++) {
@@ -343,6 +345,15 @@ public class Frame {
 				}
 			}
 		}
+		
+		return numberOfVariables;
+	}
+	
+	
+	
+	public Frame applyStackmapChop(int chop) {
+		//calculating current number of vars
+		int numberOfVariables = calculateNumberOfVariables();
 		//checking chop size
 		if (chop>numberOfVariables) {
 			throw new StackmapChopUnderflowException(-1,activeLocals,chop);
@@ -374,6 +385,8 @@ public class Frame {
 		
 		return locals;
 	}
+	
+	
 	
 	public Frame applyStackmapAppend(List<VerificationType> appendLocals) {
 		int appendSize = 0;
@@ -436,7 +449,91 @@ public class Frame {
 		
 	}
 	
+
+	public AbstractFrameDifference calculateFrameDifference(Frame nextFrame) {
+		
+		if (this.maxStackSize != nextFrame.maxStackSize) {
+			throw new IllegalArgumentException(this.maxStackSize+"!="+nextFrame.maxStackSize);
+		}
+		if (this.locals.size() != nextFrame.locals.size()) {
+			throw new IllegalArgumentException(this.locals.size()+"!="+nextFrame.locals.size());
+		}
+		
+		if (stack.size() == 0 && nextFrame.stack.size() == 0 && this.equals(nextFrame)) {
+			return new SameFrame();
+		} else if (stack.size() == 0 && nextFrame.stack.size()==1) {
+			boolean sameLocals = true;
+			for (int i=0;i<this.locals.size(); i++) {
+				if (!this.locals.get(i).equals(nextFrame.locals.get(i))) {
+					sameLocals = false;
+					break;
+				}
+			}
+			if (sameLocals) {
+				return new SameLocalsOneStackItemFrame(nextFrame.stack.get(0));
+			} else {
+				return nextFrame.createFullFrame();
+			}
+			
+		} else if (stack.size() == 0 && nextFrame.stack.size()==0 && nextFrame.getActiveLocals()<this.getActiveLocals()) {
+			boolean sameLocals = true;
+			for (int i=0;i<nextFrame.getActiveLocals(); i++) {
+				if (!this.locals.get(i).equals(nextFrame.locals.get(i))) {
+					sameLocals = false;
+					break;
+				}
+			}
+			if (sameLocals) {
+				return new ChopFrame(this.calculateNumberOfVariables()-nextFrame.calculateNumberOfVariables());
+			} else {
+				return nextFrame.createFullFrame();
+			}
+			
+		} else if (stack.size() == 0 && nextFrame.stack.size() == 0 && nextFrame.getActiveLocals()>this.getActiveLocals()) {
+			boolean sameLocals = true;
+			for (int i=0;i<this.getActiveLocals(); i++) {
+				if (!this.locals.get(i).equals(nextFrame.locals.get(i))) {
+					sameLocals = false;
+					break;
+				}
+			}
+			if (sameLocals) {
+				List<VerificationType> l = new ArrayList<VerificationType>();
+				for (int i=getActiveLocals();i<nextFrame.getActiveLocals(); i++) {
+					if (i==getActiveLocals()) {
+						l.add(nextFrame.locals.get(i));
+					} else {
+						if (!(nextFrame.locals.get(i-1).getSize() == 2)) {
+							l.add(nextFrame.locals.get(i));
+						}
+					}
+				}
+				return new AppendFrame(l);
+			} else {
+				return nextFrame.createFullFrame();
+			}
+			
+		} else {
+			return nextFrame.createFullFrame();
+		}
+			
+	}
 	
+	private FullFrame createFullFrame() {
+		List<VerificationType> l = new ArrayList<VerificationType>();
+		for (int i=0;i<activeLocals; i++) {
+			if (i==0) {
+				l.add(locals.get(i));
+			} else {
+				if (!(locals.get(i-1).getSize() == 2)) {
+					l.add(locals.get(i));
+				}
+			}
+		}
+		List<VerificationType> s = new ArrayList<VerificationType>();
+		s.addAll(stack);
+		return new FullFrame(l,s);
+	}
 	
 	/**
 	 * Only for Tests
@@ -450,9 +547,11 @@ public class Frame {
 	}
 	
 	public static Frame createFrame(List<VerificationType> locals, List<VerificationType> stackValues, int maxStackSize) {
+		List<VerificationType> localValues = new ArrayList<VerificationType>();
+		localValues.addAll(locals);
 		Stack<VerificationType> values = new Stack<VerificationType>();
 		values.addAll(stackValues);
-		return new Frame(locals, values,maxStackSize);
+		return new Frame(localValues, values,maxStackSize);
 	}
 	
 

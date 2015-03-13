@@ -157,6 +157,11 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem impleme
 	public AbstractInstruction[] getInstructionReferences() {
 		return new AbstractInstruction[]{instruction};
 	}
+
+	public void setInstruction(AbstractInstruction instruction) {
+		this.instruction = instruction;
+	}
+	
 	
 	
 	

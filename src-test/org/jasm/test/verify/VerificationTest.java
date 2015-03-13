@@ -3,7 +3,12 @@ package org.jasm.test.verify;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jasm.item.instructions.verify.AppendFrame;
+import org.jasm.item.instructions.verify.ChopFrame;
 import org.jasm.item.instructions.verify.Frame;
+import org.jasm.item.instructions.verify.FullFrame;
+import org.jasm.item.instructions.verify.SameLocalsOneStackItemFrame;
+import org.jasm.item.instructions.verify.SameFrame;
 import org.jasm.item.instructions.verify.error.InconsistentStackSizeException;
 import org.jasm.item.instructions.verify.error.StackOverflowException;
 import org.jasm.item.instructions.verify.error.StackmapAppendOverflowException;
@@ -744,6 +749,69 @@ public class VerificationTest implements IClassQuery {
 		
 		Assert.assertTrue(fr.equals(Frame.createFrame(locals, stack, 5)));
 		
+	}
+	
+	@Test
+	public void frameDifferenceTest() {
+		
+		List<VerificationType> locals = new ArrayList<VerificationType>();
+		locals.add(VerificationType.INT);
+		locals.add(VerificationType.LONG);
+		locals.add(VerificationType.TOP);
+		locals.add(new ObjectValueType("Ljava/lang/Runnable;", this));
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.TOP);
+		locals.add(VerificationType.TOP);
+		
+		List<VerificationType> stack = new ArrayList<VerificationType>();
+		
+		Frame fr1 = Frame.createFrame(locals, stack, 5);
+		Frame fr2 = Frame.createFrame(locals, stack, 5);
+		Assert.assertEquals(new SameFrame(), fr1.calculateFrameDifference(fr2));
+		
+		stack.add(new ObjectValueType("Ljava/lang/RuntimeException;", this));
+		fr2 = Frame.createFrame(locals, stack, 5);
+		Assert.assertEquals(new SameLocalsOneStackItemFrame(new ObjectValueType("Ljava/lang/RuntimeException;", this)), fr1.calculateFrameDifference(fr2));
+		
+		stack = new ArrayList<VerificationType>();
+		locals.set(3, VerificationType.TOP);
+		fr2 = Frame.createFrame(locals, stack, 5);
+		Assert.assertEquals(new ChopFrame(1), fr1.calculateFrameDifference(fr2));
+		
+		List<VerificationType> append = new ArrayList<VerificationType>();
+		append.add(VerificationType.DOUBLE);
+		append.add(VerificationType.INT);
+		
+		locals.set(3, new ObjectValueType("Ljava/lang/Runnable;", this));
+		locals.set(4, VerificationType.DOUBLE);
+		locals.set(6, VerificationType.INT);
+		fr2 = Frame.createFrame(locals, stack, 5);
+		Assert.assertEquals(new AppendFrame(append), fr1.calculateFrameDifference(fr2));
+		
+		List<VerificationType> locVars = new ArrayList<VerificationType>();
+		locVars.add(VerificationType.FLOAT);
+		locVars.add(VerificationType.LONG);
+		locVars.add(new ObjectValueType("Ljava/lang/Runnable;", this));
+		
+		
+		
+		locals.set(0,VerificationType.FLOAT);
+		locals.set(4, VerificationType.TOP);
+		locals.set(6, VerificationType.TOP);
+		fr2 = Frame.createFrame(locals, stack, 5);
+		Assert.assertEquals(new FullFrame(locVars, stack), fr1.calculateFrameDifference(fr2));
+		
+		stack.add(VerificationType.FLOAT);
+		stack.add(VerificationType.INT);
+		locals.set(4, VerificationType.DOUBLE);
+		locals.set(6, VerificationType.INT);
+		locVars.add(VerificationType.DOUBLE);
+		locVars.add(VerificationType.INT);
+		fr2 = Frame.createFrame(locals, stack, 5);
+		Assert.assertEquals(new FullFrame(locVars, stack), fr1.calculateFrameDifference(fr2));
 	}
 	
 	private Class getClass(String className) {
