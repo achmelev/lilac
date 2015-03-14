@@ -465,9 +465,10 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		}
 		ClassInfo result = new ClassInfo();
 		Utf8Info nameUtf8 = getOrAddUtf8nfo(name);
-		result.setReference(new AbstractConstantPoolEntry[]{nameUtf8});
-		result.setParent(this);
+		result.setReference(new AbstractConstantPoolEntry[]{nameUtf8}, false);
 		addGeneratedEntry(result);
+		
+		
 		return result;
 		
 		

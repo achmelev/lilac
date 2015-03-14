@@ -76,12 +76,14 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 
 	
 
-	protected void setReference(AbstractConstantPoolEntry[] reference) {
+	protected void setReference(AbstractConstantPoolEntry[] reference, boolean updateIndex) {
 		if (reference.length!=getNumberOfReferences()) {
 			throw new IllegalArgumentException("illegal number of references "+reference.length+" != "+getNumberOfReferences());
 		}
 		this.reference = reference;
-		updateIndex();
+		if (updateIndex) {
+			updateIndex();
+		}
 	}
 	
 	private void updateIndex() {

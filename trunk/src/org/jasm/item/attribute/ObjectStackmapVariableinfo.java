@@ -68,7 +68,9 @@ public class ObjectStackmapVariableinfo extends AbstractStackmapVariableinfo imp
 
 	@Override
 	protected void doResolveAfterParse() {
-		classInfo = getConstantPool().checkAndLoadFromSymbolTable(this, ClassInfo.class, classInfoReference);
+		if (classInfo == null) {
+			classInfo = getConstantPool().checkAndLoadFromSymbolTable(this, ClassInfo.class, classInfoReference);
+		}
 	}
 
 	@Override

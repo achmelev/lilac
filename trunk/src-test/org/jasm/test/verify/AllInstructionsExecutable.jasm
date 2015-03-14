@@ -355,32 +355,8 @@ public super class {
     descriptor method_desc; 
     
     //Attributes
-   	stackmap {
-   		full ir1, {object Object,object Object,int,long,float,double,object Object},{};
-   		same extended ir2;
-   		same extended ir3;
-   		same extended ir4;
-   		same extended ir5;
-   		same extended ir6;
-   		same extended ir7;
-   		same extended ir8;
-   		same extended ir10;
-   		same extended ir11;
-   		same extended ir12;
-   		same extended ir13;
-   		same extended ir14;
-   		same extended ir15;
-   		same extended ir16;
-   		same extended ir17;
-   		same extended ir18;
-   		same extended ir19;
-   		same extended ir20;
-   		same extended ir21;
-   		same extended ir22;
-   		full ir23, {object Object},{object RuntimeException};
-   	}
+   	stackmap;
    	
-   	.generatestackmap;
    	
    	try begin->ir22 catch RuntimeException go to ir23;
     

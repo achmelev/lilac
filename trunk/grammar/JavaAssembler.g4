@@ -114,7 +114,6 @@ methodmember: methodname SEMI
 			  | methodvariabletypetable
 			  | methodmaxstack
 			  | methodmaxlocals
-			  | methoddirective SEMI
 			  ;
 				  
 methodname: NAME Identifier;
@@ -202,10 +201,6 @@ instruction: argumentlessop_keyword #argumentlessop
 
 methodmaxstack: MAXSTACK IntegerLiteral SEMI;
 methodmaxlocals: MAXLOCALS IntegerLiteral SEMI;
-
-methoddirective: generatestackmapdirective; 
-
-generatestackmapdirective: '.generatestackmap';
 
 field  : fieldmodifier? FIELD  LBRACE
 					fieldmember*
@@ -343,10 +338,9 @@ identifierOrAll: ALL|Identifier;
 
 unknownattribute: UNKNOWN CODE? ATTRIBUTE Identifier COMMA Base64Literal SEMI;
 
-//stackmapattribute: STACKMAP Base64Literal SEMI;
-stackmapattribute: STACKMAP LBRACE
-				   	 stackmapframe*
-				   RBRACE;
+stackmapattribute: STACKMAP LBRACE stackmapframe* RBRACE #extendedStackmapAttribute
+				   | STACKMAP SEMI #simpleStackmapAttribute
+				   ;
 
 stackmapframe: APPEND Identifier COMMA stackmapvarinfos SEMI #appendStackmapFrame
 		       | CHOP Identifier COMMA IntegerLiteral SEMI #chopStackmapFrame
