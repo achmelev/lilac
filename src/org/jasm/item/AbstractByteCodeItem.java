@@ -31,6 +31,8 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 	
 	private boolean hasResolveErrors = false;
 	
+	private boolean generated = false;
+	
 	public IContainerBytecodeItem  getParent() {
 		return parent;
 	}
@@ -65,11 +67,11 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 		if ((this.parent == null) && !isRoot()) {
 			throw new IllegalStateException("Cannot verify orphan item!");
 		}
-		if (!isAfterParse()) {
-			throw new IllegalStateException("verify can be called only aufer parse and resolve");
+		if (!isAfterParse() || isGenerated()) {
+			throw new IllegalStateException("verify can be called only after parse and resolve or on generated items");
 		}
 		if (!this.resolved) {
-			throw new IllegalStateException("verify can be called only after parse and resolve");
+			throw new IllegalStateException("verify can be called only after parse and resolve or on generated items");
 		}
 		if (this.verified) {
 			throw new IllegalStateException("Verify can be called only once on the same instance");
@@ -247,6 +249,24 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 		this.hasResolveErrors = value;
 	}
 	
+	
+	
+	public boolean isGenerated() {
+		return generated;
+	}
+
+	public void setGenerated(boolean generated) {
+		this.generated = generated;
+	}
+
+	public boolean isVerified() {
+		return verified;
+	}
+
+	public void setResolved(boolean resolved) {
+		this.resolved = resolved;
+	}
+
 	protected String getContentAsBase64() {
 		byte [] data = new byte[getLength()];
 		ByteArrayByteBuffer buf = new ByteArrayByteBuffer(data);
