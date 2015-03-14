@@ -114,6 +114,7 @@ methodmember: methodname SEMI
 			  | methodvariabletypetable
 			  | methodmaxstack
 			  | methodmaxlocals
+			  | methoddirective SEMI
 			  ;
 				  
 methodname: NAME Identifier;
@@ -202,7 +203,9 @@ instruction: argumentlessop_keyword #argumentlessop
 methodmaxstack: MAXSTACK IntegerLiteral SEMI;
 methodmaxlocals: MAXLOCALS IntegerLiteral SEMI;
 
+methoddirective: generatestackmapdirective; 
 
+generatestackmapdirective: '.generatestackmap';
 
 field  : fieldmodifier? FIELD  LBRACE
 					fieldmember*
@@ -373,6 +376,8 @@ stackmapvarinfo: TOP #topStackmapvarinfo
 				 | UNINITIALIZEDTHIS #uninitializedThisStackmapvarinfo
 				 | OBJECT Identifier #objectStackmapvarinfo
 				 ;
+
+
 
 
 //Instruction Rules

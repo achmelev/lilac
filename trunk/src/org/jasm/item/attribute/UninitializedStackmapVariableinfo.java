@@ -103,6 +103,10 @@ public class UninitializedStackmapVariableinfo extends AbstractStackmapVariablei
 	public ConstantPoolInstruction getInstruction() {
 		return instruction;
 	}
+
+	public void setInstruction(ConstantPoolInstruction instruction) {
+		this.instruction = instruction;
+	}
 	
 	
 	

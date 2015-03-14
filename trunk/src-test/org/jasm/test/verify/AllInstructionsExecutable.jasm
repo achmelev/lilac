@@ -380,6 +380,8 @@ public super class {
    		full ir23, {object Object},{object RuntimeException};
    	}
    	
+   	.generatestackmap;
+   	
    	try begin->ir22 catch RuntimeException go to ir23;
     
     maxstack 10;

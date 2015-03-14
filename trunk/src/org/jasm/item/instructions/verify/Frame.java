@@ -554,5 +554,18 @@ public class Frame {
 		return new Frame(localValues, values,maxStackSize);
 	}
 	
+	public void updateQuery(IClassQuery query) {
+		for (VerificationType t: stack) {
+			if (t instanceof ObjectValueType) {
+				((ObjectValueType)t).setQuery(query);
+			}
+		}
+		
+		for (VerificationType t: locals) {
+			if (t instanceof ObjectValueType) {
+				((ObjectValueType)t).setQuery(query);
+			}
+		}
+	}
 
 }

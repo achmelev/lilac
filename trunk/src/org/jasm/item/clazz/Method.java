@@ -11,6 +11,8 @@ public class Method extends AbstractClassMember<MethodModifier> {
 	
 	private MethodDescriptor methodDescriptor =null;
 	
+	private boolean generateStackMap;
+	
 	public Method() {
 		
 	}
@@ -140,6 +142,14 @@ public class Method extends AbstractClassMember<MethodModifier> {
 	protected void doResolve() {
 		super.doResolve();
 		methodDescriptor = new MethodDescriptor(getDescriptor().getValue());
+	}
+
+	public void setGenerateStackMap(boolean generateStackMap) {
+		this.generateStackMap = generateStackMap;
+	}
+
+	public boolean isGenerateStackMap() {
+		return generateStackMap;
 	}
 	
 	

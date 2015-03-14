@@ -128,10 +128,6 @@ public class SameLocalsOneStackitemStackmapFrame extends AbstractStackmapFrame i
 		return 1;
 	}
 
-	public void setStackitemInfo(AbstractStackmapVariableinfo stackitemInfo) {
-		this.stackitemInfo = stackitemInfo;
-	}
-
 	@Override
 	public void addVariableInfo(AbstractStackmapVariableinfo info) {
 		if (stackitemsList == null) {
