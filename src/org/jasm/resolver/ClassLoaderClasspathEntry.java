@@ -14,8 +14,8 @@ public class ClassLoaderClasspathEntry extends AbstractBinaryClassPathEntry {
 	}
 
 	@Override
-	protected byte[] findBytes(String className) {
-		InputStream stream = loader.getResourceAsStream(className+".class");
+	public byte[] findBytes(String resourceName) {
+		InputStream stream = loader.getResourceAsStream(resourceName);
 		if (stream != null) {
 			ByteArrayOutputStream bo = new ByteArrayOutputStream();
 			byte [] buf = new byte[1024];

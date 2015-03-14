@@ -73,11 +73,13 @@ public class UninitializedStackmapVariableinfo extends AbstractStackmapVariablei
 	@Override
 	protected void doResolveAfterParse() {
 		CodeAttributeContent code = getAncestor(CodeAttributeContent.class);
-		AbstractInstruction instruction = code.getInstructions().checkAndLoadFromSymbolTable(this, instructionReference);
-		if (instruction != null && !(instruction.getOpCode() == OpCodes.new_)) {
-			emitError(instructionReference, "the referenced instruction must be new");
-		} else {
-			this.instruction = (ConstantPoolInstruction)instruction;
+		if (this.instruction == null) {
+			AbstractInstruction instruction = code.getInstructions().checkAndLoadFromSymbolTable(this, instructionReference);
+			if (instruction != null && !(instruction.getOpCode() == OpCodes.new_)) {
+				emitError(instructionReference, "the referenced instruction must be new");
+			} else {
+				this.instruction = (ConstantPoolInstruction)instruction;
+			}
 		}
 	}
 

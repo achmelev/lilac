@@ -19,6 +19,7 @@ import java.util.jar.JarFile;
 
 
 
+
 import junit.framework.Assert;
 
 import org.apache.commons.io.IOUtils;
@@ -59,7 +60,7 @@ public abstract class AbstractMavenJarTestCase {
 				if (!entry.isDirectory() && entry.getName().endsWith(".class") && filter(entry.getName())) {
 					InputStream data = jar.getInputStream(entry);
 					try {
-						testClass(IOUtils.toByteArray(data));
+						testClass(IOUtils.toByteArray(data), entry.getName());
 					} catch (Throwable e) {
 						log.error("Error testing: "+entry.getName(),e);
 						errorCounter++;
@@ -75,7 +76,7 @@ public abstract class AbstractMavenJarTestCase {
 		}
 	}
 	
-	protected abstract void testClass(byte[] data);
+	protected abstract void testClass(byte[] data, String name);
 	protected abstract boolean filter(String name);
 	
 	protected List<MavenJarClassPathEntry> parseClasspathEntries(String repositoryURL, String value) {

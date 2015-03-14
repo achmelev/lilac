@@ -43,4 +43,9 @@ public class ClazzClassPathEntry implements IClassPathEntry {
 		return false;
 	}
 
+	@Override
+	public byte[] findBytes(String resourceName) {
+		return null;
+	}
+
 }

@@ -33,7 +33,7 @@ public abstract class AbstractJarTestCase {
 				if (!entry.isDirectory() && entry.getName().endsWith(".class") && filter(entry.getName())) {
 					InputStream data = jar.getInputStream(entry);
 					try {
-						testClass(IOUtils.toByteArray(data),f);
+						testClass(IOUtils.toByteArray(data),f, entry.getName());
 					} catch (Throwable e) {
 						log.error("Error testing: "+entry.getName(),e);
 						errorCounter++;
@@ -53,7 +53,7 @@ public abstract class AbstractJarTestCase {
 		}
 	}
 	
-	private File getFile(Class clazz) {
+	public File getFile(Class clazz) {
 		String resName = clazz.getName().replace('.', '/')+".class";
 		URL url = Thread.currentThread().getContextClassLoader().getResource(resName);
 		String urlS = url.toString();
@@ -64,7 +64,7 @@ public abstract class AbstractJarTestCase {
 	
 	protected abstract File getFile();
 	
-	protected abstract void testClass(byte[] data, File jarFile);
+	protected abstract void testClass(byte[] data, File jarFile, String name);
 	
 	
 	protected boolean filter(String name) {
@@ -72,5 +72,6 @@ public abstract class AbstractJarTestCase {
 	}
 	
 	protected abstract void logStatus();
+	
 
 }

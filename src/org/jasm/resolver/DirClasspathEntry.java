@@ -15,15 +15,15 @@ public class DirClasspathEntry extends AbstractBinaryClassPathEntry {
 	}
 
 	@Override
-	protected byte[] findBytes(String className) {
+	public byte[] findBytes(String resourceName) {
 		
 		if (!(rootDir.exists() && rootDir.isDirectory())) {
 			throw new IllegalArgumentException(rootDir.getAbsolutePath()+" doesn't exist or isn't a directory!");
 		}
 
-		File clazzFile = new File(rootDir, className+".class");
+		File clazzFile = new File(rootDir, resourceName);
 		if (clazzFile.exists() && clazzFile.isFile()) {
-			byte [] result = new byte[className.length()];
+			byte [] result = new byte[(int)clazzFile.length()];
 			try {
 				FileInputStream stream = new FileInputStream(clazzFile);
 				IOUtils.readFully(stream, result);

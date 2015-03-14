@@ -10,10 +10,8 @@ public class ExecutableRunner {
 		try {
 			String name = args[0];
 			VerifierParams params = null;
-			if (args.length > 1) {
-				params = new VerifierParams();
-			}
-			ClassLoader loader = new AssemblerClassLoader(Thread.currentThread().getContextClassLoader(), params);
+			
+			ClassLoader loader = new AssemblerClassLoader(Thread.currentThread().getContextClassLoader(), (args.length > 1));
 			IExecutable executable = (IExecutable) loader.loadClass(name).newInstance();
 			executable.execute();
 		} catch (Throwable e) {

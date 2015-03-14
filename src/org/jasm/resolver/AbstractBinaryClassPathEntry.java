@@ -13,7 +13,7 @@ public abstract class AbstractBinaryClassPathEntry implements IClassPathEntry {
 	public ExternalClassInfo findClass(String className) {
 		
 		try {
-			byte [] data = findBytes(className);
+			byte [] data = findBytes(className+".class");
 			if (data == null) {
 				return null;
 			}
@@ -30,7 +30,6 @@ public abstract class AbstractBinaryClassPathEntry implements IClassPathEntry {
 		}
 	}
 	
-	protected abstract byte[] findBytes(String className);
 	protected abstract String getName();
 
 	public boolean isInvalid() {

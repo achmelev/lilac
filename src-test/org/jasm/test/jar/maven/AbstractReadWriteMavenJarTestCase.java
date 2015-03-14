@@ -9,7 +9,7 @@ public abstract class AbstractReadWriteMavenJarTestCase extends
 		AbstractMavenJarTestCase {
 	
 	@Override
-	protected void testClass(byte[] data) {
+	protected void testClass(byte[] data, String name) {
 		
 		ByteArrayByteBuffer bbuf = new ByteArrayByteBuffer(data);
 		Clazz clazz = new Clazz();

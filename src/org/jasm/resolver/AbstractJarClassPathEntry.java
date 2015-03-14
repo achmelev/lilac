@@ -14,7 +14,7 @@ public abstract class AbstractJarClassPathEntry extends AbstractBinaryClassPathE
 	private JarFile jar;
 	
 	@Override
-	protected byte[] findBytes(String className) {
+	public byte[] findBytes(String resourceName) {
 		try {
 			if (jar == null) {
 				jar = new JarFile(getJarFile());
@@ -23,7 +23,7 @@ public abstract class AbstractJarClassPathEntry extends AbstractBinaryClassPathE
 			while (entries.hasMoreElements()) {
 				JarEntry entry = entries.nextElement();
 				
-				if (!entry.isDirectory() && entry.getName().equals(className+".class")) {
+				if (!entry.isDirectory() && entry.getName().equals(resourceName)) {
 					InputStream data = jar.getInputStream(entry);
 					
 					byte[] result = IOUtils.toByteArray(data);

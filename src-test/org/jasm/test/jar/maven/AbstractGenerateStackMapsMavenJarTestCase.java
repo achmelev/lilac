@@ -7,29 +7,55 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Constructor;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.clazz.Clazz;
+import org.jasm.item.environment.Environment;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.parser.SimpleParserErrorListener;
 import org.jasm.resolver.ClassInfoResolver;
 import org.jasm.resolver.ClassLoaderClasspathEntry;
-import org.jasm.type.verifier.VerifierParams;
+import org.jasm.test.assembler.loader.ByteArrayClassLoader;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractAssembleDisassembleMavenJarTestCase extends
+public abstract class AbstractGenerateStackMapsMavenJarTestCase extends
 		AbstractMavenJarTestCase {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
 	protected void testClass(byte[] data, String name) {
 		
+		Environment.setBooleanValue("asm.forcestackmaps", true);
 		String code = disassemble(data);
 		byte[] data2 = assemble(code);
-		assertArrayEquals(data, data2);
+		String className = name.substring(0, name.length()-".class".length()).replace('/', '.');
+		try {	
+			ByteArrayClassLoader bl = new ByteArrayClassLoader(this.getClass().getClassLoader(), className, data2);
+			bl.setResolver(classPath);
+			
+			Class cl = bl.loadClass(className);
+			Constructor[] constructors = cl.getDeclaredConstructors();
+			for (Constructor c: constructors) {
+				if (c.isAccessible() && c.getParameterTypes().length == 0) {
+					Object o = c.newInstance();
+					break;
+				}
+			}
+		} catch (Throwable e) {
+			
+			log.error("Error",e);
+			log.error("old code: \n"+code);
+			String code2 = disassemble(data2);
+			log.error("new code: \n"+code2);
+			Assert.fail("Testing failed on:");
+			
+		}
+		
+		Environment.setBooleanValue("asm.forcestackmaps", false);
 	}
 	
 	protected String disassemble(byte [] data) {
