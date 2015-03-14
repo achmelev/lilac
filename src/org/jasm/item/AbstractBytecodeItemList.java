@@ -81,6 +81,11 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 		
 	}
 	
+	public void clear() {
+		items.clear();
+		size = 0;
+	}
+	
 	@Override
 	public int getLength() {
 		int result = sizeFieldLength();
@@ -126,6 +131,7 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	public int getSize() {
 		return size;
 	}
+	
 	
 	public T get(int index) {
 		T result = items.get(index);

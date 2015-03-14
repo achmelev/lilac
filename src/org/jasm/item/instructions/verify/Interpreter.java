@@ -28,12 +28,12 @@ import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.MultianewarrayInstruction;
 import org.jasm.item.instructions.NewarrayInstruction;
 import org.jasm.item.instructions.OpCodes;
+import org.jasm.item.instructions.verify.types.NullType;
 import org.jasm.item.instructions.verify.types.ObjectValueType;
 import org.jasm.item.instructions.verify.types.UninitializedValueType;
 import org.jasm.item.instructions.verify.types.VerificationType;
 import org.jasm.resolver.ExternalClassInfo;
 import org.jasm.resolver.FieldInfo;
-import org.jasm.resolver.MethodInfo;
 import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
 
@@ -44,6 +44,13 @@ public class Interpreter {
 	private Verifier parent;
 	
 	public Frame execute(AbstractInstruction instr, Frame inputFrame) {
+		Frame result = doExecute(instr, inputFrame);
+		result.updateQuery(parent);
+		return result;
+	}
+	
+	
+	public Frame doExecute(AbstractInstruction instr, Frame inputFrame) {
 
 		if (OpCodes.aaload==instr.getOpCode()) {
 		    return executeAaload(instr,inputFrame);
@@ -555,10 +562,16 @@ public class Interpreter {
 	}
 
 	public Frame executeArraylength(AbstractInstruction instr, Frame inputFrame) {
-	  ObjectValueType valueType = (ObjectValueType)inputFrame.pop(VerificationType.OBJECT);
-	  if (!valueType.getDesc().isArray()) {
-		  throw new VerifyException(instr.getIndex(), "expected an array on stack but got "+valueType.getDesc());
+		
+	  
+	
+	  VerificationType valueType = inputFrame.pop(VerificationType.OBJECT);
+	  if (valueType instanceof ObjectValueType) {
+		  if (!((ObjectValueType)valueType).getDesc().isArray()) {
+			  throw new VerifyException(instr.getIndex(), "expected an array on stack but got "+((ObjectValueType)valueType).getDesc());
+		  }
 	  }
+	  
 	  inputFrame.push(VerificationType.INT);
 	  return inputFrame;
 	}
@@ -2033,16 +2046,28 @@ public class Interpreter {
 	
 	public Frame executeArrayLoad(AbstractInstruction instr, Frame inputFrame, ArrayHandler arrayHandler) {
 		  inputFrame.pop(VerificationType.INT);
-		  ObjectValueType valueType = (ObjectValueType)inputFrame.pop(VerificationType.OBJECT);
-		  if (valueType.getDesc().isArray()) {
-			  TypeDescriptor componentType = valueType.getDesc().getComponentType();
-			  if (arrayHandler.checkComponentType(componentType)) {
-				  inputFrame.push(arrayHandler.getComponentVerificationType(componentType));
+		  VerificationType t = inputFrame.pop(VerificationType.OBJECT);
+		  if (t instanceof ObjectValueType) {
+			  ObjectValueType valueType = (ObjectValueType)t;
+			  if (valueType.getDesc().isArray()) {
+				  TypeDescriptor componentType = valueType.getDesc().getComponentType();
+				  if (arrayHandler.checkComponentType(componentType)) {
+					  inputFrame.push(arrayHandler.getComponentVerificationType(componentType));
+				  } else {
+					  throw new VerifyException(instr.getIndex(), "expected an array of "+arrayHandler.getComponentTypeLabel()+" on the stack but got "+valueType.getDesc());
+				  }
 			  } else {
 				  throw new VerifyException(instr.getIndex(), "expected an array of "+arrayHandler.getComponentTypeLabel()+" on the stack but got "+valueType.getDesc());
 			  }
+		  } else if (t instanceof NullType) {
+			  if (arrayHandler.getComponentVerificationType() instanceof  ObjectValueType) {
+				  inputFrame.push(VerificationType.NULL);
+			  } else {
+				  inputFrame.push(arrayHandler.getComponentVerificationType());
+			  }
+			  
 		  } else {
-			  throw new VerifyException(instr.getIndex(), "expected an array of "+arrayHandler.getComponentTypeLabel()+" on the stack but got "+valueType.getDesc());
+			  throw new IllegalStateException(t.getClass().getName());
 		  }
 		  return inputFrame;
 	}
@@ -2050,21 +2075,23 @@ public class Interpreter {
 	public Frame executeArrayStore(AbstractInstruction instr, Frame inputFrame, ArrayHandler arrayHandler) {
 		VerificationType t = inputFrame.pop(arrayHandler.getComponentVerificationType());
 		inputFrame.pop(VerificationType.INT);
-		ObjectValueType valueType = (ObjectValueType)inputFrame.pop(VerificationType.OBJECT);
-		if (valueType.getDesc().isArray()) {
-		  TypeDescriptor componentType = valueType.getDesc().getComponentType();
-		  if (arrayHandler.checkComponentType(componentType)) {
-			  if (componentType.isObject()) {
-				  ObjectValueType t2 = new ObjectValueType(componentType, parent);
-				  if (!t2.isAssignableFrom(t)) {
-					  throw new VerifyException(instr.getIndex(), "expected a "+arrayHandler.getComponentTypeLabel()+" on the stack but got "+((ObjectValueType)t).getDesc());
-				  }
+		VerificationType tt = inputFrame.pop(VerificationType.OBJECT);
+		if (tt instanceof ObjectValueType) {
+			ObjectValueType valueType = (ObjectValueType)tt;
+			if (valueType.getDesc().isArray()) {
+			  TypeDescriptor componentType = valueType.getDesc().getComponentType();
+			  if (arrayHandler.checkComponentType(componentType)) {
+				  
+			  } else {
+				  throw new VerifyException(instr.getIndex(), "expected an array of "+arrayHandler.getComponentTypeLabel()+" on the stack but got "+valueType.getDesc());
 			  }
-		  } else {
-			  throw new VerifyException(instr.getIndex(), "expected an array of "+arrayHandler.getComponentTypeLabel()+" on the stack but got "+valueType.getDesc());
-		  }
+			} else {
+				throw new VerifyException(instr.getIndex(), "expected an array of "+arrayHandler.getComponentTypeLabel()+" on the stack but got "+valueType.getDesc());
+			}
+		} else if (tt instanceof NullType) {
+			
 		} else {
-			throw new VerifyException(instr.getIndex(), "expected an array of "+arrayHandler.getComponentTypeLabel()+" on the stack but got "+valueType.getDesc());
+			throw new IllegalStateException(tt.getClass().getName());
 		}
 		return inputFrame;
 	}

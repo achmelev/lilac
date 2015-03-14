@@ -93,6 +93,10 @@ public class ObjectStackmapVariableinfo extends AbstractStackmapVariableinfo imp
 	public ClassInfo getClassInfo() {
 		return classInfo;
 	}
+
+	public void setClassInfo(ClassInfo classInfo) {
+		this.classInfo = classInfo;
+	}
 	
 	
 	

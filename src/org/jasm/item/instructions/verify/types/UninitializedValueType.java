@@ -141,6 +141,10 @@ public class UninitializedValueType extends VerificationType {
 	public TypeDescriptor getDesc() {
 		return desc;
 	}
+
+	public int getInstructionIndex() {
+		return instructionIndex;
+	}
 	
 	
 

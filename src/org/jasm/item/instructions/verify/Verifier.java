@@ -1,6 +1,7 @@
 package org.jasm.item.instructions.verify;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +33,7 @@ import org.jasm.item.attribute.TopStackmapVariableinfo;
 import org.jasm.item.attribute.UninitializedStackmapVariableinfo;
 import org.jasm.item.attribute.UninitializedThisStackmapVariableinfo;
 import org.jasm.item.clazz.Clazz;
+import org.jasm.item.clazz.IAttributesContainer;
 import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.instructions.AbstractInstruction;
@@ -42,26 +44,36 @@ import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.LocalVariableInstruction;
 import org.jasm.item.instructions.OpCodes;
-import org.jasm.item.instructions.verify.error.BadCodeException;
-import org.jasm.item.instructions.verify.error.FallOffException;
 import org.jasm.item.instructions.verify.error.LinearMethodException;
 import org.jasm.item.instructions.verify.error.MissingStackmapException;
 import org.jasm.item.instructions.verify.error.MissingStackmapsDeclaration;
 import org.jasm.item.instructions.verify.error.TypeCheckingException;
 import org.jasm.item.instructions.verify.error.TypeInferencingException;
 import org.jasm.item.instructions.verify.error.UnknownClassException;
+import org.jasm.item.instructions.verify.types.DoubleType;
+import org.jasm.item.instructions.verify.types.FloatType;
 import org.jasm.item.instructions.verify.types.IClassQuery;
+import org.jasm.item.instructions.verify.types.IntType;
+import org.jasm.item.instructions.verify.types.LongType;
+import org.jasm.item.instructions.verify.types.NullType;
 import org.jasm.item.instructions.verify.types.ObjectValueType;
+import org.jasm.item.instructions.verify.types.TopType;
+import org.jasm.item.instructions.verify.types.UninitializedThisType;
 import org.jasm.item.instructions.verify.types.UninitializedValueType;
 import org.jasm.item.instructions.verify.types.VerificationType;
 import org.jasm.parser.SourceLocation;
 import org.jasm.parser.literals.AbstractLiteral;
+import org.jasm.parser.literals.IntegerLiteral;
 import org.jasm.resolver.ExternalClassInfo;
 import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
-import org.jasm.type.verifier.VerifierParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class Verifier implements IClassQuery {
+	
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	private Instructions parent;
 	
@@ -153,7 +165,7 @@ public class Verifier implements IClassQuery {
 			double version = clazz.getDecimalVersion().doubleValue();
 			
 			createInitialFrame();
-			if (version>=50) {
+			if (version>=50 && !method.isGenerateStackMap()) {
 				try {
 					doTypeChecking();
 				} catch (VerifyException e) {
@@ -322,12 +334,18 @@ public class Verifier implements IClassQuery {
 	}
 	
 	private void doRealTypeInferencing() {
+		if (log.isDebugEnabled()) {
+			log.debug("type inferencing for: "+method.getName());
+		}
 		try {
 			Frame firstFrame = initialFrame.copy();
 			inferencedFrames.put(0, firstFrame);
 			Set<Integer> changed = new HashSet<Integer>();
 			changed.add(0);
-			while (changed.isEmpty()) {
+			while (!changed.isEmpty()) {
+				if (log.isDebugEnabled()) {
+					log.debug("changed == "+changed);
+				}
 				currentInstructionIndex = changed.iterator().next();
 				AbstractInstruction instr = parent.get(currentInstructionIndex);
 				changed.remove(currentInstructionIndex);
@@ -344,7 +362,7 @@ public class Verifier implements IClassQuery {
 						
 					} else {
 						changed.add(f);
-						inferencedFrames.put(f, nextFrame.merge(nextFrame));
+						inferencedFrames.put(f, nextFrame.merge(followerFrame));
 					}
 				}
 				
@@ -371,13 +389,55 @@ public class Verifier implements IClassQuery {
 				}
 			}
 			
-			if ((inferencedFrames.size() == parent.getSize())) {
+			if ((inferencedFrames.size() != parent.getSize())) {
 				throw new IllegalStateException(inferencedFrames.size()+"!="+parent.getSize());
+			}
+			
+			double version = clazz.getDecimalVersion().doubleValue();
+			if (method.isGenerateStackMap() && version>=50) {
+				//generateStackMap();
 			}
 			
 		} catch (VerifyException e) {
 			throw new TypeInferencingException(e);
 		}
+	}
+	
+	private void generateStackMap() {
+		StackMapAttributeContent content = getStackmapCreatingIfNecessary();
+		content.setSourceLocation(null);
+		Attribute parent = (Attribute)content.getParent();
+		parent.setResolved(false);
+		content.setResolved(false);
+		content.clear();
+		
+		//Adding frames
+		Set<Integer> indexes = new HashSet<Integer>();
+		indexes.addAll(branchTargets);
+		indexes.addAll(exceptionTargets);
+		List<Integer> indexesList = new ArrayList<Integer>();
+		indexesList.addAll(indexes);
+		Collections.sort(indexesList);
+		Frame previousFrame = initialFrame;
+		for (int i=0;i<indexesList.size(); i++) {
+			Frame frame = inferencedFrames.get(indexesList.get(i));
+			AbstractInstruction instr = getInstructionAt(indexesList.get(i));
+			AbstractInstruction previousInstruction = null;
+			if (i>0) {
+				previousInstruction = getInstructionAt(indexesList.get(i-1));
+			}
+			int offsetDelta = -1;
+			if (previousInstruction == null) {
+				offsetDelta = instr.getOffsetInCode();
+			} else {
+				offsetDelta = instr.getOffsetInCode()-previousInstruction.getOffsetInCode()-1;
+			}
+			content.add(createStackMapFrame(indexesList.get(i), frame, previousFrame, offsetDelta));
+			previousFrame = frame;
+		}
+		
+		
+		parent.resolve();
 	}
 	
 	private void createStackmapFrames(StackMapAttributeContent stackmapContent) {
@@ -391,7 +451,7 @@ public class Verifier implements IClassQuery {
 			}
 			Frame fr = createFrameFromStackFrame(previousFrame, stackMapFrame);
 			stackMapFrames.put(index, fr);
-			previousFrame = fr;getClass();
+			previousFrame = fr;
 			currentInstructionIndex = -1;
 		}
 		
@@ -434,6 +494,58 @@ public class Verifier implements IClassQuery {
 		}
 	}
 	
+	private AbstractStackmapFrame createStackMapFrame(int index, Frame frame, Frame prevousFrame, int offsetDelta) {
+		AbstractFrameDifference diff = prevousFrame.calculateFrameDifference(frame);
+		
+		if (offsetDelta<0) {
+			throw new IllegalArgumentException(""+offsetDelta);
+		}
+		AbstractInstruction instr = getInstructionAt(index);
+		if (diff instanceof SameFrame && offsetDelta<=63) {
+			return new SameStackmapFrame();
+		} else if (diff instanceof SameFrame && offsetDelta>63) {
+			return new SameExtendedStackmapFrame();
+		} else if (diff instanceof SameLocalsOneStackItemFrame && offsetDelta<=63) {
+			SameLocalsOneStackItemFrame value = (SameLocalsOneStackItemFrame)diff;
+			SameLocalsOneStackitemStackmapFrame result = new SameLocalsOneStackitemStackmapFrame();
+			AbstractStackmapVariableinfo vinfo = createStackmapVariableInfoFromVerificationType(value.getStackItem(), index);
+			result.addVariableInfo(vinfo);
+			return result;
+		} else if (diff instanceof SameLocalsOneStackItemFrame && offsetDelta>63) {
+			SameLocalsOneStackItemFrame value = (SameLocalsOneStackItemFrame)diff;
+			SameLocalsOneStackitemExtendedStackmapFrame result = new SameLocalsOneStackitemExtendedStackmapFrame();
+			AbstractStackmapVariableinfo vinfo = createStackmapVariableInfoFromVerificationType(value.getStackItem(), index);
+			result.addVariableInfo(vinfo);
+			return result;
+		} else if (diff instanceof ChopFrame) {
+			ChopFrame value = (ChopFrame)diff;
+			ChopStackmapFrame result = new ChopStackmapFrame();
+			result.setkLiteral(new IntegerLiteral(instr.getSourceLocation().getLine(),instr.getSourceLocation().getCharPosition(),value.getCount()+""));
+			return result;
+		} else if (diff instanceof AppendFrame) {
+			AppendFrame value = (AppendFrame)diff;
+			AppendStackmapFrame result = new AppendStackmapFrame();
+			for (VerificationType t: value.getLocals()) {
+				result.addVariableInfo(createStackmapVariableInfoFromVerificationType(t, index));
+			}
+			return result;
+		} else if (diff instanceof FullFrame) {
+			FullFrame value = (FullFrame)diff;
+			FullStackmapFrame result = new FullStackmapFrame();
+			for (VerificationType t: value.getLocals()) {
+				result.addVariableInfo(createStackmapVariableInfoFromVerificationType(t, index));
+			}
+			result.switchAddingToStackItems();
+			for (VerificationType t: value.getStack()) {
+				result.addVariableInfo(createStackmapVariableInfoFromVerificationType(t, index));
+			}
+			return result;
+		} else {
+			throw new IllegalArgumentException("Unknown type: "+diff.getClass().getName());
+		}
+		
+	}
+	
 	private VerificationType createVerificationTypeFromStackMap(AbstractStackmapVariableinfo info) {
 		if (info instanceof DoubleStackmapVariableinfo) {
 			return VerificationType.DOUBLE;
@@ -467,6 +579,51 @@ public class Verifier implements IClassQuery {
 			return VerificationType.UNINITIALIZED_THIS;
 		} else {
 			throw new IllegalArgumentException("Unknown stackmap variable info: "+info);
+		}
+	}
+	
+	private AbstractStackmapVariableinfo createStackmapVariableInfoFromVerificationType(VerificationType type, int index) {
+		if (type instanceof DoubleType) {
+			return new DoubleStackmapVariableinfo();
+		} else if (type instanceof FloatType) {
+			return new FloatStackmapVariableinfo();
+		} else if (type instanceof IntType) {
+			return new IntegerStackmapVariableinfo();
+		} else if (type instanceof LongType) {
+			return new LongStackmapVariableinfo();
+		} else if (type instanceof NullType) {
+			return new NullStackmapVariableinfo();
+		} else if (type instanceof ObjectValueType) {
+			
+			ObjectValueType value = (ObjectValueType)type;
+			String className = null;
+			if (value.getDesc().isArray()) {
+				className = value.getDesc().getValue();
+			} else {
+				className = value.getDesc().getClassName();
+			}
+			ObjectStackmapVariableinfo osvi = new ObjectStackmapVariableinfo();
+			ClassInfo cli = clazz.getConstantPool().getOrAddClassInfo(className);
+			cli.verify();
+			if (cli.hasErrors()) {
+				throw new VerifyException(index, "couldn't resolve class "+className);
+			}
+			osvi.setClassInfo(cli);
+			return osvi;
+		} else if (type instanceof TopType) {
+			return new TopStackmapVariableinfo();
+		} else if (type instanceof UninitializedValueType) {
+			UninitializedValueType value = (UninitializedValueType)type;
+			if (value.getDesc().isArray()) {
+				throw new IllegalStateException("new isn't allowed for class types");
+			}
+			UninitializedStackmapVariableinfo usv = new UninitializedStackmapVariableinfo();
+			usv.setInstruction((ConstantPoolInstruction)getInstructionAt(value.getInstructionIndex()));
+			return usv;
+		} else if (type instanceof UninitializedThisType) {
+			return new UninitializedThisStackmapVariableinfo();
+		} else {
+			throw new IllegalArgumentException("Unknown verification type");
 		}
 	}
 	
@@ -740,7 +897,10 @@ public class Verifier implements IClassQuery {
 		return hasUnsupportedCode;
 	}
 	
-	
+	private StackMapAttributeContent getStackmapCreatingIfNecessary() {
+		StackMapAttributeContent content =  IAttributesContainer.getUniqueAttributeContentCreatingIfNecessary(StackMapAttributeContent.class, code);
+		return content;
+	}
 	
 	
 }

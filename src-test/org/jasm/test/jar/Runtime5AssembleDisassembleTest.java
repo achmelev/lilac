@@ -30,7 +30,8 @@ public class Runtime5AssembleDisassembleTest extends
 	
 	@Override
 	protected boolean filter(String name) {
-		return !name.contains("package-info");
+		return !name.contains("package-info")
+				/**&& name.equals("com/sun/security/sasl/digest/DigestMD5Client.class")**/;
 	}
 	
 	

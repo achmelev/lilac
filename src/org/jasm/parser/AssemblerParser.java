@@ -197,6 +197,7 @@ import org.jasm.parser.JavaAssemblerParser.FloatStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FloatinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FormalparametertypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.FullStackmapFrameContext;
+import org.jasm.parser.JavaAssemblerParser.GeneratestackmapdirectiveContext;
 import org.jasm.parser.JavaAssemblerParser.IincopContext;
 import org.jasm.parser.JavaAssemblerParser.InnerclassContext;
 import org.jasm.parser.JavaAssemblerParser.Innerclass_innerContext;
@@ -960,6 +961,15 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 	
 	
+	
+	
+
+	@Override
+	public void enterGeneratestackmapdirective(
+			GeneratestackmapdirectiveContext ctx) {
+		Method m = (Method)stack.peek();
+		m.setGenerateStackMap(true);
+	}
 
 	@Override
 	public void enterMethodmaxlocals(MethodmaxlocalsContext ctx) {
@@ -2529,23 +2539,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private <T extends IAttributeContent> T getAttributeContentCreatingIfNecessary(Class<T> clazz) {
 		IAttributesContainer container = (IAttributesContainer)stack.peek();
-		List<Attribute> attributes = container.getAttributes().getAttributesByContentType(clazz);
-		if (attributes.size() == 0) {
-			Attribute attr = new Attribute();
-			container.getAttributes().add(attr);
-			IAttributeContent content;
-			try {
-				content = clazz.newInstance();
-				attr.setContent(content);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-			return (T)content;
-		} else if (attributes.size() == 1) {
-			return (T)attributes.get(0).getContent();
-		} else {
-			throw new IllegalStateException("multiple attributes with content type: "+clazz.getName());
-		}
+		return IAttributesContainer.getUniqueAttributeContentCreatingIfNecessary(clazz, container);
 		
 	}
 	
