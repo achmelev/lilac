@@ -195,13 +195,8 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		} else {
 			throw new IllegalStateException("unknown attribute content type: "+content.getClass());
 		}
-		List<Utf8Info> infos = getConstantPool().getUtf8Infos(name);
-		if (infos.size() == 0){
-			emitError(null, "missing utf8info constant containing '"+name+"'");
-			return null;
-		} else {
-			return infos.get(0);
-		}
+		
+		return getConstantPool().getOrAddUtf8nfo(name);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.disassembler.ClassNameGenerator;
 import org.jasm.disassembler.NameGenerator;
 import org.jasm.item.AbstractByteCodeItem;
@@ -441,7 +442,44 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		return classNameGenerator;
 	}
 	
+	//getOrAdd methods
 	
+	
+	public Utf8Info getOrAddUtf8nfo(String text) {
+		if (getUtf8Infos(text).size() > 0) {
+			return getUtf8Infos(text).get(0);
+		} else {
+			Utf8Info info = new Utf8Info();
+			info.setValue(text);
+			addGeneratedEntry(info);
+			return info;
+			
+		}
+	}
+	
+	public ClassInfo  getOrAddClassInfo(String name) {
+		List<AbstractConstantPoolEntry> entries = entriesByName.get(name);
+		for (AbstractConstantPoolEntry entry:entries) {
+			if (entry instanceof ClassInfo) {
+				return (ClassInfo)entry;
+			}
+		}
+		ClassInfo result = new ClassInfo();
+		Utf8Info nameUtf8 = getOrAddUtf8nfo(name);
+		result.setReference(new AbstractConstantPoolEntry[]{nameUtf8});
+		result.setParent(this);
+		addGeneratedEntry(result);
+		return result;
+		
+		
+	}
+	
+	private void addGeneratedEntry(AbstractConstantPoolEntry info) {
+		info.setParent(this);
+		info.setResolved(true);
+		add(info);
+		addToIndex(info);
+	}
 	
 	
 	

@@ -156,8 +156,7 @@ public super class {
   //Message
   const utf8 exceptionMessage_content "message";
   const string exceptionMessage exceptionMessage_content;
-  
-  const utf8 stackmap_name "StackMapTable";
+ 
   
   
   
