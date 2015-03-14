@@ -395,7 +395,7 @@ public class Verifier implements IClassQuery {
 			
 			double version = clazz.getDecimalVersion().doubleValue();
 			if (method.isGenerateStackMap() && version>=50) {
-				//generateStackMap();
+				generateStackMap();
 			}
 			
 		} catch (VerifyException e) {
@@ -496,53 +496,56 @@ public class Verifier implements IClassQuery {
 	
 	private AbstractStackmapFrame createStackMapFrame(int index, Frame frame, Frame prevousFrame, int offsetDelta) {
 		AbstractFrameDifference diff = prevousFrame.calculateFrameDifference(frame);
-		
+		AbstractStackmapFrame result = null;
 		if (offsetDelta<0) {
 			throw new IllegalArgumentException(""+offsetDelta);
 		}
 		AbstractInstruction instr = getInstructionAt(index);
 		if (diff instanceof SameFrame && offsetDelta<=63) {
-			return new SameStackmapFrame();
+			result = new SameStackmapFrame();
 		} else if (diff instanceof SameFrame && offsetDelta>63) {
-			return new SameExtendedStackmapFrame();
+			result =  new SameExtendedStackmapFrame();
 		} else if (diff instanceof SameLocalsOneStackItemFrame && offsetDelta<=63) {
 			SameLocalsOneStackItemFrame value = (SameLocalsOneStackItemFrame)diff;
-			SameLocalsOneStackitemStackmapFrame result = new SameLocalsOneStackitemStackmapFrame();
+			SameLocalsOneStackitemStackmapFrame result2 = new SameLocalsOneStackitemStackmapFrame();
 			AbstractStackmapVariableinfo vinfo = createStackmapVariableInfoFromVerificationType(value.getStackItem(), index);
-			result.addVariableInfo(vinfo);
-			return result;
+			result2.addVariableInfo(vinfo);
+			result = result2;
 		} else if (diff instanceof SameLocalsOneStackItemFrame && offsetDelta>63) {
 			SameLocalsOneStackItemFrame value = (SameLocalsOneStackItemFrame)diff;
-			SameLocalsOneStackitemExtendedStackmapFrame result = new SameLocalsOneStackitemExtendedStackmapFrame();
+			SameLocalsOneStackitemExtendedStackmapFrame result2 = new SameLocalsOneStackitemExtendedStackmapFrame();
 			AbstractStackmapVariableinfo vinfo = createStackmapVariableInfoFromVerificationType(value.getStackItem(), index);
-			result.addVariableInfo(vinfo);
-			return result;
+			result2.addVariableInfo(vinfo);
+			result = result2;
 		} else if (diff instanceof ChopFrame) {
 			ChopFrame value = (ChopFrame)diff;
-			ChopStackmapFrame result = new ChopStackmapFrame();
-			result.setkLiteral(new IntegerLiteral(instr.getSourceLocation().getLine(),instr.getSourceLocation().getCharPosition(),value.getCount()+""));
-			return result;
+			ChopStackmapFrame result2 = new ChopStackmapFrame();
+			result2.setkLiteral(new IntegerLiteral(instr.getSourceLocation().getLine(),instr.getSourceLocation().getCharPosition(),value.getCount()+""));
+			result = result2;
 		} else if (diff instanceof AppendFrame) {
 			AppendFrame value = (AppendFrame)diff;
-			AppendStackmapFrame result = new AppendStackmapFrame();
+			AppendStackmapFrame result2 = new AppendStackmapFrame();
 			for (VerificationType t: value.getLocals()) {
-				result.addVariableInfo(createStackmapVariableInfoFromVerificationType(t, index));
+				result2.addVariableInfo(createStackmapVariableInfoFromVerificationType(t, index));
 			}
-			return result;
+			result = result2;
 		} else if (diff instanceof FullFrame) {
 			FullFrame value = (FullFrame)diff;
-			FullStackmapFrame result = new FullStackmapFrame();
+			FullStackmapFrame result2 = new FullStackmapFrame();
 			for (VerificationType t: value.getLocals()) {
-				result.addVariableInfo(createStackmapVariableInfoFromVerificationType(t, index));
+				result2.addVariableInfo(createStackmapVariableInfoFromVerificationType(t, index));
 			}
-			result.switchAddingToStackItems();
+			result2.switchAddingToStackItems();
 			for (VerificationType t: value.getStack()) {
-				result.addVariableInfo(createStackmapVariableInfoFromVerificationType(t, index));
+				result2.addVariableInfo(createStackmapVariableInfoFromVerificationType(t, index));
 			}
-			return result;
+			result = result2;
 		} else {
 			throw new IllegalArgumentException("Unknown type: "+diff.getClass().getName());
 		}
+		
+		result.setInstruction(getInstructionAt(index));
+		return result;
 		
 	}
 	
@@ -604,7 +607,9 @@ public class Verifier implements IClassQuery {
 			}
 			ObjectStackmapVariableinfo osvi = new ObjectStackmapVariableinfo();
 			ClassInfo cli = clazz.getConstantPool().getOrAddClassInfo(className);
-			cli.verify();
+			if (!cli.isVerified()) {
+				cli.verify();
+			}
 			if (cli.hasErrors()) {
 				throw new VerifyException(index, "couldn't resolve class "+className);
 			}

@@ -106,7 +106,11 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 
 	@Override
 	protected void doVerify() {
-		externalInfo = getRoot().checkAndLoadClassInfo(this, referenceLabels[0], getClassName(), false);
+		SymbolReference symbol = null;
+		if (referenceLabels != null) {
+			symbol = referenceLabels[0];
+		}
+		externalInfo = getRoot().checkAndLoadClassInfo(this, symbol, getClassName(), false);
 	}
 
 

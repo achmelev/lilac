@@ -484,7 +484,12 @@ public class Frame {
 				}
 			}
 			if (sameLocals) {
-				return new ChopFrame(this.calculateNumberOfVariables()-nextFrame.calculateNumberOfVariables());
+				int diff = this.calculateNumberOfVariables()-nextFrame.calculateNumberOfVariables();
+				if (diff>=1 && diff<=3) {
+					return new ChopFrame(this.calculateNumberOfVariables()-nextFrame.calculateNumberOfVariables());
+				} else {
+					return nextFrame.createFullFrame();
+				}
 			} else {
 				return nextFrame.createFullFrame();
 			}
@@ -508,7 +513,11 @@ public class Frame {
 						}
 					}
 				}
-				return new AppendFrame(l);
+				if (l.size()>=1 && l.size()<=3) {
+					return new AppendFrame(l);
+				} else {
+					return nextFrame.createFullFrame();
+				}
 			} else {
 				return nextFrame.createFullFrame();
 			}

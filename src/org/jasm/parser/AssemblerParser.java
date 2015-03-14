@@ -179,6 +179,7 @@ import org.jasm.parser.JavaAssemblerParser.EmptyTargetReturnTypeContext;
 import org.jasm.parser.JavaAssemblerParser.EnclosingmethodContext;
 import org.jasm.parser.JavaAssemblerParser.EnumannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.ExceptionsattributeContext;
+import org.jasm.parser.JavaAssemblerParser.ExtendedStackmapAttributeContext;
 import org.jasm.parser.JavaAssemblerParser.FieldContext;
 import org.jasm.parser.JavaAssemblerParser.FieldattributeConstantValueContext;
 import org.jasm.parser.JavaAssemblerParser.FielddescriptorContext;
@@ -197,7 +198,6 @@ import org.jasm.parser.JavaAssemblerParser.FloatStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FloatinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FormalparametertypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.FullStackmapFrameContext;
-import org.jasm.parser.JavaAssemblerParser.GeneratestackmapdirectiveContext;
 import org.jasm.parser.JavaAssemblerParser.IincopContext;
 import org.jasm.parser.JavaAssemblerParser.InnerclassContext;
 import org.jasm.parser.JavaAssemblerParser.Innerclass_innerContext;
@@ -273,6 +273,7 @@ import org.jasm.parser.JavaAssemblerParser.SameLocalsExtendedStackmapFrameContex
 import org.jasm.parser.JavaAssemblerParser.SameLocalsStackmapFrameContext;
 import org.jasm.parser.JavaAssemblerParser.SameStackmapFrameContext;
 import org.jasm.parser.JavaAssemblerParser.SignatureattributeContext;
+import org.jasm.parser.JavaAssemblerParser.SimpleStackmapAttributeContext;
 import org.jasm.parser.JavaAssemblerParser.SimpleannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.StackitemstackmapvarinfosContext;
 import org.jasm.parser.JavaAssemblerParser.StackmapattributeContext;
@@ -964,12 +965,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	
 
-	@Override
-	public void enterGeneratestackmapdirective(
-			GeneratestackmapdirectiveContext ctx) {
-		Method m = (Method)stack.peek();
-		m.setGenerateStackMap(true);
-	}
+	
 
 	@Override
 	public void enterMethodmaxlocals(MethodmaxlocalsContext ctx) {
@@ -2242,7 +2238,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	
 	@Override
-	public void enterStackmapattribute(StackmapattributeContext ctx) {
+	public void enterExtendedStackmapAttribute(ExtendedStackmapAttributeContext ctx) {
 		StackMapAttributeContent content = new StackMapAttributeContent();
 		CodeAttributeContent code = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
 		if (code.getAttributes().getAttributesByContentType(StackMapAttributeContent.class).isEmpty()) {
@@ -2255,6 +2251,15 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 	}
 	
+	
+	
+	
+	@Override
+	public void enterSimpleStackmapAttribute(SimpleStackmapAttributeContext ctx) {
+		Method m = (Method)stack.peek();
+		m.setGenerateStackMap(true);
+	}
+
 	@Override
 	public void enterSameStackmapFrame(SameStackmapFrameContext ctx) {
 		StackMapAttributeContent content = (StackMapAttributeContent)stack.peek();
@@ -2410,7 +2415,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 
 	@Override
-	public void exitStackmapattribute(StackmapattributeContext ctx) {
+	public void exitExtendedStackmapAttribute(ExtendedStackmapAttributeContext ctx) {
 		stack.pop();
 	}
 	

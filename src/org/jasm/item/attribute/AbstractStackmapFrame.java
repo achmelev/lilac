@@ -72,7 +72,9 @@ public abstract class AbstractStackmapFrame extends AbstractByteCodeItem impleme
 	@Override
 	protected void doResolveAfterParse() {
 		CodeAttributeContent code = getAncestor(CodeAttributeContent.class);
-		instruction = code.getInstructions().checkAndLoadFromSymbolTable(this, instructionReference);
+		if (instruction == null) {
+			instruction = code.getInstructions().checkAndLoadFromSymbolTable(this, instructionReference);
+		}
 		StackMapAttributeContent stackmap = (StackMapAttributeContent)getParent();
 		int index = stackmap.indexOf(this);
 		if (index == 0 && instruction != null) {
