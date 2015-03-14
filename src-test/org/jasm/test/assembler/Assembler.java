@@ -62,12 +62,11 @@ public class Assembler {
 			parser.flushErrors();
 			throw new AssemblerClassLoaderException("invalid assembler file", rName);
 		}
-		VerifierParams params = new VerifierParams();
 		ClassInfoResolver clp = new ClassInfoResolver();
 		clp.add(new ClazzClassPathEntry(clazz));
 		clp.add(new ClassLoaderClasspathEntry(Thread.currentThread().getContextClassLoader()));
 		clazz.setResolver(clp);
-		clazz.verify(params);
+		clazz.verify();
 		if (parser.getErrorCounter()>0) {
 			parser.flushErrors();;
 			throw new AssemblerClassLoaderException("invalid assembler file", rName);

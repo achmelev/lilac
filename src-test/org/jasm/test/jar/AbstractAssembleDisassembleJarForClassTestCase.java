@@ -68,7 +68,6 @@ public abstract class AbstractAssembleDisassembleJarForClassTestCase extends
 			parser.flushErrors();
 			Assert.fail("Parsing failed on:");
 		}
-		VerifierParams params = new VerifierParams();
 		//params.setCheckReferences(false);
 		if (clp == null) {
 			clp = new ClassInfoResolver();
@@ -76,7 +75,7 @@ public abstract class AbstractAssembleDisassembleJarForClassTestCase extends
 			clp.add(new ClassLoaderClasspathEntry(this.getClass().getClassLoader()));
 		}
 		clazz.setResolver(clp);
-		clazz.verify(params);
+		clazz.verify();
 		if (parser.getErrorCounter() > 0) {
 			log.error("code: \n"+data);
 			parser.flushErrors();

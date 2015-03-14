@@ -5,7 +5,6 @@ import org.jasm.item.attribute.BootstrapMethod;
 import org.jasm.item.attribute.BootstrapMethodsAttributeContent;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public class InvokeDynamicInfo extends AbstractConstantPoolEntry implements INameReferencingEntry, IDescriptorReferencingEntry {
 	
@@ -86,7 +85,7 @@ public class InvokeDynamicInfo extends AbstractConstantPoolEntry implements INam
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

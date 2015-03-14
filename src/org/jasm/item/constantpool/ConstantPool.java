@@ -14,7 +14,6 @@ import org.jasm.map.KeyToListMap;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.SymbolTable;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstantPoolEntry> {
 	
@@ -402,10 +401,10 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		for (IBytecodeItem item: getItems()) {
 			if (item != null) {
-				item.verify(params);
+				item.verify();
 			}
 		}
 		

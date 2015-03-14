@@ -7,7 +7,6 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
-import org.jasm.type.verifier.VerifierParams;
 
 public class AnnotationDefaultAttributeContent extends
 		AbstractSimpleAttributeContent implements IContainerBytecodeItem<AnnotationElementValue>{
@@ -80,8 +79,8 @@ public class AnnotationDefaultAttributeContent extends
 	}
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
-		value.verify(params);
+	protected void doVerify() {
+		value.verify();
 		
 	}
 

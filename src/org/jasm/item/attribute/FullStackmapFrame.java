@@ -7,7 +7,6 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
-import org.jasm.type.verifier.VerifierParams;
 
 public class FullStackmapFrame extends AbstractStackmapFrame implements IContainerBytecodeItem<AbstractStackmapVariableinfo>, IStackmapVariableinfoContainer {
 	
@@ -101,12 +100,12 @@ public class FullStackmapFrame extends AbstractStackmapFrame implements IContain
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		for (AbstractStackmapVariableinfo info: locals) {
-			info.verify(params);
+			info.verify();
 		}
 		for (AbstractStackmapVariableinfo info: stackItems) {
-			info.verify(params);
+			info.verify();
 		}
 		
 	}

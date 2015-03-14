@@ -5,7 +5,6 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public class BranchInstruction extends AbstractInstruction implements IReferencingInstruction {
 	
@@ -109,7 +108,7 @@ public class BranchInstruction extends AbstractInstruction implements IReferenci
 	}
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		int offset = targetInst.getOffsetInCode()-this.getOffsetInCode();
 		if (!isWide() && (offset>Short.MAX_VALUE || offset<Short.MIN_VALUE)) {
 			emitError(targetReference, "The target too far. Consider to use the wide modifier");

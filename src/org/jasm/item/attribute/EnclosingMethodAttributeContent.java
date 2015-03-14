@@ -9,7 +9,6 @@ import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.NameAndTypeInfo;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
 	
@@ -106,7 +105,7 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 	
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 	}
 

@@ -13,7 +13,6 @@ import org.jasm.item.constantpool.MethodHandleInfo;
 import org.jasm.item.constantpool.MethodTypeInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public class LdcInstruction extends AbstractInstruction implements IConstantPoolReference {
 	
@@ -107,7 +106,7 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 	}
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		if (cpEntry instanceof ClassInfo) {
 			getRoot().checkAndLoadClassInfo(this, cpEntryReference, ((ClassInfo)cpEntry).getClassName(), true);
 		}

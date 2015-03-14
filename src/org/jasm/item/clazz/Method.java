@@ -6,7 +6,6 @@ import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.MethodDescriptor;
-import org.jasm.type.verifier.VerifierParams;
 
 public class Method extends AbstractClassMember<MethodModifier> {
 	
@@ -118,7 +117,7 @@ public class Method extends AbstractClassMember<MethodModifier> {
 	}
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		if (methodDescriptor != null) {
 			getRoot().checkAndLoadMethodDescriptor(this, descriptorReference, methodDescriptor);
@@ -132,7 +131,7 @@ public class Method extends AbstractClassMember<MethodModifier> {
 			if (name.equals("<clinit>") && (getRoot().getDecimalVersion().doubleValue()>=51.0) && !getModifier().isStatic()) {
 				emitError(descriptorReference, "class or interface initialization method must be static");
 			}
-			super.doVerify(params);
+			super.doVerify();
 		}
 		
 	}

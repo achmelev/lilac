@@ -8,7 +8,6 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IUtf8ConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public abstract class AbstractStringAttributeContent extends AbstractSimpleAttributeContent implements IUtf8ConstantPoolReference {
 	
@@ -78,7 +77,7 @@ public abstract class AbstractStringAttributeContent extends AbstractSimpleAttri
 	}
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

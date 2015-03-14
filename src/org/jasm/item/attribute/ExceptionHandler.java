@@ -15,7 +15,6 @@ import org.jasm.item.instructions.Instructions;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.resolver.ExternalClassInfo;
-import org.jasm.type.verifier.VerifierParams;
 
 public class ExceptionHandler extends AbstractByteCodeItem implements IConstantPoolReference, IInstructionReference, ISymbolTableEntry {
 	
@@ -132,7 +131,7 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 	
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		if (catchType != null) {
 			externalCatchType = getRoot().checkAndLoadClassInfo(this, catchTypeReference, catchType.getClassName(), true);
 			ExternalClassInfo throwable = getRoot().checkAndLoadClassInfo(this, null, "java/lang/Throwable", true);

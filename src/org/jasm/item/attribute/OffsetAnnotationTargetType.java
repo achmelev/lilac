@@ -9,7 +9,6 @@ import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public class OffsetAnnotationTargetType extends AbstractAnnotationTargetType implements IInstructionReference {
 	
@@ -91,7 +90,7 @@ public class OffsetAnnotationTargetType extends AbstractAnnotationTargetType imp
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

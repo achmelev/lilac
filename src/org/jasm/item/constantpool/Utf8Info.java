@@ -15,7 +15,6 @@ import org.jasm.parser.literals.StringLiteral;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
-import org.jasm.type.verifier.VerifierParams;
 
 
 public class Utf8Info extends AbstractConstantPoolEntry {
@@ -41,7 +40,7 @@ public class Utf8Info extends AbstractConstantPoolEntry {
 	
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

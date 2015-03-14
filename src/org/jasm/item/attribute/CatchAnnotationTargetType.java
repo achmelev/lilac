@@ -5,7 +5,6 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public class CatchAnnotationTargetType extends AbstractAnnotationTargetType implements IExceptionHandlerReference {
 	
@@ -72,7 +71,7 @@ public class CatchAnnotationTargetType extends AbstractAnnotationTargetType impl
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 	}
 

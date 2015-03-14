@@ -9,7 +9,6 @@ import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 
 
@@ -66,7 +65,7 @@ public class UninitializedStackmapVariableinfo extends AbstractStackmapVariablei
 	}
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

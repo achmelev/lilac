@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
-import org.jasm.type.verifier.VerifierParams;
 
 public class IntegerStackmapVariableinfo extends AbstractStackmapVariableinfo {
 
@@ -55,7 +54,7 @@ public class IntegerStackmapVariableinfo extends AbstractStackmapVariableinfo {
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

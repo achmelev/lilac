@@ -2,7 +2,6 @@ package org.jasm.item.constantpool;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.parser.literals.DoubleLiteral;
-import org.jasm.type.verifier.VerifierParams;
 
 public class DoubleInfo extends AbstractConstantPoolEntry implements IPrimitiveValueReferencingEntry {
 	
@@ -36,7 +35,7 @@ public class DoubleInfo extends AbstractConstantPoolEntry implements IPrimitiveV
 	
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

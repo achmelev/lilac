@@ -8,7 +8,6 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public class ObjectStackmapVariableinfo extends AbstractStackmapVariableinfo implements IConstantPoolReference {
 	
@@ -63,7 +62,7 @@ public class ObjectStackmapVariableinfo extends AbstractStackmapVariableinfo imp
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 	}
 

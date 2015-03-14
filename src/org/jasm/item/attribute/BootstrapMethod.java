@@ -17,7 +17,6 @@ import org.jasm.item.constantpool.MethodTypeInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public class BootstrapMethod extends AbstractByteCodeItem implements ISymbolTableEntry {
 	
@@ -115,7 +114,7 @@ public class BootstrapMethod extends AbstractByteCodeItem implements ISymbolTabl
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

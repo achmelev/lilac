@@ -11,7 +11,6 @@ import org.jasm.item.clazz.Clazz;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.parser.SourceLocation;
 import org.jasm.parser.literals.AbstractLiteral;
-import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +62,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 	}
 	
 	@Override
-	public void verify(VerifierParams params) {
+	public void verify() {
 		if ((this.parent == null) && !isRoot()) {
 			throw new IllegalStateException("Cannot verify orphan item!");
 		}
@@ -78,7 +77,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 		}
 		
 		try {
-			doVerify(params);
+			doVerify();
 		} catch (Throwable e) {
 			getRoot().getParser().emitInternalError(this, e);
 		}
@@ -87,7 +86,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 	}
 	
 	protected abstract void doResolve();
-	protected abstract void doVerify(VerifierParams params);
+	protected abstract void doVerify();
 	protected abstract void doResolveAfterParse();
 
 	@Override

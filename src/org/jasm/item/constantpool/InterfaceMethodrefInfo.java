@@ -1,7 +1,6 @@
 package org.jasm.item.constantpool;
 
 import org.jasm.resolver.MethodInfo;
-import org.jasm.type.verifier.VerifierParams;
 
 public class InterfaceMethodrefInfo extends AbstractRefInfo {
 	
@@ -28,7 +27,7 @@ public class InterfaceMethodrefInfo extends AbstractRefInfo {
 	}
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		externalInfo = getRoot().checkAndLoadInterfaceMethodInfo(this, referenceLabels[0], getClassName(),getName(), getDescriptor(), false);
 	}
 

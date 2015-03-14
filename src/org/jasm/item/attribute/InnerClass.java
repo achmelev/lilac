@@ -15,7 +15,6 @@ import org.jasm.item.modifier.InnerClassModifier;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public class InnerClass extends AbstractByteCodeItem implements IUtf8ConstantPoolReference{
 	
@@ -123,7 +122,7 @@ public class InnerClass extends AbstractByteCodeItem implements IUtf8ConstantPoo
 	
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

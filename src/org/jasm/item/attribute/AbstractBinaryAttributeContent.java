@@ -5,7 +5,6 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.parser.literals.Base64Literal;
-import org.jasm.type.verifier.VerifierParams;
 
 public abstract class AbstractBinaryAttributeContent extends AbstractSimpleAttributeContent {
 	
@@ -62,7 +61,7 @@ public abstract class AbstractBinaryAttributeContent extends AbstractSimpleAttri
 	}
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 	}
 	

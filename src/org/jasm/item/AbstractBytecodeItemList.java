@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
-import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -110,10 +109,10 @@ public abstract class AbstractBytecodeItemList<T extends IBytecodeItem> extends 
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		for (IBytecodeItem item: items) {
 			if (item != null) {
-				item.verify(params);
+				item.verify();
 			}
 		}
 		

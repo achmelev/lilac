@@ -408,9 +408,9 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	}
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		for (AbstractInstruction instr: items) {
-			instr.verify(params);
+			instr.verify();
 		}
 		
 	}
@@ -568,10 +568,10 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		verifier.verifyStage1();
 	}
 	
-	public void verifyByteCode(VerifierParams params) {
+	public void verifyByteCode() {
 		try {
 			if (!verifier.isHasErrors() && !verifier.isHasUnsupportedCode()) {
-				verifier.verify(params);
+				verifier.verify();
 			}
 		} catch (VerifyException e) {
 			emitCodeVerifyError(e);

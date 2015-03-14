@@ -5,7 +5,6 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.parser.literals.IntegerLiteral;
-import org.jasm.type.verifier.VerifierParams;
 
 public class FormalParameterAnnotationTargetType extends AbstractAnnotationTargetType {
 	
@@ -75,7 +74,7 @@ public class FormalParameterAnnotationTargetType extends AbstractAnnotationTarge
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		// TODO Auto-generated method stub
 		
 	}

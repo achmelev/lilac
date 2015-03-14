@@ -63,7 +63,6 @@ public abstract class AbstractAssembleDisassembleJarTestCase extends
 		parser = new AssemblerParser();
 		parser.addErrorListener(new SimpleParserErrorListener());
 		Clazz clazz =  parser.parse(bi);
-		VerifierParams params = new VerifierParams();
 		//params.setCheckReferences(false);
 		if (clp == null) {
 			clp = new ClassInfoResolver();
@@ -80,7 +79,7 @@ public abstract class AbstractAssembleDisassembleJarTestCase extends
 			Assert.fail("Parsing failed on:");
 		} else {
 			clazz.setResolver(clp);
-			clazz.verify(params);
+			clazz.verify();
 			if (parser.getErrorCounter() > 0) {
 				log.error("code: \n"+data);
 				parser.flushErrors();

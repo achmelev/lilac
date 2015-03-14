@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
-import org.jasm.type.verifier.VerifierParams;
 
 
 public abstract class AbstractEmptyAttributeContent extends AbstractSimpleAttributeContent {
@@ -61,7 +60,7 @@ public abstract class AbstractEmptyAttributeContent extends AbstractSimpleAttrib
 	}
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

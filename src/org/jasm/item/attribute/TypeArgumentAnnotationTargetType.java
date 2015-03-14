@@ -10,7 +10,6 @@ import org.jasm.item.instructions.IInstructionReference;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.parser.literals.IntegerLiteral;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public class TypeArgumentAnnotationTargetType extends AbstractAnnotationTargetType implements IInstructionReference {
 	
@@ -100,7 +99,7 @@ public class TypeArgumentAnnotationTargetType extends AbstractAnnotationTargetTy
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 	}
 

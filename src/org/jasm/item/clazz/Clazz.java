@@ -31,7 +31,6 @@ import org.jasm.resolver.ClazzClassPathEntry;
 import org.jasm.resolver.ExternalClassInfo;
 import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
-import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -280,16 +279,16 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	}
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		if (resolveMyselfAndSuperclasses()) {
-			pool.verify(params);
-			methods.verify(params);
-			attributes.verify(params);
+			pool.verify();
+			methods.verify();
+			attributes.verify();
 			if (getParser().getErrorCounter() == 0) {
 				List<Instructions> instrs = this.getDescendants(Instructions.class);
 				for (Instructions instr: instrs) {
-					instr.verifyByteCode(params);
+					instr.verifyByteCode();
 				}
 				
 			}
