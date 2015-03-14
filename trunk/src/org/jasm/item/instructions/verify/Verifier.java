@@ -148,7 +148,7 @@ public class Verifier implements IClassQuery {
 		}
 	}
 	
-	public void verify(VerifierParams params) {
+	public void verify() {
 		try {
 			double version = clazz.getDecimalVersion().doubleValue();
 			

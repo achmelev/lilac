@@ -16,7 +16,6 @@ import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.AbstractClassMemberModifier;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public abstract class AbstractClassMember<T extends AbstractClassMemberModifier> extends AbstractByteCodeItem implements IContainerBytecodeItem<Attributes>, IUtf8ConstantPoolReference, IAttributesContainer {
 	
@@ -96,8 +95,8 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	}
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
-		attributes.verify(params);
+	protected void doVerify() {
+		attributes.verify();
 		
 	}
 

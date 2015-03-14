@@ -2,7 +2,6 @@ package org.jasm.item.constantpool;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.parser.literals.FloatLiteral;
-import org.jasm.type.verifier.VerifierParams;
 
 public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveValueReferencingEntry {
 	
@@ -32,7 +31,7 @@ public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveVa
 	
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

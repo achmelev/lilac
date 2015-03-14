@@ -8,7 +8,6 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
-import org.jasm.type.verifier.VerifierParams;
 
 public class LocalVariableAnnotationTargetType extends AbstractAnnotationTargetType implements IContainerBytecodeItem<LocalVariableAnnotationTargetTypeMember>{
 	
@@ -99,9 +98,9 @@ public class LocalVariableAnnotationTargetType extends AbstractAnnotationTargetT
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		for (LocalVariableAnnotationTargetTypeMember member: members) {
-			member.verify(params);
+			member.verify();
 		}
 		
 	}

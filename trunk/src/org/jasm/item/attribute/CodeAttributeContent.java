@@ -12,7 +12,6 @@ import org.jasm.item.clazz.IAttributesContainer;
 import org.jasm.item.clazz.Method;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.parser.literals.IntegerLiteral;
-import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,15 +125,15 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 	
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		Method parent = getAncestor(Method.class);
 		if (parent.getModifier().isAbstract() || parent.getModifier().isNative()) {
 			emitErrorOnLocation(getNextSourceLocationDown(), "code statements (e.g. instructions) aren't allowed in abstract and native methods");
 		} else {
-			instructions.verify(params);
-			exceptionTable.verify(params);
-			attributes.verify(params);
+			instructions.verify();
+			exceptionTable.verify();
+			attributes.verify();
 		}
 		
 	}

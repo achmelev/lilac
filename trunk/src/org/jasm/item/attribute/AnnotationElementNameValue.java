@@ -14,7 +14,6 @@ import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public class AnnotationElementNameValue extends AbstractByteCodeItem implements IContainerBytecodeItem<AnnotationElementValue>, IConstantPoolReference {
 	
@@ -95,8 +94,8 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 	}
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
-		value.verify(params);
+	protected void doVerify() {
+		value.verify();
 	}
 
 	@Override

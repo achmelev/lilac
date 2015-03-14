@@ -25,7 +25,6 @@ import org.jasm.resolver.AbstractInfo;
 import org.jasm.resolver.ExternalClassInfo;
 import org.jasm.resolver.FieldInfo;
 import org.jasm.resolver.MethodInfo;
-import org.jasm.type.verifier.VerifierParams;
 
 public class ConstantPoolInstruction extends AbstractInstruction implements IConstantPoolReference {
 	
@@ -122,7 +121,7 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 	}
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		//Loading classes/methods/arguments and checking access
 		if (cpEntry instanceof ClassInfo) {
 			info = getRoot().checkAndLoadClassInfo(this, cpEntryReference, ((ClassInfo)cpEntry).getClassName(), true);

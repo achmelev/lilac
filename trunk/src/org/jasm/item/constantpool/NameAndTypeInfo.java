@@ -9,7 +9,6 @@ import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
-import org.jasm.type.verifier.VerifierParams;
 
 public class NameAndTypeInfo extends AbstractReferenceEntry implements INameReferencingEntry, IDescriptorReferencingEntry, IUtf8ConstantPoolReference  {
 	
@@ -152,7 +151,7 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		if (typeDescriptor != null) {
 			getRoot().checkAndLoadTypeDescriptor(this, descriptorRef, typeDescriptor);
 		}

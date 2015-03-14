@@ -5,7 +5,6 @@ import org.jasm.parser.literals.SymbolReference;
 import org.jasm.resolver.ExternalClassInfo;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.TypeDescriptor;
-import org.jasm.type.verifier.VerifierParams;
 
 public class ClassInfo extends AbstractReferenceEntry implements INameReferencingEntry, IUtf8ConstantPoolReference {
 	
@@ -106,7 +105,7 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		externalInfo = getRoot().checkAndLoadClassInfo(this, referenceLabels[0], getClassName(), false);
 	}
 

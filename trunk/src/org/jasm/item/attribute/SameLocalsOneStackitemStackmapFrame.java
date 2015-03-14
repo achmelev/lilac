@@ -9,7 +9,6 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.instructions.verify.Frame;
-import org.jasm.type.verifier.VerifierParams;
 
 public class SameLocalsOneStackitemStackmapFrame extends AbstractStackmapFrame implements IContainerBytecodeItem<IBytecodeItem>, IStackmapVariableinfoContainer {
 	
@@ -73,8 +72,8 @@ public class SameLocalsOneStackitemStackmapFrame extends AbstractStackmapFrame i
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
-		stackitemInfo.verify(params);
+	protected void doVerify() {
+		stackitemInfo.verify();
 	}
 
 	@Override

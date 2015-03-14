@@ -13,7 +13,6 @@ import org.jasm.item.constantpool.IntegerInfo;
 import org.jasm.item.constantpool.LongInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 
 public class ConstantValueAttributeContent extends AbstractSimpleAttributeContent implements IConstantPoolReference {
 	
@@ -91,7 +90,7 @@ public class ConstantValueAttributeContent extends AbstractSimpleAttributeConten
 	
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

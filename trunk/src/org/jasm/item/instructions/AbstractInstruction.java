@@ -4,7 +4,6 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.literals.Label;
-import org.jasm.type.verifier.VerifierParams;
 
 public abstract class AbstractInstruction extends AbstractByteCodeItem implements ISymbolTableEntry {
 
@@ -93,7 +92,7 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem implement
 	
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

@@ -7,7 +7,6 @@ import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.parser.literals.IntegerLiteral;
-import org.jasm.type.verifier.VerifierParams;
 
 public class AnnotationTargetTypePath extends AbstractByteCodeItem {
 	
@@ -127,7 +126,7 @@ public class AnnotationTargetTypePath extends AbstractByteCodeItem {
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 		
 	}

@@ -69,7 +69,6 @@ public abstract class AbstractAssembleDisassembleMavenJarTestCase extends
 			parser.flushErrors();
 			Assert.fail("Parsing failed");
 		}
-		VerifierParams params = new VerifierParams();
 		if (classPath == null) {
 			classPath = new ClassInfoResolver();
 			classPath.add(getRootEntry());
@@ -79,7 +78,7 @@ public abstract class AbstractAssembleDisassembleMavenJarTestCase extends
 			}
 		}
 		clazz.setResolver(classPath);
-		clazz.verify(params);
+		clazz.verify();
 		if (parser.getErrorCounter() > 0) {
 			log.error("code: \n"+data);
 			parser.flushErrors();

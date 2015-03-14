@@ -21,7 +21,6 @@ import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.TypeDescriptor;
-import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -283,7 +282,7 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 	
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		if (classTypeDescriptor !=null) {
 			getRoot().checkAndLoadTypeDescriptor(this, classInfoReference, classTypeDescriptor);
 		}
@@ -291,10 +290,10 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 			getRoot().checkAndLoadTypeDescriptor(this, enumTypeNameReference, enumTypeDescriptor);
 		}
 		if (isNested()) {
-			nestedAnnotation.verify(params);
+			nestedAnnotation.verify();
 		} else if (isArray()) {
 			for (AnnotationElementValue m: arrayMembers) {
-				m.verify(params);
+				m.verify();
 			}
 		}
 	}

@@ -87,7 +87,7 @@ public class AssemblerClassLoader extends ClassLoader {
 		clazz.setResolver(clp);
 		
 		if (params != null) {
-			clazz.verify(params);
+			clazz.verify();
 		}
 		if (parser.getErrorCounter() > 0) {
 			parser.flushErrors();;

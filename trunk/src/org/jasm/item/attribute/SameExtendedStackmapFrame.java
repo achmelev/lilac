@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
-import org.jasm.type.verifier.VerifierParams;
 
 public class SameExtendedStackmapFrame extends AbstractStackmapFrame {
 	
@@ -65,7 +64,7 @@ public class SameExtendedStackmapFrame extends AbstractStackmapFrame {
 	
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		
 	}
 

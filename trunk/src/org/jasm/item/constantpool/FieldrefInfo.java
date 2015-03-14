@@ -1,7 +1,6 @@
 package org.jasm.item.constantpool;
 
 import org.jasm.resolver.FieldInfo;
-import org.jasm.type.verifier.VerifierParams;
 
 
 public class FieldrefInfo extends AbstractRefInfo {
@@ -31,7 +30,7 @@ public class FieldrefInfo extends AbstractRefInfo {
 	}
 	
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		externalInfo = getRoot().checkAndLoadFieldInfo(this, referenceLabels[0], getClassName(),getName(), getDescriptor(), false);
 	}
 	

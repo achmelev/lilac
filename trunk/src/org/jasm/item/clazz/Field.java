@@ -6,7 +6,6 @@ import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.TypeDescriptor;
-import org.jasm.type.verifier.VerifierParams;
 
 public class Field extends AbstractClassMember<FieldModifier> {
 	
@@ -91,11 +90,11 @@ public class Field extends AbstractClassMember<FieldModifier> {
 
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		if (typeDescriptor != null) {
 			getRoot().checkAndLoadTypeDescriptor(this, descriptorReference, typeDescriptor);
 		}
-		super.doVerify(params);
+		super.doVerify();
 	}
 	
 	

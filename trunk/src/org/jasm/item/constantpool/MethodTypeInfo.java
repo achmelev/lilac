@@ -3,7 +3,6 @@ package org.jasm.item.constantpool;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.MethodDescriptor;
-import org.jasm.type.verifier.VerifierParams;
 
 public class MethodTypeInfo extends AbstractReferenceEntry implements IDescriptorReferencingEntry {
 	
@@ -81,7 +80,7 @@ public class MethodTypeInfo extends AbstractReferenceEntry implements IDescripto
 
 
 	@Override
-	protected void doVerify(VerifierParams params) {
+	protected void doVerify() {
 		getRoot().checkAndLoadMethodDescriptor(this, methodSymbol, methodDescriptor);
 	}
 	
