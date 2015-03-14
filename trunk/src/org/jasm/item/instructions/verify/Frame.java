@@ -528,7 +528,7 @@ public class Frame {
 			
 	}
 	
-	private FullFrame createFullFrame() {
+	public FullFrame createFullFrame() {
 		List<VerificationType> l = new ArrayList<VerificationType>();
 		for (int i=0;i<activeLocals; i++) {
 			if (i==0) {

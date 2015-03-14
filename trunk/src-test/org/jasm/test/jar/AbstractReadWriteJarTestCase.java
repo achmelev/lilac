@@ -24,7 +24,7 @@ public abstract class AbstractReadWriteJarTestCase extends
 		AbstractJarTestCase {
 	
 	@Override
-	protected void testClass(byte[] data, File jarFile) {
+	protected void testClass(byte[] data, File jarFile, String name) {
 		
 		byte[] data2 = readWrite(data);
 		assertArrayEquals(data, data2);

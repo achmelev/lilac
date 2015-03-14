@@ -143,6 +143,18 @@ public class ClassInfoResolver  {
 		return null;
 	}
 	
+	public byte [] findBytes(String resourceName) {
+		for (IClassPathEntry entry: entries) {
+			if (!entry.isInvalid()) {
+				byte[] data = entry.findBytes(resourceName);
+				if (data != null) {
+					return data;
+				}
+			}
+		}
+		return null;
+	}
+	
 	private AbstractInfo resolveMember(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className,String name,  String descriptor,boolean checkAccess, MemberFindAndAccess mfa, String label) {
 		
 		String memberKey = className+"."+name+"@"+descriptor;
@@ -170,18 +182,19 @@ public class ClassInfoResolver  {
 						if (mfa.checkAccess(caller, symbol,clazz, cli,result)) {
 							
 						} else {
-							caller.emitError(symbol, "lllegal access for "+cli.getName()+"."+name+"@"+descriptor);
+							caller.emitError(symbol, "lllegal access for "+memberKey);
 							result = null;
 						}
 						
 					}
 				} else {
-					caller.emitError(symbol, "unknown "+label+" "+cli.getName()+"."+name+"@"+descriptor);
+					caller.emitError(symbol, "unknown "+label+" "+memberKey);
 				}
 			}
 			
 		} else {
 			notFounds.add(memberKey);
+			caller.emitError(symbol, "unknown "+label+" "+memberKey);
 		}
 		return result;
 	}

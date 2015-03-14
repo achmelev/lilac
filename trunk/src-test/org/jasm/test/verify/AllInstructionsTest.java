@@ -12,10 +12,9 @@ public class AllInstructionsTest {
 		
 		
 		String name = "org.jasm.test.verify.AllInstructionsExecutable";
-		VerifierParams params = null;
-		params = new VerifierParams();
 		
-		ClassLoader loader = new AssemblerClassLoader(Thread.currentThread().getContextClassLoader(), params);
+		
+		ClassLoader loader = new AssemblerClassLoader(Thread.currentThread().getContextClassLoader(), true);
 		IExecutable executable;
 		try {
 			executable = (IExecutable) loader.loadClass(name).newInstance();

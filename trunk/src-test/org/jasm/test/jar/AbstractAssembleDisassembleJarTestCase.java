@@ -25,7 +25,7 @@ public abstract class AbstractAssembleDisassembleJarTestCase extends
 		AbstractJarTestCase {
 	
 	@Override
-	protected void testClass(byte[] data, File jarFile) {
+	protected void testClass(byte[] data, File jarFile, String name) {
 		
 		String code = disassemble(data);
 		byte[] data2 = assemble(code, jarFile);
@@ -103,14 +103,6 @@ public abstract class AbstractAssembleDisassembleJarTestCase extends
 		
 	}
 	
-	private File getFile(Class clazz) {
-		String resName = clazz.getName().replace('.', '/')+".class";
-		URL url = Thread.currentThread().getContextClassLoader().getResource(resName);
-		String urlS = url.toString();
-		
-		
-		return new File(urlS.substring(urlS.indexOf('/')+1, urlS.indexOf('!')));
-	}
 	
 	
 	

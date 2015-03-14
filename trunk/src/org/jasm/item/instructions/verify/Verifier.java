@@ -36,6 +36,7 @@ import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.IAttributesContainer;
 import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.ClassInfo;
+import org.jasm.item.environment.Environment;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.AbstractSwitchInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;
@@ -165,7 +166,7 @@ public class Verifier implements IClassQuery {
 			double version = clazz.getDecimalVersion().doubleValue();
 			
 			createInitialFrame();
-			if (version>=50 && !method.isGenerateStackMap()) {
+			if (version>=50 && !generateStackmap()) {
 				try {
 					doTypeChecking();
 				} catch (VerifyException e) {
@@ -394,7 +395,7 @@ public class Verifier implements IClassQuery {
 			}
 			
 			double version = clazz.getDecimalVersion().doubleValue();
-			if (method.isGenerateStackMap() && version>=50) {
+			if (generateStackmap() && version>=50) {
 				generateStackMap();
 			}
 			
@@ -496,6 +497,7 @@ public class Verifier implements IClassQuery {
 	
 	private AbstractStackmapFrame createStackMapFrame(int index, Frame frame, Frame prevousFrame, int offsetDelta) {
 		AbstractFrameDifference diff = prevousFrame.calculateFrameDifference(frame);
+		//diff = frame.createFullFrame();
 		AbstractStackmapFrame result = null;
 		if (offsetDelta<0) {
 			throw new IllegalArgumentException(""+offsetDelta);
@@ -876,7 +878,7 @@ public class Verifier implements IClassQuery {
 	}
 	
 	private void emitRuntimeError(RuntimeException e) {
-		e.printStackTrace();
+		log.error("code verification runtime error",e);
 		int index = 0;
 		if (currentInstructionIndex>=0) {
 			index = currentInstructionIndex;
@@ -907,5 +909,8 @@ public class Verifier implements IClassQuery {
 		return content;
 	}
 	
+	private boolean generateStackmap() {
+		return method.isGenerateStackMap() || Environment.getBooleanValue("asm.forcestackmaps");
+	}
 	
 }
