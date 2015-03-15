@@ -27,6 +27,8 @@ import org.junit.Assert;
 public abstract class AbstractGenerateStackmapJarTestCase extends
 		AbstractJarTestCase {
 	
+	private int counter = 0;
+	
 	@Override
 	protected void testClass(byte[] data, File jarFile, String name) {
 		
@@ -34,8 +36,9 @@ public abstract class AbstractGenerateStackmapJarTestCase extends
 		String code = disassemble(data);
 		byte[] data2 = assemble(code, jarFile);
 		String className = name.substring(0, name.length()-".class".length()).replace('/', '.');
+		boolean originalWorks = true;
 		try {	
-			Class cl = new ByteArrayClassLoader(this.getClass().getClassLoader(), className, data2).loadClass(className);
+			Class cl = new ByteArrayClassLoader(this.getClass().getClassLoader(), className, data).loadClass(className);
 			Constructor[] constructors = cl.getDeclaredConstructors();
 			for (Constructor c: constructors) {
 				if (c.isAccessible() && c.getParameterTypes().length == 0) {
@@ -45,12 +48,33 @@ public abstract class AbstractGenerateStackmapJarTestCase extends
 			}
 		} catch (Throwable e) {
 			
-			log.error("Error",e);
-			log.error("old code: \n"+code);
-			String code2 = disassemble(data2);
-			log.error("new code: \n"+code2);
-			Assert.fail("Testing failed on:");
+			originalWorks = false;
 			
+		}
+		
+		if (originalWorks) {
+			counter++;
+			try {	
+				Class cl = new ByteArrayClassLoader(this.getClass().getClassLoader(), className, data2).loadClass(className);
+				Constructor[] constructors = cl.getDeclaredConstructors();
+				for (Constructor c: constructors) {
+					if (c.isAccessible() && c.getParameterTypes().length == 0) {
+						Object o = c.newInstance();
+						break;
+					}
+				}
+			} catch (Throwable e) {
+				if (e instanceof VerifyError) {
+					log.error("Error",e);
+					log.error("old code: \n"+code);
+					String code2 = disassemble(data2);
+					log.error("new code: \n"+code2);
+					Assert.fail("Testing failed on:");
+				} else {
+					counter--;
+				}
+				
+			}
 		}
 		
 		Environment.setBooleanValue("asm.forcestackmaps", false);
@@ -125,6 +149,12 @@ public abstract class AbstractGenerateStackmapJarTestCase extends
 			clp.logStatus();
 		}
 		
+	}
+
+	@Override
+	protected void doJarTest() {
+		super.doJarTest();
+		log.info("Really tested "+counter+" classes");
 	}
 	
 	
