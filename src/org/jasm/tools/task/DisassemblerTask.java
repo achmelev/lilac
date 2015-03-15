@@ -11,6 +11,7 @@ import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.environment.Environment;
+import org.jasm.tools.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,33 +19,31 @@ public class DisassemblerTask implements Runnable {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
-	private InputStream source;
-	private String sourceName;
-	private PrintWriter target;
+	private Resource resource;
 	private Properties env;
 	private ITaskCallback callback;
 	
 	private String className = null;
 	private String code;
 	
-	public DisassemblerTask(ITaskCallback callback, String sourceName, InputStream source, Properties env) {
-		this.source = source;
+	public DisassemblerTask(ITaskCallback callback, Resource resource, Properties env) {
 		this.env = env;
 		this.callback = callback;
-		this.sourceName = sourceName;
-		
-		
+		this.resource = resource;
 	}
 
 	@Override
 	public void run() {
+		InputStream source = null;
 		try {
 			
 			if (env != null) {
 				Environment.initFrom(env);
 			}
 			
-			byte [] data = IOUtils.toByteArray(this.source);
+			source = this.resource.createInputStream();
+			
+			byte [] data = IOUtils.toByteArray(source);
 			
 			ByteArrayByteBuffer bbuf = new ByteArrayByteBuffer(data);
 			
@@ -60,21 +59,33 @@ public class DisassemblerTask implements Runnable {
 			printer.printItem(clazz);
 			writer.close();
 			code = sw.toString();
-			source.close();
-			
+			callback.success(this);
 			
 		} catch (Throwable e) {
-			callback.printError(this, "error disassembling "+sourceName+" : "+e.getClass().getName()+"-->"+e.getMessage());
-			log.error("Error disassembling "+sourceName,e);
+			callback.printError(this, "error disassembling "+resource.getName()+" : "+e.getClass().getName()+"-->"+e.getMessage());
+			log.error("Error disassembling "+resource.getName(),e);
 			callback.failure(this);
 		} finally {
 			try {
-				source.close();
+				if (source != null) {
+					source.close();
+				}
 			} catch (IOException e) {
 				//ignore
 			}
+			
 		}
 		
 	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public String getCode() {
+		return code;
+	}
+	
+	
 
 }

@@ -20,8 +20,11 @@ import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.jasm.tools.resource.CompositeResourceCollection;
 import org.jasm.tools.resource.DirResourceCollection;
+import org.jasm.tools.resource.FilterResourceCollection;
 import org.jasm.tools.resource.JarResourceCollection;
 import org.jasm.tools.resource.Resource;
+import org.jasm.tools.resource.ResourceCollection;
+import org.jasm.tools.resource.ResourceFilter;
 import org.jasm.tools.resource.ZipResourceCollection;
 import org.junit.Test;
 
@@ -74,7 +77,7 @@ public class ResourceCollectionTest {
 	}
 	
 	@Test
-	public void testComposite() {
+	public void testCompositeAndFilter() {
 		
 		File jarFile = createJarFile();
 		JarFile root;
@@ -98,10 +101,14 @@ public class ResourceCollectionTest {
 		
 		DirResourceCollection dirCol = new DirResourceCollection(dirRoot);
 		
-		CompositeResourceCollection col = new CompositeResourceCollection();
-		col.add(jarCol);
-		col.add(dirCol);
-		col.add(zipCol);
+		
+		
+		CompositeResourceCollection ccol = new CompositeResourceCollection();
+		ccol.add(jarCol);
+		ccol.add(dirCol);
+		ccol.add(zipCol);
+		
+		ResourceCollection  col = ccol;
 		
 		List<Resource> result = new ArrayList<Resource>();
 		Enumeration<Resource> elems = col.elements();
@@ -111,6 +118,24 @@ public class ResourceCollectionTest {
 		}
 		
 		Assert.assertEquals(36, result.size());
+		
+		col = new FilterResourceCollection(col, new ResourceFilter() {
+			
+			@Override
+			public boolean accept(Resource res) {
+				return res.getName().endsWith(".txt");
+			}
+		});
+		
+		result = new ArrayList<Resource>();
+		elems = col.elements();
+		while (elems.hasMoreElements()) {
+			Resource elem = elems.nextElement();
+			result.add(elem);
+		}
+		
+		Assert.assertEquals(6, result.size());
+		
 		
 		FileUtils.deleteQuietly(jarFile);
 		FileUtils.deleteQuietly(zipFile);
@@ -152,8 +177,8 @@ public class ResourceCollectionTest {
 		
 		createDir(testDir,"dir1");
 		createDir(testDir,"dir2");
-		createFile(testDir, "dir2/file1.bin");
-		createFile(testDir, "dir2/file2.bin");
+		createFile(testDir, "dir2/file1.txt");
+		createFile(testDir, "dir2/file2.txt");
 		createDir(testDir,"dir3");
 		createFile(testDir, "dir3/file3.bin");
 		createDir(testDir,"dir3/dir31");
@@ -188,8 +213,8 @@ public class ResourceCollectionTest {
 	        
 			createJarEntryDir(testDir,"dir1");
 			createJarEntryDir(testDir,"dir2");
-			createJarEntryFile(testDir, "dir2/file1.bin");
-			createJarEntryFile(testDir, "dir2/file2.bin");
+			createJarEntryFile(testDir, "dir2/file1.txt");
+			createJarEntryFile(testDir, "dir2/file2.txt");
 			createJarEntryDir(testDir,"dir3");
 			createJarEntryFile(testDir, "dir3/file3.bin");
 			createJarEntryDir(testDir,"dir3/dir31");
@@ -229,8 +254,8 @@ public class ResourceCollectionTest {
 	        
 			createZipEntryDir(testDir,"dir1");
 			createZipEntryDir(testDir,"dir2");
-			createZipEntryFile(testDir, "dir2/file1.bin");
-			createZipEntryFile(testDir, "dir2/file2.bin");
+			createZipEntryFile(testDir, "dir2/file1.txt");
+			createZipEntryFile(testDir, "dir2/file2.txt");
 			createZipEntryDir(testDir,"dir3");
 			createZipEntryFile(testDir, "dir3/file3.bin");
 			createZipEntryDir(testDir,"dir3/dir31");

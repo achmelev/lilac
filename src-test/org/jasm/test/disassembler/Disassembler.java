@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import org.apache.commons.io.IOUtils;
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.clazz.Clazz;
@@ -21,22 +22,13 @@ public class Disassembler {
 	protected static byte [] getData(String name) {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		InputStream stream = cl.getResourceAsStream(name);
-		ByteArrayOutputStream bo = new ByteArrayOutputStream();
-		byte [] buf = new byte[1024];
+		byte[] data;
 		try {
-			int read = stream.read(buf);
-			while (read>=0) {
-				if (read>0) {
-					bo.write(buf, 0, read);
-				}
-				read = stream.read(buf);
-			}
-			bo.flush();
+			data = IOUtils.toByteArray(stream);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		
-		byte [] data = bo.toByteArray();
 		return data;
 	}
 	
