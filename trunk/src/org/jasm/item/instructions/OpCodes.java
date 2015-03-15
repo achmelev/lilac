@@ -228,7 +228,7 @@ public class OpCodes {
 	
 	private static boolean _initialized = false;
 	
-	private static void initialize() {
+	private static synchronized void initialize() {
 		
 		if (!_initialized) {
 			Class cl = null;
