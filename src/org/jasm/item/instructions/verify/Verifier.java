@@ -345,25 +345,52 @@ public class Verifier implements IClassQuery {
 			changed.add(0);
 			while (!changed.isEmpty()) {
 				if (log.isDebugEnabled()) {
-					log.debug("changed == "+changed);
+					log.debug("changed = "+changed);
 				}
 				currentInstructionIndex = changed.iterator().next();
+				
 				AbstractInstruction instr = parent.get(currentInstructionIndex);
+				if (log.isDebugEnabled()) {
+					log.debug("Handling instruction at "+instr.getIndex()+":"+instr.getOffsetInCode());
+				}
 				changed.remove(currentInstructionIndex);
 				Frame currentFrame = inferencedFrames.get(currentInstructionIndex);
+				if (log.isDebugEnabled()) {
+					log.debug("current frame: "+currentFrame);
+				}
 				Set<Integer> myFollowers = followers.get(currentInstructionIndex);
 				Set<ExceptionHandler> myExceptionHandlers = exceptionHandlers.get(currentInstructionIndex);
 				Frame nextFrame = interpeter.execute(instr, currentFrame.copy());
 				for (int f: myFollowers) {
+					if (log.isDebugEnabled()) {
+						AbstractInstruction fInstr = parent.get(f);
+						log.debug("Handling follower at instruction at "+fInstr.getIndex()+":"+fInstr.getOffsetInCode());
+					}
 					Frame followerFrame = inferencedFrames.get(f);
 					if (followerFrame == null) {
 						changed.add(f);
-						inferencedFrames.put(f, nextFrame.copy());
+						Frame fr = nextFrame.copy();
+						inferencedFrames.put(f, fr);
+						if (log.isDebugEnabled()) {
+							log.debug("Set frame "+fr);
+						}
 					} else if (followerFrame.equals(nextFrame)) {
-						
+						if (log.isDebugEnabled()) {
+							log.debug(followerFrame+" EQUALS "+nextFrame);
+						}
 					} else {
-						changed.add(f);
-						inferencedFrames.put(f, nextFrame.merge(followerFrame));
+						Frame fr = nextFrame.merge(followerFrame);
+						if (log.isDebugEnabled()) {
+							log.debug("Merge "+followerFrame+" with "+nextFrame+"-->"+fr);
+						}
+						if (!fr.equals(followerFrame)) {
+							changed.add(f);
+							inferencedFrames.put(f, fr);
+						} else {
+							if (log.isDebugEnabled()) {
+								log.debug(followerFrame+" EQUALS "+fr);
+							}
+						}
 					}
 				}
 				
@@ -375,17 +402,43 @@ public class Verifier implements IClassQuery {
 					} else {
 						exceptionType = VerificationType.THROWABLE.create(this);
 					}
+					if (log.isDebugEnabled()) {
+						log.debug("Handling exception handler at "+h.getHandlerInstruction().getIndex()+":"+h.getHandlerInstruction().getOffsetInCode());
+					}
 					int index = h.getHandlerInstruction().getIndex();
 					Frame followerFrame = inferencedFrames.get(index);
-					Frame exceptionFrame = currentFrame.copy().throwException(exceptionType);
+					Frame exceptionFrame = nextFrame.copy().throwException(exceptionType);
+					if (log.isDebugEnabled()) {
+						log.debug("Exception frame:  "+exceptionFrame);
+					}
 					if (followerFrame == null) {
 						changed.add(index);
 						inferencedFrames.put(index, exceptionFrame);
+						if (log.isDebugEnabled()) {
+							log.debug("Set Frame to:  "+exceptionFrame);
+						}
 					} else if (followerFrame.equals(exceptionFrame)) {
-						
+						if (log.isDebugEnabled()) {
+							log.debug(followerFrame+" EQUALS "+exceptionFrame);
+						}
 					} else {
-						changed.add(index);
-						inferencedFrames.put(index, exceptionFrame.merge(followerFrame));
+						Frame fr = exceptionFrame.merge(followerFrame);
+						if (log.isDebugEnabled()) {
+							log.debug("Merge "+exceptionFrame+" with "+followerFrame+"-->"+fr);
+						}
+						if (!fr.equals(followerFrame)) {
+							changed.add(index);
+							inferencedFrames.put(index, fr);
+						} else {
+							if (log.isDebugEnabled()) {
+								log.debug(followerFrame+" EQUALS "+fr);
+							}
+						}
+					}
+					if (changed.contains(currentInstructionIndex)) {
+						if (log.isDebugEnabled()) {
+							log.debug("Loop at "+instr.getIndex()+":"+instr.getOffsetInCode());
+						}
 					}
 				}
 			}
