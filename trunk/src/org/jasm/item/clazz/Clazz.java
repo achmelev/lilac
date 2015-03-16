@@ -643,16 +643,18 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	}
 
 	public void setResolver(ClassInfoResolver resolver) {
+		if (resolver == null) {
+			throw new IllegalArgumentException("Resolver: "+resolver);
+		}
 		this.resolver = resolver;
+		if (this.resolver == null) {
+			throw new IllegalArgumentException("Resolver: "+this.resolver);
+		}
 	}
 	
-	private ClassInfoResolver getResolver() {
-		if (this.resolver == null) {
-			//Simple Resolver
-			resolver = new ClassInfoResolver();
-			ClazzClassPathEntry clp = new ClazzClassPathEntry();
-			clp.add(this);
-			resolver.add(clp);
+	public ClassInfoResolver getResolver() {
+		if (resolver == null) {
+			throw new IllegalStateException("Resolver not set");
 		}
 		return resolver;
 	}
@@ -672,7 +674,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 				result =  getResolver().resolve(this, className, checkAccess);
 			}
 			if (result == null) {
-				emitError(symbol, "class "+className+" not found");
+				emitResolveError(caller, symbol, className, "class "+className+" not found");
 			}
 			return result;
 		} catch (ResolveIllegalAccessException e) {

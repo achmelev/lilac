@@ -89,8 +89,11 @@ public class AssemblerTask implements Task, IParserErrorListener {
 	}
 	
 	private void doVerify() {
-		try {			
-			clazz.setResolver(resolver);
+		try {		
+			if (clazz.getResolver() == null) {
+				throw new IllegalStateException("RESOLVER NOT SET");
+			}
+			
 			clazz.verify();
 			if (parser.getErrorCounter()>0) {
 				parser.flushErrors();
