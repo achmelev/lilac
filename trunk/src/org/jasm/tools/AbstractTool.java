@@ -140,7 +140,7 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 		all.add(simpleFiles);
 		for (String inputName: paths) {
 			File input = new File(inputName);
-			if (input.exists()) {
+			if (input.exists() && acceptInput(input)) {
 				if (input.isFile()) {
 					if (input.getName().endsWith(".jar")) {
 						try {
@@ -267,5 +267,7 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 	protected abstract boolean prepare();
 	protected abstract int getNumberOfWorkUnits();
 	protected abstract boolean doWorkUnit(int number);
+	
+	protected abstract boolean acceptInput(File f);
 
 }
