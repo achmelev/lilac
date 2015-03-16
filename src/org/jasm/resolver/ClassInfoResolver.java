@@ -14,6 +14,8 @@ import org.jasm.type.descriptor.TypeDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sun.org.apache.xml.internal.serialize.XHTMLSerializer;
+
 public class ClassInfoResolver  {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -22,11 +24,24 @@ public class ClassInfoResolver  {
 	
 	private Map<String, AbstractInfo> cache = new HashMap<String, AbstractInfo>();
 	private List<String> notFounds = new ArrayList<String>();
-	private Map<String, Boolean> accessCache = new HashMap<String, Boolean>();
 	private List<String> polymorphicNames = null;
 	
 	
-	public ExternalClassInfo resolve(Clazz clazz, IErrorEmitter caller, SymbolReference symbol, String className, boolean checkAccess)  {
+	public ExternalClassInfo resolve(Clazz clazz, String className, boolean checkAccess)  {
+		if (notFounds.contains(className)) {
+			return null;
+		}
+		
+		if (cache.containsKey(className)) {
+			AbstractInfo info = cache.get(className);
+			return (ExternalClassInfo)info;
+			
+		}
+		
+		return doResolve(clazz,  className, checkAccess);
+	}
+	
+	public synchronized ExternalClassInfo doResolve(Clazz clazz,  String className, boolean checkAccess)  {
 		
 		if (notFounds.contains(className)) {
 			return null;
@@ -41,14 +56,14 @@ public class ClassInfoResolver  {
 		ExternalClassInfo result = null;
 		
 		if (className.startsWith("[")) {
-			result =  resolveArray(clazz, caller, symbol, className);
+			result =  resolveArray(clazz,  className);
 			if (result == null) {
 				notFounds.add(className);
 			} else {
 				cache.put(className, result);
 			}
 		} else {
-			result =  resolveClass(clazz, caller, symbol, className);
+			result =  resolveClass(clazz, className);
 			if (result == null) {
 				notFounds.add(className);
 			} else {
@@ -63,8 +78,7 @@ public class ClassInfoResolver  {
 					if (clazz.getPackage().equals(result.getPackage())) {
 						
 					} else {
-						caller.emitError(symbol, "tried illegal access for "+result.name);
-						result = null;
+						throw new ResolveIllegalAccessException();
 					}
 				}
 				
@@ -74,21 +88,21 @@ public class ClassInfoResolver  {
 		
 	}
 	
-	private ExternalClassInfo resolveArray(Clazz clazz, IErrorEmitter caller, SymbolReference symbol, String className) {
+	private ExternalClassInfo resolveArray(Clazz clazz,  String className) {
 		ExternalClassInfo result = new ExternalClassInfo();
 		TypeDescriptor desc = new TypeDescriptor(className);
 		result.descriptor = desc;
 		result.superName = "java/lang/Object";
 		result.isArray = true;
 		result.name = className;
-		ExternalClassInfo superInfo = resolve(clazz, caller, symbol, result.superName, false);
+		ExternalClassInfo superInfo = resolve(clazz,  result.superName, false);
 		if (superInfo != null) {
 			result.superClass = superInfo;
 			if (desc.getComponentType().isArray() || desc.getComponentType().isObject()) {
 				if (desc.getComponentType().isArray()) {
-					result.componentClass = resolve(clazz, caller, symbol, desc.getComponentType().getValue(), true);
+					result.componentClass = resolve(clazz,  desc.getComponentType().getValue(), true);
 				} else {
-					result.componentClass = resolve(clazz, caller, symbol, desc.getComponentType().getClassName(), true);
+					result.componentClass = resolve(clazz,  desc.getComponentType().getClassName(), true);
 				}
 				if (result.componentClass != null) {
 					return result;
@@ -104,15 +118,14 @@ public class ClassInfoResolver  {
 		
 	}
 	
-	private ExternalClassInfo resolveClass(Clazz clazz, IErrorEmitter caller, SymbolReference symbol, String className) {
+	private ExternalClassInfo resolveClass(Clazz clazz,  String className) {
 		ExternalClassInfo result = findClass(className);
 		if (result == null) {
-			caller.emitError(symbol, "unknown class "+className);
 			return null;
 		} else {
 			result.descriptor = new TypeDescriptor("L"+className+";");
 			if (result.superName != null) {
-				ExternalClassInfo superInfo = resolve(clazz, caller, symbol, result.superName, false);
+				ExternalClassInfo superInfo = resolve(clazz,  result.superName, false);
 				if (superInfo != null) {
 					result.superClass = superInfo;
 				} else {
@@ -120,7 +133,7 @@ public class ClassInfoResolver  {
 				}
 			}
 			for (String name: result.interfacesNames) {
-				ExternalClassInfo intfInfo = resolve(clazz, caller, symbol, name, false);
+				ExternalClassInfo intfInfo = resolve(clazz,  name, false);
 				if (intfInfo != null) {
 					result.interfaces.add(intfInfo);
 				} else {
@@ -155,7 +168,17 @@ public class ClassInfoResolver  {
 		return null;
 	}
 	
-	private AbstractInfo resolveMember(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className,String name,  String descriptor,boolean checkAccess, MemberFindAndAccess mfa, String label) {
+	private AbstractInfo resolveMember(Clazz clazz, String className,String name,  String descriptor,boolean checkAccess, MemberFindAndAccess mfa, String label) {
+		String memberKey = className+"."+name+"@"+descriptor;
+		
+		if (notFounds.contains(memberKey)) {
+			return null;
+		}
+		
+		return doResolveMember(clazz,  className,name, descriptor, checkAccess, mfa, label);
+	}
+	
+	private AbstractInfo doResolveMember(Clazz clazz, String className,String name,  String descriptor,boolean checkAccess, MemberFindAndAccess mfa, String label) {
 		
 		String memberKey = className+"."+name+"@"+descriptor;
 		
@@ -163,13 +186,13 @@ public class ClassInfoResolver  {
 			return null;
 		}
 		
-		ExternalClassInfo cli = resolve(clazz, caller, symbol, className, checkAccess);
+		ExternalClassInfo cli = resolve(clazz,  className, checkAccess);
 		AbstractInfo result = null;
 		
 		if (cli != null) {
 			result = mfa.lookupInClass(cli, name, descriptor);
 			if (result == null) {
-				result = mfa.findMember(caller, symbol,cli, name, descriptor);
+				result = mfa.findMember(cli, name, descriptor);
 				if (result == null) {
 					notFounds.add(memberKey);
 				} else {
@@ -179,37 +202,33 @@ public class ClassInfoResolver  {
 					if (checkAccess) {
 						//String accessKey = clazz.getThisClass().getClassName()+"->"+memberKey;
 						
-						if (mfa.checkAccess(caller, symbol,clazz, cli,result)) {
+						if (mfa.checkAccess(clazz, cli,result)) {
 							
 						} else {
-							caller.emitError(symbol, "lllegal access for "+memberKey);
-							result = null;
+							throw new ResolveIllegalAccessException();
 						}
 						
 					}
-				} else {
-					caller.emitError(symbol, "unknown "+label+" "+memberKey);
-				}
+				} 
 			}
 			
 		} else {
 			notFounds.add(memberKey);
-			caller.emitError(symbol, "unknown "+label+" "+memberKey);
 		}
 		return result;
 	}
 	
-	public FieldInfo resolveField(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className,String name,  String descriptor,boolean checkAccess)  {
+	public FieldInfo resolveField(Clazz clazz,String className,String name,  String descriptor,boolean checkAccess)  {
 		MemberFindAndAccess mfa = new MemberFindAndAccess() {
 			
 			@Override
-			public AbstractInfo findMember(AbstractByteCodeItem caller, SymbolReference symbol, ExternalClassInfo cli, String name,
+			public AbstractInfo findMember(ExternalClassInfo cli, String name,
 					String descriptor) {
 				return findField(cli, name, descriptor);
 			}
 			
 			@Override
-			public boolean checkAccess(AbstractByteCodeItem caller, SymbolReference symbol, Clazz clazz, ExternalClassInfo requestClass,
+			public boolean checkAccess(Clazz clazz, ExternalClassInfo requestClass,
 					AbstractInfo member) {
 				return checkMemberAccess(clazz, requestClass, (FieldInfo)member);
 			}
@@ -229,21 +248,21 @@ public class ClassInfoResolver  {
 			
 		};
 		
-		return (FieldInfo)resolveMember(clazz, caller, symbol, className, name, descriptor, checkAccess, mfa, "field");
+		return (FieldInfo)resolveMember(clazz, className, name, descriptor, checkAccess, mfa, "field");
 		
 	}
 	
-	public MethodInfo resolveMethod(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className,String name,  String descriptor,boolean checkAccess)  {
+	public MethodInfo resolveMethod(Clazz clazz,  String className,String name,  String descriptor,boolean checkAccess)  {
 		MemberFindAndAccess mfa = new MemberFindAndAccess() {
 			
 			@Override
-			public AbstractInfo findMember(AbstractByteCodeItem caller, SymbolReference symbol, ExternalClassInfo cli, String name,
+			public AbstractInfo findMember(ExternalClassInfo cli, String name,
 					String descriptor) {
-				return findMethod(clazz, caller, symbol,cli, name, descriptor);
+				return findMethod(clazz, cli, name, descriptor);
 			}
 			
 			@Override
-			public boolean checkAccess(AbstractByteCodeItem caller, SymbolReference symbol, Clazz clazz, ExternalClassInfo requestClass,
+			public boolean checkAccess(Clazz clazz, ExternalClassInfo requestClass,
 					AbstractInfo member) {
 				return checkMemberAccess(clazz, requestClass, (MethodInfo)member);
 			}
@@ -264,21 +283,21 @@ public class ClassInfoResolver  {
 			
 		};
 		
-		return (MethodInfo)resolveMember(clazz, caller, symbol, className, name, descriptor, checkAccess, mfa, "method");
+		return (MethodInfo)resolveMember(clazz,  className, name, descriptor, checkAccess, mfa, "method");
 		
 	}
 	
-	public MethodInfo resolveInterfaceMethod(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, String className,String name,  String descriptor,boolean checkAccess)  {
+	public MethodInfo resolveInterfaceMethod(Clazz clazz,  String className,String name,  String descriptor,boolean checkAccess)  {
 		MemberFindAndAccess mfa = new MemberFindAndAccess() {
 			
 			@Override
-			public AbstractInfo findMember(AbstractByteCodeItem caller, SymbolReference symbol, ExternalClassInfo cli, String name,
+			public AbstractInfo findMember(ExternalClassInfo cli, String name,
 					String descriptor) {
-				return findInterfaceMethod(caller, symbol,cli, name, descriptor);
+				return findInterfaceMethod(cli, name, descriptor);
 			}
 			
 			@Override
-			public boolean checkAccess(AbstractByteCodeItem caller, SymbolReference symbol, Clazz clazz, ExternalClassInfo requestClass,
+			public boolean checkAccess( Clazz clazz, ExternalClassInfo requestClass,
 					AbstractInfo member) {
 				return checkMemberAccess(clazz, requestClass, (MethodInfo)member);
 			}
@@ -299,7 +318,7 @@ public class ClassInfoResolver  {
 			
 		};
 		
-		return (MethodInfo)resolveMember(clazz, caller, symbol, className, name, descriptor, checkAccess,  mfa, "interface method");
+		return (MethodInfo)resolveMember(clazz, className, name, descriptor, checkAccess,  mfa, "interface method");
 		
 	}
 	
@@ -361,15 +380,14 @@ public class ClassInfoResolver  {
 		return false;
 	}
 	
-	private MethodInfo findMethod(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, ExternalClassInfo cli, String name, String descriptor) {
+	private MethodInfo findMethod(Clazz clazz,  ExternalClassInfo cli, String name, String descriptor) {
 		
 		if (cli.getModifier() != null && cli.getModifier().isInterface()) {
-			caller.emitError(symbol, cli.getName()+" is an interface");
-			return null;
+			throw new ResolveIsInterfaceException();
 		}
 		
 				
-		MethodInfo info = findMethodInClassAndSuperClasses(clazz, caller, symbol, cli, name, descriptor);
+		MethodInfo info = findMethodInClassAndSuperClasses(clazz,  cli, name, descriptor);
 		if (info != null) {
 			return info;
 		} else {
@@ -377,11 +395,10 @@ public class ClassInfoResolver  {
 		}
 	}
 	
-	private MethodInfo findInterfaceMethod(AbstractByteCodeItem caller, SymbolReference symbol, ExternalClassInfo cli, String name, String descriptor) {
+	private MethodInfo findInterfaceMethod(ExternalClassInfo cli, String name, String descriptor) {
 		
 		if (!(cli.getModifier() != null && cli.getModifier().isInterface())) {
-			caller.emitError(symbol, cli.getName()+" is an interface");
-			return null;
+			throw new ResolveIsntInterfaceException();
 		}
 		
 		ExternalClassInfo object = cli.getSuperClass();
@@ -436,10 +453,10 @@ public class ClassInfoResolver  {
 		
 	}
 	
-	private MethodInfo findMethodInClassAndSuperClasses(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, ExternalClassInfo cli, String name, String descriptor) {
+	private MethodInfo findMethodInClassAndSuperClasses(Clazz clazz,  ExternalClassInfo cli, String name, String descriptor) {
 		
 		
-		if (isPolymorphic(clazz, caller, symbol, cli, name, descriptor) && cli.getMethodByName(name) != null && cli.getMethodByName(name).size() == 1) {
+		if (isPolymorphic(clazz,cli, name, descriptor) && cli.getMethodByName(name) != null && cli.getMethodByName(name).size() == 1) {
 			return cli.getMethodByName(name).get(0);
 		}
 		
@@ -449,7 +466,7 @@ public class ClassInfoResolver  {
 			return info;
 		} else {
 			if (cli.getSuperClass() != null) {
-			    return findMethodInClassAndSuperClasses(clazz, caller, symbol, cli.getSuperClass(), name, descriptor);
+			    return findMethodInClassAndSuperClasses(clazz,  cli.getSuperClass(), name, descriptor);
 			} else {
 				return null;
 			}
@@ -457,11 +474,10 @@ public class ClassInfoResolver  {
 		}
 	}
 	
-	private boolean isPolymorphic(Clazz clazz, AbstractByteCodeItem caller, SymbolReference symbol, ExternalClassInfo cli, String name, String descriptor) {
-		
+	private synchronized void initPolymorphic(Clazz clazz, ExternalClassInfo cli, String name, String descriptor) {
 		if (polymorphicNames == null) {
 			polymorphicNames = new ArrayList<String>();
-			ExternalClassInfo mhandle = resolve(clazz, caller, symbol, "java/lang/invoke/MethodHandle", false);
+			ExternalClassInfo mhandle = resolve(clazz,  "java/lang/invoke/MethodHandle", false);
 			if (mhandle != null) {
 				for (MethodInfo info: mhandle.getMethods()) {
 					MethodDescriptor desc = info.getDescriptor();
@@ -475,7 +491,12 @@ public class ClassInfoResolver  {
 				}
 			}
 		}	
-		
+	}
+	
+	private boolean isPolymorphic(Clazz clazz, ExternalClassInfo cli, String name, String descriptor) {
+		if (polymorphicNames == null) {
+			initPolymorphic(clazz,cli,name, descriptor);
+		}	
 		return polymorphicNames.contains(name);
 	}
 	
@@ -489,13 +510,13 @@ public class ClassInfoResolver  {
 	}
 	
 	public void logStatus() {
-		log.info("Cache size: "+cache.size()+";access cache size: "+accessCache.size());
+		log.info("Cache size: "+cache.size());
 	}
 }
 
 interface MemberFindAndAccess {
-	AbstractInfo findMember(AbstractByteCodeItem caller, SymbolReference symbol, ExternalClassInfo cli, String name, String descriptor);
+	AbstractInfo findMember(ExternalClassInfo cli, String name, String descriptor);
 	AbstractInfo lookupInClass(ExternalClassInfo cli, String name, String desc);
 	void registerVirtualMember(ExternalClassInfo cli, AbstractInfo info);
-	boolean checkAccess(AbstractByteCodeItem caller, SymbolReference symbol, Clazz clazz, ExternalClassInfo requestClass, AbstractInfo member);
+	boolean checkAccess(Clazz clazz, ExternalClassInfo requestClass, AbstractInfo member);
 }

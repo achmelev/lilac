@@ -11,73 +11,54 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.jar.JarFile;
-import java.util.zip.ZipFile;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.GnuParser;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.environment.Environment;
+import org.jasm.resolver.ClassInfoResolver;
+import org.jasm.resolver.ClazzClassPathEntry;
 import org.jasm.tools.print.ConsolePrinter;
 import org.jasm.tools.print.IPrinter;
-import org.jasm.tools.resource.CompositeResourceCollection;
-import org.jasm.tools.resource.DirResourceCollection;
-import org.jasm.tools.resource.FileResource;
 import org.jasm.tools.resource.FilterResourceCollection;
-import org.jasm.tools.resource.JarResourceCollection;
-import org.jasm.tools.resource.ListResourceCollection;
 import org.jasm.tools.resource.Resource;
 import org.jasm.tools.resource.ResourceCollection;
 import org.jasm.tools.resource.ResourceFilter;
-import org.jasm.tools.resource.ZipResourceCollection;
-import org.jasm.tools.task.DisassemblerTask;
-import org.jasm.tools.task.ITaskCallback;
+import org.jasm.tools.task.AssemblerTask;
 import org.jasm.tools.task.Task;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class Disassembler extends AbstractTool implements ITaskCallback{
+public class Assembler extends AbstractTool {
 	
-	
+	private int currentStage = -1;
 	private ResourceCollection inputs;
 	private File output;
 	
-	public Disassembler(IPrinter printer, String[] args) {
+	private List<AssemblerTask> survivors = new ArrayList<AssemblerTask>();
+
+
+	public Assembler(IPrinter printer, String[] args) {
 		super(printer, args);
 	}
-		
-	private void disassemble() {
-		ResourceCollection col = inputs;
-		Enumeration<Resource> resources = col.elements();
-		ExecutorService pool = Executors.newFixedThreadPool(Environment.getIntValue("jdasm.threadpoolsize"));
-		while (resources.hasMoreElements()) {
-			Resource resource = resources.nextElement();
-			pool.execute(new DisassemblerTask(this, resource, Environment.getContent()));
-		}
-		pool.shutdown();
-		try {
-			pool.awaitTermination(2, TimeUnit.DAYS);
-		} catch (InterruptedException e) {
-			//ignore
-		}
-	}
-	
-	
 
 	@Override
 	public void failure(Task source) {
+		
 		
 	}
 
 	@Override
 	public synchronized void success(Task source) {
-		DisassemblerTask task = (DisassemblerTask)source;
-		File target = new File(output,task.getClassName()+".jasm");
+		if (currentStage == 0) {
+			survivors.add((AssemblerTask)source);
+		} else {
+			write(source);
+		}
+	}
+	
+	private void write(Task source) {
+		AssemblerTask task = (AssemblerTask)source;
+		File target = new File(output,task.getClazz().getThisClass().getClassName()+".class");
 		File parent = target.getParentFile();
 		if (!parent.exists()) {
 			if (!parent.mkdirs()) {
@@ -86,16 +67,21 @@ public class Disassembler extends AbstractTool implements ITaskCallback{
 		}
 		if (parent.exists()) {
 			try {
-				PrintWriter pw = new PrintWriter(target);
-				pw.print(task.getCode());
-				pw.close();
+				FileOutputStream out = new FileOutputStream(target);
+				byte [] data = new byte[task.getClazz().getLength()];
+				ByteArrayByteBuffer bbuf = new ByteArrayByteBuffer(data);
+				task.getClazz().write(bbuf, 0);
+				out.write(data);
+				out.close();
 			} catch (FileNotFoundException e) {
+				printer.printError("couldn't write "+target.getAbsolutePath());
+			} catch (IOException e) {
 				printer.printError("couldn't write "+target.getAbsolutePath());
 			}
 			
 		}
 	}
-	
+
 	@Override
 	protected List<Option> createSpecificOptions() {
 		List<Option> result = new ArrayList<Option>();
@@ -126,21 +112,23 @@ public class Disassembler extends AbstractTool implements ITaskCallback{
 			
 			@Override
 			public boolean accept(Resource res) {
-				return res.getName().endsWith(".class");
+				return res.getName().endsWith(".jasm");
 			}
 		});
 		output = createOutputDirectory("output");
+		
+		
 		return output != null;
 	}
 
 	@Override
 	protected String getScriptName() {
-		return "jdasm";
+		return "jasm";
 	}
 
 	@Override
 	protected String getConfPrefix() {
-		return "jdasm";
+		return "jasm";
 	}
 
 	@Override
@@ -150,25 +138,71 @@ public class Disassembler extends AbstractTool implements ITaskCallback{
 
 	@Override
 	protected int getNumberOfWorkUnits() {
-		return 1;
+		return 2;
 	}
 
 	@Override
 	protected boolean doWorkUnit(int number) {
-		disassemble();
-		return true;
+		currentStage = number;
+		if (number == 0) {
+			assemble();
+			return true;
+		} else if (number == 1) {
+			verifyAndWrite();
+			return true;
+		} else {
+			throw new IllegalArgumentException(number+"");
+		}
+		
 	}
-
-
+	
+	private void assemble() {
+		ResourceCollection col = inputs;
+		Enumeration<Resource> resources = col.elements();
+		ExecutorService pool = Executors.newFixedThreadPool(Environment.getIntValue("jasm.threadpoolsize"));
+		while (resources.hasMoreElements()) {
+			Resource resource = resources.nextElement();
+			AssemblerTask task = new AssemblerTask(this, resource, Environment.getContent());
+			task.setStage(0);
+			pool.execute(task);
+		}
+		pool.shutdown();
+		try {
+			pool.awaitTermination(2, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			//ignore
+		}
+	}
+	
+	private void verifyAndWrite() {
+		
+		ClassInfoResolver resolver = new ClassInfoResolver();
+		for (AssemblerTask task: survivors) {
+			resolver.add(new ClazzClassPathEntry(task.getClazz()));
+		}
+		
+		ExecutorService pool = Executors.newFixedThreadPool(Environment.getIntValue("jasm.threadpoolsize"));
+		for (AssemblerTask task: survivors) {
+			task.setStage(1);
+			task.setResolver(resolver);
+			pool.execute(task);
+		}
+		pool.shutdown();
+		try {
+			pool.awaitTermination(2, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			//ignore
+		}
+	}
+	
+	
 	@Override
 	protected boolean acceptInput(File f) {
-		return (f.isFile() && (f.getName().endsWith(".class") 
-			   || f.getName().endsWith(".jar")
-			   || f.getName().endsWith(".zip"))) || f.isDirectory();
+		return (f.isFile() && f.getName().endsWith(".jasm")) || f.isDirectory();
 	}
 	
 	public static void main(String [] args) {
-		new Disassembler(new ConsolePrinter(), args).run();
+		new Assembler(new ConsolePrinter(), args).run();
 		System.exit(0);
 
 	}

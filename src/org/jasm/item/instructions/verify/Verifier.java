@@ -963,7 +963,7 @@ public class Verifier implements IClassQuery {
 	}
 	
 	private boolean generateStackmap() {
-		return method.isGenerateStackMap() || Environment.getBooleanValue("asm.forcestackmaps");
+		return method.isGenerateStackMap() || Environment.getBooleanValue("jasm.forcestackmaps");
 	}
 	
 }

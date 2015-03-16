@@ -23,12 +23,17 @@ import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.AssemblerParser;
+import org.jasm.parser.SourceLocation;
+import org.jasm.parser.literals.AbstractLiteral;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
 import org.jasm.resolver.ClassInfoResolver;
 import org.jasm.resolver.ClazzClassPathEntry;
 import org.jasm.resolver.ExternalClassInfo;
+import org.jasm.resolver.ResolveIllegalAccessException;
+import org.jasm.resolver.ResolveIsInterfaceException;
+import org.jasm.resolver.ResolveIsntInterfaceException;
 import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
 import org.slf4j.Logger;
@@ -66,6 +71,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	private Map<String, Integer> interfaceIndexesLabelTable =  new HashMap<String, Integer>();
 	
 	private ClassInfoResolver resolver;
+	private ClassInfoResolver meResolver;
 	private org.jasm.resolver.ExternalClassInfo me;
 	
 	public Clazz() {
@@ -270,6 +276,9 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 					verifyInterface(interfaceSymbols.get(i), interfaces.get(i));
 				}
 				me = ExternalClassInfo.createFromClass(this);
+				ClazzClassPathEntry entry = new ClazzClassPathEntry();
+				meResolver = new ClassInfoResolver();
+				meResolver.add(entry);
 				resolvedMyself = getParser().getErrorCounter() == 0;
 			}
 			return resolvedMyself;
@@ -648,8 +657,27 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	}
 	
 	
+	
+	
 	public ExternalClassInfo checkAndLoadClassInfo(IErrorEmitter caller, SymbolReference symbol, String className, boolean checkAccess) {
-		return getResolver().resolve(this, caller, symbol, className, checkAccess);
+		
+		ExternalClassInfo result = null;
+		try {
+			if (meResolver != null) {
+				result = meResolver.resolve(this,  className, checkAccess);
+			}
+			
+			if (result == null) {
+				result =  getResolver().resolve(this, className, checkAccess);
+			}
+			if (result == null) {
+				emitError(symbol, "class "+className+" not found");
+			}
+			return result;
+		} catch (ResolveIllegalAccessException e) {
+			emitResolveError(caller, symbol, className, "class "+className+" is not accessible");
+		}
+		return null;
 	}
 	
 	public void checkAndLoadTypeDescriptor(AbstractByteCodeItem caller, SymbolReference symbol, TypeDescriptor desc) {
@@ -671,29 +699,84 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	
 	
 	public org.jasm.resolver.MethodInfo checkAndLoadMethodInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String methodName, String desc, boolean checkAccess) {
-		return getResolver().resolveMethod(this, caller, symbol, className, methodName, desc, checkAccess);
+		org.jasm.resolver.MethodInfo result = null;
+		String methodKey = className+"."+methodName+"@"+desc; 
+		try {
+			if (meResolver != null) {
+				result = meResolver.resolveMethod(this,  className, methodName, desc, checkAccess);
+			}
+			
+			if (result == null) {
+				result =  getResolver().resolveMethod(this, className, methodName, desc, checkAccess);
+			}
+			if (result == null) {
+				emitResolveError(caller, symbol, methodKey, "method "+methodKey+" not found");
+			}
+			return result;
+		} catch (ResolveIllegalAccessException e) {
+			emitResolveError(caller, symbol, methodKey, "method "+methodKey+" is not accessible");
+		} catch (ResolveIsInterfaceException e) {
+			emitResolveError(caller, symbol, methodKey, "class "+className+" is an interface");
+		}
+		return null;
 	}
 	
 	public org.jasm.resolver.MethodInfo checkAndLoadInterfaceMethodInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String methodName, String desc, boolean checkAccess) {
-		return getResolver().resolveInterfaceMethod(this, caller, symbol, className, methodName, desc, checkAccess);
+		org.jasm.resolver.MethodInfo result = null;
+		String methodKey = className+"."+methodName+"@"+desc; 
+		try {
+			if (meResolver != null) {
+				result = meResolver.resolveInterfaceMethod(this,  className, methodName, desc, checkAccess);
+			}
+			
+			if (result == null) {
+				result =  getResolver().resolveInterfaceMethod(this, className, methodName, desc, checkAccess);
+			}
+			if (result == null) {
+				emitResolveError(caller, symbol, methodKey, "method "+methodKey+" not found");
+			}
+			return result;
+		} catch (ResolveIllegalAccessException e) {
+			emitResolveError(caller, symbol, methodKey, "method "+methodKey+" is not accessible");
+		} catch (ResolveIsntInterfaceException e) {
+			emitResolveError(caller, symbol, methodKey, "class "+className+" is not an interface");
+		}
+		return null;
 	}
 	
 	public org.jasm.resolver.FieldInfo checkAndLoadFieldInfo(AbstractByteCodeItem caller, SymbolReference symbol, String className, String fieldName, String desc, boolean checkAccess) {
-		return getResolver().resolveField(this, caller, symbol, className, fieldName, desc, checkAccess);
+		org.jasm.resolver.FieldInfo result = null;
+		String fieldKey = className+"."+fieldName+"@"+desc; 
+		try {
+			if (meResolver != null) {
+				result = meResolver.resolveField(this,  className, fieldName, desc, checkAccess);
+			}
+			
+			if (result == null) {
+				result =  getResolver().resolveField(this, className, fieldName, desc, checkAccess);
+			}
+			if (result == null) {
+				emitResolveError(caller, symbol, fieldKey, "field "+fieldKey+" not found");
+			}
+			return result;
+		} catch (ResolveIllegalAccessException e) {
+			emitResolveError(caller, symbol, fieldKey, "field "+fieldKey+" is not accessible");
+		} 
+		return null;
 	}
 	
 	
+	private List<String> notResolved = new ArrayList<String>();
 	
+	private void emitResolveError(IErrorEmitter caller, SymbolReference symbol, String name, String message) {
+		if (!notResolved.contains(name)) {
+			caller.emitError(symbol, message);
+			notResolved.add(name);
+		}
+	}
 
 	public org.jasm.resolver.ExternalClassInfo getMe() {
 		return me;
 	}
-
-	public void setMe(org.jasm.resolver.ExternalClassInfo me) {
-		this.me = me;
-	}
-	
-	
-	
 
 }
