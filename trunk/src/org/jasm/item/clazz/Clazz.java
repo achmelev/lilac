@@ -31,6 +31,7 @@ import org.jasm.parser.literals.VersionLiteral;
 import org.jasm.resolver.ClassInfoResolver;
 import org.jasm.resolver.ClazzClassPathEntry;
 import org.jasm.resolver.ExternalClassInfo;
+import org.jasm.resolver.ResolveClassNotFoundException;
 import org.jasm.resolver.ResolveIllegalAccessException;
 import org.jasm.resolver.ResolveIsInterfaceException;
 import org.jasm.resolver.ResolveIsntInterfaceException;
@@ -703,7 +704,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		String methodKey = className+"."+methodName+"@"+desc; 
 		try {
 			if (meResolver != null) {
-				result = meResolver.resolveMethod(this,  className, methodName, desc, checkAccess);
+				try {
+					result = meResolver.resolveMethod(this,  className, methodName, desc, checkAccess);
+				} catch (ResolveClassNotFoundException e) {
+					//ignore
+				}
 			}
 			
 			if (result == null) {
@@ -717,6 +722,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			emitResolveError(caller, symbol, methodKey, "method "+methodKey+" is not accessible");
 		} catch (ResolveIsInterfaceException e) {
 			emitResolveError(caller, symbol, methodKey, "class "+className+" is an interface");
+		} catch (ResolveClassNotFoundException e) {
+			emitResolveError(caller, symbol, className, "class "+className+" not found");
 		}
 		return null;
 	}
@@ -726,7 +733,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		String methodKey = className+"."+methodName+"@"+desc; 
 		try {
 			if (meResolver != null) {
-				result = meResolver.resolveInterfaceMethod(this,  className, methodName, desc, checkAccess);
+				try {
+					result = meResolver.resolveInterfaceMethod(this,  className, methodName, desc, checkAccess);
+				} catch (ResolveClassNotFoundException e) {
+					//ignore
+				}
 			}
 			
 			if (result == null) {
@@ -740,6 +751,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			emitResolveError(caller, symbol, methodKey, "method "+methodKey+" is not accessible");
 		} catch (ResolveIsntInterfaceException e) {
 			emitResolveError(caller, symbol, methodKey, "class "+className+" is not an interface");
+		} catch (ResolveClassNotFoundException e) {
+			emitResolveError(caller, symbol, className, "class "+className+" not found");
 		}
 		return null;
 	}
@@ -749,7 +762,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		String fieldKey = className+"."+fieldName+"@"+desc; 
 		try {
 			if (meResolver != null) {
-				result = meResolver.resolveField(this,  className, fieldName, desc, checkAccess);
+				try {
+					result = meResolver.resolveField(this,  className, fieldName, desc, checkAccess);
+				} catch (ResolveClassNotFoundException e) {
+					//ignore
+				}
 			}
 			
 			if (result == null) {
@@ -761,6 +778,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			return result;
 		} catch (ResolveIllegalAccessException e) {
 			emitResolveError(caller, symbol, fieldKey, "field "+fieldKey+" is not accessible");
+		} catch (ResolveClassNotFoundException e) {
+			emitResolveError(caller, symbol, className, "class "+className+" not found");
 		} 
 		return null;
 	}

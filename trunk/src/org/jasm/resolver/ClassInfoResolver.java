@@ -172,6 +172,9 @@ public class ClassInfoResolver  {
 		String memberKey = className+"."+name+"@"+descriptor;
 		
 		if (notFounds.contains(memberKey)) {
+			if (notFounds.contains(className)) {
+				throw new ResolveClassNotFoundException();
+			}
 			return null;
 		}
 		
@@ -183,6 +186,9 @@ public class ClassInfoResolver  {
 		String memberKey = className+"."+name+"@"+descriptor;
 		
 		if (notFounds.contains(memberKey)) {
+			if (notFounds.contains(className)) {
+				throw new ResolveClassNotFoundException();
+			}
 			return null;
 		}
 		
@@ -214,6 +220,7 @@ public class ClassInfoResolver  {
 			
 		} else {
 			notFounds.add(memberKey);
+			throw new ResolveClassNotFoundException();
 		}
 		return result;
 	}
