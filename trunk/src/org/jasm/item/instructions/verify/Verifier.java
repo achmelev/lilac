@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.jasm.environment.Environment;
 import org.jasm.item.IErrorEmitter;
 import org.jasm.item.attribute.AbstractStackmapFrame;
 import org.jasm.item.attribute.AbstractStackmapVariableinfo;
@@ -36,7 +37,6 @@ import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.IAttributesContainer;
 import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.ClassInfo;
-import org.jasm.item.environment.Environment;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.AbstractSwitchInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;

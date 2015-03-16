@@ -1,4 +1,4 @@
-package org.jasm.item.environment;
+package org.jasm.environment;
 
 import java.io.InputStream;
 import java.util.ArrayList;
