@@ -15,7 +15,7 @@ import org.jasm.tools.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DisassemblerTask implements Runnable {
+public class DisassemblerTask implements Task {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
@@ -84,6 +84,10 @@ public class DisassemblerTask implements Runnable {
 
 	public String getCode() {
 		return code;
+	}
+
+	public Resource getResource() {
+		return resource;
 	}
 	
 	
