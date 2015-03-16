@@ -78,7 +78,7 @@ public class Environment {
 	private static Properties createDefaultProperties() {
 		Properties result = new Properties();
 		try {
-			InputStream inp = Thread.currentThread().getContextClassLoader().getResourceAsStream("org/jasm/item/environment/default.conf");
+			InputStream inp = Thread.currentThread().getContextClassLoader().getResourceAsStream("org/jasm/environment/default.conf");
 			result.load(inp);
 		} catch (Exception e) {
 			throw new RuntimeException("Error loading default environment",e);
