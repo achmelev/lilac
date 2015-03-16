@@ -190,6 +190,7 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 		String resourceName = this.getClass().getName().replace('.', '/')+".class";
 		URL url = getClass().getClassLoader().getResource(resourceName);
 		String path = url.getPath();
+		System.err.println(path);
 		path = path.substring(0,path.length()-resourceName.length());
 		if (path.endsWith("/bin/")) {
 			path = path.substring(0,path.length()-"/bin/".length());
