@@ -4,13 +4,13 @@ public class ConsolePrinter implements IPrinter {
 
 	@Override
 	public void printError(String message) {
-		System.err.println("ERROR: "+message);
+		System.out.println("error: "+message);
 		
 	}
 
 	@Override
 	public void printWarning(String message) {
-		System.out.println("WARNING: "+message);
+		System.out.println("warning: "+message);
 		
 	}
 

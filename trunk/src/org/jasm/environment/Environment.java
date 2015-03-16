@@ -51,7 +51,7 @@ public class Environment {
 		getProperties().putAll(props);
 	}
 	
-	public List<String> getVariableNames() {
+	public static List<String> getVariableNames() {
 		List<String> result = new ArrayList<String>();
 		for (Object k: createDefaultProperties().keySet()) {
 			result.add((String)k);
