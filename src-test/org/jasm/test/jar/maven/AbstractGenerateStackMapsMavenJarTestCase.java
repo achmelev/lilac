@@ -11,8 +11,8 @@ import java.lang.reflect.Constructor;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
+import org.jasm.environment.Environment;
 import org.jasm.item.clazz.Clazz;
-import org.jasm.item.environment.Environment;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.parser.SimpleParserErrorListener;
 import org.jasm.resolver.ClassInfoResolver;

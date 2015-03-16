@@ -213,6 +213,18 @@ public class Disassembler implements ITaskCallback, Runnable {
 		formatter.printHelp( "disassembler", createOptions() );
 	}
 
+	@Override
+	public void printWarning(Runnable source, String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void printInfo(Runnable source, String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 	
