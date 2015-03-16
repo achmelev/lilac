@@ -81,7 +81,7 @@ public class Environment {
 			InputStream inp = Thread.currentThread().getContextClassLoader().getResourceAsStream("org/jasm/item/environment/default.conf");
 			result.load(inp);
 		} catch (Exception e) {
-			throw new RuntimeException("Error loading default environment");
+			throw new RuntimeException("Error loading default environment",e);
 		}
 		
 		return result;
