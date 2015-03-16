@@ -26,22 +26,8 @@ public class ClassInfoResolver  {
 	private List<String> notFounds = new ArrayList<String>();
 	private List<String> polymorphicNames = null;
 	
-	
-	public ExternalClassInfo resolve(Clazz clazz, String className, boolean checkAccess)  {
-		if (notFounds.contains(className)) {
-			return null;
-		}
+	public synchronized ExternalClassInfo resolve(Clazz clazz,  String className, boolean checkAccess)  {
 		
-		if (cache.containsKey(className)) {
-			AbstractInfo info = cache.get(className);
-			return (ExternalClassInfo)info;
-			
-		}
-		
-		return doResolve(clazz,  className, checkAccess);
-	}
-	
-	public synchronized ExternalClassInfo doResolve(Clazz clazz,  String className, boolean checkAccess)  {
 		
 		if (notFounds.contains(className)) {
 			return null;
@@ -168,20 +154,9 @@ public class ClassInfoResolver  {
 		return null;
 	}
 	
-	private AbstractInfo resolveMember(Clazz clazz, String className,String name,  String descriptor,boolean checkAccess, MemberFindAndAccess mfa, String label) {
-		String memberKey = className+"."+name+"@"+descriptor;
-		
-		if (notFounds.contains(memberKey)) {
-			if (notFounds.contains(className)) {
-				throw new ResolveClassNotFoundException();
-			}
-			return null;
-		}
-		
-		return doResolveMember(clazz,  className,name, descriptor, checkAccess, mfa, label);
-	}
 	
-	private AbstractInfo doResolveMember(Clazz clazz, String className,String name,  String descriptor,boolean checkAccess, MemberFindAndAccess mfa, String label) {
+	
+	private AbstractInfo resolveMember(Clazz clazz, String className,String name,  String descriptor,boolean checkAccess, MemberFindAndAccess mfa, String label) {
 		
 		String memberKey = className+"."+name+"@"+descriptor;
 		

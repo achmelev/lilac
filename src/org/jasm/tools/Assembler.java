@@ -18,6 +18,7 @@ import org.apache.commons.cli.OptionBuilder;
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.environment.Environment;
 import org.jasm.resolver.ClassInfoResolver;
+import org.jasm.resolver.ClassLoaderClasspathEntry;
 import org.jasm.resolver.ClazzClassPathEntry;
 import org.jasm.tools.print.ConsolePrinter;
 import org.jasm.tools.print.IPrinter;
@@ -178,8 +179,10 @@ public class Assembler extends AbstractTool {
 		
 		ClassInfoResolver resolver = new ClassInfoResolver();
 		for (AssemblerTask task: survivors) {
+			task.getClazz().setResolver(resolver);
 			resolver.add(new ClazzClassPathEntry(task.getClazz()));
 		}
+		resolver.add(new ClassLoaderClasspathEntry(this.getClass().getClassLoader()));
 		
 		ExecutorService pool = Executors.newFixedThreadPool(Environment.getIntValue("jasm.threadpoolsize"));
 		for (AssemblerTask task: survivors) {
