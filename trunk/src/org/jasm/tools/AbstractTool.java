@@ -201,7 +201,7 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 		}
 		
 		if (path.startsWith("file:")) {
-			path = path.substring("file".length(), path.length());
+			path = path.substring("file:".length(), path.length());
 		}
 		
 		return new File(path);
