@@ -201,6 +201,10 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 			throw new IllegalStateException();
 		}
 		
+		if (path.startsWith("file:")) {
+			path = path.substring("file".length(), path.length());
+		}
+		
 		return new File(path);
 	}
 	
