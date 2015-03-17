@@ -5,13 +5,14 @@ import java.util.List;
 import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.environment.Environment;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.item.constantpool.IUtf8ConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.instructions.AbstractInstruction;
-import org.jasm.item.instructions.IInstructionReference;
+import org.jasm.item.instructions.IDebugInstructionReference;
 import org.jasm.item.instructions.ILocalVariableReference;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.LocalVariable;
@@ -21,7 +22,7 @@ import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.TypeDescriptor;
 
 
-public class DebugLocalVariable extends AbstractByteCodeItem implements IUtf8ConstantPoolReference, ILocalVariableReference, IInstructionReference {
+public class DebugLocalVariable extends AbstractByteCodeItem implements IUtf8ConstantPoolReference, ILocalVariableReference, IDebugInstructionReference {
 	
 	private int startPC = -1;
 	private SymbolReference startInstructionReference;

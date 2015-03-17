@@ -47,11 +47,16 @@ public class Disassembler extends AbstractTool implements ITaskCallback{
 	private ResourceCollection inputs;
 	private File output;
 	
+	private int successCounter = 0;
+	
 	public Disassembler(IPrinter printer, String[] args) {
 		super(printer, args);
 	}
 		
 	private void disassemble() {
+		
+		long t1 = System.currentTimeMillis();
+		
 		ResourceCollection col = inputs;
 		Enumeration<Resource> resources = col.elements();
 		
@@ -75,6 +80,8 @@ public class Disassembler extends AbstractTool implements ITaskCallback{
 				new DisassemblerTask(this, resource, null).run();
 			}
 		}
+		
+		printer.printInfo("Disassembled "+successCounter+" class files in "+(System.currentTimeMillis()-t1)/1000+" secs");
 	}
 	
 	
@@ -99,6 +106,7 @@ public class Disassembler extends AbstractTool implements ITaskCallback{
 				PrintWriter pw = new PrintWriter(target);
 				pw.print(task.getCode());
 				pw.close();
+				successCounter++;
 			} catch (FileNotFoundException e) {
 				printer.printError("couldn't write "+target.getAbsolutePath());
 			}

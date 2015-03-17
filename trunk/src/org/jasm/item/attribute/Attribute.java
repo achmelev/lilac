@@ -334,6 +334,11 @@ public class Attribute extends AbstractByteCodeItem implements IContainerBytecod
 		}
 		return null;
 	}
+
+	@Override
+	public boolean toOmit() {
+		return content.toOmit();
+	}
 	
 	
 	

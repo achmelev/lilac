@@ -310,5 +310,11 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 	protected boolean classVersionLessOrEqual(String v) {
 		return getRoot().getDecimalVersion().compareTo(new BigDecimal(v))<=0;
 	}
+
+	@Override
+	public boolean toOmit() {
+		return false;
+	}
+	
 	
 }
