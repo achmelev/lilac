@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.zip.ZipException;
 
 import org.apache.commons.io.IOUtils;
 
@@ -16,9 +17,8 @@ public abstract class AbstractJarClassPathEntry extends AbstractBinaryClassPathE
 	@Override
 	public byte[] findBytes(String resourceName) {
 		try {
-			if (jar == null) {
-				jar = new JarFile(getJarFile());
-			}
+			
+			createJarFile();
 			Enumeration<JarEntry> entries = jar.entries();
 			while (entries.hasMoreElements()) {
 				JarEntry entry = entries.nextElement();
@@ -38,6 +38,12 @@ public abstract class AbstractJarClassPathEntry extends AbstractBinaryClassPathE
 	}
 
 	public abstract File getJarFile(); 
+	
+	private synchronized void createJarFile() throws ZipException, IOException {
+		if (jar == null) {
+			jar = new JarFile(getJarFile());
+		}
+	}
 	
 	
 }

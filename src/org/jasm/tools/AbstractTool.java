@@ -23,6 +23,10 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.PropertyConfigurator;
 import org.jasm.environment.Environment;
+import org.jasm.resolver.DirClasspathEntry;
+import org.jasm.resolver.IClassPathEntry;
+import org.jasm.resolver.JarFileClassPathEntry;
+import org.jasm.resolver.ZipFileClassPathEntry;
 import org.jasm.tools.print.IPrinter;
 import org.jasm.tools.resource.CompositeResourceCollection;
 import org.jasm.tools.resource.DirResourceCollection;
@@ -62,22 +66,24 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 	        
 	        printer.printInfo("starting "+getScriptName()+"...");
 	        
+	        File workDir = getWorkDir();
+        	File log4jFile = new File(workDir,"conf/log4j.properties");
+        	if (!log4jFile.exists()) {
+        		printer.printError(log4jFile.getAbsolutePath()+" not found!");
+        		return;
+        	} else {
+        		initLog4J(log4jFile);
+        	}
+        	File confFile = new File(workDir,"conf/jasm.conf");
+        	if (!confFile.exists()) {
+        		printer.printError(log4jFile.getAbsolutePath()+" not found!");
+        		return;
+        	} else {
+        		initEnvironment(confFile);
+        	}
+	        
 	        if (readOptions(line)) {
-	        	File workDir = getWorkDir();
-	        	File log4jFile = new File(workDir,"conf/log4j.properties");
-	        	if (!log4jFile.exists()) {
-	        		printer.printError(log4jFile.getAbsolutePath()+" not found!");
-	        		return;
-	        	} else {
-	        		initLog4J(log4jFile);
-	        	}
-	        	File confFile = new File(workDir,"conf/jasm.conf");
-	        	if (!confFile.exists()) {
-	        		printer.printError(log4jFile.getAbsolutePath()+" not found!");
-	        		return;
-	        	} else {
-	        		initEnvironment(confFile);
-	        	}
+	        	
 	        	
 	        	if (prepare()) {
 	        		int numberOfWorkUnits = getNumberOfWorkUnits();
@@ -185,6 +191,68 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 		return output;
 	}
 	
+	protected List<IClassPathEntry> createClassPath(String key) {
+		List<IClassPathEntry> result = new ArrayList<IClassPathEntry>();
+		String[] paths = line.getOptionValues(key);
+		for (String path: paths) {
+			File input = new File(path);
+			if (!input.exists()) {
+				printer.printWarning(input.getAbsolutePath()+" doesn't exist");
+			} else if (input.isFile() && input.getName().endsWith(".jar")) {
+				result.add(new JarFileClassPathEntry(input));
+			} else if (input.isFile() && input.getName().endsWith(".zip")) {
+				result.add(new ZipFileClassPathEntry(input));
+			} else if (input.isDirectory()) {
+				appendDirectoryToClassPath(input, true, result);
+			}
+		}
+		
+		return result;
+	}
+	
+	protected File getRuntimeJar() {
+		String resourceName = Object.class.getName().replace('.', '/')+".class";
+		URL url = getClass().getClassLoader().getResource(resourceName);
+		String path = url.getPath();
+		path = path.substring(0,path.length()-resourceName.length());
+		if (path.indexOf(".jar!")>0) {
+			path = path.substring(0, path.indexOf(".jar!")+".jar".length());
+		} else {
+			printer.printWarning("java runtime jar not found");
+			return null;
+		}
+		
+		if (path.startsWith("file:")) {
+			path = path.substring("file:".length(), path.length());
+		}
+		
+		File result = new File(path);
+		if (result.exists() && result.isFile()) {
+			return result;
+		} else {
+			printer.printWarning("java runtime jar not found");
+			return null;
+		}
+	}
+	
+	private void appendDirectoryToClassPath(File dir, boolean root, List<IClassPathEntry> result) {
+		if (root) {
+			result.add(new DirClasspathEntry(dir));
+		}
+		
+		File [] children = dir.listFiles();
+		for (File input: children) {
+			if (input.isFile() && input.getName().endsWith(".jar")) {
+				result.add(new JarFileClassPathEntry(input));
+			} else if (input.isFile() && input.getName().endsWith(".zip")) {
+				result.add(new ZipFileClassPathEntry(input));
+			} else if (input.isFile() && input.getName().endsWith(".jar")) {
+				result.add(new JarFileClassPathEntry(input));
+			} else if (input.isDirectory()) {
+				appendDirectoryToClassPath(input, false, result);
+			}
+		}
+	}
 	
 	private File getWorkDir() {
 		String resourceName = this.getClass().getName().replace('.', '/')+".class";
