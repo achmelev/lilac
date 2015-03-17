@@ -54,16 +54,26 @@ public class Disassembler extends AbstractTool implements ITaskCallback{
 	private void disassemble() {
 		ResourceCollection col = inputs;
 		Enumeration<Resource> resources = col.elements();
-		ExecutorService pool = Executors.newFixedThreadPool(Environment.getIntValue("jdasm.threadpoolsize"));
-		while (resources.hasMoreElements()) {
-			Resource resource = resources.nextElement();
-			pool.execute(new DisassemblerTask(this, resource, Environment.getContent()));
-		}
-		pool.shutdown();
-		try {
-			pool.awaitTermination(2, TimeUnit.DAYS);
-		} catch (InterruptedException e) {
-			//ignore
+		
+		boolean useThreadPool = Environment.getBooleanValue("jdasm.usethreadpool");
+		
+		if (useThreadPool) {
+			ExecutorService pool = Executors.newFixedThreadPool(Environment.getIntValue("jdasm.threadpoolsize"));
+			while (resources.hasMoreElements()) {
+				Resource resource = resources.nextElement();
+				pool.execute(new DisassemblerTask(this, resource, Environment.getContent()));
+			}
+			pool.shutdown();
+			try {
+				pool.awaitTermination(2, TimeUnit.DAYS);
+			} catch (InterruptedException e) {
+				//ignore
+			}
+		} else {
+			while (resources.hasMoreElements()) {
+				Resource resource = resources.nextElement();
+				new DisassemblerTask(this, resource, null).run();
+			}
 		}
 	}
 	

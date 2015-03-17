@@ -19,22 +19,19 @@ public abstract class AbstractJarClassPathEntry extends AbstractBinaryClassPathE
 		try {
 			
 			createJarFile();
-			Enumeration<JarEntry> entries = jar.entries();
-			while (entries.hasMoreElements()) {
-				JarEntry entry = entries.nextElement();
+			JarEntry entry = jar.getJarEntry(resourceName);
+			if (entry!=null && !entry.isDirectory()) {
+				InputStream data = jar.getInputStream(entry);
 				
-				if (!entry.isDirectory() && entry.getName().equals(resourceName)) {
-					InputStream data = jar.getInputStream(entry);
-					
-					byte[] result = IOUtils.toByteArray(data);
-					data.close();
-					return result;
-				}
+				byte[] result = IOUtils.toByteArray(data);
+				data.close();
+				return result;
+			} else {
+				return null;
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		return null;
 	}
 
 	public abstract File getJarFile(); 
