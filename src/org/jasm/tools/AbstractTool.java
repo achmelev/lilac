@@ -76,8 +76,7 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
         	}
         	File confFile = new File(workDir,"conf/jasm.conf");
         	if (!confFile.exists()) {
-        		printer.printError(log4jFile.getAbsolutePath()+" not found!");
-        		return;
+        		printer.printWarning(confFile.getAbsolutePath()+" not found!");
         	} else {
         		initEnvironment(confFile);
         	}
