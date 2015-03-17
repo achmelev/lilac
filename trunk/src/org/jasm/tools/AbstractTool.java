@@ -77,6 +77,7 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
         	File confFile = new File(workDir,"conf/jasm.conf");
         	if (!confFile.exists()) {
         		printer.printWarning(confFile.getAbsolutePath()+" not found!");
+        		initEnvironment(null);
         	} else {
         		initEnvironment(confFile);
         	}
@@ -113,10 +114,12 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 	
 	private void initEnvironment(File f) {
 		Properties props = new Properties();
-		try {
-			props.load(new FileInputStream(f));
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		if (f != null) {
+			try {
+				props.load(new FileInputStream(f));
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 		}
 		
 		List<String> knownKeys = Environment.getVariableNames();
