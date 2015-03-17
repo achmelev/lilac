@@ -42,6 +42,8 @@ public class Assembler extends AbstractTool {
 	
 	private int successCounter = 0;
 	
+	private boolean verificationEnabled = true;
+	
 
 
 	public Assembler(IPrinter printer, String[] args) {
@@ -57,7 +59,13 @@ public class Assembler extends AbstractTool {
 	@Override
 	public synchronized void success(Task source) {
 		if (currentStage == 0) {
-			survivors.add((AssemblerTask)source);
+			if (verificationEnabled) {
+				survivors.add((AssemblerTask)source);
+			} else {
+				write(source);
+				successCounter++;
+			}
+			
 		} else {
 			write(source);
 			successCounter++;
@@ -159,7 +167,8 @@ public class Assembler extends AbstractTool {
 
 	@Override
 	protected int getNumberOfWorkUnits() {
-		return 2;
+		verificationEnabled = Environment.getBooleanValue("jasm.verification.enabled");
+		return verificationEnabled?2:1;
 	}
 	
 	long t = -1;
@@ -170,6 +179,9 @@ public class Assembler extends AbstractTool {
 		if (number == 0) {
 			t = System.currentTimeMillis();
 			assemble();
+			if (!verificationEnabled) {
+				printer.printInfo("Created "+successCounter+" class files in "+(System.currentTimeMillis()-t)/1000+" secs");
+			}
 			return true;
 		} else if (number == 1) {
 			verifyAndWrite();
@@ -182,21 +194,34 @@ public class Assembler extends AbstractTool {
 	}
 	
 	private void assemble() {
+		
+		boolean useThreadPool = Environment.getBooleanValue("jasm.usethreadpool");
+		
 		ResourceCollection col = inputs;
 		Enumeration<Resource> resources = col.elements();
-		ExecutorService pool = Executors.newFixedThreadPool(Environment.getIntValue("jasm.threadpoolsize"));
-		while (resources.hasMoreElements()) {
-			Resource resource = resources.nextElement();
-			AssemblerTask task = new AssemblerTask(this, resource, Environment.getContent());
-			task.setStage(0);
-			pool.execute(task);
+		if (useThreadPool) {
+			ExecutorService pool = Executors.newFixedThreadPool(Environment.getIntValue("jasm.threadpoolsize"));
+			while (resources.hasMoreElements()) {
+				Resource resource = resources.nextElement();
+				AssemblerTask task = new AssemblerTask(this, resource, Environment.getContent());
+				task.setStage(0);
+				pool.execute(task);
+			}
+			pool.shutdown();
+			try {
+				pool.awaitTermination(2, TimeUnit.DAYS);
+			} catch (InterruptedException e) {
+				//ignore
+			}
+		} else {
+			while (resources.hasMoreElements()) {
+				Resource resource = resources.nextElement();
+				AssemblerTask task = new AssemblerTask(this, resource, null);
+				task.setStage(0);
+				task.run();
+			}
 		}
-		pool.shutdown();
-		try {
-			pool.awaitTermination(2, TimeUnit.DAYS);
-		} catch (InterruptedException e) {
-			//ignore
-		}
+		
 	}
 	
 	private void verifyAndWrite() {
@@ -215,21 +240,31 @@ public class Assembler extends AbstractTool {
 			if (rtJar != null) {
 				resolver.add(new JarFileClassPathEntry(getRuntimeJar()));
 			}
+			//resolver.add(new ClassLoaderClasspathEntry(Thread.currentThread().getContextClassLoader()));
 			
 		}
-	
 		
-		ExecutorService pool = Executors.newFixedThreadPool(Environment.getIntValue("jasm.threadpoolsize"));
-		for (AssemblerTask task: survivors) {
-			task.setStage(1);
-			task.setResolver(resolver);
-			pool.execute(task);
-		}
-		pool.shutdown();
-		try {
-			pool.awaitTermination(2, TimeUnit.DAYS);
-		} catch (InterruptedException e) {
-			//ignore
+		boolean useThreadPool = Environment.getBooleanValue("jasm.usethreadpool");
+		
+		if (useThreadPool) {
+			ExecutorService pool = Executors.newFixedThreadPool(Environment.getIntValue("jasm.threadpoolsize"));
+			for (AssemblerTask task: survivors) {
+				task.setStage(1);
+				task.setResolver(resolver);
+				pool.execute(task);
+			}
+			pool.shutdown();
+			try {
+				pool.awaitTermination(2, TimeUnit.DAYS);
+			} catch (InterruptedException e) {
+				//ignore
+			}
+		} else {
+			for (AssemblerTask task: survivors) {
+				task.setStage(1);
+				task.setResolver(resolver);
+				task.run();
+			}
 		}
 	}
 	

@@ -11,6 +11,7 @@ import java.util.Set;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
+import org.jasm.environment.Environment;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
@@ -295,7 +296,9 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			pool.verify();
 			methods.verify();
 			attributes.verify();
-			if (getParser().getErrorCounter() == 0) {
+			
+			boolean verifyByteCode = Environment.getBooleanValue("jasm.verification.bytecode.enabled");
+			if (getParser().getErrorCounter() == 0 && verifyByteCode) {
 				List<Instructions> instrs = this.getDescendants(Instructions.class);
 				for (Instructions instr: instrs) {
 					instr.verifyByteCode();
