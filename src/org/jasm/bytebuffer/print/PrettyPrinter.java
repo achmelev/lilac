@@ -36,6 +36,10 @@ public class PrettyPrinter {
 	
 	public void printItem(IPrintable item) {
 		
+		if (item.toOmit()) {
+			return;
+		}
+		
 		/*if (item.isStructure() && item.getStructureParts().size() == 0) {
 			return;
 		}*/

@@ -77,4 +77,9 @@ public class SimplePrintable implements IPrintable {
 		return buf.toString();
 	}
 
+	@Override
+	public boolean toOmit() {
+		return false;
+	}
+
 }

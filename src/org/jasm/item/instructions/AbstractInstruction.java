@@ -1,6 +1,10 @@
 package org.jasm.item.instructions;
 
+import java.util.List;
+
+import org.jasm.environment.Environment;
 import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.literals.Label;
@@ -128,8 +132,27 @@ public abstract class AbstractInstruction extends AbstractByteCodeItem implement
 
 	private String createInstructionLabel() {
 		Instructions instr = (Instructions)getParent();
-		if (instr.getReferencingItems(this).size() > 0) {
-			return "ir"+this.getOffsetInCode();
+		List<IBytecodeItem> refs = instr.getReferencingItems(this);
+		if (refs.size() > 0) {
+			String label = "ir"+this.getOffsetInCode();
+			boolean omitDebugInfos = Environment.getBooleanValue("jdasm.omitdebuginfos");
+			if (omitDebugInfos) {
+				boolean hasNonDebugReferences = false;
+				for (IBytecodeItem ref: refs) {
+					if (!(ref instanceof IDebugInstructionReference)) {
+						hasNonDebugReferences = true;
+						break;
+					}
+				}
+				if (hasNonDebugReferences) {
+					return label;
+				} else {
+					return null;
+				}
+			} else {
+				return label;
+			}
+			
 		} else {
 			return null;
 		}

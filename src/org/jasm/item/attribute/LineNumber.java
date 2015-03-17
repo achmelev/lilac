@@ -4,14 +4,15 @@ import java.util.List;
 
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
+import org.jasm.environment.Environment;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.instructions.AbstractInstruction;
-import org.jasm.item.instructions.IInstructionReference;
+import org.jasm.item.instructions.IDebugInstructionReference;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.parser.literals.IntegerLiteral;
 import org.jasm.parser.literals.SymbolReference;
 
-public class LineNumber extends AbstractByteCodeItem implements IInstructionReference {
+public class LineNumber extends AbstractByteCodeItem implements IDebugInstructionReference {
 	
 	private int startPC = -1;
 	private SymbolReference startInstructionLabel;

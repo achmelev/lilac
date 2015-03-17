@@ -11,5 +11,6 @@ public interface IPrintable {
 	public String  getPrintName();
 	public String  getPrintArgs();
 	public String  getPrintComment();
+	public boolean toOmit();
 
 }

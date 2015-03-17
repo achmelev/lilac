@@ -1,6 +1,7 @@
 package org.jasm.item.attribute;
 
 import org.jasm.bytebuffer.IByteBuffer;
+import org.jasm.environment.Environment;
 import org.jasm.item.AbstractBytecodeItemList;
 
 public class LineNumberTableAttributeContent extends
@@ -20,5 +21,13 @@ public class LineNumberTableAttributeContent extends
 	protected LineNumber createEmptyItem(IByteBuffer source, long offset) {
 		return new LineNumber();
 	}
+
+	@Override
+	public boolean toOmit() {
+		boolean omitDebugInfos = Environment.getBooleanValue("jdasm.omitdebuginfos");
+		return omitDebugInfos;
+	}
+	
+	
 
 }
