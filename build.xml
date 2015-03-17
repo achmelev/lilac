@@ -108,33 +108,43 @@
 				<include name="**/*.conf"/>
     	    </fileset>
     	</copy>
-    	<!-- Compile tests -->
-    	<javac srcdir="${test.src.dir}" debug="on" debuglevel="lines,source" destdir="${test.build.dir}" classpathref="test.lib.path.id" includeAntRuntime="false"/>
-    	<copy todir="${test.build.dir}">
-    	    <fileset dir="${test.src.dir}">
-    	    	<include name="**/*.properties"/>
-    	    	<include name="**/*.xml"/>
-    	    	<include name="**/*.txt"/>
-    	    	<include name="**/*.jasm"/>
-    	    </fileset>
-    	</copy>
-    	<!-- Junit tests -->
-    	<junit printsummary="yes" haltonfailure="true">
+		
+		<if>
+		<not> <isset property="skipTests" /> </not>
+		<then>
 
-    		<classpath id="classpath" refid="test.lib.path.id"/>
-    		
-    		
-    		
-    		<formatter type="plain"/>
-    		<formatter type="xml"/>
-    		
-    		<batchtest fork="false" todir="${test.report.dir}">
-    		    <fileset dir="${test.src.dir}">
-    		      <include name="**/*Test.java"/>
-  
-    		    </fileset>
-    		 </batchtest>
-    	</junit>
+			<!-- Compile tests -->
+			<javac srcdir="${test.src.dir}" debug="on" debuglevel="lines,source" destdir="${test.build.dir}" classpathref="test.lib.path.id" includeAntRuntime="false"/>
+			<copy todir="${test.build.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*.properties"/>
+					<include name="**/*.xml"/>
+					<include name="**/*.txt"/>
+					<include name="**/*.jasm"/>
+				</fileset>
+			</copy>
+			<!-- Junit tests -->
+			<junit printsummary="yes" haltonfailure="true">
+
+				<classpath id="classpath" refid="test.lib.path.id"/>
+				
+				
+				
+				<formatter type="plain"/>
+				<formatter type="xml"/>
+				
+				<batchtest fork="false" todir="${test.report.dir}">
+					<fileset dir="${test.src.dir}">
+					  <include name="**/*Test.java"/>
+	  
+					</fileset>
+				 </batchtest>
+			</junit>
+
+		</then>
+		</if>
+		
+    	
     	
     	<!--Build Jar -->
     	<pathconvert property="jar.class.path" dirsep="/" pathsep=" " refid="lib.path.id">
