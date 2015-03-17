@@ -20,6 +20,8 @@ import org.jasm.environment.Environment;
 import org.jasm.resolver.ClassInfoResolver;
 import org.jasm.resolver.ClassLoaderClasspathEntry;
 import org.jasm.resolver.ClazzClassPathEntry;
+import org.jasm.resolver.IClassPathEntry;
+import org.jasm.resolver.JarFileClassPathEntry;
 import org.jasm.tools.print.ConsolePrinter;
 import org.jasm.tools.print.IPrinter;
 import org.jasm.tools.resource.FilterResourceCollection;
@@ -34,8 +36,12 @@ public class Assembler extends AbstractTool {
 	private int currentStage = -1;
 	private ResourceCollection inputs;
 	private File output;
+	private List<IClassPathEntry> classpath;
 	
 	private List<AssemblerTask> survivors = new ArrayList<AssemblerTask>();
+	
+	private int successCounter = 0;
+	
 
 
 	public Assembler(IPrinter printer, String[] args) {
@@ -54,6 +60,7 @@ public class Assembler extends AbstractTool {
 			survivors.add((AssemblerTask)source);
 		} else {
 			write(source);
+			successCounter++;
 		}
 	}
 	
@@ -103,6 +110,14 @@ public class Assembler extends AbstractTool {
 				create("output");
 		result.add(output);
 		
+		Option classpath = OptionBuilder.
+				hasArgs().
+				isRequired(false).
+				withArgName("classpath entries").
+				withDescription("class path entries (jars zips or dirs)").
+				create("classpath");
+		result.add(classpath);
+		
 		return result;
 	}
 
@@ -116,6 +131,11 @@ public class Assembler extends AbstractTool {
 				return res.getName().endsWith(".jasm");
 			}
 		});
+		if (line.hasOption("classpath")) {
+			classpath = createClassPath("classpath");
+		} else {
+			classpath = new ArrayList<IClassPathEntry>();
+		}
 		output = createOutputDirectory("output");
 		
 		
@@ -141,15 +161,19 @@ public class Assembler extends AbstractTool {
 	protected int getNumberOfWorkUnits() {
 		return 2;
 	}
+	
+	long t = -1;
 
 	@Override
 	protected boolean doWorkUnit(int number) {
 		currentStage = number;
 		if (number == 0) {
+			t = System.currentTimeMillis();
 			assemble();
 			return true;
 		} else if (number == 1) {
 			verifyAndWrite();
+			printer.printInfo("Created "+successCounter+" class files in "+(System.currentTimeMillis()-t)/1000+" secs");
 			return true;
 		} else {
 			throw new IllegalArgumentException(number+"");
@@ -177,12 +201,23 @@ public class Assembler extends AbstractTool {
 	
 	private void verifyAndWrite() {
 		
+		//Creating class resolver
 		ClassInfoResolver resolver = new ClassInfoResolver();
 		for (AssemblerTask task: survivors) {
 			task.getClazz().setResolver(resolver);
 			resolver.add(new ClazzClassPathEntry(task.getClazz()));
 		}
-		resolver.add(new ClassLoaderClasspathEntry(this.getClass().getClassLoader()));
+		for (IClassPathEntry entry: classpath) {
+			resolver.add(entry);
+		}
+		if (Environment.getBooleanValue("jasm.classpath.useruntime")) {
+			File rtJar = getRuntimeJar();
+			if (rtJar != null) {
+				resolver.add(new JarFileClassPathEntry(getRuntimeJar()));
+			}
+			
+		}
+	
 		
 		ExecutorService pool = Executors.newFixedThreadPool(Environment.getIntValue("jasm.threadpoolsize"));
 		for (AssemblerTask task: survivors) {
