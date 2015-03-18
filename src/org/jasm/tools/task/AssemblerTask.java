@@ -73,6 +73,9 @@ public class AssemblerTask implements Task, IParserErrorListener {
 			
 			
 		} catch (Throwable e) {
+			if (e instanceof OutOfMemoryError) {
+				throw e;
+			}
 			callback.printError(this, "internal error while assembling "+resource.getName()+" : "+e.getClass().getName()+"-->"+e.getMessage());
 			log.error("Error assembling "+resource.getName(),e);
 			callback.failure(this);
