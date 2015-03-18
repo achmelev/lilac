@@ -144,7 +144,7 @@ public class Disassembler extends AbstractTool implements ITaskCallback{
 			
 			@Override
 			public boolean accept(Resource res) {
-				return res.getName().endsWith(".class");
+				return res.getName().endsWith(".class") && !res.getName().endsWith("package-info.class");
 			}
 		});
 		output = createOutputDirectory("output");
