@@ -250,7 +250,6 @@ public class Assembler extends AbstractTool {
 			ExecutorService pool = Executors.newFixedThreadPool(Environment.getIntValue("jasm.threadpoolsize"));
 			for (AssemblerTask task: survivors) {
 				task.setStage(1);
-				task.setResolver(resolver);
 				pool.execute(task);
 			}
 			pool.shutdown();
@@ -262,7 +261,6 @@ public class Assembler extends AbstractTool {
 		} else {
 			for (AssemblerTask task: survivors) {
 				task.setStage(1);
-				task.setResolver(resolver);
 				task.run();
 			}
 		}

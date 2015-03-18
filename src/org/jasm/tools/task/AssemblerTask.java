@@ -29,8 +29,7 @@ public class AssemblerTask implements Task, IParserErrorListener {
 	private Clazz clazz= null;
 	
 	private int stage;
-	
-	private ClassInfoResolver resolver = null;
+
 	
 	private AssemblerParser parser;
 	
@@ -135,10 +134,6 @@ public class AssemblerTask implements Task, IParserErrorListener {
 	public void flush() {
 		
 		
-	}
-
-	public void setResolver(ClassInfoResolver resolver) {
-		this.resolver = resolver;
 	}
 
 	public Clazz getClazz() {
