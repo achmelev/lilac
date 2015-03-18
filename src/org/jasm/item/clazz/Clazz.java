@@ -416,15 +416,15 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			}
 		}
 		
-		if (thisClass.isArray()) {
+		if (thisClass != null && thisClass.isArray()) {
 			emitError(thisClassSymbol, "array isn't allowed as class name");
 		}
-		if (this.getThisClass().getClassName().equals("java/lang/Object")) {
+		if (thisClass!=null && thisClass.getClassName().equals("java/lang/Object")) {
 			if (this.getSuperClass() !=null) {
 				emitError(superClassSymbol, "java/lang/Object must not have a superclass");
 			}
 		}
-		if (this.getSuperClass() != null && this.getSuperClass().isArray()) {
+		if (superClass != null && superClass.isArray()) {
 			emitError(superClassSymbol, "arrays aren't allowed as superclasses");
 			return;
 		}
@@ -435,15 +435,19 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			modifier.setFlag(k.getKeyword());
 		}
 		verifyModifiers();
-		//Attributes
-		attributes.resolve();
-		//Fields
-		fields.resolve();
-		//Methods
-		methods.resolve();
-		//invokeDynamics
-		pool.resolveInvokeDynamics();
-		pool.updateInvokeDynamicIndexes();
+		
+		if (!hasErrors()) {
+		
+			//Attributes
+			attributes.resolve();
+			//Fields
+			fields.resolve();
+			//Methods
+			methods.resolve();
+			//invokeDynamics
+			pool.resolveInvokeDynamics();
+			pool.updateInvokeDynamicIndexes();
+		}
 		
 		
 	}
