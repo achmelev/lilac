@@ -77,8 +77,6 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 				entriesByDescriptor.addToList(ref1, entry);
 			}
 		}
-		
-
 		if (entry instanceof ITextReferencingEntry) {
 			ITextReferencingEntry ref = (ITextReferencingEntry)entry;
 			if (!entriesByText.containsKey(ref.getContent())) {
@@ -93,8 +91,6 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 			Utf8Info ref = (Utf8Info)entry;
 			utf8ByContent.addToList(ref.getValue(),ref );
 		}
-		
-		
 		
 	}
 	
@@ -276,18 +272,16 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		
 		entryReferences.clear();
 		
-		if (!isAfterParse()) {
-			List<IBytecodeItem> allItems = ((AbstractByteCodeItem)getParent()).getAllItemsFromHere();
-			for (IBytecodeItem item: allItems) {
-				if (item instanceof IConstantPoolReference) {
-					IConstantPoolReference cr = (IConstantPoolReference)item;
-					AbstractConstantPoolEntry[] refs = cr.getConstantReferences();
-					for (AbstractConstantPoolEntry r:refs) {
-						if (!getItems().contains(r)) {
-							throw new IllegalStateException(r+" isn't in pool, from "+item);
-						}
-						entryReferences.addToList(r, item);
+		List<IBytecodeItem> allItems = ((AbstractByteCodeItem)getParent()).getAllItemsFromHere();
+		for (IBytecodeItem item: allItems) {
+			if (item instanceof IConstantPoolReference) {
+				IConstantPoolReference cr = (IConstantPoolReference)item;
+				AbstractConstantPoolEntry[] refs = cr.getConstantReferences();
+				for (AbstractConstantPoolEntry r:refs) {
+					if (!getItems().contains(r)) {
+						throw new IllegalStateException(r+" isn't in pool, from "+item);
 					}
+					entryReferences.addToList(r, item);
 				}
 			}
 		}
