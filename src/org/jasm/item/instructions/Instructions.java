@@ -572,6 +572,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		try {
 			if (!verifier.isHasErrors() && !verifier.isHasUnsupportedCode()) {
 				verifier.verify();
+				//Dump verifier to save memory.
+				verifier = null;
 			}
 		} catch (VerifyException e) {
 			emitCodeVerifyError(e);
