@@ -198,6 +198,13 @@ public class Assembler extends AbstractTool {
 	private void assemble() {
 		
 		boolean useThreadPool = Environment.getBooleanValue("jasm.usethreadpool");
+		//Creating class resolver
+		ClassInfoResolver resolver = null;
+		boolean twoStages = Environment.getBooleanValue("jasm.dotwostages");
+		if (!twoStages) {
+			resolver = createClassInfoResolver();
+		}
+				
 		
 		ResourceCollection col = inputs;
 		Enumeration<Resource> resources = col.elements();
@@ -207,6 +214,7 @@ public class Assembler extends AbstractTool {
 				Resource resource = resources.nextElement();
 				AssemblerTask task = new AssemblerTask(this, resource, Environment.getContent());
 				task.setStage(0);
+				task.setResolver(resolver);
 				pool.execute(task);
 			}
 			pool.shutdown();
@@ -220,19 +228,21 @@ public class Assembler extends AbstractTool {
 				Resource resource = resources.nextElement();
 				AssemblerTask task = new AssemblerTask(this, resource, null);
 				task.setStage(0);
+				task.setResolver(resolver);
 				task.run();
 			}
 		}
 		
 	}
 	
-	private void verifyAndWrite() {
-		
-		//Creating class resolver
+	private ClassInfoResolver createClassInfoResolver() {
+		boolean twoStages = Environment.getBooleanValue("jasm.dotwostages");
 		ClassInfoResolver resolver = new ClassInfoResolver();
-		for (AssemblerTask task: survivors) {
-			task.getClazz().setResolver(resolver);
-			resolver.add(new ClazzClassPathEntry(task.getClazz()));
+		if (twoStages) {
+			for (AssemblerTask task: survivors) {
+				task.getClazz().setResolver(resolver);
+				resolver.add(new ClazzClassPathEntry(task.getClazz()));
+			}
 		}
 		for (IClassPathEntry entry: classpath) {
 			resolver.add(entry);
@@ -246,12 +256,21 @@ public class Assembler extends AbstractTool {
 			
 		}
 		
+		return resolver;
+	}
+	
+	private void verifyAndWrite() {
+		
+		//Creating class resolver
+		ClassInfoResolver resolver = createClassInfoResolver();
+		
 		boolean useThreadPool = Environment.getBooleanValue("jasm.usethreadpool");
 		
 		if (useThreadPool) {
 			ExecutorService pool = Executors.newFixedThreadPool(Environment.getIntValue("jasm.threadpoolsize"));
 			for (AssemblerTask task: survivors) {
 				task.setStage(1);
+				task.setResolver(resolver);
 				pool.execute(task);
 			}
 			pool.shutdown();
@@ -263,6 +282,7 @@ public class Assembler extends AbstractTool {
 		} else {
 			for (AssemblerTask task: survivors) {
 				task.setStage(1);
+				task.setResolver(resolver);
 				task.run();
 			}
 		}
