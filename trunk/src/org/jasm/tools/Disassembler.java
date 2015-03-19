@@ -186,9 +186,7 @@ public class Disassembler extends AbstractTool implements ITaskCallback{
 	}
 	
 	public static void main(String [] args) {
-		new Disassembler(new ConsolePrinter(), args).run();
-		System.exit(0);
-
+		runTool(new Disassembler(new ConsolePrinter(), args));
 	}
 
 }

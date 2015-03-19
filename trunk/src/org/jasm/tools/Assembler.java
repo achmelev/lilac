@@ -296,9 +296,7 @@ public class Assembler extends AbstractTool {
 	}
 	
 	public static void main(String [] args) {
-		new Assembler(new ConsolePrinter(), args).run();
-		System.exit(0);
-
+		runTool(new Assembler(new ConsolePrinter(), args));
 	}
 
 }
