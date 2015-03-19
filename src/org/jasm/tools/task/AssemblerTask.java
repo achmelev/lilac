@@ -28,6 +28,8 @@ public class AssemblerTask implements Task, IParserErrorListener {
 	
 	private Clazz clazz= null;
 	
+	private ClassInfoResolver resolver;
+	
 	private int stage;
 
 	
@@ -57,6 +59,9 @@ public class AssemblerTask implements Task, IParserErrorListener {
 				Environment.initFrom(env);
 			}
 			
+			boolean verificationEnabled = Environment.getBooleanValue("jasm.verification.enabled");
+			boolean twoStages = Environment.getBooleanValue("jasm.dotwostages");
+			
 			source = this.resource.createInputStream();
 			
 			parser = new AssemblerParser();
@@ -67,7 +72,12 @@ public class AssemblerTask implements Task, IParserErrorListener {
 				callback.failure(this);
 			} else {
 				this.clazz = clazz;
-				callback.success(this);
+				if (verificationEnabled && !twoStages) {
+					doVerify();
+				} else {
+					callback.success(this);
+				}
+				
 			}
 			
 			
@@ -92,9 +102,10 @@ public class AssemblerTask implements Task, IParserErrorListener {
 	
 	private void doVerify() {
 		try {		
-			if (clazz.getResolver() == null) {
+			if (resolver == null) {
 				throw new IllegalStateException("RESOLVER NOT SET");
 			}
+			clazz.setResolver(resolver);
 			
 			clazz.verify();
 			if (parser.getErrorCounter()>0) {
@@ -138,6 +149,10 @@ public class AssemblerTask implements Task, IParserErrorListener {
 
 	public Clazz getClazz() {
 		return clazz;
+	}
+
+	public void setResolver(ClassInfoResolver resolver) {
+		this.resolver = resolver;
 	}
 	
 	

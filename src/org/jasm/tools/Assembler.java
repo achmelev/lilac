@@ -59,7 +59,8 @@ public class Assembler extends AbstractTool {
 	@Override
 	public synchronized void success(Task source) {
 		if (currentStage == 0) {
-			if (verificationEnabled) {
+			boolean twoStages = Environment.getBooleanValue("jasm.dotwostages");
+			if (verificationEnabled && twoStages) {
 				survivors.add((AssemblerTask)source);
 			} else {
 				write(source);
@@ -168,7 +169,8 @@ public class Assembler extends AbstractTool {
 	@Override
 	protected int getNumberOfWorkUnits() {
 		verificationEnabled = Environment.getBooleanValue("jasm.verification.enabled");
-		return verificationEnabled?2:1;
+		boolean twoStages = Environment.getBooleanValue("jasm.dotwostages");
+		return (verificationEnabled && twoStages)?2:1;
 	}
 	
 	long t = -1;
