@@ -178,10 +178,11 @@ public class Assembler extends AbstractTool {
 	@Override
 	protected boolean doWorkUnit(int number) {
 		currentStage = number;
+		boolean twoStages = Environment.getBooleanValue("jasm.dotwostages");
 		if (number == 0) {
 			t = System.currentTimeMillis();
 			assemble();
-			if (!verificationEnabled) {
+			if (!verificationEnabled || !twoStages) {
 				printer.printInfo("Created "+successCounter+" class files in "+(System.currentTimeMillis()-t)/1000+" secs");
 			}
 			return true;
