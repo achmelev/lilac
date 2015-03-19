@@ -99,8 +99,6 @@
 
 				<classpath id="classpath" refid="test.lib.path.id"/>
 				
-				
-				
 				<formatter type="plain"/>
 				<formatter type="xml"/>
 				
@@ -162,9 +160,7 @@
     	<copy todir="${dest.dir}">
     	    <fileset dir="scripts"/>
     	</copy>
-		<copy todir="${dest.dir}/conf">
-    	    <fileset dir="conf"/>
-    	</copy>
+		<copy file="src/org/jasm/environment/default.conf" tofile="${dest.dir}/conf/jasm.conf"/>
 		<mkdir dir="${dest.dir}/docs" />
     	<copy todir="${dest.dir}/docs">
     	    <fileset dir="docs"/>
