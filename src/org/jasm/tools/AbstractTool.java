@@ -27,6 +27,7 @@ import org.jasm.resolver.DirClasspathEntry;
 import org.jasm.resolver.IClassPathEntry;
 import org.jasm.resolver.JarFileClassPathEntry;
 import org.jasm.resolver.ZipFileClassPathEntry;
+import org.jasm.tools.print.ConsolePrinter;
 import org.jasm.tools.print.IPrinter;
 import org.jasm.tools.resource.CompositeResourceCollection;
 import org.jasm.tools.resource.DirResourceCollection;
@@ -64,16 +65,7 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 	    	options = createOptions();
 	        line = parser.parse( options, args );
 	        
-	        printer.printInfo("starting "+getScriptName()+"...");
-	        
 	        File workDir = getWorkDir();
-        	File log4jFile = new File(workDir,"conf/log4j.properties");
-        	if (!log4jFile.exists()) {
-        		printer.printError(log4jFile.getAbsolutePath()+" not found!");
-        		return;
-        	} else {
-        		initLog4J(log4jFile);
-        	}
         	File confFile = new File(workDir,"conf/jasm.conf");
         	if (!confFile.exists()) {
         		printer.printWarning(confFile.getAbsolutePath()+" not found!");
@@ -83,7 +75,7 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
         	}
 	        
 	        if (readOptions(line)) {
-	        	
+	        	initLog4J(line);
 	        	
 	        	if (prepare()) {
 	        		int numberOfWorkUnits = getNumberOfWorkUnits();
@@ -100,14 +92,65 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 	        printer.printError( "command line parsing failed.  Reason: " + exp.getMessage() );
 	        usage();
 	    } catch (Throwable e) {
-	    	log.error("internal error", e);
+	    	if (log != null) {
+	    		log.error("internal error", e);
+	    	} else {
+	    		e.printStackTrace();
+	    	}
 	    	printer.printError("internal error: "+e.getClass().getName()+":"+e.getMessage());
 	    } 
 		
 	}
 	
-	private void initLog4J(File f) {
-		PropertyConfigurator.configure(f.getAbsolutePath());
+	private void initLog4J(CommandLine options) {
+		
+		Properties log4jProps = new Properties();
+		
+		boolean logEnabled = options.hasOption("enablelogging");
+		String logLevel="warn";
+		File logFile = null;
+		if (logEnabled) {
+			if (options.hasOption("loglevel")) {
+				String value = options.getOptionValue("loglevel");
+				if (value.toLowerCase().equals("error") || 
+					value.toLowerCase().equals("warn") ||
+					value.toLowerCase().equals("info") ||
+					value.toLowerCase().equals("debug")) {
+					
+					logLevel = value.toLowerCase();
+				} else {
+					printer.printWarning("unknown loglevel "+value+", using 'warn'");
+				}
+			}
+			
+			if (options.hasOption("logfile")) {
+				File logFile2 = new File(options.getOptionValue("logfile"));
+				if (logFile2.exists() && logFile2.isDirectory()) {
+					printer.printWarning(logFile.getAbsolutePath()+" is a directory. Using console instead.");
+				} else {
+					logFile = logFile2;
+				}
+			}
+			
+		}
+		
+		log4jProps.put("log4j.rootLogger", "fatal,out");
+		log4jProps.put("log4j.logger.org.jasm", logLevel);
+		if (logEnabled) {
+			if (logFile == null) {
+				log4jProps.put("log4j.appender.out", "org.apache.log4j.ConsoleAppender");
+			} else {
+				log4jProps.put("log4j.appender.out", "org.apache.log4j.FileAppender");
+				log4jProps.put("log4j.appender.out.File", logFile.getAbsolutePath());
+			}
+			log4jProps.put("log4j.appender.out.layout","org.apache.log4j.PatternLayout");
+			log4jProps.put("log4j.appender.out.layout.ConversionPattern","%d{yyyy-MM-dd HH:mm:ss} %-5p %C - %m%n");
+		} else {
+			log4jProps.put("log4j.appender.out", "org.apache.log4j.varia.NullAppender");
+		}
+		
+		PropertyConfigurator.configure(log4jProps);
+		
 		log = LoggerFactory.getLogger(this.getClass());
 		log.info("Logging configured");
 	}
@@ -288,16 +331,33 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 				withArgName("property=value").
 				withDescription("configuration values").
 				create("D");
-		
 		result.addOption(props);
+		
+		Option enableLogging = OptionBuilder.
+								isRequired(false).
+								withDescription("enables logging").
+								create("enablelogging");
+		result.addOption(enableLogging);
+		
+		Option logLevel = OptionBuilder.
+				isRequired(false).
+				hasArg().withArgName("log lebel").
+				withDescription("log level (error|warn|info|debug)").
+				create("loglevel");
+		result.addOption(logLevel);
+		
+		Option logFile = OptionBuilder.
+				isRequired(false).
+				hasArg().withArgName("log file name").
+				withDescription("the file to log into").
+				create("logfile");
+		result.addOption(logFile);
 		
 		List<Option> specific = createSpecificOptions();
 		
 		for (Option opt: specific) {
 			result.addOption(opt);
 		}
-		
-		
 		
 		return result;
 	}
@@ -339,5 +399,15 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 	protected abstract boolean doWorkUnit(int number);
 	
 	protected abstract boolean acceptInput(File f);
+	
+	protected static void runTool(AbstractTool tool) {
+		try {
+			tool.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		System.exit(0);
+	}
 
 }
