@@ -27,7 +27,7 @@ public class ErrorsTest {
 	@Test
 	public void testClassStatements() {
 		TestErrorsListener listener = new TestErrorsListener();
-		byte[] data = getData("org.jasm.tools.task.AssemblerTask");
+		byte[] data = getData("org.jasm.test.testclass.AssemblerTask");
 		String originalCode = disassemble(data);
 		
 		String code = patch(originalCode, 1,"public","public interface");
@@ -54,11 +54,11 @@ public class ErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 3,"wrong"));
 		
-		code = patch(originalCode, 8,"org/jasm/tools/task/AssemblerTask","org.jasm.tools.task.AssemblerTask");
+		code = patch(originalCode, 8,"org/jasm/test/testclass/AssemblerTask","org.jasm.test.testclass.AssemblerTask");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 3,"unknown"));
 		
-		code = patch(originalCode, 8,"org/jasm/tools/task/AssemblerTask","[Lorg/jasm/tools/task/AssemblerTask;");
+		code = patch(originalCode, 8,"org/jasm/test/testclass/AssemblerTask","[Lorg/jasm/test/testclass/AssemblerTask;");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 3,"malformed"));
 		
@@ -102,7 +102,7 @@ public class ErrorsTest {
 	@Test
 	public void testConstants() {
 		TestErrorsListener listener = new TestErrorsListener();
-		byte[] data = getData("org.jasm.tools.task.AssemblerTask");
+		byte[] data = getData("org.jasm.test.testclass.AssemblerTask");
 		String originalCode = disassemble(data);
 		
 		String code = patch(originalCode, 11,"Task_name","Task_name2");
@@ -149,7 +149,7 @@ public class ErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 85,"wrong"));
 		
-		code = patch(originalCode, 8,"org/jasm/tools/task/AssemblerTask","[Lorg/jasm/tools/task/AssemblerTask;");
+		code = patch(originalCode, 8,"org/jasm/test/testclass/AssemblerTask","[Lorg/jasm/test/testclass/AssemblerTask;");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 47,"malformed"));
 		
@@ -214,6 +214,45 @@ public class ErrorsTest {
 		Assert.assertTrue(checkForErrorMessage(listener, 33,"illegal"));
 		
 		
+	}
+	
+	@Test
+	public void testFieldStatements() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.testclass.AssemblerTask");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode, 227,"private","private public");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 227,"illegal"));
+		
+		code = patch(originalCode, 224,"log_name","log_name2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 224,"unknown"));
+		
+		code = patch(originalCode, 224,"log_name","string_200");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 224,"wrong"));
+		
+		code = patch(originalCode, 15,"\"log\"","\"log.log\"");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 224,"malformed"));
+		
+		code = patch(originalCode, 225,"log_desc","log_desc2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 225,"unknown"));
+		
+		code = patch(originalCode, 225,"log_desc","string_200");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 225,"wrong"));
+		
+		code = patch(originalCode, 16,"Lorg/slf4j/Logger;","org/slf4j/Logger;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 225,"malformed"));
+		
+		code = patch(originalCode, 16,"Lorg/slf4j/Logger;","(Lorg/slf4j/Logger;)V");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 225,"malformed"));
 	}
 	
 	
