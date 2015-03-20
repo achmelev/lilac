@@ -154,6 +154,11 @@ public class AssemblerTask implements Task, IParserErrorListener {
 	public void setResolver(ClassInfoResolver resolver) {
 		this.resolver = resolver;
 	}
+
+	@Override
+	public void emitInternalError(int line, int charPos, String msg) {
+		callback.printError(this, "internal error at line "+line+" " + msg);
+	}
 	
 	
 

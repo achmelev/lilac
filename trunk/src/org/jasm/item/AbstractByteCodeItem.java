@@ -53,7 +53,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 			try {
 				doResolveAfterParse();
 			} catch (Throwable e) {
-				getRoot().getParser().emitInternalError(this, e);
+				this.emitInternalError(e);
 			}
 		} else {
 			doResolve();
@@ -79,7 +79,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 		try {
 			doVerify();
 		} catch (Throwable e) {
-			getRoot().getParser().emitInternalError(this, e);
+			this.emitInternalError(e);
 		}
 		this.verified = true;
 		
@@ -213,9 +213,15 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 	public void emitErrorOnLocation(SourceLocation sl, String message) {
 		getRoot().getParser().emitError(sl.getLine(), sl.getCharPosition(), message);
 		hasResolveErrors = true;
-		
 	}
 	
+	
+	
+	@Override
+	public void emitInternalError(Throwable e) {
+		getRoot().getParser().emitInternalError(this, e);
+	}
+
 	public SourceLocation getNextSourceLocation() {
 		if (this.sourceLocation != null) {
 			return sourceLocation;

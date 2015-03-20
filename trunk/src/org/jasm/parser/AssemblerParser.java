@@ -337,6 +337,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void emitInternalError(AbstractByteCodeItem source, Throwable e) {
 		errorCounter++;
 		SourceLocation loc = source.getNextSourceLocation();
+		for (IParserErrorListener listener: errorListeners) {
+			listener.error(loc.getLine(), loc.getCharPosition(), e.getClass().getName()+"->"+e.getMessage());
+		}
 		log.error("Got internal error at "+loc.getLine()+"/"+loc.getCharPosition()+" in "+source.getClass().getName(),e);
 	}
 	

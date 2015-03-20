@@ -6,7 +6,7 @@ import org.jasm.parser.literals.AbstractLiteral;
 public interface IErrorEmitter {
 
 	public abstract void emitError(AbstractLiteral literal, String message);
-
 	public abstract void emitErrorOnLocation(SourceLocation sl, String message);
+	public abstract void emitInternalError(Throwable e);
 
 }

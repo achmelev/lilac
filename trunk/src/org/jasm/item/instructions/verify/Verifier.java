@@ -905,6 +905,12 @@ public class Verifier implements IClassQuery {
 				
 				
 			}
+
+			@Override
+			public void emitInternalError(Throwable e) {
+				
+				
+			}
 		};
 		ExternalClassInfo result = clazz.checkAndLoadClassInfo(dummyEmitter, null, name, false);
 		if (result == null) {
@@ -937,7 +943,7 @@ public class Verifier implements IClassQuery {
 			index = currentInstructionIndex;
 		} 
 		AbstractInstruction instr = getInstructionAt(index);
-		instr.emitError(null, "code verification runtime error - "+e.getClass().getName()+":"+e.getMessage());
+		instr.emitInternalError(e);
 		
 	}
 
