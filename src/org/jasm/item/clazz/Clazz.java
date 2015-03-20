@@ -412,22 +412,32 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 				if (cl != null) {
 					interfaces.add(cl);
 					addIntefaceIndexLabel(ref, interfaces.size()-1);
+					if (cl.isArray()) {
+						emitError(ref, "illegal interface name");
+					}
+					
 				}
 			}
 		}
 		
 		if (thisClass != null && thisClass.isArray()) {
-			emitError(thisClassSymbol, "array isn't allowed as class name");
+			emitError(thisClassSymbol, "illegal class name");
 		}
 		if (thisClass!=null && thisClass.getClassName().equals("java/lang/Object")) {
 			if (this.getSuperClass() !=null) {
 				emitError(superClassSymbol, "java/lang/Object must not have a superclass");
 			}
 		}
-		if (superClass != null && superClass.isArray()) {
-			emitError(superClassSymbol, "arrays aren't allowed as superclasses");
-			return;
+		if (thisClass!=null && !thisClass.getClassName().equals("java/lang/Object")) {
+			if (this.getSuperClass() == null) {
+				emitError(null, "missing superclass declaration");
+			}
 		}
+		if (superClass != null && superClass.isArray()) {
+			emitError(superClassSymbol, "illegal superclass name");
+		}
+		
+		
 		
 		//Modifier
 		modifier = new ClassModifier(0);
