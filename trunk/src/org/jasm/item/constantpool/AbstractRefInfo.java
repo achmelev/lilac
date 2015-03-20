@@ -60,19 +60,19 @@ public abstract class AbstractRefInfo extends AbstractReferenceEntry implements 
 			NameAndTypeInfo nti = (NameAndTypeInfo)value;
 			if (isMethodRef()) {
 				if (nti.isField()) {
-					emitError(ref, "expected method but got type descriptor");
+					emitError(ref, "wrong nameandtype const");
 					return false;
 				}
 			} else {
 				if (!nti.isField()) {
-					emitError(ref, "expected type but got method descriptor");
+					emitError(ref, "wrong nameandtype const");
 					return false;
 				}
 			}
-		} else if (index == 0 && !isMethodRef()) {
+		} else if (index == 0 && !isMethodRef()) { //despite jvm spec, it's allowed to habe method refs to arrays (e.g clone)
 			ClassInfo cli = (ClassInfo)value;
 			if (cli.getDescriptor().isArray()) {
-				emitError(ref, "expected class or interface but got array");
+				emitError(ref, "malformed class or interface name");
 				return false;
 			}
 		}

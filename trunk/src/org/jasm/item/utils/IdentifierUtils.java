@@ -89,7 +89,7 @@ public class IdentifierUtils {
 	
 	public static boolean checkMethodName(AbstractByteCodeItem source, SymbolReference ref, Utf8Info value) {
 		if (!IdentifierUtils.isValidSimpleIdentifier(value.getValue()) && !(value.getValue().equals("<init>") || value.getValue().equals("<clinit>"))) {
-			source.emitError(ref, "invalid method name: "+value.getValue());
+			source.emitError(ref, "malformed method name: "+value.getValue());
 			return false;
 		} else {
 			return true;

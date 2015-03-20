@@ -384,7 +384,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 				}
 				
 			} catch (Exception e) {
-				emitError(version, "malformed or illegal version");
+				emitError(version, "malformed version number");
 				majorVersion = 0;
 				minorVersion = 0;
 			}
@@ -413,7 +413,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 					interfaces.add(cl);
 					addIntefaceIndexLabel(ref, interfaces.size()-1);
 					if (cl.isArray()) {
-						emitError(ref, "illegal interface name");
+						emitError(ref, "malformed class or interface name");
 					}
 					
 				}
@@ -421,7 +421,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		}
 		
 		if (thisClass != null && thisClass.isArray()) {
-			emitError(thisClassSymbol, "illegal class name");
+			emitError(thisClassSymbol, "malformed class or interface name");
 		}
 		if (thisClass!=null && thisClass.getClassName().equals("java/lang/Object")) {
 			if (this.getSuperClass() !=null) {
@@ -434,7 +434,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			}
 		}
 		if (superClass != null && superClass.isArray()) {
-			emitError(superClassSymbol, "illegal superclass name");
+			emitError(superClassSymbol, "malformed class or interface name");
 		}
 		
 		
