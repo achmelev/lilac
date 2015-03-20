@@ -94,7 +94,7 @@ public class InvokeDynamicInfo extends AbstractConstantPoolEntry implements INam
 	protected void doResolveAfterParse() {
 		nameAndType = getConstantPool().checkAndLoadFromSymbolTable(this, NameAndTypeInfo.class, nameAndTypeReference);
 		if (nameAndType != null && nameAndType.isField()) {
-			emitError(nameAndTypeReference, "expected a method descriptor");
+			emitError(nameAndTypeReference, "wrong nameandtype const");
 		}
 		method = getBootstrapMethodsAttributeContent().checkAndLoadFromSymbolTable(this, methodReference);
 		if (nameAndType != null && (nameAndType.getName().equals("<init>") || nameAndType.getName().equals("<clinit>"))) {
