@@ -24,6 +24,137 @@ import org.junit.Test;
 
 public class ErrorsTest {
 	
+	@Test
+	public void testClassStatements() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.tools.task.AssemblerTask");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode, 1,"public","public interface");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1,"illegal"));
+		
+		code = remove(originalCode, 2);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1,"missing"));
+		
+		code = patch(originalCode,2, "52_0","60_0");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 2,"illegal"));
+		
+		code = remove(originalCode, 3);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1,"missing"));
+		
+		code = patch(originalCode, 3,"ThisClass","ThisClass2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 3,"unknown"));
+		
+		code = patch(originalCode, 3,"ThisClass","Object_name");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 3,"wrong"));
+		
+		code = patch(originalCode, 8,"org/jasm/tools/task/AssemblerTask","org.jasm.tools.task.AssemblerTask");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 3,"unknown"));
+		
+		code = patch(originalCode, 8,"org/jasm/tools/task/AssemblerTask","[Lorg/jasm/tools/task/AssemblerTask;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 3,"malformed"));
+		
+		code = remove(originalCode, 4);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1,"missing"));
+		
+		code = patch(originalCode, 4,"Object","Object2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 4,"unknown"));
+		
+		code = patch(originalCode, 4,"Object","Object_name");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 4,"wrong"));
+		
+		code = patch(originalCode, 10,"java/lang/Object","java.lang.Object");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 4,"unknown"));
+		
+		code = patch(originalCode, 10,"java/lang/Object","[Ljava/lang/Object;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 4,"malformed"));
+		
+		code = patch(originalCode, 5,"Task","Task2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 5,"unknown"));
+		
+		code = patch(originalCode, 5,"Task","Task_name");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 5,"wrong"));
+		
+		code = patch(originalCode, 12,"org/jasm/tools/task/Task","org.jasm.tools.task.Task");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 5,"unknown"));
+		
+		code = patch(originalCode, 12,"org/jasm/tools/task/Task","[Ljava/lang/Object;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 5,"malformed"));
+	}
+	
+	@Test
+	public void testConstants() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.tools.task.AssemblerTask");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode, 11,"Task_name","Task_name2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 11,"unknown"));
+		
+		code = patch(originalCode, 12,"org/jasm/tools/task/Task","org.jasm.tools.task.Task");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 11,"malformed"));
+		
+		code = patch(originalCode, 35,"method_desc","method_desc2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 35,"unknown"));
+		
+		code = patch(originalCode, 36,"()V","())V");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 35,"malformed"));
+		
+		code = patch(originalCode, 31,"<init>","<init>>");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 35,"malformed"));
+		
+		code = patch(originalCode, 50,"clazz_name","clazz_name2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 50,"unknown"));
+		
+		code = patch(originalCode, 24,"Lorg/jasm/item/clazz/Clazz;","org/jasm/item/clazz/Clazz;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 50,"malformed"));
+		
+		code = patch(originalCode, 23,"\"clazz\"","\"clazz@\"");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 50,"malformed"));
+		
+		code = patch(originalCode, 34,"Object.init0_nat","Object.init0_nat2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 34,"unknown"));
+		
+		code = patch(originalCode, 34,"Object.init0_nat","log_nat");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 34,"wrong"));
+		
+		code = patch(originalCode, 85,"Resource.createInputStream_nat","log_nat");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 85,"wrong"));
+		
+		code = patch(originalCode, 8,"org/jasm/tools/task/AssemblerTask","[Lorg/jasm/tools/task/AssemblerTask;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 47,"malformed"));
+		
+	}
+	
 	
 	@Test
 	public void testAnnotationTargetContext() {
@@ -68,76 +199,7 @@ public class ErrorsTest {
 		
 	}
 	
-	@Test
-	public void testClassStatements() {
-		TestErrorsListener listener = new TestErrorsListener();
-		byte[] data = getData("org.jasm.tools.task.AssemblerTask");
-		String originalCode = disassemble(data);
-		
-		String code = remove(originalCode, 2);
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 1,"missing"));
-		
-		code = patch(originalCode,2, "52_0","60_0");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 2,"illegal"));
-		
-		code = remove(originalCode, 3);
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 1,"missing"));
-		
-		code = patch(originalCode, 3,"ThisClass","ThisClass2");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 3,"unknown"));
-		
-		code = patch(originalCode, 3,"ThisClass","Object_name");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 3,"wrong"));
-		
-		code = patch(originalCode, 8,"org/jasm/tools/task/AssemblerTask","org.jasm.tools.task.AssemblerTask");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 3,"unknown"));
-		
-		code = patch(originalCode, 8,"org/jasm/tools/task/AssemblerTask","[Lorg/jasm/tools/task/AssemblerTask;");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 3,"illegal"));
-		
-		code = remove(originalCode, 4);
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 1,"missing"));
-		
-		code = patch(originalCode, 4,"Object","Object2");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 4,"unknown"));
-		
-		code = patch(originalCode, 4,"Object","Object_name");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 4,"wrong"));
-		
-		code = patch(originalCode, 10,"java/lang/Object","java.lang.Object");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 4,"unknown"));
-		
-		code = patch(originalCode, 10,"java/lang/Object","[Ljava/lang/Object;");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 4,"illegal"));
-		
-		code = patch(originalCode, 5,"Task","Task2");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 5,"unknown"));
-		
-		code = patch(originalCode, 5,"Task","Task_name");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 5,"wrong"));
-		
-		code = patch(originalCode, 12,"org/jasm/tools/task/Task","org.jasm.tools.task.Task");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 5,"unknown"));
-		
-		code = patch(originalCode, 12,"org/jasm/tools/task/Task","[Ljava/lang/Object;");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 5,"illegal"));
-	}
+	
 	
 	
 	private  byte [] getData(String name) {

@@ -61,7 +61,7 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 				
 			}
 			if (desc == null || !desc.isArray()) { 
-				emitError(ref, "invalid class name or array type"+className);
+				emitError(ref, "malformed class name or array type");
 				return false;
 			} else {
 				descriptor = desc;
