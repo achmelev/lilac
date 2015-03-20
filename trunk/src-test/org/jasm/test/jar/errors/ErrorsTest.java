@@ -153,6 +153,67 @@ public class ErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 47,"malformed"));
 		
+		code = patch(originalCode, 77,"utf8_71","Environment");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 77,"wrong"));
+		
+		code = patch(originalCode, 77,"utf8_71","utf8_711");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 77,"unknown"));
+		
+	}
+	
+	@Test
+	public void testConstants2() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.testclass.LambdaExample$FirstLevel");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode, 100,"LambdaMetafactory.metafactory","LambdaMetafactory.metafactory2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 100,"unknown"));
+		
+		code = patch(originalCode, 100,"LambdaMetafactory.metafactory","LambdaMetafactory_name");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 100,"wrong"));
+		
+		code = patch(originalCode, 101,"accept_desc$0","accept_desc$0_22");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 101,"unknown"));
+		
+		code = patch(originalCode, 101,"accept_desc$0","LambdaMetafactory.metafactory");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 101,"wrong"));
+		
+		code = patch(originalCode, 44,"(Ljava/lang/Object;)V","Ljava/lang/Object;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 101,"malformed"));
+		
+		code = patch(originalCode, 44,"(Ljava/lang/Object;)V","(Ljava/lang/Object;)VV");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 101,"malformed"));
+		
+		code = patch(originalCode, 33,"bootstrap_LambdaMetafactory.metafactory","bootstrap_LambdaMetafactory.metafactory2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 33,"unknown"));
+		
+		code = patch(originalCode, 33,"nameandtype_24","nameandtype_243");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 33,"unknown"));
+		
+		code = patch(originalCode, 33,"nameandtype_24","LambdaMetafactory.metafactory");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 33,"wrong"));
+		
+		code = patch(originalCode, 33,"nameandtype_24","x_nat");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 33,"wrong"));
+		
+		code = patch(originalCode, 33,"nameandtype_24","Object.init0_nat");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 33,"illegal"));
+		
+		
 	}
 	
 	
