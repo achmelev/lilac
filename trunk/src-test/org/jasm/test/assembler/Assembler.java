@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.loader.AssemblerClassLoaderException;
@@ -15,7 +14,6 @@ import org.jasm.parser.SimpleParserErrorListener;
 import org.jasm.resolver.ClassInfoResolver;
 import org.jasm.resolver.ClassLoaderClasspathEntry;
 import org.jasm.resolver.ClazzClassPathEntry;
-import org.jasm.type.verifier.VerifierParams;
 
 public class Assembler {
 
