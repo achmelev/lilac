@@ -8,6 +8,7 @@ import java.io.LineNumberReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.List;
 
 import junit.framework.Assert;
 
@@ -16,13 +17,10 @@ import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
-import org.jasm.parser.SimpleParserErrorListener;
 import org.jasm.resolver.ClassInfoResolver;
 import org.jasm.resolver.ClassLoaderClasspathEntry;
 import org.jasm.resolver.ClazzClassPathEntry;
 import org.junit.Test;
-
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
 public class ErrorsTest {
 	
@@ -36,17 +34,17 @@ public class ErrorsTest {
 		
 		String code = patch(originalCode,165,"supertype","field type");
 		assemble(code, listener);
-		Assert.assertTrue(listener.getMessages(165).contains("target type illegal in this context"));
+		Assert.assertTrue(checkForErrorMessage(listener, 165, "target type illegal"));
 		
 		listener.clear();
 		code = patch(originalCode,215,"field type","supertype");
 		assemble(code, listener);
-		Assert.assertTrue(listener.getMessages(215).contains("target type illegal in this context"));
+		Assert.assertTrue(checkForErrorMessage(listener, 215, "target type illegal"));
 		
 		listener.clear();
 		code = patch(originalCode,299,"catch type try_0","field type");
 		assemble(code, listener);
-		Assert.assertTrue(listener.getMessages(299).contains("target type illegal in this context"));
+		Assert.assertTrue(checkForErrorMessage(listener, 299, "target type illegal"));
 		
 		
 	}
@@ -60,14 +58,85 @@ public class ErrorsTest {
 		
 		String code = patch(originalCode,20,"Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;","org/jasm/test/testclass/EmptyVisibleTypeAnnotation;");
 		assemble(code, listener);
-		Assert.assertTrue(listener.getMessages(184).contains("malformed type descriptor "+"org/jasm/test/testclass/EmptyVisibleTypeAnnotation;"));
-		Assert.assertTrue(listener.getMessages(189).contains("malformed type descriptor "+"org/jasm/test/testclass/EmptyVisibleTypeAnnotation;"));
-		Assert.assertTrue(listener.getMessages(194).contains("malformed type descriptor "+"org/jasm/test/testclass/EmptyVisibleTypeAnnotation;"));
-		Assert.assertTrue(listener.getMessages(199).contains("malformed type descriptor "+"org/jasm/test/testclass/EmptyVisibleTypeAnnotation;"));
-		Assert.assertTrue(listener.getMessages(211).contains("malformed type descriptor "+"org/jasm/test/testclass/EmptyVisibleTypeAnnotation;"));
-		Assert.assertTrue(listener.getMessages(219).contains("malformed type descriptor "+"org/jasm/test/testclass/EmptyVisibleTypeAnnotation;"));
-		Assert.assertTrue(listener.getMessages(303).contains("malformed type descriptor "+"org/jasm/test/testclass/EmptyVisibleTypeAnnotation;"));
+		Assert.assertTrue(checkForErrorMessage(listener, 184,"malformed type descriptor"));
+		Assert.assertTrue(checkForErrorMessage(listener, 189,"malformed type descriptor"));
+		Assert.assertTrue(checkForErrorMessage(listener, 194,"malformed type descriptor"));
+		Assert.assertTrue(checkForErrorMessage(listener, 199,"malformed type descriptor"));
+		Assert.assertTrue(checkForErrorMessage(listener, 211,"malformed type descriptor"));
+		Assert.assertTrue(checkForErrorMessage(listener, 219,"malformed type descriptor"));
+		Assert.assertTrue(checkForErrorMessage(listener, 303,"malformed type descriptor"));
 		
+	}
+	
+	@Test
+	public void testClassStatements() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.tools.task.AssemblerTask");
+		String originalCode = disassemble(data);
+		
+		String code = remove(originalCode, 2);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1,"missing"));
+		
+		code = patch(originalCode,2, "52_0","60_0");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 2,"illegal"));
+		
+		code = remove(originalCode, 3);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1,"missing"));
+		
+		code = patch(originalCode, 3,"ThisClass","ThisClass2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 3,"unknown"));
+		
+		code = patch(originalCode, 3,"ThisClass","Object_name");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 3,"wrong"));
+		
+		code = patch(originalCode, 8,"org/jasm/tools/task/AssemblerTask","org.jasm.tools.task.AssemblerTask");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 3,"unknown"));
+		
+		code = patch(originalCode, 8,"org/jasm/tools/task/AssemblerTask","[Lorg/jasm/tools/task/AssemblerTask;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 3,"illegal"));
+		
+		code = remove(originalCode, 4);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1,"missing"));
+		
+		code = patch(originalCode, 4,"Object","Object2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 4,"unknown"));
+		
+		code = patch(originalCode, 4,"Object","Object_name");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 4,"wrong"));
+		
+		code = patch(originalCode, 10,"java/lang/Object","java.lang.Object");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 4,"unknown"));
+		
+		code = patch(originalCode, 10,"java/lang/Object","[Ljava/lang/Object;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 4,"illegal"));
+		
+		code = patch(originalCode, 5,"Task","Task2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 5,"unknown"));
+		
+		code = patch(originalCode, 5,"Task","Task_name");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 5,"wrong"));
+		
+		code = patch(originalCode, 12,"org/jasm/tools/task/Task","org.jasm.tools.task.Task");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 5,"unknown"));
+		
+		code = patch(originalCode, 12,"org/jasm/tools/task/Task","[Ljava/lang/Object;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 5,"illegal"));
 	}
 	
 	
@@ -153,6 +222,60 @@ public class ErrorsTest {
 		}
 		
 		return result.toString();
+	}
+	
+	private String remove(String code, int lineNumber) {
+		StringReader reader = new StringReader(code);
+		LineNumberReader ln = new LineNumberReader(reader);
+		StringBuilder result = new StringBuilder();
+		try {
+			String line = ln.readLine();
+			while (line != null) {
+				if (ln.getLineNumber() == lineNumber) {
+					
+				} else {
+					result.append(line+"\n");
+				}
+				line = ln.readLine();
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		
+		return result.toString();
+	}
+	
+	private String insert(String code, int lineNumber, String newLine) {
+		StringReader reader = new StringReader(code);
+		LineNumberReader ln = new LineNumberReader(reader);
+		StringBuilder result = new StringBuilder();
+		try {
+			String line = ln.readLine();
+			while (line != null) {
+				if (ln.getLineNumber() == lineNumber) {
+					result.append(newLine+"\n");
+					result.append(line+"\n");
+				} else {
+					result.append(line+"\n");
+				}
+				line = ln.readLine();
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		
+		return result.toString();
+	}
+	
+	private boolean checkForErrorMessage(TestErrorsListener listener, int lineNumber, String prefix) {
+		List<String> messages = listener.getMessages(lineNumber);
+		for (String message: messages) {
+			if (message.startsWith(prefix)) {
+				return true;
+			}
+		}
+		listener.clear();
+		return false;
 	}
 
 }
