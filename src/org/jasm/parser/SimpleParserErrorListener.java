@@ -12,6 +12,11 @@ public class SimpleParserErrorListener implements IParserErrorListener {
 		errors.add(new ErrorMessage(line, charPos, msg));
 		
 	}
+	
+	@Override
+	public void emitInternalError(int line, int charPos, String msg) {
+		errors.add(new ErrorMessage(line, charPos, msg));
+	}
 
 	@Override
 	public void flush() {
@@ -32,5 +37,7 @@ public class SimpleParserErrorListener implements IParserErrorListener {
 		errors.clear();
 		
 	}
+
+	
 
 }
