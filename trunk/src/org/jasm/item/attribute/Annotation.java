@@ -13,6 +13,7 @@ import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.parser.literals.IntegerLiteral;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.TypeDescriptor;
@@ -23,7 +24,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
-	private boolean parameterIndexSet= false;
+	private IntegerLiteral parameterIndexLiteral = null;
 	private int parameterIndex = -1;
 	
 	private boolean isTypeAnnotation = false;
@@ -234,8 +235,12 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	private  boolean verifyDescriptor(SymbolReference ref, String descriptor) {
 		try {
 			typeDescriptor = new TypeDescriptor(descriptor);
+			if (!typeDescriptor.isObject()) {
+				emitError(ref, "malformed class type descriptor");
+				return false;
+			}
 		} catch (IllegalDescriptorException e) {
-			emitError(ref, "malformed type descriptor "+descriptor);
+			emitError(ref, "malformed type descriptor");
 			return false;
 		}
 		
@@ -364,17 +369,20 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 		values.add(element);
 	}
 
-	public void setParameterIndex(int parameterIndex) {
-		this.parameterIndexSet = true;
-		this.parameterIndex = parameterIndex;
+	public void setParameterIndexLiteral(IntegerLiteral parameterIndexLiteral) {
+		this.parameterIndexLiteral = parameterIndexLiteral;
+	}
+	
+	public IntegerLiteral getParameterIndexLiteral() {
+		return parameterIndexLiteral;
 	}
 
 	public int getParameterIndex() {
 		return parameterIndex;
 	}
-
-	public boolean isParameterIndexSet() {
-		return parameterIndexSet;
+	
+	public void setParameterIndex(int parameterIndex) {
+		this.parameterIndex = parameterIndex;
 	}
 
 	public boolean isTypeAnnotation() {

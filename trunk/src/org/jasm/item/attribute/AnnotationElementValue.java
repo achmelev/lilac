@@ -357,12 +357,12 @@ public class AnnotationElementValue extends AbstractByteCodeItem implements ICon
 		try {
 			TypeDescriptor desc = new TypeDescriptor(descriptor);
 			if (!desc.isObject()) {
-				emitError(classInfoReference, "expected an enum class descriptor: "+descriptor);
+				emitError(enumTypeNameReference, "malformed class type descriptor");
 			} else {
 				enumTypeDescriptor = desc;
 			}
 		} catch (IllegalDescriptorException e) {
-			emitError(classInfoReference, "malformed class annotation descriptor: "+descriptor);
+			emitError(enumTypeNameReference, "malformed type descriptor");
 		}
 		
 	}

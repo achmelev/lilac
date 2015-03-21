@@ -1952,8 +1952,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			AnnotationparameterindexContext ctx) {
 		Annotation annot = (Annotation)stack.peek();
 		IntegerLiteral lit = createIntegerLiteral(ctx.IntegerLiteral());
+		
 		if (lit.isValid()) {
-			annot.setParameterIndex(lit.getValue());
+			annot.setParameterIndexLiteral(lit);
 		} else {
 			emitError(ctx.IntegerLiteral(), "malformed integer or integer out of bounds");
 		}
