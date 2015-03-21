@@ -112,18 +112,15 @@ public class EnclosingMethodAttributeContent extends AbstractSimpleAttributeCont
 	@Override
 	protected void doResolveAfterParse() {
 		this.clazz = getConstantPool().checkAndLoadFromSymbolTable(this,ClassInfo.class, clazzReference);
-		if (this.clazz == null) {
-			emitError(clazzReference, "unknown class info");
-		}
+		if (this.clazz != null && this.clazz.isArray()) {
+			emitError(clazzReference, "malformed class or interface name");
+		} 
 		if (this.methodReference != null) {
 			this.method = getConstantPool().checkAndLoadFromSymbolTable(this,NameAndTypeInfo.class, methodReference);
-			if (this.method == null) {
-				emitError(methodReference, "unknown name_and_type info");
-			} else {
-				if (method.isField()) {
-					emitError(methodReference, "expected method but got type descriptor");
-				}
+			if (method != null && method.isField()) {
+				emitError(methodReference, "wrong nameandtype constant");
 			}
+			
 		}
 	}
 

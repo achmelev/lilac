@@ -296,6 +296,7 @@ public class ErrorsTest {
 		byte[] data = getData("org.jasm.test.testclass.AssemblerClassLoader");
 		String originalCode = disassemble(data);
 		
+		
 		String code = patch(originalCode, 259,"ClassNotFoundException","ClassNotFoundExceptionn");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 259,"unknown"));
@@ -350,6 +351,39 @@ public class ErrorsTest {
 		code = patch(originalCode, 47,"\"FirstLevel\"","\"org.FirstLevel\"");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 52,"malformed"));
+	}
+	
+	@Test
+	public void testEnclosingMethod() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.playground.CalculatorDelegate$1");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode, 44,"CalculatorDelegate","CalculatorDelegate2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 44,"unknown"));
+		
+		code = patch(originalCode, 44,"CalculatorDelegate","CalculatorDelegate_name");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 44,"wrong"));
+		
+		code = patch(originalCode, 40,"org/jasm/test/playground/CalculatorDelegate","[Lorg/jasm/test/playground/CalculatorDelegate;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 44,"malformed"));
+		
+		code = patch(originalCode, 44,"nameandtype_34","nameandtype_344");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 44,"unknown"));
+		
+		code = patch(originalCode, 44,"nameandtype_34","CalculatorDelegate");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 44,"wrong"));
+		
+		code = patch(originalCode, 32,"(II)I","I");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 44,"wrong"));
+		
+		
 	}
 	
 	
