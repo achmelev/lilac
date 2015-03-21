@@ -132,11 +132,17 @@ public class InnerClass extends AbstractByteCodeItem implements IUtf8ConstantPoo
 	protected void doResolveAfterParse() {
 		if (this.innerClassReference != null) {
 			this.innerClass = getConstantPool().checkAndLoadFromSymbolTable(this,ClassInfo.class, innerClassReference);
+			if (this.innerClass != null && this.innerClass.isArray()) {
+				emitError(innerClassReference, "malformed class name");
+			}
 		} else {
 			emitError(null, "missing inner statement");
 		}
 		if (this.outerClassReference != null) {
 			this.outerClass = getConstantPool().checkAndLoadFromSymbolTable(this,ClassInfo.class, outerClassReference);
+			if (this.outerClass != null && this.outerClass.isArray()) {
+				emitError(outerClassReference, "malformed class name");
+			}
 		} 
 		if (this.innerNameReference != null) {
 			this.innerName = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, innerNameReference);
