@@ -386,6 +386,180 @@ public class ErrorsTest {
 		
 	}
 	
+	@Test
+	public void testSourceAndSignatureFile() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.testclass.AssemblerClassLoader");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode, 200,"source_file_name","source_file_name2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 200,"unknown"));
+		
+		code = patch(originalCode, 200,"source_file_name","ThisClass");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 200,"wrong"));
+		
+		code = patch(originalCode, 260,"signature_name","signature_name2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 260,"unknown"));
+		
+		code = patch(originalCode, 260,"signature_name","ThisClass");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 260,"wrong"));
+	}
+	
+	@Test
+	public void testAnnotations() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.testclass.AnnotatedClass");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode, 55,"type_desc","type_desc2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 55,"unknown"));
+		
+		code = patch(originalCode, 55,"type_desc","ThisClass");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 55,"wrong"));
+		
+		code = patch(originalCode, 22,"Lorg/jasm/test/testclass/TestInvisibleAnnotation;","org/jasm/test/testclass/TestInvisibleAnnotation;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 55,"malformed"));
+		
+		code = patch(originalCode, 22,"Lorg/jasm/test/testclass/TestInvisibleAnnotation;","[Lorg/jasm/test/testclass/TestInvisibleAnnotation;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 55,"malformed"));
+		
+		code = patch(originalCode, 85,"long_33","long_334");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 85,"unknown"));
+		
+		code = patch(originalCode, 85,"long_33","int_31");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 85,"wrong"));
+		
+		code = patch(originalCode, 94,"type_desc$3","type_desc$344");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 94,"unknown"));
+		
+		code = patch(originalCode, 94,"type_desc$3","long_33");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 94,"wrong"));
+		
+		code = patch(originalCode, 43,"Lorg/jasm/test/testclass/NestedAnnotation;","org/jasm/test/testclass/NestedAnnotation;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 94,"malformed"));
+		
+		code = patch(originalCode, 43,"Lorg/jasm/test/testclass/NestedAnnotation;","[Lorg/jasm/test/testclass/NestedAnnotation;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 94,"malformed"));
+		
+		code = patch(originalCode, 101,"int_31","int_312");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 101,"unknown"));
+		
+		code = patch(originalCode, 101,"int_31","long_33");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 101,"wrong"));
+		
+		code = patch(originalCode, 133,"type_desc$0","long_33");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 133,"wrong"));
+		
+		code = patch(originalCode, 136,"utf8_19","utf8_192");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 136,"unknown"));
+		
+		code = patch(originalCode, 136,"utf8_19","long_33");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 136,"wrong"));
+		
+		code = patch(originalCode, 25,"booleanValue","boolean.Value");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 136,"malformed"));
+		
+		code = patch(originalCode, 60,"utf8_19","utf8_192");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 60,"unknown"));
+		
+		code = patch(originalCode, 60,"utf8_19","long_33");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 60,"wrong"));
+		
+		code = patch(originalCode, 25,"booleanValue","boolean.Value");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 60,"malformed"));
+		
+		code = patch(originalCode, 134,"0","100");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 134,"parameter index out of bounds"));
+		
+		
+		code = patch(originalCode, 170,"type_desc$3","type_desc$344");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 170,"unknown"));
+		
+		code = patch(originalCode, 170,"type_desc$3","long_33");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 170,"wrong"));
+		
+		code = patch(originalCode, 43,"Lorg/jasm/test/testclass/NestedAnnotation;","org/jasm/test/testclass/NestedAnnotation;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 170,"malformed"));
+		
+		code = patch(originalCode, 43,"Lorg/jasm/test/testclass/NestedAnnotation;","[Lorg/jasm/test/testclass/NestedAnnotation;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 170,"malformed"));
+		
+		code = patch(originalCode, 73,"type_desc$1","type_desc$1234");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"unknown"));
+		
+		code = patch(originalCode, 73,"type_desc$1","long_33");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"wrong"));
+		
+		code = patch(originalCode, 32,"Lorg/jasm/test/testclass/Days;","org/jasm/test/testclass/Days;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"malformed"));
+		
+		code = patch(originalCode, 32,"Lorg/jasm/test/testclass/Days;","[Lorg/jasm/test/testclass/Days;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"malformed"));
+		
+		code = patch(originalCode, 73,"utf8_47","utf8_4723");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"unknown"));
+		
+		code = patch(originalCode, 52,"MONDAY","MONDAY.MONDAY");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"malformed"));
+		
+		code = patch(originalCode, 73,"utf8_47","long_33");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"wrong"));
+		
+		code = patch(originalCode, 77,"type_desc$2","type_desc$234");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 77,"unknown"));
+		
+		code = patch(originalCode, 77,"type_desc$2","long_33");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 77,"wrong"));
+		
+		code = patch(originalCode, 35,"Ljava/lang/Void;","Ljava/lang/Void");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 77,"malformed"));
+		
+		
+		
+		
+		
+		
+		
+	}
+	
 	
 	@Test
 	public void testAnnotationTargetContext() {

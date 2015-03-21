@@ -4,6 +4,7 @@ import org.jasm.item.constantpool.Utf8Info;
 
 public class SignatureAttributeContent extends AbstractStringAttributeContent {
 	
+	//TODO - checking signature syntax
 	
 	
 	public SignatureAttributeContent() {
