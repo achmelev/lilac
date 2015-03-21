@@ -129,7 +129,11 @@ public class ExceptionsAttributeContent extends AbstractSimpleAttributeContent i
 		for (SymbolReference ref: exceptionReferences) {
 			ClassInfo cl = pool.checkAndLoadFromSymbolTable(this,ClassInfo.class, ref);
 			if (cl != null) {
-				exceptions.add(cl);
+				if (!cl.isArray()) {
+					exceptions.add(cl);
+				} else {
+					emitError(ref, "malformed class name");
+				}
 			}
 		}
 		classInfos = new ClassInfo[exceptions.size()];

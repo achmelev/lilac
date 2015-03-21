@@ -255,6 +255,103 @@ public class ErrorsTest {
 		Assert.assertTrue(checkForErrorMessage(listener, 225,"malformed"));
 	}
 	
+	@Test
+	public void testMethodStatements() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.testclass.AssemblerTask");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode, 256,"public","protected public");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 256,"illegal"));
+		
+		code = patch(originalCode, 257,"init0_name","init0_name2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 257,"unknown"));
+		
+		code = patch(originalCode, 257,"init0_name","string_200");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 257,"wrong"));
+		
+		code = patch(originalCode, 31,"<init>","<init>>");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 257,"malformed"));
+		
+		code = patch(originalCode, 258,"init0_desc","init0_desc2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 258,"unknown"));
+		
+		code = patch(originalCode, 258,"init0_desc","string_200");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 258,"wrong"));
+		
+		code = patch(originalCode, 32,"Lorg/jasm/tools/task/ITaskCallback;Lorg/jasm/tools/resource/Resource;Ljava/util/Properties;)V","Lorg/jasm/tools/task/ITaskCallback;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 258,"malformed"));
+	}
+	
+	@Test
+	public void testThrows() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.testclass.AssemblerClassLoader");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode, 259,"ClassNotFoundException","ClassNotFoundExceptionn");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 259,"unknown"));
+		
+		code = patch(originalCode, 259,"ClassNotFoundException","ClassNotFoundException_name");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 259,"wrong"));
+		
+		code = patch(originalCode, 49,"java/lang/ClassNotFoundException","[Ljava/lang/ClassNotFoundException;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 259,"malformed"));
+	}
+	
+	@Test
+	public void testInnerClass() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.testclass.LambdaExample");
+		String originalCode = disassemble(data);
+		
+		String code = remove(originalCode, 50);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 49,"missing"));
+		
+		code = patch(originalCode, 50,"LambdaExample$FirstLevel","LambdaExample$FirstLevell");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 50,"unknown"));
+		
+		code = patch(originalCode, 50,"LambdaExample$FirstLevel","LambdaExample$FirstLevel_name");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 50,"wrong"));
+		
+		code = patch(originalCode, 27,"org/jasm/test/testclass/LambdaExample$FirstLevel","[Lorg/jasm/test/testclass/LambdaExample$FirstLevel;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 50,"malformed"));
+		
+		code = patch(originalCode, 51,"ThisClass","ThisClasss");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 51,"unknown"));
+		
+		code = patch(originalCode, 51,"ThisClass","ThisClass_name");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 51,"wrong"));
+		
+		code = patch(originalCode, 52,"FirstLevel_name","FirstLevel_namee");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 52,"unknown"));
+		
+		code = patch(originalCode, 52,"FirstLevel_name","ThisClass");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 52,"wrong"));
+		
+		code = patch(originalCode, 47,"\"FirstLevel\"","\"org.FirstLevel\"");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 52,"malformed"));
+	}
+	
 	
 	@Test
 	public void testAnnotationTargetContext() {

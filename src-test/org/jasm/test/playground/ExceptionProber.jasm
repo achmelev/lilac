@@ -95,7 +95,7 @@ public super class {
   private method {
     name doCheck_name; // doCheck
     descriptor method_desc; // (I)I
-    throws BooleanArray; // org/jasm/test/playground/ProberException
+    throws ProberException; // org/jasm/test/playground/ProberException
    
     debug vars {
       var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/ExceptionProber;
