@@ -798,7 +798,48 @@ public class ErrorsTest {
 		
 	}
 	
-	
+	@Test
+	public void testDebugInfos() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.testclass.AssemblerTask");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode,261,"ir4","ir03");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 261,"unknown"));
+		
+		code = patch(originalCode,261,"25","0");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 261,"line"));
+		
+		code = patch(originalCode,270,"callback","callback2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 270,"unknown"));
+		
+		code = patch(originalCode,270,"callback_name","callback_name2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 270,"unknown"));
+		
+		code = patch(originalCode,270,"callback_name","ThisClass");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 270,"wrong"));
+		
+		code = patch(originalCode,21,"\"callback\"","\"callback.callback\"");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 270,"malformed"));
+		
+		code = patch(originalCode,270,"callback_desc","callback_desc2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 270,"unknown"));
+		
+		code = patch(originalCode,270,"callback_desc","ThisClass");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 270,"wrong"));
+		
+		code = patch(originalCode,22,"Lorg/jasm/tools/task/ITaskCallback;","org/jasm/tools/task/ITaskCallback;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 270,"malformed"));
+	}
 	
 	
 	private  byte [] getData(String name) {
