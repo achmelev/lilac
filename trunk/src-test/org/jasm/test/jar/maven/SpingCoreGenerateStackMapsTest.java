@@ -34,6 +34,7 @@ public class SpingCoreGenerateStackMapsTest extends
 	protected boolean filter(String name) {
 		return !"org/springframework/cglib/transform/AbstractTransformTask.class".equals(name)
 		&& !"org/springframework/cglib/transform/AbstractProcessTask.class".equals(name)		
+		/**&& "org/springframework/util/ConcurrentReferenceHashMap$TaskOption.class".equals(name)**/
 		;
 	}
 
