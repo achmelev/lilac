@@ -1,11 +1,8 @@
 package org.jasm.item.constantpool;
 
-import org.jasm.resolver.MethodInfo;
 
 public class MethodrefInfo extends AbstractRefInfo {
 	
-	
-	private MethodInfo externalInfo;
 	
 	public MethodrefInfo() {
 		super();
@@ -29,7 +26,7 @@ public class MethodrefInfo extends AbstractRefInfo {
 	
 	@Override
 	protected void doVerify() {
-		externalInfo = getRoot().checkAndLoadMethodInfo(this, referenceLabels[0], getClassName(),getName(), getDescriptor(), false);
+		
 	}
 	
 	

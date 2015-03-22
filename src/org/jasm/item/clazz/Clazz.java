@@ -364,7 +364,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			}
 		}
 		if (!valid) {
-			emitError(intfSymbol, clinfo.getClassName()+" isn't an interface");
+			emitError(intfSymbol, clinfo.getClassName()+" is not an interface");
 		}
 		
 	}
@@ -809,14 +809,8 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		return null;
 	}
 	
-	
-	private List<String> notResolved = new ArrayList<String>();
-	
 	private void emitResolveError(IErrorEmitter caller, SymbolReference symbol, String name, String message) {
-		if (!notResolved.contains(name)) {
-			caller.emitError(symbol, message);
-			notResolved.add(name);
-		}
+		caller.emitError(symbol, message);
 	}
 
 	public org.jasm.resolver.ExternalClassInfo getMe() {

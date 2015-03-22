@@ -5,7 +5,6 @@ import org.jasm.resolver.FieldInfo;
 
 public class FieldrefInfo extends AbstractRefInfo {
 	
-	private FieldInfo externalInfo = null;
 	
 	public FieldrefInfo() {
 		super();
@@ -31,7 +30,7 @@ public class FieldrefInfo extends AbstractRefInfo {
 	
 	@Override
 	protected void doVerify() {
-		externalInfo = getRoot().checkAndLoadFieldInfo(this, referenceLabels[0], getClassName(),getName(), getDescriptor(), false);
+		
 	}
 	
 

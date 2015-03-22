@@ -9,7 +9,6 @@ import org.jasm.type.descriptor.TypeDescriptor;
 public class ClassInfo extends AbstractReferenceEntry implements INameReferencingEntry, IUtf8ConstantPoolReference {
 	
 	private TypeDescriptor descriptor;
-	private ExternalClassInfo externalInfo;
 	
 	public ClassInfo() {
 	}
@@ -106,11 +105,7 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 
 	@Override
 	protected void doVerify() {
-		SymbolReference symbol = null;
-		if (referenceLabels != null) {
-			symbol = referenceLabels[0];
-		}
-		externalInfo = getRoot().checkAndLoadClassInfo(this, symbol, getClassName(), false);
+		
 	}
 
 
@@ -118,9 +113,5 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 		return descriptor;
 	}
 
-
-	public ExternalClassInfo getExternalInfo() {
-		return externalInfo;
-	}
 	
 }

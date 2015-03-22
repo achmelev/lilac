@@ -637,12 +637,6 @@ public class ErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 77,"malformed"));
 		
-		
-		
-		
-		
-		
-		
 	}
 	
 	
@@ -878,6 +872,61 @@ public class ErrorsTest {
 		code = patch(originalCode,398,"ir254->ir259","ir259->ir254");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 398,"illegal"));
+		
+	}
+	
+	@Test
+	public void testBootstrapMethod() {
+		
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.testclass.LambdaExample$FirstLevel");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode,115,"LambdaMetafactory.metafactory_handle","LambdaMetafactory.metafactory_handless");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 115,"unknown"));
+		
+		code = patch(originalCode,115,"LambdaMetafactory.metafactory_handle","methodtype_100");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 115,"wrong"));
+		
+		code = patch(originalCode,115,"lambda$0_handle","lambda$0_handle2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 115,"unknown"));
+		
+		code = patch(originalCode,115,"lambda$0_handle","method_desc$0");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 115,"wrong"));
+		
+	}
+	
+	@Test
+	public void testExternalReferences() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.testclass.AssemblerTask");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode,10,"java/lang/Object","java/langg/Object");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 4,"class"));
+		
+		code = patch(originalCode,12,"org/jasm/tools/task/Task","org/jasm/tools/taskk/Task");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 5,"class"));
+		
+		code = patch(originalCode,131,"\"getName\"","\"getNamee\"");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 494,"method"));
+		
+		code = patch(originalCode,141,"java/lang/Class","java/langg/Class");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 494,"class"));
+		
+		code = insert(originalCode,23,"const utf8 clazz_name2 \"clazzz\";");
+		code = patch(code,51,"clazz_name","clazz_name2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 461,"field"));
+		
 		
 	}
 	
