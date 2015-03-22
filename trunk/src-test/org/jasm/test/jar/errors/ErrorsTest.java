@@ -839,6 +839,46 @@ public class ErrorsTest {
 		code = patch(originalCode,22,"Lorg/jasm/tools/task/ITaskCallback;","org/jasm/tools/task/ITaskCallback;");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 270,"malformed"));
+		
+		code = patch(originalCode,380,"ir140->ir254","ir254->ir140");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 380,"illegal"));
+	}
+	
+	@Test
+	public void testExceptionHandler() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.testclass.AssemblerTask");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode,398,"IOException","IOException2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 398,"unknown"));
+		
+		code = patch(originalCode,398,"IOException","IOException_name");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 398,"wrong"));
+		
+		code = patch(originalCode,170,"java/io/IOException","[Ljava/io/IOException;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 398,"malformed"));
+		
+		code = patch(originalCode,398,"ir265","ir2655");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 398,"unknown"));
+		
+		code = patch(originalCode,398,"ir254","ir2544");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 398,"unknown"));
+		
+		code = patch(originalCode,398,"ir259","ir2594");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 398,"unknown"));
+		
+		code = patch(originalCode,398,"ir254->ir259","ir259->ir254");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 398,"illegal"));
+		
 	}
 	
 	

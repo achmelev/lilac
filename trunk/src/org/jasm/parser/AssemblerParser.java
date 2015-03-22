@@ -1038,6 +1038,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 		var.setNameReference(createSymbolReference(ctx.Identifier(index)));
 		var.setDescriptorReference(createSymbolReference(ctx.Identifier(index+1)));
+		var.setSourceLocation(createSourceLocation(ctx.VAR()));
 		content.add(var);
 	}
 	
@@ -1074,6 +1075,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 		var.setNameReference(createSymbolReference(ctx.Identifier(index)));
 		var.setDescriptorReference(createSymbolReference(ctx.Identifier(index+1)));
+		var.setSourceLocation(createSourceLocation(ctx.VAR()));
 		content.add(var);
 	}
 
