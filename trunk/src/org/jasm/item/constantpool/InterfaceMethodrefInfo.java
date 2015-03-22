@@ -4,7 +4,6 @@ import org.jasm.resolver.MethodInfo;
 
 public class InterfaceMethodrefInfo extends AbstractRefInfo {
 	
-	private MethodInfo externalInfo;
 
 	public InterfaceMethodrefInfo() {
 		super();
@@ -28,7 +27,7 @@ public class InterfaceMethodrefInfo extends AbstractRefInfo {
 	
 	@Override
 	protected void doVerify() {
-		externalInfo = getRoot().checkAndLoadInterfaceMethodInfo(this, referenceLabels[0], getClassName(),getName(), getDescriptor(), false);
+
 	}
 
 }
