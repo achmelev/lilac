@@ -930,6 +930,57 @@ public class ErrorsTest {
 		
 	}
 	
+	@Test
+	public void testInstructions() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.testclass.AssemblerTask");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode,414,"this","this0");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 414,"unknown"));
+		
+		code = patch(originalCode,414,"this","twoStages");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 414,"wrong"));
+		
+		code = patch(originalCode,424,"Environment.getBooleanValue","Environment.getBooleanValue2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 424,"unknown"));
+		
+		code = patch(originalCode,424,"Environment.getBooleanValue","Environment");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 424,"wrong"));
+		
+		code = patch(originalCode,424,"Environment.getBooleanValue","AssemblerParser.addErrorListener");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 424,"method"));
+	}
+	
+	@Test
+	public void testStackmap() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.testclass.AssemblerTask");
+		String originalCode = disassemble(data);
+		
+		String code = patch(originalCode,383,"ir16","ir164");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 383,"unknown"));
+		
+		code = patch(originalCode,383,"InputStream","InputStream2");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 383,"unknown"));
+		
+		code = patch(originalCode,383,"InputStream","InputStream_name");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 383,"wrong"));
+		
+		code = remove(originalCode,385);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 467,"code verification error"));
+		
+		
+	}
 	
 	private  byte [] getData(String name) {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -944,6 +995,8 @@ public class ErrorsTest {
 		
 		return data;
 	}
+	
+	
 	
 	private static String disassemble(byte [] data) {
 		ByteArrayByteBuffer bbuf = new ByteArrayByteBuffer(data);

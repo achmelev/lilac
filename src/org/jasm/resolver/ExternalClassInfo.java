@@ -219,6 +219,10 @@ public class ExternalClassInfo extends AbstractInfo {
 		
 		return result;
 	}
+
+	public void setSuperClass(ExternalClassInfo superClass) {
+		this.superClass = superClass;
+	}
 	
 	
 

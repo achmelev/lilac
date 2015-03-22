@@ -274,11 +274,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	public boolean resolveMyselfAndSuperclasses() {
 		if (isAfterParse()) {
 			if (resolvedMyself == null) {
-				verifySuperclass();
-				for (int i=0;i<interfaces.size(); i++) {
-					verifyInterface(interfaceSymbols.get(i), interfaces.get(i));
-				}
 				me = ExternalClassInfo.createFromClass(this);
+				verifySuperclass(me);
+				for (int i=0;i<interfaces.size(); i++) {
+					verifyInterface(interfaceSymbols.get(i), interfaces.get(i), me);
+				}
 				ClazzClassPathEntry entry = new ClazzClassPathEntry();
 				meResolver = new ClassInfoResolver();
 				meResolver.add(entry);
@@ -330,34 +330,35 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		}
 	}
 	
-	private void verifySuperclass() {
+	private void verifySuperclass(ExternalClassInfo me) {
 		if (this.superClass != null) {
-			ExternalClassInfo superClass = checkAndLoadClassInfo(this, superClassSymbol, getSuperClass().getClassName(), true);
-			if (superClass != null) {
+			ExternalClassInfo superClassExternal = checkAndLoadClassInfo(this, superClassSymbol, getSuperClass().getClassName(), true);
+			if (superClassExternal != null) {
 				if (getModifier().isInterface()) {
-					if (!superClass.getName().equals("java/lang/Object")) {
+					if (!superClassExternal.getName().equals("java/lang/Object")) {
 						emitError(superClassSymbol, "interfaces must have java/lang/Object as superclass");
 					}
 				} else {
-					if (superClass.getModifier().isInterface()) {
+					if (superClassExternal.getModifier().isInterface()) {
 						emitError(superClassSymbol, "interfaces aren't allowed as superclasses");
 					}
-					if (superClass.getModifier().isFinal()) {
+					if (superClassExternal.getModifier().isFinal()) {
 						emitError(superClassSymbol, "final classes aren't allowed as superclasses");
 					}
 				}
+				me.setSuperClass(superClassExternal);
 			}
 		}
 	}
 	
-	private void verifyInterface(SymbolReference intfSymbol, ClassInfo clinfo) {
+	private void verifyInterface(SymbolReference intfSymbol, ClassInfo clinfo, ExternalClassInfo me) {
 		boolean valid = true;
 		if (clinfo.isArray()) {
 			valid = false;
 		} else {
 			ExternalClassInfo intfClass = checkAndLoadClassInfo(this, intfSymbol, clinfo.getClassName(), true);
 			if (intfClass != null) {
-				
+				me.getInterfaces().add(intfClass);
 				if (!intfClass.getModifier().isInterface()) {
 					valid = false;
 				} 
