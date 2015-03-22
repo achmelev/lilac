@@ -86,7 +86,11 @@ public class AnnotationDefaultAttributeContent extends
 
 	@Override
 	protected void doResolveAfterParse() {
-		value.resolve();
+		if (value != null) {
+			value.resolve();
+		} else {
+			emitError(null, "missing value statement");
+		}
 	}
 
 	@Override
@@ -124,8 +128,12 @@ public class AnnotationDefaultAttributeContent extends
 	}
 
 	public void setValue(AnnotationElementValue value) {
-		value.setParent(this);
-		this.value = value;
+		if (this.value == null) {
+			value.setParent(this);
+			this.value = value;
+		} else {
+			emitErrorOnLocation(value.getSourceLocation(), "dublicate value statement");
+		}
 	}
 	
 	

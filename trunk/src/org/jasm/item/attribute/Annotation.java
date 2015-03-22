@@ -214,11 +214,20 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 
 	@Override
 	protected void doResolveAfterParse() {
-		type = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, typeValueReference);
+		if (typeValueReference != null) {
+			type = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, typeValueReference);
+		} else {
+			emitError(null, "missing type statement");
+		}
 		if (type != null) {
 			if (verifyDescriptor(typeValueReference, type.getValue())) {
 				if (isTypeAnnotation) {
-					target.resolve();
+					if (target != null) {
+						target.resolve();
+					} else {
+						emitError(null, "missing targets statement");
+					}
+					
 					if (targetPath == null) {
 						targetPath = new AnnotationTargetTypePath(new short[]{}, new short[]{});
 						targetPath.setParent(this);
@@ -229,7 +238,7 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 					value.resolve();
 				}
 			}
-		}
+		} 
 	}
 	
 	private  boolean verifyDescriptor(SymbolReference ref, String descriptor) {
@@ -411,12 +420,21 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	}
 
 	public void setTarget(AbstractAnnotationTargetType target) {
-		this.target = target;
-		this.target.setParent(this);
+		if (this.target != null) {
+			
+		} else {
+			this.target = target;
+			this.target.setParent(this);
+		}
+		
 	}
 
 	public TypeDescriptor getTypeDescriptor() {
 		return typeDescriptor;
+	}
+
+	public SymbolReference getTypeValueReference() {
+		return typeValueReference;
 	}
 
 	

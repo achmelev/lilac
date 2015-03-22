@@ -38,7 +38,20 @@ public class ErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 1,"missing"));
 		
-		code = patch(originalCode,2, "52_0","60_0");
+		code = insert(originalCode, 2,"version 52.0;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 3,"dublicate"));
+		
+		code = remove(originalCode, 3);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1,"missing"));
+		
+		code = insert(originalCode,3,"name ThisClass;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 4,"dublicate"));	
+		
+		
+		code = patch(originalCode,2, "52.0","60.0");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 2,"illegal"));
 		
@@ -66,6 +79,10 @@ public class ErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 1,"missing"));
 		
+		code = insert(originalCode, 4, "extends Object;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 5,"dublicate"));
+		
 		code = patch(originalCode, 4,"Object","Object2");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 4,"unknown"));
@@ -81,6 +98,10 @@ public class ErrorsTest {
 		code = patch(originalCode, 10,"java/lang/Object","[Ljava/lang/Object;");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 4,"malformed"));
+		
+		code = insert(originalCode, 5, "implements Task;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 6,"dublicate"));
 		
 		code = patch(originalCode, 5,"Task","Task2");
 		assemble(code, listener);
@@ -226,6 +247,14 @@ public class ErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 227,"illegal"));
 		
+		code = remove(originalCode, 224);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 223,"missing"));
+		
+		code = insert(originalCode, 224,"name log_name;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 225,"dublicate"));
+		
 		code = patch(originalCode, 224,"log_name","log_name2");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 224,"unknown"));
@@ -237,6 +266,15 @@ public class ErrorsTest {
 		code = patch(originalCode, 15,"\"log\"","\"log.log\"");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 224,"malformed"));
+		
+		
+		code = remove(originalCode, 225);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 223,"missing"));
+		
+		code = insert(originalCode, 225,"descriptor log_desc;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 226,"dublicate"));
 		
 		code = patch(originalCode, 225,"log_desc","log_desc2");
 		assemble(code, listener);
@@ -265,6 +303,14 @@ public class ErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 256,"illegal"));
 		
+		code = remove(originalCode, 257);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 256,"missing"));
+		
+		code = insert(originalCode, 257,"name init0_name;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 258,"dublicate"));
+		
 		code = patch(originalCode, 257,"init0_name","init0_name2");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 257,"unknown"));
@@ -276,6 +322,14 @@ public class ErrorsTest {
 		code = patch(originalCode, 31,"<init>","<init>>");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 257,"malformed"));
+		
+		code = remove(originalCode, 258);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 256,"missing"));
+		
+		code = insert(originalCode, 258,"descriptor init0_desc;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 259,"dublicate"));
 		
 		code = patch(originalCode, 258,"init0_desc","init0_desc2");
 		assemble(code, listener);
@@ -415,7 +469,15 @@ public class ErrorsTest {
 		byte[] data = getData("org.jasm.test.testclass.AnnotatedClass");
 		String originalCode = disassemble(data);
 		
-		String code = patch(originalCode, 55,"type_desc","type_desc2");
+		String code = remove(originalCode, 55);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 54,"missing"));
+		
+		code = insert(originalCode, 55,"type type_desc;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 56,"dublicate"));
+		
+		code = patch(originalCode, 55,"type_desc","type_desc2");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 55,"unknown"));
 		
@@ -463,9 +525,25 @@ public class ErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 101,"wrong"));
 		
+		code = remove(originalCode, 129);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 128,"missing"));
+		
+		code = insert(originalCode, 129,"type type_desc;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 130,"dublicate"));
+		
 		code = patch(originalCode, 133,"type_desc$0","long_33");
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 133,"wrong"));
+		
+		code = remove(originalCode, 136);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 135,"missing"));
+		
+		code = insert(originalCode, 136,"name utf8_19;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 137,"dublicate"));
 		
 		code = patch(originalCode, 136,"utf8_19","utf8_192");
 		assemble(code, listener);
@@ -495,6 +573,13 @@ public class ErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 134,"parameter index out of bounds"));
 		
+		code = remove(originalCode, 170);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 169,"missing"));
+		
+		code = insert(originalCode, 170,"type type_desc$3;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 171,"dublicate"));
 		
 		code = patch(originalCode, 170,"type_desc$3","type_desc$344");
 		assemble(code, listener);
@@ -562,26 +647,135 @@ public class ErrorsTest {
 	
 	
 	@Test
-	public void testAnnotationTargetContext() {
+	public void testTypeAnnotations() {
 		
 		TestErrorsListener listener = new TestErrorsListener();
 		byte[] data = getData("org.jasm.test.testclass.TypeAnnotationClass");
 		String originalCode = disassemble(data);
 		
-		String code = patch(originalCode,165,"supertype","field type");
+		String code = remove(originalCode, 169);
 		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 165, "target type illegal"));
+		Assert.assertTrue(checkForErrorMessage(listener, 168,"missing"));
 		
-		listener.clear();
-		code = patch(originalCode,215,"field type","supertype");
+		code = insert(originalCode, 169,"type type_desc$0;");
 		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 215, "target type illegal"));
+		Assert.assertTrue(checkForErrorMessage(listener, 170,"dublicate"));
 		
-		listener.clear();
-		code = patch(originalCode,299,"catch type try_0","field type");
+		code = patch(originalCode, 169,"type type_desc$0","type type_desc$00");
 		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 299, "target type illegal"));
+		Assert.assertTrue(checkForErrorMessage(listener, 169,"unknown"));
 		
+		code = patch(originalCode, 169,"type_desc$0","ThisClass");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 169,"wrong"));
+		
+		code = patch(originalCode, 18,"Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;","org/jasm/test/testclass/EmptyInvisibleTypeAnnotation;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 169,"malformed"));
+		
+		code = patch(originalCode, 18,"Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;","[Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 169,"malformed"));
+		
+		code = remove(originalCode, 170);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 168,"missing"));
+		
+		code = insert(originalCode, 170,"targets type parameter 1;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 171,"dublicate"));
+		
+		code = remove(originalCode, 175);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 173,"missing"));
+		
+		code = insert(originalCode, 175,"targets type parameter 1;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 176,"dublicate"));
+		
+		code = remove(originalCode, 180);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 178,"missing"));
+		
+		code = insert(originalCode, 180,"targets type parameter 1;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 181,"dublicate"));
+		
+		code = remove(originalCode, 185);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 183,"missing"));
+		
+		code = insert(originalCode, 185,"targets type parameter 1;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 186,"dublicate"));
+		
+		code = remove(originalCode, 185);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 183,"missing"));
+		
+		code = insert(originalCode, 185,"targets type parameter 1;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 186,"dublicate"));
+		
+		code = remove(originalCode, 215);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 213,"missing"));
+		
+		code = insert(originalCode, 215,"targets field type;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 216,"dublicate"));
+		
+		code = remove(originalCode, 299);
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 297,"missing"));
+		
+		code = insert(originalCode, 299,"targets catch type try_0;");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 300,"dublicate"));
+		
+		code = patch(originalCode, 170,"implref_1","implref_122");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 170,"unknown"));
+		
+		code = patch(originalCode, 175,"1","-1");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 175,"parameter index"));
+		
+		code = patch(originalCode, 180,"1","-1");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 180,"parameter index"));
+		
+		code = patch(originalCode, 180,"1","300");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 180,"parameter index"));
+		
+		code = patch(originalCode, 299,"try_0","try_04");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 299,"unknown"));
+		
+		code = patch(originalCode, 375,"ir1","ir11");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 375,"unknown"));
+		
+		code = patch(originalCode, 460,"ir3","ir33");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 460,"unknown"));
+		
+		code = patch(originalCode, 460,"0","-1");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 460,"parameter"));
+		
+		code = patch(originalCode, 460,"0","300");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 460,"parameter"));
+		
+		code = patch(originalCode, 493,"ir64","ir645");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 493,"unknown"));
+		
+		code = patch(originalCode, 493,"ir95","ir955");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 493,"unknown"));
 		
 	}
 	

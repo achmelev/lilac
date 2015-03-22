@@ -1,5 +1,5 @@
 final super class {
-  version 49_0;
+  version 49.0;
   name ThreadPoolExecutor$Worker; // java/util/concurrent/ThreadPoolExecutor$Worker
   extends Object; // java/lang/Object
   implements Runnable; // java/lang/Runnable

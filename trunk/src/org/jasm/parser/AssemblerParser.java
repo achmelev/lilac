@@ -452,9 +452,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void enterVersion(VersionContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
 		if (clazz.getVersion() == null) {
-			clazz.setVersion(createVersionLiteral(ctx.VersionLiteral()));
+			clazz.setVersion(createFloatLiteral(ctx.FloatingPointLiteral()));
 		} else {
-			emitError(ctx.VERSION(), "multiple class version statements");
+			emitError(ctx.VERSION(), "dublicate version statement");
 		}
 	}
 	
@@ -466,7 +466,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (clazz.getThisClassSymbol() == null) {
 			clazz.setThisClassSymbol(createSymbolReference(ctx.Identifier()));
 		} else {
-			emitError(ctx.NAME(), "multiple class name statements");
+			emitError(ctx.NAME(), "dublicate class name statement");
 		}
 		
 	}
@@ -475,10 +475,10 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterSuperclass(SuperclassContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
-		if (clazz.getSuperClass() == null) {
+		if (clazz.getSuperClassSymbol() == null) {
 			clazz.setSuperClassSymbol(createSymbolReference(ctx.Identifier()));
 		} else {
-			emitError(ctx.EXTENDS(), "multiple super class statements");
+			emitError(ctx.EXTENDS(), "dublicate extends statement");
 		}
 		
 	}
@@ -497,7 +497,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			}
 			clazz.setInterfaceSymbols(symbols);
 		} else {
-			emitError(ctx.IMPLEMENTS(), "multiple interfaces statements");
+			emitError(ctx.IMPLEMENTS(), "dublicate implements statement");
 		}
 	}
 
@@ -837,7 +837,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (m.getDescriptorReference() == null) {
 			m.setDescriptorReference(createSymbolReference(ctx.Identifier()));
 		} else {
-			emitError(ctx.DESCRIPTOR(), "multiple descriptor statements within the same method statement");
+			emitError(ctx.DESCRIPTOR(), "dublicate method descriptor statement");
 		}
 		
 	}
@@ -878,7 +878,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (m.getNameReference() == null) {
 			m.setNameReference(createSymbolReference(ctx.Identifier()));
 		} else {
-			emitError(ctx.NAME(), "multiple method name statements within the same method statement");
+			emitError(ctx.NAME(), "dublicate method name statement");
 		}
 	}
 	
@@ -1398,7 +1398,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (f.getNameReference() == null) {
 			f.setNameReference(createSymbolReference(ctx.Identifier()));
 		} else {
-			emitError(ctx.NAME(), "multiple field name statements within the same field statement");
+			emitError(ctx.NAME(), "dublicate field name statement");
 		}
 	}
 	
@@ -1408,7 +1408,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (f.getDescriptorReference() == null) {
 			f.setDescriptorReference(createSymbolReference(ctx.Identifier()));
 		} else {
-			emitError(ctx.DESCRIPTOR(), "multiple descriptor statements within the same field statement");
+			emitError(ctx.DESCRIPTOR(), "dublicate field descriptor statement");
 		}
 		
 	}
@@ -1662,7 +1662,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 	
 	private boolean isCodeTypeAnnotation(Annotation annot) {
-		return  (annot.getTarget().getTargetType()>=JasmConsts.ANNOTATION_TARGET_LOCAL_VAR)
+		return annot.getTarget() != null && (annot.getTarget().getTargetType()>=JasmConsts.ANNOTATION_TARGET_LOCAL_VAR)
 				&& (annot.getTarget().getTargetType()<=JasmConsts.ANNOTATION_TARGET_GENERIC_METHOD_TYPE_ARGUMENT_IN_METHOD_REF);
 	}
 	
@@ -1672,6 +1672,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		Annotation annot = (Annotation)stack.peek();
 		EmptyAnnotationTargetType target = new EmptyAnnotationTargetType(JasmConsts.ANNOTATION_TARGET_RECEIVER_TYPE);
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		checkDublicateTarget(annot, ctx.TARGETS());
 		annot.setTarget(target);
 	}
 
@@ -1681,6 +1682,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		Annotation annot = (Annotation)stack.peek();
 		EmptyAnnotationTargetType target = new EmptyAnnotationTargetType(JasmConsts.ANNOTATION_TARGET_RETURN_TYPE);
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		checkDublicateTarget(annot, ctx.TARGETS());
 		annot.setTarget(target);
 	}
 
@@ -1690,6 +1692,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		Annotation annot = (Annotation)stack.peek();
 		EmptyAnnotationTargetType target = new EmptyAnnotationTargetType(JasmConsts.ANNOTATION_TARGET_FIELD);
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		checkDublicateTarget(annot, ctx.TARGETS());
 		annot.setTarget(target);
 	}
 	
@@ -1702,6 +1705,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		TypeParameterAnnotationTargetType target = new TypeParameterAnnotationTargetType();
 		target.setIndexLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		checkDublicateTarget(annot, ctx.TARGETS());
 		annot.setTarget(target);
 	}
 	
@@ -1716,6 +1720,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		target.setParameterIndexLiteral(createIntegerLiteral(ctx.IntegerLiteral(0)));
 		target.setBoundIndexLiteral(createIntegerLiteral(ctx.IntegerLiteral(1)));
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		checkDublicateTarget(annot, ctx.TARGETS());
 		annot.setTarget(target);
 	}
 	
@@ -1731,6 +1736,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			target.setIndexSymbolReference(createSymbolReference(ctx.Identifier()));
 		}
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		checkDublicateTarget(annot, ctx.TARGETS());
 		annot.setTarget(target);
 	}
 	
@@ -1744,6 +1750,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		target.setTargetType(JasmConsts.ANNOTATION_TARGET_THROWS);
 		target.setIndexSymbolReference(createSymbolReference(ctx.Identifier()));
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		checkDublicateTarget(annot, ctx.TARGETS());
 		annot.setTarget(target);
 	}
 	
@@ -1778,6 +1785,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		target.setTargetType(targetType);
 		target.setInstructionReference(createSymbolReference(idNode));
 		target.setSourceLocation(createSourceLocation(beginNode));
+		checkDublicateTarget(annot, beginNode);
 		annot.setTarget(target);
 	}
 	
@@ -1818,6 +1826,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		target.setInstructionReference(createSymbolReference(idNode));
 		target.setParameterIndexLiteral(createIntegerLiteral(indexNode));
 		target.setSourceLocation(createSourceLocation(beginNode));
+		checkDublicateTarget(annot, beginNode);
 		annot.setTarget(target);
 	}
 	
@@ -1828,10 +1837,15 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		target.setTargetType(JasmConsts.ANNOTATION_TARGET_FORMAL_PARAMETER);
 		target.setIndexLiteral(createIntegerLiteral(ctx.IntegerLiteral()));
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		checkDublicateTarget(annot, ctx.TARGETS());
 		annot.setTarget(target);
 	}
 	
-	
+	private void checkDublicateTarget(Annotation annot, TerminalNode node) {
+		if (annot.getTarget() != null) {
+			emitError(node, "dublicate targets statement");
+		}
+	}
 
 	@Override
 	public void enterCatchtypeTargetType(CatchtypeTargetTypeContext ctx) {
@@ -1840,6 +1854,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		target.setTargetType(JasmConsts.ANNOTATION_TARGET_CATCH);
 		target.setHandlerReference(createSymbolReference(ctx.Identifier()));
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		checkDublicateTarget(annot, ctx.TARGETS());
 		annot.setTarget(target);
 		
 	}
@@ -1855,6 +1870,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			target.setTargetType(JasmConsts.ANNOTATION_TARGET_LOCAL_VAR);
 		}
 		target.setSourceLocation(createSourceLocation(ctx.TARGETS()));
+		checkDublicateTarget(annot, ctx.TARGETS());
 		annot.setTarget(target);
 	}
 	
@@ -1883,9 +1899,14 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterAnnotationtargetpath(AnnotationtargetpathContext ctx) {
 		Annotation annot = (Annotation)stack.peek();
-		AnnotationTargetTypePath path = new AnnotationTargetTypePath(new short[ctx.annotationtargetpath_arg().size()], new short[ctx.annotationtargetpath_arg().size()]);
-		path.setSourceLocation(createSourceLocation(ctx.TARGET()));
-		annot.setTargetPath(path);
+		if (annot.getTargetPath() == null) {
+			AnnotationTargetTypePath path = new AnnotationTargetTypePath(new short[ctx.annotationtargetpath_arg().size()], new short[ctx.annotationtargetpath_arg().size()]);
+			path.setSourceLocation(createSourceLocation(ctx.TARGET()));
+			annot.setTargetPath(path);
+		} else {
+			emitError(ctx.TARGET(), "dublicate target path statement");
+		}
+		
 	}
 	
 
@@ -1940,7 +1961,11 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterAnnotationtype(AnnotationtypeContext ctx) {
 		Annotation annot = (Annotation)stack.peek();
-		annot.setTypeValueReference(createSymbolReference(ctx.Identifier()));
+		if (annot.getTypeValueReference() == null) {
+			annot.setTypeValueReference(createSymbolReference(ctx.Identifier()));
+		} else {
+			emitError(ctx.TYPE(), "dublicate annotation type statement");
+		}
 	}
 	
 	
@@ -1953,10 +1978,14 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		Annotation annot = (Annotation)stack.peek();
 		IntegerLiteral lit = createIntegerLiteral(ctx.IntegerLiteral());
 		
-		if (lit.isValid()) {
-			annot.setParameterIndexLiteral(lit);
+		if (annot.getParameterIndexLiteral() == null) {
+			if (lit.isValid()) {
+				annot.setParameterIndexLiteral(lit);
+			} else {
+				emitError(ctx.IntegerLiteral(), "malformed integer or integer out of bounds");
+			}
 		} else {
-			emitError(ctx.IntegerLiteral(), "malformed integer or integer out of bounds");
+			emitError(ctx.INDEX(), "dublicate parameter index statement");
 		}
 	}
 
@@ -1965,6 +1994,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void enterAnnotationelement(AnnotationelementContext ctx) {
 		Annotation annot = (Annotation)stack.peek();
 		AnnotationElementNameValue element = new AnnotationElementNameValue();
+		element.setSourceLocation(createSourceLocation(ctx.ELEMENT()));
 		annot.addElement(element);
 		stack.push(element);
 	}
@@ -1975,7 +2005,12 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterAnnotationelementname(AnnotationelementnameContext ctx) {
 		AnnotationElementNameValue element = (AnnotationElementNameValue)stack.peek();
-		element.setNameReference(createSymbolReference(ctx.Identifier()));
+		if (element.getNameReference() == null) {
+			element.setNameReference(createSymbolReference(ctx.Identifier()));
+		} else {
+			emitError(ctx.NAME(), "dublicate element name statement");
+		}
+		
 	}
 	
 	
@@ -1989,6 +2024,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			ArrayannotationelementvalueContext ctx) {
 		AnnotationElementValue value = new AnnotationElementValue();
 		value.setTag('[');
+		value.setSourceLocation(createSourceLocation(ctx.ARRAY()));
 		addAnnotationValue(value);
 		stack.push(value);
 	}
@@ -2000,6 +2036,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		value.setTag('e');
 		value.setEnumTypeNameReference(createSymbolReference(ctx.Identifier(0)));
 		value.setEnumConstNameReference(createSymbolReference(ctx.Identifier(1)));
+		value.setSourceLocation(createSourceLocation(ctx.VALUE()));
 		addAnnotationValue(value);
 	}
 
@@ -2039,6 +2076,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		} else {
 			value.setClassInfoReference(createSymbolReference(ctx.Identifier()));
 		}
+		value.setSourceLocation(createSourceLocation(ctx.VALUE()));
 		addAnnotationValue(value);
 	}
 	

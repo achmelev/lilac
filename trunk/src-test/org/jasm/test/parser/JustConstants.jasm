@@ -1,5 +1,5 @@
 public abstract class {
-  version 51_0;
+  version 51.0;
   name classref_0; // org/jasm/test/testclass/Class3
   extends classref_2; // java/lang/Object
    //Constants

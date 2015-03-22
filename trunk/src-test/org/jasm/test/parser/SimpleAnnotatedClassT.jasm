@@ -1,5 +1,5 @@
 public super class {
-  version 52_0;
+  version 52.0;
   name classref_0; // org/jasm/test/testclass/SimpleAnnotatedClassT
   extends classref_2; // java/lang/Object
   implements impl:classref_4; // org/jasm/test/testclass/SimpleAnnotatedInterface

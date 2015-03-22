@@ -1,5 +1,5 @@
 public super class {
-  version 51_0;
+  version 51.0;
   name cp0; // org/jasm/test/testclass/Class1
   extends cp2; // java/lang/Object
 

@@ -7,7 +7,7 @@ import java.io.File;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
+//@Ignore
 public class RuntimeAssembleDisassembleTest extends
 		AbstractAssembleDisassembleJarTestCase {
 

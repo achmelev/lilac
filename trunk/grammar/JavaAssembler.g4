@@ -20,7 +20,7 @@ classmember: version SEMI
 			 
 			 
 
-version: VERSION VersionLiteral;
+version: VERSION FloatingPointLiteral;
 
 classname: NAME Identifier;
 
@@ -71,7 +71,7 @@ classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile
 			   | unknownattribute #classUnknownattribute
 			   ;
 			   
- innerclass: innerclass_modifier? INNER CLASS LBRACE 
+innerclass: innerclass_modifier? INNER CLASS LBRACE 
 	 			innerclassmember*
 	 		RBRACE;
 
@@ -100,8 +100,8 @@ enclosingmethod: ENCLOSING METHOD Identifier (COMMA Identifier)? SEMI;
 bootstrapmethod: BOOTSTRAP METHOD Identifier Identifier (COMMA Identifier)* SEMI;
 
 method  : methodmodifier? METHOD  LBRACE
-					methodmember*
-				  RBRACE;
+			 methodmember*
+		 RBRACE;
 
 methodmember: methodname SEMI
 			  | methoddescriptor SEMI
@@ -246,26 +246,26 @@ deprecatedattribute: DEPRECATED SEMI;
 annotation: INVISIBLE? annotationdeclaration;
 
 annotationdeclaration: ANNOTATION  LBRACE
-						 annotationtype
-						 annotationelement*
+						 (annotationmember)*
 					   RBRACE;
+
+annotationmember: annotationtype|annotationelement;
 					   
 parameterannotation: INVISIBLE? PARAMETER parameterannotationdeclaration;
 
 parameterannotationdeclaration: ANNOTATION  LBRACE
-						 			annotationtype
-						 			annotationparameterindex
-						 			annotationelement*
+						 			(parameterannotationmember)*
 					   			RBRACE;
+					   			
+parameterannotationmember: annotationtype|annotationparameterindex|annotationelement;
 					   			
 typeannotation: INVISIBLE? TYPE typeannotationdeclaration;
 
 typeannotationdeclaration:ANNOTATION  LBRACE
-					 			annotationtype
-					 			annotationtarget
-					 			annotationtargetpath?
-					 			annotationelement*
+					 			(typeannotationmember)*
 					   	  RBRACE;
+
+typeannotationmember: annotationtype|annotationtarget|annotationtargetpath|annotationelement;
 
 annotationtarget: TARGETS RETURN TYPE SEMI #emptyTargetReturnType
 				  |TARGETS RECEIVER TYPE SEMI #emptyTargetReceiverType
@@ -301,18 +301,19 @@ annotationtargetpath_arg: ARRAY #targetPathArray
 
 					   
 annotationdefault: ANNOTATION DEFAULT LBRACE
-				   	 annotationelementvalue
+				   	 annotationelementvalue*
 				   RBRACE;
 					   
 annotationtype: TYPE Identifier SEMI;
 annotationparameterindex: INDEX IntegerLiteral SEMI;
 
 annotationelement: ELEMENT LBRACE
-					 annotationelementname SEMI
-					 annotationelementvalue
+					 (annotationelementmember)*
 				   RBRACE;
-				   
-annotationelementname: NAME Identifier;
+
+annotationelementmember: annotationelementname|annotationelementvalue;
+
+annotationelementname: NAME Identifier SEMI;
 
 annotationelementvalue: simpleannotationelementvalue|enumannotationelementvalue|arrayannotationelementvalue|annotationdeclaration;
 
@@ -676,11 +677,6 @@ Plus            :  '+';
 Pointer   : '->';
 
 
-
-
-//Version
-
-VersionLiteral: NonZeroDigit Digit* '_' Digit+;
 
 // Integer Literals
 
