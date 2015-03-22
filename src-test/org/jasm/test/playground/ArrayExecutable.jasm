@@ -1,5 +1,5 @@
 public super class {
-  version 48_0;
+  version 48.0;
   name ThisClass; // org/jasm/test/playground/ArrayExecutable
   extends Object; // java/lang/Object
   implements IExecutable; // org/jasm/test/playground/IExecutable

@@ -26,6 +26,7 @@ import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.parser.SourceLocation;
 import org.jasm.parser.literals.AbstractLiteral;
+import org.jasm.parser.literals.FloatLiteral;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
@@ -48,7 +49,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	
 	private AssemblerParser parser = null;
 	
-	private VersionLiteral version;
+	private FloatLiteral version;
 	private int majorVersion = -1;
 	private int minorVersion = -1;
 	private ConstantPool pool = null;
@@ -200,7 +201,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	public List<IPrintable> getStructureParts() {
 		List<IPrintable> result = new ArrayList<IPrintable>();
 		
-		result.add(new SimplePrintable(null, "version", new String[]{majorVersion+"_"+minorVersion}, (String)null));
+		result.add(new SimplePrintable(null, "version", new String[]{majorVersion+"."+minorVersion}, (String)null));
 		result.add(new SimplePrintable(null, "name", new String[]{thisClass.getSymbolName()}, thisClass.getClassName()));
 		if (this.superClass != null) {
 			result.add(new SimplePrintable(null, "extends", new String[]{superClass.getSymbolName()}, superClass.getClassName()));
@@ -374,10 +375,15 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	protected void doResolveAfterParse() {
 		//Version
 		if (version != null) {
+			if (!version.isValid()) {
+				emitError(version, "illegal illegal version number");
+			} else {
+				
+			}
 			try {
-				String versionStr = version.getContent();
-				majorVersion = Integer.parseInt(versionStr.substring(0, versionStr.indexOf('_')));
-				minorVersion = Integer.parseInt(versionStr.substring(versionStr.indexOf('_')+1, versionStr.length()));
+				String versionStr = version.getValue()+"";
+				majorVersion = Integer.parseInt(versionStr.substring(0, versionStr.indexOf('.')));
+				minorVersion = Integer.parseInt(versionStr.substring(versionStr.indexOf('.')+1, versionStr.length()));
 				if (getClassVersion().compareTo(new BigDecimal("45.0"))<0
 						|| getClassVersion().compareTo(new BigDecimal("52.0"))>0) {
 							emitError(version, "illegal version number");
@@ -580,7 +586,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	
 	
 	
-	public VersionLiteral getVersion() {
+	public FloatLiteral getVersion() {
 		return version;
 	}
 	
@@ -588,7 +594,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		return new BigDecimal(majorVersion+"."+minorVersion);
 	}
 
-	public void setVersion(VersionLiteral version) {
+	public void setVersion(FloatLiteral version) {
 		this.version = version;
 	}
 

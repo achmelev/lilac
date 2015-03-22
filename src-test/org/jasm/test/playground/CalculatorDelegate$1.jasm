@@ -1,5 +1,5 @@
 super class {
-  version 52_0;
+  version 52.0;
   name CalculatorDelegate$1; // org/jasm/test/playground/CalculatorDelegate$1
   extends Object; // java/lang/Object
   implements ICalculator; // org/jasm/test/playground/ICalculator

@@ -100,11 +100,22 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 
 	@Override
 	protected void doResolveAfterParse() {
-		this.name = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, nameReference);
-		if (name != null) {
-			IdentifierUtils.checkSimpleIdentifier(this, nameReference, name);
+		if (this.getNameReference() != null) {
+			this.name = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, nameReference);
+			if (name != null) {
+				IdentifierUtils.checkSimpleIdentifier(this, nameReference, name);
+			}
+		} else {
+			emitError(null, "missing name statement");
 		}
-		value.resolve();
+		
+		if (value != null) {
+			value.resolve();
+		} else {
+			emitError(null, "missing value statement");
+		}
+		
+		
 	}
 
 	@Override
@@ -155,8 +166,16 @@ public class AnnotationElementNameValue extends AbstractByteCodeItem implements 
 	}
 
 	public void setValue(AnnotationElementValue value) {
-		value.setParent(this);
-		this.value = value;
+		if (this.value == null) {
+			value.setParent(this);
+			this.value = value;
+		} else {
+			emitErrorOnLocation(value.getSourceLocation(), "dublicate value statement");
+		}
+	}
+
+	public SymbolReference getNameReference() {
+		return nameReference;
 	}
 	
 	

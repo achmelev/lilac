@@ -1,5 +1,5 @@
 public super class {
-  version 52_0;
+  version 52.0;
   name CalculatorDelegate; // org/jasm/test/playground/CalculatorDelegate
   extends Object; // java/lang/Object
    //Constants

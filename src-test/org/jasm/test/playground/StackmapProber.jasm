@@ -1,5 +1,5 @@
 public super class {
-  version 50_0;
+  version 50.0;
   name StackmapProber; // org/jasm/test/playground/StackmapProber
   extends Object; // java/lang/Object
   implements Prober; // org/jasm/test/playground/Prober

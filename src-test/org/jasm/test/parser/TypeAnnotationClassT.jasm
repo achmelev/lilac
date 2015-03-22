@@ -1,5 +1,5 @@
 public super class {
-  version 52_0;
+  version 52.0;
   name classref_0; // org/jasm/test/testclass/TypeAnnotationClassT
   extends classref_2; // java/util/HashMap
   implements classref_4, implref_1:classref_6; // java/lang/Runnable, java/lang/Appendable

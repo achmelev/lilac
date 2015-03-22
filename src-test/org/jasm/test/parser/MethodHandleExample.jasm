@@ -1,5 +1,5 @@
 public super class {
-  version 52_0;
+  version 52.0;
   name classref_0; // org/jasm/test/testclass/MethodHandleExampleT
   extends classref_2; // java/lang/Object
   implements classref_4, classref_6; // org/jasm/test/testclass/IMethodHandle1, org/jasm/test/testclass/IMethodHandle2

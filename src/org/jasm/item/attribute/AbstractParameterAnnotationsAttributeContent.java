@@ -49,8 +49,10 @@ public abstract class AbstractParameterAnnotationsAttributeContent extends Abstr
 		
 		createParameterAnnotations();
 		for (Annotation annot: annotations) {
+			
 			if (annot.getParameterIndexLiteral() == null) {
-				throw new IllegalStateException("no parameter index set");
+				annot.setParent(this);
+				annot.emitError(null, "missing index statement");
 			} else if (annot.getParameterIndexLiteral().getValue()> getSize()-1 || annot.getParameterIndexLiteral().getValue() < 0) {
 				annot.setParent(this);
 				annot.emitError(annot.getParameterIndexLiteral(), "parameter index out of bounds");

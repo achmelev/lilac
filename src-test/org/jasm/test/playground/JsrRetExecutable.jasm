@@ -1,5 +1,5 @@
 public super class {
-  version 50_0;
+  version 50.0;
   name JsrRetExecutable; 
   extends Object; 
   implements IExecutable; 
