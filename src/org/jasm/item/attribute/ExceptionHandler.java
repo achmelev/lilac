@@ -150,12 +150,15 @@ public class ExceptionHandler extends AbstractByteCodeItem implements IConstantP
 		endInstruction = instrs.checkAndLoadFromSymbolTable(this, endSymbolReference);
 		if (startInstruction != null && endInstruction != null) {
 			if (instrs.indexOf(endInstruction)<instrs.indexOf(startInstruction)) {
-				emitError(null, "the  end instruction has to lie after the start instruction");
+				emitError(null, "illegal exception handler scope");
 			}
 		}
 		handlerInstruction = instrs.checkAndLoadFromSymbolTable(this, handlerSymbolReference);
 		if (catchTypeReference != null) {
 			catchType = getConstantPool().checkAndLoadFromSymbolTable(this, ClassInfo.class, catchTypeReference);
+			if (catchType != null && catchType.isArray()) {
+				emitError(catchTypeReference, "malformed class name");
+			}
 		}
 		
 		if (startInstruction != null) {

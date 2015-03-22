@@ -145,6 +145,10 @@ public class DebugLocalVariable extends AbstractByteCodeItem implements IUtf8Con
 		
 		checkDescriptor();
 		
+		if (endInstruction != null && startInstruction.getOffsetInCode()>endInstruction.getOffsetInCode()) {
+			emitError(null, "illegal variable scope");
+		}
+		
 	}
 
 	@Override
