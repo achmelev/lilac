@@ -152,12 +152,7 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 
 	@Override
 	protected void doVerify() {
-		if (typeDescriptor != null) {
-			getRoot().checkAndLoadTypeDescriptor(this, descriptorRef, typeDescriptor);
-		}
-		if (methodDescriptor != null) {
-			getRoot().checkAndLoadMethodDescriptor(this, descriptorRef, methodDescriptor);
-		}
+		
 	}
 	
 	

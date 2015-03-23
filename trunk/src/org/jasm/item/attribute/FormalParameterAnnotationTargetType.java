@@ -75,7 +75,7 @@ public class FormalParameterAnnotationTargetType extends AbstractAnnotationTarge
 
 	@Override
 	protected void doVerify() {
-		// TODO Auto-generated method stub
+
 		
 	}
 

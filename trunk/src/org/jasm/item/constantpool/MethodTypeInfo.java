@@ -81,7 +81,12 @@ public class MethodTypeInfo extends AbstractReferenceEntry implements IDescripto
 
 	@Override
 	protected void doVerify() {
-		getRoot().checkAndLoadMethodDescriptor(this, methodSymbol, methodDescriptor);
+		
+	}
+
+
+	public MethodDescriptor getMethodDescriptor() {
+		return methodDescriptor;
 	}
 	
 	
