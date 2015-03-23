@@ -7,6 +7,7 @@ import org.jasm.JasmConsts;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
+import org.jasm.environment.Environment;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
@@ -201,13 +202,18 @@ public class Annotation extends AbstractByteCodeItem implements IContainerByteco
 	
 	@Override
 	protected void doVerify() {
-		getRoot().checkAndLoadTypeDescriptor(this, typeValueReference, typeDescriptor);
-		if (isTypeAnnotation) {
-			target.verify();
-			targetPath.verify();
-		}
-		for (AnnotationElementNameValue value: values) {
-			value.verify();
+		
+		boolean verificationEnabled = Environment.getBooleanValue("jasm.verification.annotations.enabled");
+		
+		if (verificationEnabled) {
+			getRoot().checkAndLoadTypeDescriptor(this, typeValueReference, typeDescriptor);
+			if (isTypeAnnotation) {
+				target.verify();
+				targetPath.verify();
+			}
+			for (AnnotationElementNameValue value: values) {
+				value.verify();
+			}
 		}
 		
 	}

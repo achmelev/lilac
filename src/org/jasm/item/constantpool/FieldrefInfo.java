@@ -1,6 +1,5 @@
 package org.jasm.item.constantpool;
 
-import org.jasm.resolver.FieldInfo;
 
 
 public class FieldrefInfo extends AbstractRefInfo {

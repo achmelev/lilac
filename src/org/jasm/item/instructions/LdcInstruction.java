@@ -109,6 +109,8 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 	protected void doVerify() {
 		if (cpEntry instanceof ClassInfo) {
 			getRoot().checkAndLoadClassInfo(this, cpEntryReference, ((ClassInfo)cpEntry).getClassName(), true);
+		} else if (cpEntry instanceof MethodTypeInfo) {
+			getRoot().checkAndLoadMethodDescriptor(this, cpEntryReference, ((MethodTypeInfo)cpEntry).getMethodDescriptor());
 		}
 	}
 
