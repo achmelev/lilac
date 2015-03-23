@@ -1,0 +1,756 @@
+  public super class {
+  version 52.0;
+  name ThisClass; // org/jasm/test/testclass/TypeAnnotationClass
+  extends HashMap; // java/util/HashMap
+  implements Runnable, implref_1:Appendable; // java/lang/Runnable, java/lang/Appendable
+   //Constants
+  const classref ThisClass ThisClass_name; // org/jasm/test/testclass/TypeAnnotationClass
+  const utf8 ThisClass_name "org/jasm/test/testclass/TypeAnnotationClass";
+  const classref HashMap HashMap_name; // java/util/HashMap
+  const utf8 HashMap_name "java/util/HashMap";
+  const classref Runnable Runnable_name; // java/lang/Runnable
+  const utf8 Runnable_name "java/lang/Runnable";
+  const classref Appendable Appendable_name; // java/lang/Appendable
+  const utf8 Appendable_name "java/lang/Appendable";
+  const utf8 text_name "text";
+  const utf8 type_desc "Ljava/lang/String;";
+  const utf8 RuntimeInvisibleAnnotations_utf8 "RuntimeInvisibleAnnotations";
+  const utf8 type_desc$0 "Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;";
+  const utf8 RuntimeVisibleAnnotations_utf8 "RuntimeVisibleAnnotations";
+  const utf8 type_desc$1 "Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;";
+  const utf8 RuntimeInvisibleTypeAnnotations_utf8 "RuntimeInvisibleTypeAnnotations";
+  const utf8 RuntimeVisibleTypeAnnotations_utf8 "RuntimeVisibleTypeAnnotations";
+  const utf8 init0_name "<init>";
+  const utf8 method_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref HashMap.init0 HashMap, HashMap.init0_nat; // class=java/util/HashMap, name=<init>, descriptor=()V
+  const nameandtype HashMap.init0_nat init0_name, method_desc; // name=<init> type=()V
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 type_desc$2 "Lorg/jasm/test/testclass/TypeAnnotationClass;";
+  const utf8 LocalVariableTypeTable_utf8 "LocalVariableTypeTable";
+  const utf8 this_desc "Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;";
+  const utf8 method_desc$0 "(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V";
+  const utf8 Signature_utf8 "Signature";
+  const utf8 signature_name "<F::Lorg/jasm/test/testclass/TypeAnnotationInterface1;:Lorg/jasm/test/testclass/TypeAnnotationInterface2;>(TF;)V";
+  const intfmethodref TypeAnnotationInterface1.doSend1 TypeAnnotationInterface1, TypeAnnotationInterface1.doSend1_nat; // class=org/jasm/test/testclass/TypeAnnotationInterface1, name=doSend1, descriptor=()V
+  const classref TypeAnnotationInterface1 TypeAnnotationInterface1_name; // org/jasm/test/testclass/TypeAnnotationInterface1
+  const utf8 TypeAnnotationInterface1_name "org/jasm/test/testclass/TypeAnnotationInterface1";
+  const nameandtype TypeAnnotationInterface1.doSend1_nat doSend1_name, method_desc; // name=doSend1 type=()V
+  const utf8 doSend1_name "doSend1";
+  const utf8 arg_name "arg";
+  const utf8 arg_desc "Lorg/jasm/test/testclass/TypeAnnotationInterface1;";
+  const utf8 arg_desc$0 "TF;";
+  const utf8 run_name "run";
+  const classref Integer Integer_name; // java/lang/Integer
+  const utf8 Integer_name "java/lang/Integer";
+  const string string_41 utf8_42; // "123x"
+  const utf8 utf8_42 "123x";
+  const methodref Integer.init0 Integer, Integer.init0_nat; // class=java/lang/Integer, name=<init>, descriptor=(Ljava/lang/String;)V
+  const nameandtype Integer.init0_nat init0_name, method_desc$1; // name=<init> type=(Ljava/lang/String;)V
+  const utf8 method_desc$1 "(Ljava/lang/String;)V";
+  const fieldref System.err System, System.err_nat; // class=java/lang/System, name=err, descriptor=Ljava/io/PrintStream;
+  const classref System System_name; // java/lang/System
+  const utf8 System_name "java/lang/System";
+  const nameandtype System.err_nat err_name, err_desc; // name=err type=Ljava/io/PrintStream;
+  const utf8 err_name "err";
+  const utf8 err_desc "Ljava/io/PrintStream;";
+  const string string_52 utf8_53; // "Hallo"
+  const utf8 utf8_53 "Hallo";
+  const methodref PrintStream.println PrintStream, PrintStream.println_nat; // class=java/io/PrintStream, name=println, descriptor=(Ljava/lang/String;)V
+  const classref PrintStream PrintStream_name; // java/io/PrintStream
+  const utf8 PrintStream_name "java/io/PrintStream";
+  const nameandtype PrintStream.println_nat println_name, method_desc$1; // name=println type=(Ljava/lang/String;)V
+  const utf8 println_name "println";
+  const classref IllegalArgumentException IllegalArgumentException_name; // java/lang/IllegalArgumentException
+  const utf8 IllegalArgumentException_name "java/lang/IllegalArgumentException";
+  const utf8 e_name "e";
+  const utf8 e_desc "Ljava/lang/IllegalArgumentException;";
+  const utf8 StackMapTable_utf8 "StackMapTable";
+  const utf8 toString_name "toString";
+  const utf8 method_desc$2 "()Ljava/lang/String;";
+  const methodref HashMap.toString HashMap, HashMap.toString_nat; // class=java/util/HashMap, name=toString, descriptor=()Ljava/lang/String;
+  const nameandtype HashMap.toString_nat toString_name, method_desc$2; // name=toString type=()Ljava/lang/String;
+  const utf8 send_name "send";
+  const utf8 send_desc "(Ljava/lang/Object;)V";
+  const utf8 type_desc$3 "Ljava/lang/Object;";
+  const utf8 send2_name "send2";
+  const utf8 send2_desc "(Ljava/lang/Integer;Ljava/lang/Double;)V";
+  const utf8 Exceptions_utf8 "Exceptions";
+  const classref RuntimeException RuntimeException_name; // java/lang/RuntimeException
+  const utf8 RuntimeException_name "java/lang/RuntimeException";
+  const utf8 RuntimeInvisibleParameterAnnotations_utf8 "RuntimeInvisibleParameterAnnotations";
+  const utf8 RuntimeVisibleParameterAnnotations_utf8 "RuntimeVisibleParameterAnnotations";
+  const methodref init0 ThisClass, HashMap.init0_nat; // class=org/jasm/test/testclass/TypeAnnotationClass, name=<init>, descriptor=()V
+  const methodref doSend ThisClass, doSend_nat; // class=org/jasm/test/testclass/TypeAnnotationClass, name=doSend, descriptor=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
+  const nameandtype doSend_nat doSend_name, method_desc$0; // name=doSend type=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
+  const utf8 doSend_name "doSend";
+  const methodref init0$0 ThisClass, init0$0_nat; // class=org/jasm/test/testclass/TypeAnnotationClass, name=<init>, descriptor=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
+  const nameandtype init0$0_nat init0_name, method_desc$0; // name=<init> type=(Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
+  const string string_84 utf8_85; // ""
+  const utf8 utf8_85 "";
+  const classref BufferedReader BufferedReader_name; // java/io/BufferedReader
+  const utf8 BufferedReader_name "java/io/BufferedReader";
+  const classref FileReader FileReader_name; // java/io/FileReader
+  const utf8 FileReader_name "java/io/FileReader";
+  const methodref FileReader.init0 FileReader, Integer.init0_nat; // class=java/io/FileReader, name=<init>, descriptor=(Ljava/lang/String;)V
+  const methodref BufferedReader.init0 BufferedReader, BufferedReader.init0_nat; // class=java/io/BufferedReader, name=<init>, descriptor=(Ljava/io/Reader;)V
+  const nameandtype BufferedReader.init0_nat init0_name, init0_desc; // name=<init> type=(Ljava/io/Reader;)V
+  const utf8 init0_desc "(Ljava/io/Reader;)V";
+  const methodref BufferedReader.readLine BufferedReader, BufferedReader.readLine_nat; // class=java/io/BufferedReader, name=readLine, descriptor=()Ljava/lang/String;
+  const nameandtype BufferedReader.readLine_nat readLine_name, method_desc$2; // name=readLine type=()Ljava/lang/String;
+  const utf8 readLine_name "readLine";
+  const methodref BufferedReader.close BufferedReader, BufferedReader.close_nat; // class=java/io/BufferedReader, name=close, descriptor=()V
+  const nameandtype BufferedReader.close_nat close_name, method_desc; // name=close type=()V
+  const utf8 close_name "close";
+  const methodref Throwable.addSuppressed Throwable, Throwable.addSuppressed_nat; // class=java/lang/Throwable, name=addSuppressed, descriptor=(Ljava/lang/Throwable;)V
+  const classref Throwable Throwable_name; // java/lang/Throwable
+  const utf8 Throwable_name "java/lang/Throwable";
+  const nameandtype Throwable.addSuppressed_nat addSuppressed_name, addSuppressed_desc; // name=addSuppressed type=(Ljava/lang/Throwable;)V
+  const utf8 addSuppressed_name "addSuppressed";
+  const utf8 addSuppressed_desc "(Ljava/lang/Throwable;)V";
+  const methodref IOException.printStackTrace IOException, IOException.printStackTrace_nat; // class=java/io/IOException, name=printStackTrace, descriptor=()V
+  const classref IOException IOException_name; // java/io/IOException
+  const utf8 IOException_name "java/io/IOException";
+  const nameandtype IOException.printStackTrace_nat printStackTrace_name, method_desc; // name=printStackTrace type=()V
+  const utf8 printStackTrace_name "printStackTrace";
+  const utf8 a_name "a";
+  const utf8 type_desc$4 "Ljava/lang/Integer;";
+  const utf8 b_name "b";
+  const utf8 b_desc "Ljava/lang/Double;";
+  const utf8 o_name "o";
+  const utf8 i_name "i";
+  const utf8 arg_desc$1 "Lorg/jasm/test/testclass/TypeAnnotationInterface3;";
+  const utf8 inst_name "inst";
+  const utf8 inst2_name "inst2";
+  const utf8 path_name "path";
+  const utf8 br_name "br";
+  const utf8 br_desc "Ljava/io/BufferedReader;";
+  const utf8 e_desc$0 "Ljava/io/IOException;";
+  const utf8 utf8_124 "Lorg/jasm/test/testclass/TypeAnnotationClass<Ljava/lang/String;Lorg/jasm/test/testclass/TypeAnnotationInterface3;>;";
+  const classref Double Double_name; // java/lang/Double
+  const utf8 Double_name "java/lang/Double";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const classref TypeAnnotationInterface3 TypeAnnotationInterface3_name; // org/jasm/test/testclass/TypeAnnotationInterface3
+  const utf8 TypeAnnotationInterface3_name "org/jasm/test/testclass/TypeAnnotationInterface3";
+  const classref String String_name; // java/lang/String
+  const utf8 String_name "java/lang/String";
+  const utf8 signature_name$0 "<R:Ljava/lang/Object;S::Lorg/jasm/test/testclass/TypeAnnotationInterface1;:Lorg/jasm/test/testclass/TypeAnnotationInterface2;>(TS;)V";
+  const classref TypeAnnotationInterface2 TypeAnnotationInterface2_name; // org/jasm/test/testclass/TypeAnnotationInterface2
+  const utf8 TypeAnnotationInterface2_name "org/jasm/test/testclass/TypeAnnotationInterface2";
+  const intfmethodref TypeAnnotationInterface2.doSend2 TypeAnnotationInterface2, TypeAnnotationInterface2.doSend2_nat; // class=org/jasm/test/testclass/TypeAnnotationInterface2, name=doSend2, descriptor=()V
+  const nameandtype TypeAnnotationInterface2.doSend2_nat doSend2_name, method_desc; // name=doSend2 type=()V
+  const utf8 doSend2_name "doSend2";
+  const utf8 arg_desc$2 "TS;";
+  const utf8 append_name "append";
+  const utf8 append_desc "(Ljava/lang/CharSequence;)Ljava/lang/Appendable;";
+  const utf8 csq_name "csq";
+  const utf8 csq_desc "Ljava/lang/CharSequence;";
+  const utf8 append_desc$0 "(Ljava/lang/CharSequence;II)Ljava/lang/Appendable;";
+  const utf8 start_name "start";
+  const utf8 type_desc$5 "I";
+  const utf8 end_name "end";
+  const utf8 append_desc$1 "(C)Ljava/lang/Appendable;";
+  const utf8 c_name "c";
+  const utf8 c_desc "C";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "TypeAnnotationClass.java";
+  const utf8 signature_name$1 "<Q:Ljava/lang/Object;T::Lorg/jasm/test/testclass/TypeAnnotationInterface1;:Lorg/jasm/test/testclass/TypeAnnotationInterface2;>Ljava/util/HashMap;Ljava/lang/Runnable;Ljava/lang/Appendable;";
+  source file source_file_name; // TypeAnnotationClass.java
+  signature signature_name$1; // <Q:Ljava/lang/Object;T::Lorg/jasm/test/testclass/TypeAnnotationInterface1;:Lorg/jasm/test/testclass/TypeAnnotationInterface2;>Ljava/util/HashMap;Ljava/lang/Runnable;Ljava/lang/Appendable;
+  invisible type annotation {
+    type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+    targets supertype;
+    
+  }
+  invisible type annotation {
+    type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+    targets supertype implref_1;
+    
+  }
+  invisible type annotation {
+    type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+    targets type parameter 1;
+    
+  }
+  invisible type annotation {
+    type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+    targets type parameter bound 1, 1;
+    
+  }
+  type annotation {
+    type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+    targets supertype;
+    
+  }
+  type annotation {
+    type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+    targets supertype implref_1;
+    
+  }
+  type annotation {
+    type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+    targets type parameter 1;
+    
+  }
+  type annotation {
+    type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+    targets type parameter bound 1, 1;
+    
+  }
+   //Fields
+  private field {
+    name text_name; // text
+    descriptor type_desc; // Ljava/lang/String;
+    invisible annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+    }
+    annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+    }
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets field type;
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets field type;
+      
+    }
+  }
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 14;
+      line ir4, 16;
+    }
+    debug vars {
+      var this, ir0, this_name, type_desc$2; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+    }
+    debug var types {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial HashMap.init0;
+    ir4: return;
+  }
+  public method {
+    name init0_name; // <init>
+    descriptor method_desc$0; // (Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
+    signature signature_name; // <F::Lorg/jasm/test/testclass/TypeAnnotationInterface1;:Lorg/jasm/test/testclass/TypeAnnotationInterface2;>(TF;)V
+    line numbers {
+      line ir0, 18;
+      line ir4, 19;
+      line ir10, 20;
+      line ir16, 21;
+    }
+    debug vars {
+      var this, ir0, this_name, type_desc$2; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var arg, ir0, arg_name, arg_desc; // name=arg,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationInterface1;
+    }
+    debug var types {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+      var arg, ir0, arg_name, arg_desc$0; // name=arg,  descriptor=TF;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    var object arg;
+    //Instructions
+    ir0: aload this;
+    invokespecial HashMap.init0;
+    ir4: aload arg;
+    invokeinterface TypeAnnotationInterface1.doSend1;
+    ir10: aload arg;
+    invokeinterface TypeAnnotationInterface1.doSend1;
+    ir16: return;
+  }
+  public method {
+    name run_name; // run
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 27;
+      line ir8, 28;
+      line ir12, 29;
+      line ir20, 31;
+    }
+    debug vars {
+      var this, ir0, this_name, type_desc$2; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var e, ir12->ir20, e_name, e_desc; // name=e,  descriptor=Ljava/lang/IllegalArgumentException;
+    }
+    debug var types {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+    }
+    stackmap {
+      same locals ir11, object IllegalArgumentException;
+      same ir20;
+    }
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets catch type try_0;
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets catch type try_0;
+      
+    }
+    maxstack 2;
+    try_0: try ir0->ir5 catch IllegalArgumentException go to ir11; // java/lang/IllegalArgumentException
+    //Variables
+    var object this;
+    var object e;
+    //Instructions
+    ir0: new Integer;
+    ldc string_41; // "123x"
+    ir5: invokespecial Integer.init0;
+    ir8: goto ir20;
+    ir11: astore e;
+    ir12: getstatic System.err;
+    ldc string_52; // "Hallo"
+    invokevirtual PrintStream.println;
+    ir20: return;
+  }
+  public method {
+    name toString_name; // toString
+    descriptor method_desc$2; // ()Ljava/lang/String;
+    invisible annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+    }
+    annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+    }
+    line numbers {
+      line ir0, 36;
+    }
+    debug vars {
+      var this, ir0, this_name, type_desc$2; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+    }
+    debug var types {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial HashMap.toString;
+    areturn;
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets return type;
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets return type;
+      
+    }
+  }
+  public method {
+    name send_name; // send
+    descriptor send_desc; // (Ljava/lang/Object;)V
+    line numbers {
+      line ir0, 40;
+      line ir5, 44;
+    }
+    debug vars {
+      var this, ir0, this_name, type_desc$2; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var arg, ir0, arg_name, type_desc$3; // name=arg,  descriptor=Ljava/lang/Object;
+    }
+    debug var types {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+    }
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets instanceof type ir1;
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets instanceof type ir1;
+      
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    var object arg;
+    //Instructions
+    ir0: aload arg;
+    ir1: instanceof TypeAnnotationInterface1;
+    pop;
+    ir5: return;
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets receiver type;
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets receiver type;
+      
+    }
+  }
+  public method {
+    name send2_name; // send2
+    descriptor send2_desc; // (Ljava/lang/Integer;Ljava/lang/Double;)V
+    throws RuntimeException, throwsref_1:IllegalArgumentException; // java/lang/RuntimeException, java/lang/IllegalArgumentException
+    invisible parameter annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      index 1;
+    }
+    parameter annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      index 1;
+    }
+    line numbers {
+      line ir0, 47;
+      line ir2, 48;
+      line ir8, 50;
+      line ir11, 52;
+      line ir20, 53;
+      line ir25, 55;
+      line ir36, 57;
+      line ir40, 58;
+      line ir46, 59;
+      line ir62, 58;
+      line ir64, 60;
+      line ir70, 61;
+      line ir131, 63;
+      line ir136, 65;
+    }
+    debug vars {
+      var this, ir0, this_name, type_desc$2; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var a, ir0, a_name, type_desc$4; // name=a,  descriptor=Ljava/lang/Integer;
+      var b, ir0, b_name, b_desc; // name=b,  descriptor=Ljava/lang/Double;
+      var o, ir2, o_name, type_desc$3; // name=o,  descriptor=Ljava/lang/Object;
+      var i, ir8, i_name, type_desc$4; // name=i,  descriptor=Ljava/lang/Integer;
+      var arg, ir11, arg_name, arg_desc$1; // name=arg,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationInterface3;
+      var inst, ir20, inst_name, type_desc$2; // name=inst,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var inst2, ir36, inst2_name, type_desc$2; // name=inst2,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var path$0, ir40, path_name, type_desc; // name=path,  descriptor=Ljava/lang/String;
+      var br, ir64->ir95, br_name, br_desc; // name=br,  descriptor=Ljava/io/BufferedReader;
+      var e, ir131->ir136, e_name, e_desc$0; // name=e,  descriptor=Ljava/io/IOException;
+    }
+    debug var types {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+      var inst, ir20, inst_name, utf8_124; // name=inst,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<Ljava/lang/String;Lorg/jasm/test/testclass/TypeAnnotationInterface3;>;
+      var inst2, ir36, inst2_name, utf8_124; // name=inst2,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<Ljava/lang/String;Lorg/jasm/test/testclass/TypeAnnotationInterface3;>;
+    }
+    stackmap {
+      full ir83, {object ThisClass,object Integer,object Double,object Object,object Integer,object TypeAnnotationInterface3,object ThisClass,object ThisClass,object String,object Throwable,object Throwable,object BufferedReader}, {object Throwable};
+      chop ir95, 1;
+      same locals ir98, object Throwable;
+      same ir112;
+      same ir126;
+      full ir129, {object ThisClass,object Integer,object Double,object Object,object Integer,object TypeAnnotationInterface3,object ThisClass,object ThisClass,object String}, {object IOException};
+      same ir136;
+    }
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets cast type ir3, 0;
+      
+    }
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets new type ir11;
+      
+    }
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets new type ir11;
+      target path type argument(1); // target path
+    }
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets method type argument ir22, 1;
+      
+    }
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets constructor type argument ir31, 0;
+      
+    }
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets var types {
+        targeted var o, ir2;
+      }
+      
+    }
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets resource var types {
+        targeted var br, ir64->ir95;
+      }
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets cast type ir3, 0;
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets new type ir11;
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets new type ir11;
+      target path type argument(1); // target path
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets method type argument ir22, 1;
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets constructor type argument ir31, 0;
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets var types {
+        targeted var o, ir2;
+      }
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets resource var types {
+        targeted var br, ir64->ir95;
+      }
+      
+    }
+    maxstack 5;
+    try ir64->ir69 catch all go to ir83;
+    try ir46->ir97 catch all go to ir98;
+    try ir40->ir128 catch IOException go to ir129; // java/io/IOException
+    //Variables
+    var object this;
+    var object a;
+    var object b;
+    var object o;
+    var object i;
+    var object arg;
+    var object inst;
+    var object inst2;
+    var object path$0;
+    var object e;
+    var object a_10;
+    var object br;
+    //Instructions
+    ir0: aload a;
+    astore o;
+    ir2: aload o;
+    ir3: checkcast Integer;
+    astore i;
+    ir8: aconst_null;
+    astore arg;
+    ir11: new ThisClass;
+    dup;
+    invokespecial init0;
+    astore inst;
+    ir20: aload arg;
+    ir22: invokestatic doSend;
+    ir25: new ThisClass;
+    dup;
+    aload arg;
+    ir31: invokespecial init0$0;
+    astore inst2;
+    ir36: ldc string_84; // ""
+    astore path$0;
+    ir40: aconst_null;
+    astore e;
+    aconst_null;
+    astore a_10;
+    ir46: new BufferedReader;
+    dup;
+    new FileReader;
+    dup;
+    aload path$0;
+    invokespecial FileReader.init0;
+    invokespecial BufferedReader.init0;
+    ir62: astore br;
+    ir64: aload br;
+    invokevirtual BufferedReader.readLine;
+    ir69: pop;
+    ir70: aload br;
+    ifnull ir136;
+    aload br;
+    invokevirtual BufferedReader.close;
+    goto ir136;
+    ir83: astore e;
+    aload br;
+    ifnull ir95;
+    aload br;
+    invokevirtual BufferedReader.close;
+    ir95: aload e;
+    ir97: athrow;
+    ir98: astore a_10;
+    aload e;
+    ifnonnull ir112;
+    aload a_10;
+    astore e;
+    goto ir126;
+    ir112: aload e;
+    aload a_10;
+    if_acmpeq ir126;
+    aload e;
+    aload a_10;
+    invokevirtual Throwable.addSuppressed;
+    ir126: aload e;
+    ir128: athrow;
+    ir129: astore e;
+    ir131: aload e;
+    invokevirtual IOException.printStackTrace;
+    ir136: return;
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets parameter type 1;
+      
+    }
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets throws type throwsref_1;
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets parameter type 1;
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets throws type throwsref_1;
+      
+    }
+  }
+  public static method {
+    name doSend_name; // doSend
+    descriptor method_desc$0; // (Lorg/jasm/test/testclass/TypeAnnotationInterface1;)V
+    signature signature_name$0; // <R:Ljava/lang/Object;S::Lorg/jasm/test/testclass/TypeAnnotationInterface1;:Lorg/jasm/test/testclass/TypeAnnotationInterface2;>(TS;)V
+    line numbers {
+      line ir0, 68;
+      line ir6, 69;
+      line ir15, 70;
+    }
+    debug vars {
+      var arg, ir0, arg_name, arg_desc; // name=arg,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationInterface1;
+    }
+    debug var types {
+      var arg, ir0, arg_name, arg_desc$2; // name=arg,  descriptor=TS;
+    }
+    maxstack 1;
+    //Variables
+    var object arg;
+    //Instructions
+    ir0: aload arg;
+    invokeinterface TypeAnnotationInterface1.doSend1;
+    ir6: aload arg;
+    checkcast TypeAnnotationInterface2;
+    invokeinterface TypeAnnotationInterface2.doSend2;
+    ir15: return;
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets type parameter 1;
+      
+    }
+    invisible type annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/EmptyInvisibleTypeAnnotation;
+      targets type parameter bound 1, 2;
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets type parameter 1;
+      
+    }
+    type annotation {
+      type type_desc$1; // Lorg/jasm/test/testclass/EmptyVisibleTypeAnnotation;
+      targets type parameter bound 1, 2;
+      
+    }
+  }
+  public method {
+    name append_name; // append
+    descriptor append_desc; // (Ljava/lang/CharSequence;)Ljava/lang/Appendable;
+    throws IOException; // java/io/IOException
+    line numbers {
+      line ir0, 75;
+    }
+    debug vars {
+      var this, ir0, this_name, type_desc$2; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var csq, ir0, csq_name, csq_desc; // name=csq,  descriptor=Ljava/lang/CharSequence;
+    }
+    debug var types {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    var object csq;
+    //Instructions
+    ir0: aconst_null;
+    areturn;
+  }
+  public method {
+    name append_name; // append
+    descriptor append_desc$0; // (Ljava/lang/CharSequence;II)Ljava/lang/Appendable;
+    throws IOException; // java/io/IOException
+    line numbers {
+      line ir0, 82;
+    }
+    debug vars {
+      var this, ir0, this_name, type_desc$2; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var csq, ir0, csq_name, csq_desc; // name=csq,  descriptor=Ljava/lang/CharSequence;
+      var start, ir0, start_name, type_desc$5; // name=start,  descriptor=I
+      var end, ir0, end_name, type_desc$5; // name=end,  descriptor=I
+    }
+    debug var types {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    var object csq;
+    var int start;
+    var int end;
+    //Instructions
+    ir0: aconst_null;
+    areturn;
+  }
+  public method {
+    name append_name; // append
+    descriptor append_desc$1; // (C)Ljava/lang/Appendable;
+    throws IOException; // java/io/IOException
+    line numbers {
+      line ir0, 88;
+    }
+    debug vars {
+      var this, ir0, this_name, type_desc$2; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass;
+      var c, ir0, c_name, c_desc; // name=c,  descriptor=C
+    }
+    debug var types {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/TypeAnnotationClass<TQ;TT;>;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    var int c;
+    //Instructions
+    ir0: aconst_null;
+    areturn;
+  }
+}

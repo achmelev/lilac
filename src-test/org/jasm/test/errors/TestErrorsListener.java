@@ -1,4 +1,4 @@
-package org.jasm.test.jar.errors;
+package org.jasm.test.errors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
