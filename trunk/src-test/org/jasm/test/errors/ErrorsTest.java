@@ -402,9 +402,6 @@ public class ErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 52,"wrong"));
 		
-		code = patch(originalCode, 47,"\"FirstLevel\"","\"org.FirstLevel\"");
-		assemble(code, listener);
-		Assert.assertTrue(checkForErrorMessage(listener, 52,"malformed"));
 	}
 	
 	@Test
