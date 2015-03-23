@@ -1,0 +1,196 @@
+public super class {
+  version 52.0;
+  name ThisClass; // org/jasm/test/testclass/AnnotatedClass
+  extends Object; // java/lang/Object
+   //Constants
+  const classref ThisClass ThisClass_name; // org/jasm/test/testclass/AnnotatedClass
+  const utf8 ThisClass_name "org/jasm/test/testclass/AnnotatedClass";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref Object.init0 Object, Object.init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype Object.init0_nat init0_name, init0_desc; // name=<init> type=()V
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/testclass/AnnotatedClass;";
+  const utf8 annotatedMethod_name "annotatedMethod";
+  const utf8 annotatedMethod_desc "(I)V";
+  const utf8 RuntimeInvisibleParameterAnnotations_utf8 "RuntimeInvisibleParameterAnnotations";
+  const utf8 type_desc "Lorg/jasm/test/testclass/TestInvisibleAnnotation;";
+  const utf8 RuntimeVisibleParameterAnnotations_utf8 "RuntimeVisibleParameterAnnotations";
+  const utf8 type_desc$0 "Lorg/jasm/test/testclass/TestAnnotation;";
+  const utf8 utf8_19 "booleanValue";
+  const int int_20 0;
+  const utf8 utf8_21 "byteValue";
+  const int int_22 1;
+  const utf8 utf8_23 "charValue";
+  const int int_24 2;
+  const utf8 utf8_25 "enumValue";
+  const utf8 type_desc$1 "Lorg/jasm/test/testclass/Days;";
+  const utf8 utf8_27 "TUESDAY";
+  const utf8 utf8_28 "clazzValue";
+  const utf8 type_desc$2 "Ljava/lang/Void;";
+  const utf8 utf8_30 "intValue";
+  const int int_31 5;
+  const utf8 utf8_32 "longValue";
+  const long long_33 6;
+  const utf8 utf8_35 "shortValue";
+  const int int_36 7;
+  const utf8 utf8_37 "nestedAnnotation";
+  const utf8 type_desc$3 "Lorg/jasm/test/testclass/NestedAnnotation;";
+  const utf8 utf8_39 "intArrayValue";
+  const int int_40 6;
+  const utf8 a_name "a";
+  const utf8 a_desc "I";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "AnnotatedClass.java";
+  const utf8 RuntimeInvisibleAnnotations_utf8 "RuntimeInvisibleAnnotations";
+  const utf8 RuntimeVisibleAnnotations_utf8 "RuntimeVisibleAnnotations";
+  const utf8 utf8_47 "MONDAY";
+  source file source_file_name; // AnnotatedClass.java
+  invisible annotation {
+    type type_desc; // Lorg/jasm/test/testclass/TestInvisibleAnnotation;
+  }
+  annotation {
+    type type_desc$0; // Lorg/jasm/test/testclass/TestAnnotation;
+    element {
+      name utf8_19; // booleanValue
+      boolean value int_20; // 0
+    }
+    element {
+      name utf8_21; // byteValue
+      byte value int_22; // 1
+    }
+    element {
+      name utf8_23; // charValue
+      char value int_24; // 2
+    }
+    element {
+      name utf8_25; // enumValue
+      enum value type_desc$1, utf8_47; // MONDAY, Lorg/jasm/test/testclass/Days;
+    }
+    element {
+      name utf8_28; // clazzValue
+      class value type_desc$2; // Ljava/lang/Void;
+    }
+    element {
+      name utf8_30; // intValue
+      int value int_31; // 5
+    }
+    element {
+      name utf8_32; // longValue
+      long value long_33; // 6
+    }
+    element {
+      name utf8_35; // shortValue
+      short value int_36; // 7
+    }
+    element {
+      name utf8_37; // nestedAnnotation
+      annotation {
+        type type_desc$3; // Lorg/jasm/test/testclass/NestedAnnotation;
+      }
+    }
+    element {
+      name utf8_39; // intArrayValue
+      array value {
+        int value int_24; // 2
+        int value int_31; // 5
+        int value int_40; // 6
+      }
+    }
+  }
+   //Fields
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor init0_desc; // ()V
+    line numbers {
+      line ir0, 5;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AnnotatedClass;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial Object.init0;
+    return;
+  }
+  public method {
+    name annotatedMethod_name; // annotatedMethod
+    descriptor annotatedMethod_desc; // (I)V
+    invisible parameter annotation {
+      type type_desc; // Lorg/jasm/test/testclass/TestInvisibleAnnotation;
+      index 0;
+    }
+    parameter annotation {
+      type type_desc$0; // Lorg/jasm/test/testclass/TestAnnotation;
+      index 0;
+      element {
+        name utf8_19; // booleanValue
+        boolean value int_20; // 0
+      }
+      element {
+        name utf8_21; // byteValue
+        byte value int_22; // 1
+      }
+      element {
+        name utf8_23; // charValue
+        char value int_24; // 2
+      }
+      element {
+        name utf8_25; // enumValue
+        enum value type_desc$1, utf8_27; // TUESDAY, Lorg/jasm/test/testclass/Days;
+      }
+      element {
+        name utf8_28; // clazzValue
+        class value type_desc$2; // Ljava/lang/Void;
+      }
+      element {
+        name utf8_30; // intValue
+        int value int_31; // 5
+      }
+      element {
+        name utf8_32; // longValue
+        long value long_33; // 6
+      }
+      element {
+        name utf8_35; // shortValue
+        short value int_36; // 7
+      }
+      element {
+        name utf8_37; // nestedAnnotation
+        annotation {
+          type type_desc$3; // Lorg/jasm/test/testclass/NestedAnnotation;
+        }
+      }
+      element {
+        name utf8_39; // intArrayValue
+        array value {
+          int value int_24; // 2
+          int value int_31; // 5
+          int value int_40; // 6
+        }
+      }
+    }
+    line numbers {
+      line ir0, 9;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AnnotatedClass;
+      var a, ir0, a_name, a_desc; // name=a,  descriptor=I
+    }
+    maxstack 0;
+    //Variables
+    var object this;
+    var int a;
+    //Instructions
+    ir0: return;
+  }
+}

@@ -1,4 +1,4 @@
-package org.jasm.test.jar.errors;
+package org.jasm.test.errors;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -984,7 +984,7 @@ public class ErrorsTest {
 	
 	private  byte [] getData(String name) {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		name = name.replace('.', '/')+".class";
+		name = name.replace('.', '/')+".jasm";
 		InputStream stream = cl.getResourceAsStream(name);
 		byte[] data;
 		try {
@@ -999,20 +999,7 @@ public class ErrorsTest {
 	
 	
 	private static String disassemble(byte [] data) {
-		ByteArrayByteBuffer bbuf = new ByteArrayByteBuffer(data);
-		
-		Clazz clazz = new Clazz();
-		clazz.read(bbuf, 0L);
-		clazz.resolve();
-		clazz.updateMetadata();
-		
-		StringWriter sw = new StringWriter();
-		PrintWriter writer = new PrintWriter(sw);
-		PrettyPrinter printer = new PrettyPrinter(writer);
-		printer.printItem(clazz);
-		writer.close();
-		
-		return sw.toString();
+		return new String(data);
 	}
 	
 	private static byte[] assemble(String code, TestErrorsListener listener) {
