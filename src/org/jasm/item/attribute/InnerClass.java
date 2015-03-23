@@ -146,9 +146,6 @@ public class InnerClass extends AbstractByteCodeItem implements IUtf8ConstantPoo
 		} 
 		if (this.innerNameReference != null) {
 			this.innerName = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, innerNameReference);
-			if (this.innerName != null) {
-				verifyName(innerNameReference, innerName);
-			}
 		}
 		
 		if (!this.hasErrors()) {
@@ -241,9 +238,6 @@ public class InnerClass extends AbstractByteCodeItem implements IUtf8ConstantPoo
 		return innerNameReference;
 	}
 	
-	private void verifyName(SymbolReference ref,Utf8Info name) {
-		IdentifierUtils.checkSimpleIdentifier(this, ref, name);
-	}
 
 
 	@Override
