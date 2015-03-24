@@ -86,7 +86,7 @@ public class Frame {
 	
 	public VerificationType peek(VerificationType expected) {
 		if (stack.size() == 0) {
-			throw new StackOverflowException(-1);
+			throw new StackUnderflowException(-1);
 		}
 		VerificationType value = stack.peek();
 		
