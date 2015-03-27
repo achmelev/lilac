@@ -62,8 +62,6 @@ public super class {
   public method {
     name init0_name; // <init>
     descriptor method_desc; // ()V
-  
-
     maxstack 2;
     //Variables
     var object this;

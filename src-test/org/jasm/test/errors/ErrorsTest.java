@@ -977,6 +977,26 @@ public class ErrorsTest {
 		Assert.assertTrue(checkForErrorMessage(listener, 467,"code verification error"));
 		
 		
+		
+		
+	}
+	
+	@Test
+	public void testConstructorAndInvokeSpecial() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.verify.ConstrConcat");
+		String originalCode = disassemble(data);
+		
+		String code = remove(originalCode,69);
+		for (int i=0;i<4; i++) {
+			code = remove(code,69);
+		}
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 69,"code verification error"));
+		
+		code = patch(originalCode,106,"invokevirtual","invokespecial");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 106,"code verification error"));
 	}
 	
 	private  byte [] getData(String name) {

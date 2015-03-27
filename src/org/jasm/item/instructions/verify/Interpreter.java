@@ -1437,14 +1437,14 @@ public class Interpreter {
 	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
 	  InvokeDynamicInfo idi = (InvokeDynamicInfo)cpi.getCpEntry();
 	  MethodDescriptor md = idi.getNameAndType().getMethodDescriptor();
-	  invokeMethod(null, md, inputFrame);
+	  invokeMethod(null, md, inputFrame, null);
 	  return inputFrame;
 	}
 
 	public Frame executeInvokeinterface(AbstractInstruction instr, Frame inputFrame) {
 	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
 	  InterfaceMethodrefInfo mi = (InterfaceMethodrefInfo)cpi.getCpEntry();
-	  invokeMethod(mi.getClassReference().getDescriptor(), mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame);
+	  invokeMethod(mi.getClassReference().getDescriptor(), mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame, null);
 	  return inputFrame;
 	}
 
@@ -1492,12 +1492,8 @@ public class Interpreter {
 		  }
 		  
 	  } else {
-		  if (methodClassName.equals(currentClassName) || methodClassName.equals(superClassName)) {
-			  //OK
-		  } else {
-			  throw new VerifyException(instr.getIndex(), "illegal invokespecial call");
-		  }
-		  invokeMethod(mi.getClassReference().getDescriptor(), mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame);
+		  VerificationType currentType = new ObjectValueType(new TypeDescriptor("L"+currentClassName+";"), parent);
+		  invokeMethod(mi.getClassReference().getDescriptor(), mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame, currentType);
 	  }
 	  return inputFrame;
 	}
@@ -1505,21 +1501,23 @@ public class Interpreter {
 	public Frame executeInvokestatic(AbstractInstruction instr, Frame inputFrame) {
 		ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
 		AbstractRefInfo mi = (AbstractRefInfo)cpi.getCpEntry();
-		invokeMethod(null, mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame);
+		invokeMethod(null, mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame, null);
 		return inputFrame;
 	}
 
 	public Frame executeInvokevirtual(AbstractInstruction instr, Frame inputFrame) {
 		ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
 		MethodrefInfo mi = (MethodrefInfo)cpi.getCpEntry();
-		invokeMethod(mi.getClassReference().getDescriptor(), mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame);
+		invokeMethod(mi.getClassReference().getDescriptor(), mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame, null);
 		return inputFrame;
 	}
 	
-	private void invokeMethod(TypeDescriptor this_, MethodDescriptor method, Frame inputFrame) {
+	private void invokeMethod(TypeDescriptor this_, MethodDescriptor method, Frame inputFrame, VerificationType  currentClass) {
 		List<VerificationType> params = new ArrayList<VerificationType>();
+		VerificationType thisT = null;
 		if (this_ != null) {
-			params.add(VerificationType.createTypeFromDescriptor(this_, parent));
+			thisT = VerificationType.createTypeFromDescriptor(this_, parent);
+			params.add(thisT);
 		}
 		for (TypeDescriptor td: method.getParameters()) {
 			params.add(VerificationType.createTypeFromDescriptor(td, parent));
@@ -1529,7 +1527,10 @@ public class Interpreter {
 			rt = VerificationType.createTypeFromDescriptor(method.getReturnType(), parent);
 		}
 		for (int i=0;i<params.size(); i++) {
-			inputFrame.pop(params.get(params.size()-i-1));
+			inputFrame.pop(params.get(params.size()-i-1));	
+		}
+		if (thisT != null && currentClass != null && !thisT.isAssignableFrom(currentClass)) {
+			throw new VerifyException(-1, "wrong invokespecial call");
 		}
 		if (rt != null) {
 			inputFrame.push(rt);
