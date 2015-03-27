@@ -273,6 +273,21 @@ public class Frame {
 		}
 	}
 	
+	public int countAllOccurencies(VerificationType t) {
+		int result = 0;
+		for (int i=0;i<locals.size(); i++) {
+			if (locals.get(i).equals(t)) {
+				result++;
+			}
+		}
+		for (int i=0;i<this.stack.size(); i++) {
+			if (this.stack.get(i).equals(t)) {
+				result++;
+			}
+		}
+		return result;
+	}
+	
 	private int calculateActiveLocals() {
 		int result = locals.size();
 		while (result>0 && locals.get(result-1) == VerificationType.TOP) {

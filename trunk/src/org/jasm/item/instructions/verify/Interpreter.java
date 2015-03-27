@@ -1457,8 +1457,8 @@ public class Interpreter {
 	  }
 	  ConstantPoolInstruction cpi = (ConstantPoolInstruction)instr;
 	  AbstractRefInfo mi = (AbstractRefInfo)cpi.getCpEntry();
+	  String methodClassName = mi.getClassReference().getClassName();
 	  if (mi.getNameAndTypeReference().getName().equals("<init>")) {
-		  String methodClassName = mi.getClassReference().getClassName();
 		  MethodDescriptor method = mi.getNameAndTypeReference().getMethodDescriptor();
 		  List<VerificationType> params = new ArrayList<VerificationType>();
 		  if (!method.isVoid()) {
@@ -1480,18 +1480,23 @@ public class Interpreter {
 				  throw new IllegalStateException("not object");
 			  }
 			  if (!desc.getClassName().equals(methodClassName)) {
-				  throw new VerifyException(instr.getIndex(), "wrong constructor call");
+				  throw new VerifyException(instr.getIndex(), "illegal constructor call");
 			  }
 			  inputFrame.replaceAllOccurences(this_, new ObjectValueType(desc, parent));
 		  } else {
 			  if (methodClassName.equals(currentClassName) || methodClassName.equals(superClassName)) {
 				  inputFrame.replaceAllOccurences(this_, new ObjectValueType(new TypeDescriptor("L"+currentClassName+";"), parent));
 			  } else {
-				  throw new VerifyException(instr.getIndex(), "wrong constructor call");
+				  throw new VerifyException(instr.getIndex(), "illegal constructor call");
 			  }
 		  }
 		  
 	  } else {
+		  if (methodClassName.equals(currentClassName) || methodClassName.equals(superClassName)) {
+			  //OK
+		  } else {
+			  throw new VerifyException(instr.getIndex(), "illegal invokespecial call");
+		  }
 		  invokeMethod(mi.getClassReference().getDescriptor(), mi.getNameAndTypeReference().getMethodDescriptor(), inputFrame);
 	  }
 	  return inputFrame;
@@ -1919,6 +1924,11 @@ public class Interpreter {
 	}
 
 	public Frame executeReturn_(AbstractInstruction instr, Frame inputFrame) {
+	  String currentMethodName = parent.getMethod().getName().getValue();
+	  String currentClassName = parent.getClazz().getThisClass().getClassName();
+      if (currentMethodName.equals("<init>") && !currentClassName.equals("java/lang/Object") && inputFrame.countAllOccurencies(VerificationType.UNINITIALIZED_THIS)>0) {
+    	  throw new VerifyException(instr.getIndex(), "this hasn't been initialized");
+      }
 	  return inputFrame;
 	}
 
