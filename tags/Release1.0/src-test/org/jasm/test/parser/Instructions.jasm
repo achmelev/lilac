@@ -1,0 +1,60 @@
+public super abstract class {
+  version 51.0;
+  name classref_0; // org/jasm/test/testclass/AbstractGenericClass
+  extends classref_2; // java/lang/Object
+   //Constants
+  const classref classref_0 utf8_1; // org/jasm/test/testclass/AbstractGenericClass
+  const utf8 utf8_1 "org/jasm/test/testclass/AbstractGenericClass";
+  const classref classref_2 utf8_3; // java/lang/Object
+  const utf8 utf8_3 "java/lang/Object";
+  const utf8 utf8_4 "field";
+  const utf8 utf8_5 "Ljava/lang/Object;";
+  const utf8 utf8_6 "Signature";
+  const utf8 utf8_7 "TT;";
+  const utf8 utf8_8 "<init>";
+  const utf8 utf8_9 "()V";
+  const utf8 utf8_10 "Code";
+  const methodref methodref_11 classref_2, nameandtype_12; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype nameandtype_12 utf8_8, utf8_9; // name=<init> type=()V
+  const fieldref fieldref_13 classref_0, nameandtype_14; // class=org/jasm/test/testclass/AbstractGenericClass, name=field, descriptor=Ljava/lang/Object;
+  const nameandtype nameandtype_14 utf8_4, utf8_5; // name=field type=Ljava/lang/Object;
+  const utf8 utf8_15 "LineNumberTable";
+  const utf8 utf8_16 "LocalVariableTable";
+  const utf8 utf8_17 "this";
+  const utf8 utf8_18 "Lorg/jasm/test/testclass/AbstractGenericClass;";
+  const utf8 utf8_19 "LocalVariableTypeTable";
+  const utf8 utf8_20 "Lorg/jasm/test/testclass/AbstractGenericClass<TT;>;";
+  const utf8 utf8_21 "method";
+  const utf8 utf8_22 "()Ljava/lang/Object;";
+  const utf8 utf8_23 "()TT;";
+  const utf8 utf8_24 "SourceFile";
+  const utf8 utf8_25 "AbstractGenericClass.java";
+  const utf8 utf8_26 "<T:Ljava/lang/Object;>Ljava/lang/Object;";
+   //Attributes
+  source file utf8_25; // AbstractGenericClass.java
+  signature utf8_26; // <T:Ljava/lang/Object;>Ljava/lang/Object;
+   //Fields
+  private field {
+    name utf8_4; // field
+    descriptor utf8_5; // Ljava/lang/Object;
+     //Attributes
+    signature utf8_7; // TT;
+  }
+  
+  public method {
+    name utf8_21; // method
+    descriptor utf8_22; // ()Ljava/lang/Object;
+     //Attributes
+    signature utf8_23; // ()TT;
+    //Variables
+	var object o1;
+    var double d1;
+    var float  f1 at 2;
+    var int i1;
+    var long l1 at i1+2;
+    var returnadress r1;
+    //Instructions
+    nop;
+    return;
+  }
+}

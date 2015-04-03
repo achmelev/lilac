@@ -1,0 +1,105 @@
+public super class {
+  version 52.0;
+  name ThisClass; // org/jasm/test/playground/InvokeWithInterfaceArgumentExecutable
+  extends Object; // java/lang/Object
+  implements IExecutable; // org/jasm/test/playground/IExecutable
+   //Constants
+  const classref ThisClass ThisClass_name; // org/jasm/test/playground/InvokeWithInterfaceArgumentExecutable
+  const utf8 ThisClass_name "org/jasm/test/playground/InvokeWithInterfaceArgumentExecutable";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const classref IExecutable IExecutable_name; // org/jasm/test/playground/IExecutable
+  const utf8 IExecutable_name "org/jasm/test/playground/IExecutable";
+  const utf8 init0_name "<init>";
+  const utf8 method_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref Object.init0 Object, Object.init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype Object.init0_nat init0_name, method_desc; // name=<init> type=()V
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/InvokeWithInterfaceArgumentExecutable;";
+  const utf8 execute_name "execute";
+  const classref Runnable Runnable_name; // java/lang/Runnable
+  const utf8 Runnable_name "java/lang/Runnable";
+  const methodref inv ThisClass, inv_nat; // class=org/jasm/test/playground/InvokeWithInterfaceArgumentExecutable, name=inv, descriptor=(Ljava/lang/Runnable;)V
+  const nameandtype inv_nat inv_name, inv_desc; // name=inv type=(Ljava/lang/Runnable;)V
+  const utf8 inv_name "inv";
+  const utf8 inv_desc "(Ljava/lang/Runnable;)V";
+  const utf8 o_name "o";
+  const utf8 o_desc "Ljava/lang/Object;";
+  const intfmethodref Runnable.run Runnable, Runnable.run_nat; // class=java/lang/Runnable, name=run, descriptor=()V
+  const nameandtype Runnable.run_nat run_name, method_desc; // name=run type=()V
+  const utf8 run_name "run";
+  const utf8 r_name "r";
+  const utf8 r_desc "Ljava/lang/Runnable;";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "InvokeWithInterfaceArgumentExecutable.java";
+  source file source_file_name; // InvokeWithInterfaceArgumentExecutable.java
+   //Fields
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 3;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/InvokeWithInterfaceArgumentExecutable;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial Object.init0;
+    return;
+  }
+  public method {
+    name execute_name; // execute
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 8;
+      line ir8, 9;
+      line ir16, 11;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/InvokeWithInterfaceArgumentExecutable;
+      var o, ir8, o_name, o_desc; // name=o,  descriptor=Ljava/lang/Object;
+    }
+    maxstack 2;
+    //Variables
+    var object this;
+    var object o;
+    //Instructions
+    ir0: new Object;
+    dup;
+    invokespecial Object.init0;
+    astore o;
+    ir8: aload this;
+    aload o;
+    //checkcast Runnable;
+    invokevirtual inv;
+    ir16: return;
+  }
+  public method {
+    name inv_name; // inv
+    descriptor inv_desc; // (Ljava/lang/Runnable;)V
+    line numbers {
+      line ir0, 14;
+      line ir6, 15;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/InvokeWithInterfaceArgumentExecutable;
+      var r, ir0, r_name, r_desc; // name=r,  descriptor=Ljava/lang/Runnable;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    var object r;
+    //Instructions
+    ir0: aload r;
+    invokeinterface Runnable.run;
+    ir6: return;
+  }
+}

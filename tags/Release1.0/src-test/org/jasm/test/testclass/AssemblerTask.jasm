@@ -1,0 +1,836 @@
+public super class {
+  version 52.0;
+  name ThisClass; // org/jasm/test/testclass/AssemblerTask
+  extends Object; // java/lang/Object
+  implements Task, IParserErrorListener; // org/jasm/tools/task/Task, org/jasm/parser/IParserErrorListener
+   //Constants
+  const classref ThisClass ThisClass_name; // org/jasm/test/testclass/AssemblerTask
+  const utf8 ThisClass_name "org/jasm/test/testclass/AssemblerTask";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const classref Task Task_name; // org/jasm/tools/task/Task
+  const utf8 Task_name "org/jasm/tools/task/Task";
+  const classref IParserErrorListener IParserErrorListener_name; // org/jasm/parser/IParserErrorListener
+  const utf8 IParserErrorListener_name "org/jasm/parser/IParserErrorListener";
+  const utf8 log_name "log";
+  const utf8 log_desc "Lorg/slf4j/Logger;";
+  const utf8 resource_name "resource";
+  const utf8 resource_desc "Lorg/jasm/tools/resource/Resource;";
+  const utf8 env_name "env";
+  const utf8 env_desc "Ljava/util/Properties;";
+  const utf8 callback_name "callback";
+  const utf8 callback_desc "Lorg/jasm/tools/task/ITaskCallback;";
+  const utf8 clazz_name "clazz";
+  const utf8 clazz_desc "Lorg/jasm/item/clazz/Clazz;";
+  const utf8 resolver_name "resolver";
+  const utf8 resolver_desc "Lorg/jasm/resolver/ClassInfoResolver;";
+  const utf8 stage_name "stage";
+  const utf8 type_desc "I";
+  const utf8 parser_name "parser";
+  const utf8 parser_desc "Lorg/jasm/parser/AssemblerParser;";
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "(Lorg/jasm/tools/task/ITaskCallback;Lorg/jasm/tools/resource/Resource;Ljava/util/Properties;)V";
+  const utf8 Code_utf8 "Code";
+  const methodref Object.init0 Object, Object.init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype Object.init0_nat init0_name, method_desc; // name=<init> type=()V
+  const utf8 method_desc "()V";
+  const methodref Object.getClass Object, Object.getClass_nat; // class=java/lang/Object, name=getClass, descriptor=()Ljava/lang/Class;
+  const nameandtype Object.getClass_nat getClass_name, getClass_desc; // name=getClass type=()Ljava/lang/Class;
+  const utf8 getClass_name "getClass";
+  const utf8 getClass_desc "()Ljava/lang/Class;";
+  const methodref LoggerFactory.getLogger LoggerFactory, LoggerFactory.getLogger_nat; // class=org/slf4j/LoggerFactory, name=getLogger, descriptor=(Ljava/lang/Class;)Lorg/slf4j/Logger;
+  const classref LoggerFactory LoggerFactory_name; // org/slf4j/LoggerFactory
+  const utf8 LoggerFactory_name "org/slf4j/LoggerFactory";
+  const nameandtype LoggerFactory.getLogger_nat getLogger_name, getLogger_desc; // name=getLogger type=(Ljava/lang/Class;)Lorg/slf4j/Logger;
+  const utf8 getLogger_name "getLogger";
+  const utf8 getLogger_desc "(Ljava/lang/Class;)Lorg/slf4j/Logger;";
+  const fieldref log ThisClass, log_nat; // class=org/jasm/test/testclass/AssemblerTask, name=log, descriptor=Lorg/slf4j/Logger;
+  const nameandtype log_nat log_name, log_desc; // name=log type=Lorg/slf4j/Logger;
+  const fieldref clazz ThisClass, clazz_nat; // class=org/jasm/test/testclass/AssemblerTask, name=clazz, descriptor=Lorg/jasm/item/clazz/Clazz;
+  const nameandtype clazz_nat clazz_name, clazz_desc; // name=clazz type=Lorg/jasm/item/clazz/Clazz;
+  const fieldref env ThisClass, env_nat; // class=org/jasm/test/testclass/AssemblerTask, name=env, descriptor=Ljava/util/Properties;
+  const nameandtype env_nat env_name, env_desc; // name=env type=Ljava/util/Properties;
+  const fieldref callback ThisClass, callback_nat; // class=org/jasm/test/testclass/AssemblerTask, name=callback, descriptor=Lorg/jasm/tools/task/ITaskCallback;
+  const nameandtype callback_nat callback_name, callback_desc; // name=callback type=Lorg/jasm/tools/task/ITaskCallback;
+  const fieldref ThisClass.resource ThisClass, ThisClass.resource_nat; // class=org/jasm/test/testclass/AssemblerTask, name=resource, descriptor=Lorg/jasm/tools/resource/Resource;
+  const nameandtype ThisClass.resource_nat resource_name, resource_desc; // name=resource type=Lorg/jasm/tools/resource/Resource;
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/testclass/AssemblerTask;";
+  const utf8 run_name "run";
+  const fieldref stage ThisClass, stage_nat; // class=org/jasm/test/testclass/AssemblerTask, name=stage, descriptor=I
+  const nameandtype stage_nat stage_name, type_desc; // name=stage type=I
+  const methodref doAssemble ThisClass, doAssemble_nat; // class=org/jasm/test/testclass/AssemblerTask, name=doAssemble, descriptor=()V
+  const nameandtype doAssemble_nat doAssemble_name, method_desc; // name=doAssemble type=()V
+  const utf8 doAssemble_name "doAssemble";
+  const methodref doVerify ThisClass, doVerify_nat; // class=org/jasm/test/testclass/AssemblerTask, name=doVerify, descriptor=()V
+  const nameandtype doVerify_nat doVerify_name, method_desc; // name=doVerify type=()V
+  const utf8 doVerify_name "doVerify";
+  const utf8 StackMapTable_utf8 "StackMapTable";
+  const methodref Environment.initFrom Environment, Environment.initFrom_nat; // class=org/jasm/environment/Environment, name=initFrom, descriptor=(Ljava/util/Properties;)V
+  const classref Environment Environment_name; // org/jasm/environment/Environment
+  const utf8 Environment_name "org/jasm/environment/Environment";
+  const nameandtype Environment.initFrom_nat initFrom_name, initFrom_desc; // name=initFrom type=(Ljava/util/Properties;)V
+  const utf8 initFrom_name "initFrom";
+  const utf8 initFrom_desc "(Ljava/util/Properties;)V";
+  const string string_70 utf8_71; // "jasm.verification.enabled"
+  const utf8 utf8_71 "jasm.verification.enabled";
+  const methodref Environment.getBooleanValue Environment, Environment.getBooleanValue_nat; // class=org/jasm/environment/Environment, name=getBooleanValue, descriptor=(Ljava/lang/String;)Z
+  const nameandtype Environment.getBooleanValue_nat getBooleanValue_name, getBooleanValue_desc; // name=getBooleanValue type=(Ljava/lang/String;)Z
+  const utf8 getBooleanValue_name "getBooleanValue";
+  const utf8 getBooleanValue_desc "(Ljava/lang/String;)Z";
+  const string string_76 utf8_77; // "jasm.dotwostages"
+  const utf8 utf8_77 "jasm.dotwostages";
+  const intfmethodref Resource.createInputStream Resource, Resource.createInputStream_nat; // class=org/jasm/tools/resource/Resource, name=createInputStream, descriptor=()Ljava/io/InputStream;
+  const classref Resource Resource_name; // org/jasm/tools/resource/Resource
+  const utf8 Resource_name "org/jasm/tools/resource/Resource";
+  const nameandtype Resource.createInputStream_nat createInputStream_name, createInputStream_desc; // name=createInputStream type=()Ljava/io/InputStream;
+  const utf8 createInputStream_name "createInputStream";
+  const utf8 createInputStream_desc "()Ljava/io/InputStream;";
+  const classref AssemblerParser AssemblerParser_name; // org/jasm/parser/AssemblerParser
+  const utf8 AssemblerParser_name "org/jasm/parser/AssemblerParser";
+  const methodref AssemblerParser.init0 AssemblerParser, Object.init0_nat; // class=org/jasm/parser/AssemblerParser, name=<init>, descriptor=()V
+  const fieldref parser ThisClass, parser_nat; // class=org/jasm/test/testclass/AssemblerTask, name=parser, descriptor=Lorg/jasm/parser/AssemblerParser;
+  const nameandtype parser_nat parser_name, parser_desc; // name=parser type=Lorg/jasm/parser/AssemblerParser;
+  const methodref AssemblerParser.addErrorListener AssemblerParser, AssemblerParser.addErrorListener_nat; // class=org/jasm/parser/AssemblerParser, name=addErrorListener, descriptor=(Lorg/jasm/parser/IParserErrorListener;)V
+  const nameandtype AssemblerParser.addErrorListener_nat addErrorListener_name, addErrorListener_desc; // name=addErrorListener type=(Lorg/jasm/parser/IParserErrorListener;)V
+  const utf8 addErrorListener_name "addErrorListener";
+  const utf8 addErrorListener_desc "(Lorg/jasm/parser/IParserErrorListener;)V";
+  const methodref AssemblerParser.parse AssemblerParser, AssemblerParser.parse_nat; // class=org/jasm/parser/AssemblerParser, name=parse, descriptor=(Ljava/io/InputStream;)Lorg/jasm/item/clazz/Clazz;
+  const nameandtype AssemblerParser.parse_nat parse_name, parse_desc; // name=parse type=(Ljava/io/InputStream;)Lorg/jasm/item/clazz/Clazz;
+  const utf8 parse_name "parse";
+  const utf8 parse_desc "(Ljava/io/InputStream;)Lorg/jasm/item/clazz/Clazz;";
+  const methodref AssemblerParser.getErrorCounter AssemblerParser, AssemblerParser.getErrorCounter_nat; // class=org/jasm/parser/AssemblerParser, name=getErrorCounter, descriptor=()I
+  const nameandtype AssemblerParser.getErrorCounter_nat getErrorCounter_name, getErrorCounter_desc; // name=getErrorCounter type=()I
+  const utf8 getErrorCounter_name "getErrorCounter";
+  const utf8 getErrorCounter_desc "()I";
+  const methodref AssemblerParser.flushErrors AssemblerParser, AssemblerParser.flushErrors_nat; // class=org/jasm/parser/AssemblerParser, name=flushErrors, descriptor=()V
+  const nameandtype AssemblerParser.flushErrors_nat flushErrors_name, method_desc; // name=flushErrors type=()V
+  const utf8 flushErrors_name "flushErrors";
+  const intfmethodref ITaskCallback.failure ITaskCallback, ITaskCallback.failure_nat; // class=org/jasm/tools/task/ITaskCallback, name=failure, descriptor=(Lorg/jasm/tools/task/Task;)V
+  const classref ITaskCallback ITaskCallback_name; // org/jasm/tools/task/ITaskCallback
+  const utf8 ITaskCallback_name "org/jasm/tools/task/ITaskCallback";
+  const nameandtype ITaskCallback.failure_nat failure_name, method_desc$0; // name=failure type=(Lorg/jasm/tools/task/Task;)V
+  const utf8 failure_name "failure";
+  const utf8 method_desc$0 "(Lorg/jasm/tools/task/Task;)V";
+  const intfmethodref ITaskCallback.success ITaskCallback, ITaskCallback.success_nat; // class=org/jasm/tools/task/ITaskCallback, name=success, descriptor=(Lorg/jasm/tools/task/Task;)V
+  const nameandtype ITaskCallback.success_nat success_name, method_desc$0; // name=success type=(Lorg/jasm/tools/task/Task;)V
+  const utf8 success_name "success";
+  const classref OutOfMemoryError OutOfMemoryError_name; // java/lang/OutOfMemoryError
+  const utf8 OutOfMemoryError_name "java/lang/OutOfMemoryError";
+  const classref StringBuilder StringBuilder_name; // java/lang/StringBuilder
+  const utf8 StringBuilder_name "java/lang/StringBuilder";
+  const string string_117 utf8_118; // "internal error while assembling "
+  const utf8 utf8_118 "internal error while assembling ";
+  const methodref StringBuilder.init0 StringBuilder, StringBuilder.init0_nat; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
+  const nameandtype StringBuilder.init0_nat init0_name, init0_desc$0; // name=<init> type=(Ljava/lang/String;)V
+  const utf8 init0_desc$0 "(Ljava/lang/String;)V";
+  const intfmethodref Resource.getName Resource, Resource.getName_nat; // class=org/jasm/tools/resource/Resource, name=getName, descriptor=()Ljava/lang/String;
+  const nameandtype Resource.getName_nat getName_name, method_desc$1; // name=getName type=()Ljava/lang/String;
+  const utf8 getName_name "getName";
+  const utf8 method_desc$1 "()Ljava/lang/String;";
+  const methodref StringBuilder.append StringBuilder, StringBuilder.append_nat; // class=java/lang/StringBuilder, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  const nameandtype StringBuilder.append_nat append_name, append_desc; // name=append type=(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  const utf8 append_name "append";
+  const utf8 append_desc "(Ljava/lang/String;)Ljava/lang/StringBuilder;";
+  const string string_130 utf8_131; // " : "
+  const utf8 utf8_131 " : ";
+  const methodref Class.getName Class, Resource.getName_nat; // class=java/lang/Class, name=getName, descriptor=()Ljava/lang/String;
+  const classref Class Class_name; // java/lang/Class
+  const utf8 Class_name "java/lang/Class";
+  const string string_135 utf8_136; // "-->"
+  const utf8 utf8_136 "-->";
+  const methodref Throwable.getMessage Throwable, Throwable.getMessage_nat; // class=java/lang/Throwable, name=getMessage, descriptor=()Ljava/lang/String;
+  const classref Throwable Throwable_name; // java/lang/Throwable
+  const utf8 Throwable_name "java/lang/Throwable";
+  const nameandtype Throwable.getMessage_nat getMessage_name, method_desc$1; // name=getMessage type=()Ljava/lang/String;
+  const utf8 getMessage_name "getMessage";
+  const methodref StringBuilder.toString StringBuilder, StringBuilder.toString_nat; // class=java/lang/StringBuilder, name=toString, descriptor=()Ljava/lang/String;
+  const nameandtype StringBuilder.toString_nat toString_name, method_desc$1; // name=toString type=()Ljava/lang/String;
+  const utf8 toString_name "toString";
+  const intfmethodref ITaskCallback.printError ITaskCallback, ITaskCallback.printError_nat; // class=org/jasm/tools/task/ITaskCallback, name=printError, descriptor=(Lorg/jasm/tools/task/Task;Ljava/lang/String;)V
+  const nameandtype ITaskCallback.printError_nat printError_name, printError_desc; // name=printError type=(Lorg/jasm/tools/task/Task;Ljava/lang/String;)V
+  const utf8 printError_name "printError";
+  const utf8 printError_desc "(Lorg/jasm/tools/task/Task;Ljava/lang/String;)V";
+  const string string_149 utf8_150; // "Error assembling "
+  const utf8 utf8_150 "Error assembling ";
+  const intfmethodref Logger.error Logger, Logger.error_nat; // class=org/slf4j/Logger, name=error, descriptor=(Ljava/lang/String;Ljava/lang/Throwable;)V
+  const classref Logger Logger_name; // org/slf4j/Logger
+  const utf8 Logger_name "org/slf4j/Logger";
+  const nameandtype Logger.error_nat error_name, error_desc; // name=error type=(Ljava/lang/String;Ljava/lang/Throwable;)V
+  const utf8 error_name "error";
+  const utf8 error_desc "(Ljava/lang/String;Ljava/lang/Throwable;)V";
+  const methodref InputStream.close InputStream, InputStream.close_nat; // class=java/io/InputStream, name=close, descriptor=()V
+  const classref InputStream InputStream_name; // java/io/InputStream
+  const utf8 InputStream_name "java/io/InputStream";
+  const nameandtype InputStream.close_nat close_name, method_desc; // name=close type=()V
+  const utf8 close_name "close";
+  const classref IOException IOException_name; // java/io/IOException
+  const utf8 IOException_name "java/io/IOException";
+  const utf8 source_name "source";
+  const utf8 source_desc "Ljava/io/InputStream;";
+  const utf8 verificationEnabled_name "verificationEnabled";
+  const utf8 type_desc$0 "Z";
+  const utf8 twoStages_name "twoStages";
+  const utf8 e_name "e";
+  const utf8 e_desc "Ljava/lang/Throwable;";
+  const classref Clazz Clazz_name; // org/jasm/item/clazz/Clazz
+  const utf8 Clazz_name "org/jasm/item/clazz/Clazz";
+  const fieldref resolver ThisClass, resolver_nat; // class=org/jasm/test/testclass/AssemblerTask, name=resolver, descriptor=Lorg/jasm/resolver/ClassInfoResolver;
+  const nameandtype resolver_nat resolver_name, resolver_desc; // name=resolver type=Lorg/jasm/resolver/ClassInfoResolver;
+  const classref IllegalStateException IllegalStateException_name; // java/lang/IllegalStateException
+  const utf8 IllegalStateException_name "java/lang/IllegalStateException";
+  const string string_177 utf8_178; // "RESOLVER NOT SET"
+  const utf8 utf8_178 "RESOLVER NOT SET";
+  const methodref IllegalStateException.init0 IllegalStateException, StringBuilder.init0_nat; // class=java/lang/IllegalStateException, name=<init>, descriptor=(Ljava/lang/String;)V
+  const methodref Clazz.setResolver Clazz, Clazz.setResolver_nat; // class=org/jasm/item/clazz/Clazz, name=setResolver, descriptor=(Lorg/jasm/resolver/ClassInfoResolver;)V
+  const nameandtype Clazz.setResolver_nat setResolver_name, setResolver_desc; // name=setResolver type=(Lorg/jasm/resolver/ClassInfoResolver;)V
+  const utf8 setResolver_name "setResolver";
+  const utf8 setResolver_desc "(Lorg/jasm/resolver/ClassInfoResolver;)V";
+  const methodref Clazz.verify Clazz, Clazz.verify_nat; // class=org/jasm/item/clazz/Clazz, name=verify, descriptor=()V
+  const nameandtype Clazz.verify_nat verify_name, method_desc; // name=verify type=()V
+  const utf8 verify_name "verify";
+  const string string_187 utf8_188; // "internal error while verifying "
+  const utf8 utf8_188 "internal error while verifying ";
+  const utf8 getResource_name "getResource";
+  const utf8 getResource_desc "()Lorg/jasm/tools/resource/Resource;";
+  const utf8 setStage_name "setStage";
+  const utf8 setStage_desc "(I)V";
+  const utf8 clear_name "clear";
+  const utf8 method_desc$2 "(IILjava/lang/String;)V";
+  const string string_195 utf8_196; // "line "
+  const utf8 utf8_196 "line ";
+  const methodref StringBuilder.append$0 StringBuilder, StringBuilder.append$0_nat; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
+  const nameandtype StringBuilder.append$0_nat append_name, append_desc$0; // name=append type=(I)Ljava/lang/StringBuilder;
+  const utf8 append_desc$0 "(I)Ljava/lang/StringBuilder;";
+  const string string_200 utf8_201; // " "
+  const utf8 utf8_201 " ";
+  const utf8 line_name "line";
+  const utf8 charPos_name "charPos";
+  const utf8 msg_name "msg";
+  const utf8 msg_desc "Ljava/lang/String;";
+  const utf8 flush_name "flush";
+  const utf8 getClazz_name "getClazz";
+  const utf8 getClazz_desc "()Lorg/jasm/item/clazz/Clazz;";
+  const utf8 emitInternalError_name "emitInternalError";
+  const string string_210 utf8_211; // "internal error at line "
+  const utf8 utf8_211 "internal error at line ";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "AssemblerTask.java";
+  source file source_file_name; // AssemblerTask.java
+   //Fields
+  private field {
+    name log_name; // log
+    descriptor log_desc; // Lorg/slf4j/Logger;
+  }
+  private field {
+    name resource_name; // resource
+    descriptor resource_desc; // Lorg/jasm/tools/resource/Resource;
+  }
+  private field {
+    name env_name; // env
+    descriptor env_desc; // Ljava/util/Properties;
+  }
+  private field {
+    name callback_name; // callback
+    descriptor callback_desc; // Lorg/jasm/tools/task/ITaskCallback;
+  }
+  private field {
+    name clazz_name; // clazz
+    descriptor clazz_desc; // Lorg/jasm/item/clazz/Clazz;
+  }
+  private field {
+    name resolver_name; // resolver
+    descriptor resolver_desc; // Lorg/jasm/resolver/ClassInfoResolver;
+  }
+  private field {
+    name stage_name; // stage
+    descriptor type_desc; // I
+  }
+  private field {
+    name parser_name; // parser
+    descriptor parser_desc; // Lorg/jasm/parser/AssemblerParser;
+  }
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor init0_desc; // (Lorg/jasm/tools/task/ITaskCallback;Lorg/jasm/tools/resource/Resource;Ljava/util/Properties;)V
+    line numbers {
+      line ir0, 40;
+      line ir4, 25;
+      line ir15, 31;
+      line ir20, 41;
+      line ir25, 42;
+      line ir30, 43;
+      line ir35, 44;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerTask;
+      var callback, ir0, callback_name, callback_desc; // name=callback,  descriptor=Lorg/jasm/tools/task/ITaskCallback;
+      var resource$0, ir0, resource_name, resource_desc; // name=resource,  descriptor=Lorg/jasm/tools/resource/Resource;
+      var env, ir0, env_name, env_desc; // name=env,  descriptor=Ljava/util/Properties;
+    }
+    maxstack 2;
+    //Variables
+    var object this;
+    var object callback;
+    var object resource$0;
+    var object env;
+    //Instructions
+    ir0: aload this;
+    invokespecial Object.init0;
+    ir4: aload this;
+    aload this;
+    invokevirtual Object.getClass;
+    invokestatic LoggerFactory.getLogger;
+    putfield log;
+    ir15: aload this;
+    aconst_null;
+    putfield clazz;
+    ir20: aload this;
+    aload env;
+    putfield env;
+    ir25: aload this;
+    aload callback;
+    putfield callback;
+    ir30: aload this;
+    aload resource$0;
+    putfield ThisClass.resource;
+    ir35: return;
+  }
+  public method {
+    name run_name; // run
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 48;
+      line ir7, 49;
+      line ir11, 50;
+      line ir14, 51;
+      line ir18, 54;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerTask;
+    }
+    stackmap {
+      same ir14;
+      same ir18;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    getfield stage;
+    ifne ir14;
+    ir7: aload this;
+    invokespecial doAssemble;
+    ir11: goto ir18;
+    ir14: aload this;
+    invokespecial doVerify;
+    ir18: return;
+  }
+  private method {
+    name doAssemble_name; // doAssemble
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 57;
+      line ir2, 60;
+      line ir9, 61;
+      line ir16, 64;
+      line ir22, 65;
+      line ir28, 67;
+      line ir38, 69;
+      line ir49, 70;
+      line ir57, 71;
+      line ir75, 72;
+      line ir85, 73;
+      line ir92, 74;
+      line ir102, 75;
+      line ir105, 76;
+      line ir111, 77;
+      line ir119, 78;
+      line ir123, 79;
+      line ir126, 80;
+      line ir136, 86;
+      line ir140, 87;
+      line ir147, 88;
+      line ir149, 90;
+      line ir210, 91;
+      line ir244, 92;
+      line ir254, 95;
+      line ir258, 96;
+      line ir262, 98;
+      line ir270, 93;
+      line ir272, 95;
+      line ir276, 96;
+      line ir280, 98;
+      line ir285, 102;
+      line ir288, 95;
+      line ir292, 96;
+      line ir296, 98;
+      line ir301, 103;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerTask;
+      var source$0, ir2, source_name, source_desc; // name=source,  descriptor=Ljava/io/InputStream;
+      var verificationEnabled, ir22->ir136, verificationEnabled_name, type_desc$0; // name=verificationEnabled,  descriptor=Z
+      var twoStages, ir28->ir136, twoStages_name, type_desc$0; // name=twoStages,  descriptor=Z
+      var clazz, ir75->ir136, clazz_name, clazz_desc; // name=clazz,  descriptor=Lorg/jasm/item/clazz/Clazz;
+      var e, ir140->ir254, e_name, e_desc; // name=e,  descriptor=Ljava/lang/Throwable;
+    }
+    stackmap {
+      append ir16, {object InputStream};
+      append ir105, {int,int,object Clazz};
+      same ir126;
+      full ir139, {object ThisClass,object InputStream}, {object Throwable};
+      append ir149, {object Throwable};
+      full ir265, {object ThisClass,object InputStream}, {object IOException};
+      same locals ir270, object Throwable;
+      full ir283, {object ThisClass,object InputStream,top,top,top,object Throwable}, {object IOException};
+      same ir285;
+      full ir288, {object ThisClass,object InputStream}, {};
+      same locals ir299, object IOException;
+      same ir301;
+    }
+    maxstack 5;
+    try ir2->ir131 catch Throwable go to ir139; // java/lang/Throwable
+    try ir254->ir259 catch IOException go to ir265; // java/io/IOException
+    try ir2->ir249 catch all go to ir270;
+    try ir272->ir277 catch IOException go to ir283; // java/io/IOException
+    try ir288->ir293 catch IOException go to ir299; // java/io/IOException
+    //Variables
+    var object this;
+    var object source$0;
+    var object e;
+    var int verificationEnabled at e;
+    var int twoStages;
+    var object clazz;
+    var object a_5;
+    var object a_6;
+    //Instructions
+    ir0: aconst_null;
+    astore source$0;
+    ir2: aload this;
+    getfield env;
+    ifnull ir16;
+    ir9: aload this;
+    getfield env;
+    invokestatic Environment.initFrom;
+    ir16: ldc string_70; // "jasm.verification.enabled"
+    invokestatic Environment.getBooleanValue;
+    istore verificationEnabled;
+    ir22: ldc string_76; // "jasm.dotwostages"
+    invokestatic Environment.getBooleanValue;
+    istore twoStages;
+    ir28: aload this;
+    getfield ThisClass.resource;
+    invokeinterface Resource.createInputStream;
+    astore source$0;
+    ir38: aload this;
+    new AssemblerParser;
+    dup;
+    invokespecial AssemblerParser.init0;
+    putfield parser;
+    ir49: aload this;
+    getfield parser;
+    aload this;
+    invokevirtual AssemblerParser.addErrorListener;
+    ir57: aload this;
+    getfield parser;
+    aload this;
+    getfield ThisClass.resource;
+    invokeinterface Resource.createInputStream;
+    invokevirtual AssemblerParser.parse;
+    astore clazz;
+    ir75: aload this;
+    getfield parser;
+    invokevirtual AssemblerParser.getErrorCounter;
+    ifle ir105;
+    ir85: aload this;
+    getfield parser;
+    invokevirtual AssemblerParser.flushErrors;
+    ir92: aload this;
+    getfield callback;
+    aload this;
+    invokeinterface ITaskCallback.failure;
+    ir102: goto ir288;
+    ir105: aload this;
+    aload clazz;
+    putfield clazz;
+    ir111: iload verificationEnabled;
+    ifeq ir126;
+    iload twoStages;
+    ifne ir126;
+    ir119: aload this;
+    invokespecial doVerify;
+    ir123: goto ir288;
+    ir126: aload this;
+    getfield callback;
+    aload this;
+    ir131: invokeinterface ITaskCallback.success;
+    ir136: goto ir288;
+    ir139: astore e;
+    ir140: aload e;
+    instanceof OutOfMemoryError;
+    ifeq ir149;
+    ir147: aload e;
+    athrow;
+    ir149: aload this;
+    getfield callback;
+    aload this;
+    new StringBuilder;
+    dup;
+    ldc string_117; // "internal error while assembling "
+    invokespecial StringBuilder.init0;
+    aload this;
+    getfield ThisClass.resource;
+    invokeinterface Resource.getName;
+    invokevirtual StringBuilder.append;
+    ldc string_130; // " : "
+    invokevirtual StringBuilder.append;
+    aload e;
+    invokevirtual Object.getClass;
+    invokevirtual Class.getName;
+    invokevirtual StringBuilder.append;
+    ldc string_135; // "-->"
+    invokevirtual StringBuilder.append;
+    aload e;
+    invokevirtual Throwable.getMessage;
+    invokevirtual StringBuilder.append;
+    invokevirtual StringBuilder.toString;
+    invokeinterface ITaskCallback.printError;
+    ir210: aload this;
+    getfield log;
+    new StringBuilder;
+    dup;
+    ldc string_149; // "Error assembling "
+    invokespecial StringBuilder.init0;
+    aload this;
+    getfield ThisClass.resource;
+    invokeinterface Resource.getName;
+    invokevirtual StringBuilder.append;
+    invokevirtual StringBuilder.toString;
+    aload e;
+    invokeinterface Logger.error;
+    ir244: aload this;
+    getfield callback;
+    aload this;
+    ir249: invokeinterface ITaskCallback.failure;
+    ir254: aload source$0;
+    ifnull ir301;
+    ir258: aload source$0;
+    ir259: invokevirtual InputStream.close;
+    ir262: goto ir301;
+    ir265: astore a_6;
+    goto ir301;
+    ir270: astore a_5;
+    ir272: aload source$0;
+    ifnull ir285;
+    ir276: aload source$0;
+    ir277: invokevirtual InputStream.close;
+    ir280: goto ir285;
+    ir283: astore a_6;
+    ir285: aload a_5;
+    athrow;
+    ir288: aload source$0;
+    ifnull ir301;
+    ir292: aload source$0;
+    ir293: invokevirtual InputStream.close;
+    ir296: goto ir301;
+    ir299: astore a_6;
+    ir301: return;
+  }
+  private method {
+    name doVerify_name; // doVerify
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 107;
+      line ir7, 108;
+      line ir17, 110;
+      line ir28, 112;
+      line ir35, 113;
+      line ir45, 114;
+      line ir52, 115;
+      line ir62, 116;
+      line ir65, 117;
+      line ir75, 119;
+      line ir79, 120;
+      line ir140, 121;
+      line ir174, 122;
+      line ir184, 124;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerTask;
+      var e, ir79->ir184, e_name, e_desc; // name=e,  descriptor=Ljava/lang/Throwable;
+    }
+    stackmap {
+      same ir17;
+      same ir65;
+      same locals ir78, object Throwable;
+      same extended ir184;
+    }
+    maxstack 5;
+    try ir0->ir70 catch Throwable go to ir78; // java/lang/Throwable
+    //Variables
+    var object this;
+    var object e;
+    //Instructions
+    ir0: aload this;
+    getfield resolver;
+    ifnonnull ir17;
+    ir7: new IllegalStateException;
+    dup;
+    ldc string_177; // "RESOLVER NOT SET"
+    invokespecial IllegalStateException.init0;
+    athrow;
+    ir17: aload this;
+    getfield clazz;
+    aload this;
+    getfield resolver;
+    invokevirtual Clazz.setResolver;
+    ir28: aload this;
+    getfield clazz;
+    invokevirtual Clazz.verify;
+    ir35: aload this;
+    getfield parser;
+    invokevirtual AssemblerParser.getErrorCounter;
+    ifle ir65;
+    ir45: aload this;
+    getfield parser;
+    invokevirtual AssemblerParser.flushErrors;
+    ir52: aload this;
+    getfield callback;
+    aload this;
+    invokeinterface ITaskCallback.failure;
+    ir62: goto ir184;
+    ir65: aload this;
+    getfield callback;
+    aload this;
+    ir70: invokeinterface ITaskCallback.success;
+    ir75: goto ir184;
+    ir78: astore e;
+    ir79: aload this;
+    getfield callback;
+    aload this;
+    new StringBuilder;
+    dup;
+    ldc string_187; // "internal error while verifying "
+    invokespecial StringBuilder.init0;
+    aload this;
+    getfield ThisClass.resource;
+    invokeinterface Resource.getName;
+    invokevirtual StringBuilder.append;
+    ldc string_130; // " : "
+    invokevirtual StringBuilder.append;
+    aload e;
+    invokevirtual Object.getClass;
+    invokevirtual Class.getName;
+    invokevirtual StringBuilder.append;
+    ldc string_135; // "-->"
+    invokevirtual StringBuilder.append;
+    aload e;
+    invokevirtual Throwable.getMessage;
+    invokevirtual StringBuilder.append;
+    invokevirtual StringBuilder.toString;
+    invokeinterface ITaskCallback.printError;
+    ir140: aload this;
+    getfield log;
+    new StringBuilder;
+    dup;
+    ldc string_149; // "Error assembling "
+    invokespecial StringBuilder.init0;
+    aload this;
+    getfield ThisClass.resource;
+    invokeinterface Resource.getName;
+    invokevirtual StringBuilder.append;
+    invokevirtual StringBuilder.toString;
+    aload e;
+    invokeinterface Logger.error;
+    ir174: aload this;
+    getfield callback;
+    aload this;
+    invokeinterface ITaskCallback.failure;
+    ir184: return;
+  }
+  public method {
+    name getResource_name; // getResource
+    descriptor getResource_desc; // ()Lorg/jasm/tools/resource/Resource;
+    line numbers {
+      line ir0, 129;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerTask;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    getfield ThisClass.resource;
+    areturn;
+  }
+  public method {
+    name setStage_name; // setStage
+    descriptor setStage_desc; // (I)V
+    line numbers {
+      line ir0, 133;
+      line ir5, 134;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerTask;
+      var stage, ir0, stage_name, type_desc; // name=stage,  descriptor=I
+    }
+    maxstack 2;
+    //Variables
+    var object this;
+    var int stage;
+    //Instructions
+    ir0: aload this;
+    iload stage;
+    putfield stage;
+    ir5: return;
+  }
+  public method {
+    name clear_name; // clear
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 139;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerTask;
+    }
+    maxstack 0;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: return;
+  }
+  public method {
+    name error_name; // error
+    descriptor method_desc$2; // (IILjava/lang/String;)V
+    line numbers {
+      line ir0, 143;
+      line ir35, 144;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerTask;
+      var line$0, ir0, line_name, type_desc; // name=line,  descriptor=I
+      var charPos, ir0, charPos_name, type_desc; // name=charPos,  descriptor=I
+      var msg, ir0, msg_name, msg_desc; // name=msg,  descriptor=Ljava/lang/String;
+    }
+    maxstack 5;
+    //Variables
+    var object this;
+    var int line$0;
+    var int charPos;
+    var object msg;
+    //Instructions
+    ir0: aload this;
+    getfield callback;
+    aload this;
+    new StringBuilder;
+    dup;
+    ldc string_195; // "line "
+    invokespecial StringBuilder.init0;
+    iload line$0;
+    invokevirtual StringBuilder.append$0;
+    ldc string_200; // " "
+    invokevirtual StringBuilder.append;
+    aload msg;
+    invokevirtual StringBuilder.append;
+    invokevirtual StringBuilder.toString;
+    invokeinterface ITaskCallback.printError;
+    ir35: return;
+  }
+  public method {
+    name flush_name; // flush
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 150;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerTask;
+    }
+    maxstack 0;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: return;
+  }
+  public method {
+    name getClazz_name; // getClazz
+    descriptor getClazz_desc; // ()Lorg/jasm/item/clazz/Clazz;
+    line numbers {
+      line ir0, 153;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerTask;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    getfield clazz;
+    areturn;
+  }
+  public method {
+    name setResolver_name; // setResolver
+    descriptor setResolver_desc; // (Lorg/jasm/resolver/ClassInfoResolver;)V
+    line numbers {
+      line ir0, 157;
+      line ir5, 158;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerTask;
+      var resolver, ir0, resolver_name, resolver_desc; // name=resolver,  descriptor=Lorg/jasm/resolver/ClassInfoResolver;
+    }
+    maxstack 2;
+    //Variables
+    var object this;
+    var object resolver;
+    //Instructions
+    ir0: aload this;
+    aload resolver;
+    putfield resolver;
+    ir5: return;
+  }
+  public method {
+    name emitInternalError_name; // emitInternalError
+    descriptor method_desc$2; // (IILjava/lang/String;)V
+    line numbers {
+      line ir0, 162;
+      line ir35, 163;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerTask;
+      var line$0, ir0, line_name, type_desc; // name=line,  descriptor=I
+      var charPos, ir0, charPos_name, type_desc; // name=charPos,  descriptor=I
+      var msg, ir0, msg_name, msg_desc; // name=msg,  descriptor=Ljava/lang/String;
+    }
+    maxstack 5;
+    //Variables
+    var object this;
+    var int line$0;
+    var int charPos;
+    var object msg;
+    //Instructions
+    ir0: aload this;
+    getfield callback;
+    aload this;
+    new StringBuilder;
+    dup;
+    ldc string_210; // "internal error at line "
+    invokespecial StringBuilder.init0;
+    iload line$0;
+    invokevirtual StringBuilder.append$0;
+    ldc string_200; // " "
+    invokevirtual StringBuilder.append;
+    aload msg;
+    invokevirtual StringBuilder.append;
+    invokevirtual StringBuilder.toString;
+    invokeinterface ITaskCallback.printError;
+    ir35: return;
+  }
+}

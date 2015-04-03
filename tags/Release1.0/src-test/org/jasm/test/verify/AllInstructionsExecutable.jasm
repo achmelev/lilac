@@ -1,0 +1,1005 @@
+public super class {
+  version 52.0;
+  name AllInstructionsExecutable; 
+  extends Object; 
+  implements IExecutable; 
+   //Constants
+  const classref AllInstructionsExecutable AllInstructionsExecutable_name; 
+  const utf8 AllInstructionsExecutable_name "org/jasm/test/verify/AllInstructionsExecutable";
+  const classref Object Object_name; 
+  const utf8 Object_name "java/lang/Object";
+  const classref IExecutable IExecutable_name; 
+  const utf8 IExecutable_name "org/jasm/test/playground/IExecutable";
+  const utf8 boolField_name "boolField";
+  const utf8 boolField_desc "Z";
+  const utf8 byteField_name "byteField";
+  const utf8 byteField_desc "B";
+  const utf8 shortField_name "shortField";
+  const utf8 shortField_desc "S";
+  const utf8 intField_name "intField";
+  const utf8 intStaticField_name "intStaticField";
+  const utf8 intField_desc "I";
+  const utf8 longField_name "longField";
+  const utf8 longField_desc "J";
+  const utf8 floatField_name "floatField";
+  const utf8 floatField_desc "F";
+  const utf8 doubleField_name "doubleField";
+  const utf8 doubleField_desc "D";
+  const utf8 charField_name "charField";
+  const utf8 charField_desc "C";
+  const utf8 objectField_name "objectField";
+  const utf8 objectField_desc "Lorg/jasm/test/playground/bean/IntB;";
+  const utf8 boolArrayField_name "boolArrayField";
+  const utf8 boolArrayField_desc "[Z";
+  const utf8 byteArrayField_name "byteArrayField";
+  const utf8 byteArrayField_desc "[B";
+  const utf8 shortArrayField_name "shortArrayField";
+  const utf8 shortArrayField_desc "[S";
+  const utf8 intArrayField_name "intArrayField";
+  const utf8 intArrayField_desc "[I";
+  const utf8 longArrayField_name "longArrayField";
+  const utf8 longArrayField_desc "[J";
+  const utf8 floatArrayField_name "floatArrayField";
+  const utf8 floatArrayField_desc "[F";
+  const utf8 doubleArrayField_name "doubleArrayField";
+  const utf8 doubleArrayField_desc "[D";
+  const utf8 charArrayField_name "charArrayField";
+  const utf8 charArrayField_desc "[C";
+  const utf8 objectArrayField_name "objectArrayField";
+  const utf8 objectArrayField_desc "[Lorg/jasm/test/playground/bean/IntB;";
+  const utf8 intMultiArrayField_name "intMultiArrayField";
+  const utf8 type_desc "[[I";
+  const utf8 init0_name "<init>";
+  const utf8 method_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref init0 Object, init0_nat; 
+  const nameandtype init0_nat init0_name, method_desc; 
+  const fieldref boolField AllInstructionsExecutable, boolField_nat; 
+  const nameandtype boolField_nat boolField_name, boolField_desc; 
+  const fieldref byteField AllInstructionsExecutable, byteField_nat; 
+  const nameandtype byteField_nat byteField_name, byteField_desc; 
+  const fieldref shortField AllInstructionsExecutable, shortField_nat; 
+  const nameandtype shortField_nat shortField_name, shortField_desc; 
+  const fieldref intField AllInstructionsExecutable, intField_nat; 
+  const nameandtype intField_nat intField_name, intField_desc; 
+  const fieldref intStaticField AllInstructionsExecutable, intStaticField_nat; 
+  const nameandtype intStaticField_nat intStaticField_name, intField_desc; 
+  const fieldref longField AllInstructionsExecutable, longField_nat; 
+  const nameandtype longField_nat longField_name, longField_desc; 
+  const fieldref floatField AllInstructionsExecutable, floatField_nat;
+  const nameandtype floatField_nat floatField_name, floatField_desc; 
+  const fieldref doubleField AllInstructionsExecutable, doubleField_nat; 
+  const nameandtype doubleField_nat doubleField_name, doubleField_desc; 
+  const fieldref charField AllInstructionsExecutable, charField_nat; 
+  const nameandtype charField_nat charField_name, charField_desc; 
+  const classref IntB IntB_name; 
+  const utf8 IntB_name "org/jasm/test/playground/bean/IntB";
+  const methodref init0$0 IntB, init0_nat; 
+  const fieldref objectField AllInstructionsExecutable, objectField_nat; 
+  const nameandtype objectField_nat objectField_name, objectField_desc; 
+  const fieldref boolArrayField AllInstructionsExecutable, boolArrayField_nat; 
+  const nameandtype boolArrayField_nat boolArrayField_name, boolArrayField_desc; 
+  const fieldref byteArrayField AllInstructionsExecutable, byteArrayField_nat; 
+  const nameandtype byteArrayField_nat byteArrayField_name, byteArrayField_desc; 
+  const fieldref shortArrayField AllInstructionsExecutable, shortArrayField_nat; 
+  const nameandtype shortArrayField_nat shortArrayField_name, shortArrayField_desc; 
+  const fieldref intArrayField AllInstructionsExecutable, intArrayField_nat; 
+  const nameandtype intArrayField_nat intArrayField_name, intArrayField_desc; 
+  const fieldref longArrayField AllInstructionsExecutable, longArrayField_nat; 
+  const nameandtype longArrayField_nat longArrayField_name, longArrayField_desc; 
+  const fieldref floatArrayField AllInstructionsExecutable, floatArrayField_nat; 
+  const nameandtype floatArrayField_nat floatArrayField_name, floatArrayField_desc; 
+  const fieldref doubleArrayField AllInstructionsExecutable, doubleArrayField_nat; 
+  const nameandtype doubleArrayField_nat doubleArrayField_name, doubleArrayField_desc; 
+  const fieldref charArrayField AllInstructionsExecutable, charArrayField_nat; 
+  const nameandtype charArrayField_nat charArrayField_name, charArrayField_desc; 
+  const fieldref objectArrayField AllInstructionsExecutable, objectArrayField_nat; 
+  const nameandtype objectArrayField_nat objectArrayField_name, objectArrayField_desc; 
+  const classref classref_88 type_desc; 
+  const fieldref intMultiArrayField AllInstructionsExecutable, intMultiArrayField_nat; 
+  const nameandtype intMultiArrayField_nat intMultiArrayField_name, type_desc; 
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/verify/AllInstructionsExecutable;";
+  const utf8 execute_name "execute";
+  
+  const int iConst 1;
+  const float fConst 1.1;
+  const long lConst 1;
+  const double dConst 1.1;
+  const string sConst execute_name;
+  
+  //throwException
+  const utf8 throwException_name "throwException";
+  const utf8 throwException_desc "()V";
+  const nameandtype throwException_nt throwException_name,throwException_desc;
+  const methodref throwException AllInstructionsExecutable, throwException_nt;
+  
+  //fadd
+  const utf8 fadd_name "fadd";
+  const utf8 fadd_desc "(FF)F";
+  const nameandtype fadd_nt fadd_name,fadd_desc;
+  const methodref AllInstructionsExecutable.fadd AllInstructionsExecutable, fadd_nt;
+  
+  //iadd
+  const utf8 iadd_name "iadd";
+  const utf8 iadd_desc "(II)I";
+  const nameandtype iadd_nt iadd_name,iadd_desc;
+  const methodref AllInstructionsExecutable.iadd AllInstructionsExecutable, iadd_nt;
+  
+  //dadd
+  const utf8 dadd_name "dadd";
+  const utf8 dadd_desc "(DD)D";
+  const nameandtype dadd_nt dadd_name,dadd_desc;
+  const methodref AllInstructionsExecutable.dadd AllInstructionsExecutable, dadd_nt;
+  
+  //ladd
+  const utf8 ladd_name "ladd";
+  const utf8 ladd_desc "(JJ)J";
+  const nameandtype ladd_nt ladd_name,ladd_desc;
+  const methodref AllInstructionsExecutable.ladd AllInstructionsExecutable, ladd_nt;
+  
+  //create
+  const utf8 create_name "create";
+  const utf8 create_desc "()Lorg/jasm/test/playground/bean/IntB;";
+  const nameandtype create_nt create_name,create_desc;
+  const methodref AllInstructionsExecutable.create AllInstructionsExecutable, create_nt;
+  
+  
+  //RuntimeException and Constructor
+  const utf8 RuntimeException_name "java/lang/RuntimeException";
+  const classref RuntimeException RuntimeException_name;
+  const utf8 RuntimeException_init_name "<init>";
+  const utf8 RuntimeException_init_desc "(Ljava/lang/String;)V";
+  const nameandtype RuntimeException_init_nt RuntimeException_init_name, RuntimeException_init_desc;
+  const methodref  RuntimeException.init RuntimeException, RuntimeException_init_nt;
+  
+  //Message
+  const utf8 exceptionMessage_content "message";
+  const string exceptionMessage exceptionMessage_content;
+ 
+  
+  
+  
+  
+  
+  
+   //Fields
+  private field {
+    name boolField_name; 
+    descriptor boolField_desc; 
+  }
+  private field {
+    name byteField_name; 
+    descriptor byteField_desc; 
+  }
+  private field {
+    name shortField_name; 
+    descriptor shortField_desc; 
+  }
+  private field {
+    name intField_name; 
+    descriptor intField_desc; 
+  }
+  public static field {
+    name intStaticField_name; 
+    descriptor intField_desc; 
+  }
+  private field {
+    name longField_name; 
+    descriptor longField_desc; 
+  }
+  private field {
+    name floatField_name; 
+    descriptor floatField_desc; 
+  }
+  private field {
+    name doubleField_name; 
+    descriptor doubleField_desc; 
+  }
+  private field {
+    name charField_name; 
+    descriptor charField_desc; 
+  }
+  private field {
+    name objectField_name; 
+    descriptor objectField_desc; 
+  }
+  private field {
+    name boolArrayField_name; 
+    descriptor boolArrayField_desc; 
+  }
+  private field {
+    name byteArrayField_name; 
+    descriptor byteArrayField_desc; 
+  }
+  private field {
+    name shortArrayField_name; 
+    descriptor shortArrayField_desc; 
+  }
+  private field {
+    name intArrayField_name; 
+    descriptor intArrayField_desc; 
+  }
+  private field {
+    name longArrayField_name; 
+    descriptor longArrayField_desc; 
+  }
+  private field {
+    name floatArrayField_name; 
+    descriptor floatArrayField_desc; 
+  }
+  private field {
+    name doubleArrayField_name; 
+    descriptor doubleArrayField_desc; 
+  }
+  private field {
+    name charArrayField_name; 
+    descriptor charArrayField_desc; 
+  }
+  private field {
+    name objectArrayField_name; 
+    descriptor objectArrayField_desc; 
+  }
+  private field {
+    name intMultiArrayField_name; 
+    descriptor type_desc; 
+  }
+   //Methods
+  public method {
+    name init0_name; 
+    descriptor method_desc; 
+   	
+   
+    maxstack 3;
+    //Variables
+    var object this;
+    
+    
+    
+    //Instructions
+    
+    aload this;
+    iconst_1;
+    putfield boolField; 
+    aload this;
+    iconst_2;
+    putfield byteField; 
+    aload this;
+    iconst_3;
+    putfield shortField; 
+    aload this;
+    iconst_4;
+    putfield intField; 
+    aload this;
+    iconst_5;
+    putfield intField;
+    aload this;
+    lconst_0;
+    putfield longField;  
+    aload this;
+    lconst_1;
+    putfield longField; 
+    aload this;
+    fconst_0;
+    putfield floatField; 
+    aload this;
+    fconst_1;
+    putfield floatField; 
+    aload this;
+    fconst_2;
+    putfield floatField; 
+    aload this;
+    dconst_0;
+    putfield doubleField; 
+    aload this;
+    dconst_1;
+    putfield doubleField; 
+    aload this;
+    sipush 99;
+    putfield charField; 
+    aload this;
+    new IntB; 
+    dup;
+    invokespecial init0$0; 
+    putfield objectField; 
+    aload this;
+    bipush 10;
+    newarray boolean;
+    putfield boolArrayField; 
+    aload this;
+    bipush 10;
+    newarray byte;
+    putfield byteArrayField;
+    aload this;
+    bipush 10;
+    newarray short;
+    putfield shortArrayField; 
+    aload this;
+    bipush 10;
+    newarray int;
+    putfield intArrayField; 
+    aload this;
+    bipush 10;
+    newarray long;
+    putfield longArrayField; 
+    aload this;
+    bipush 10;
+    newarray float;
+    putfield floatArrayField; 
+    aload this;
+    bipush 10;
+    newarray double;
+    putfield doubleArrayField; 
+    aload this;
+    bipush 10;
+    newarray char;
+    putfield charArrayField; 
+    aload this;
+    bipush 10;
+    anewarray IntB; 
+    putfield objectArrayField; 
+    aload this;
+    bipush 10;
+    bipush 10;
+    multianewarray classref_88, 2; 
+    putfield intMultiArrayField; 
+    
+    aload this;
+    invokespecial init0; 
+    
+    return;
+  }
+  
+  public method {
+    name execute_name; 
+    descriptor method_desc; 
+    
+    //Attributes
+   	stackmap;
+   	
+   	
+   	try begin->ir22 catch RuntimeException go to ir23;
+    
+    maxstack 10;
+    //Variables
+    var object this;
+    var object objectVar;
+    var int iVar;
+    var long lVar;
+    var float fVar;
+    var double dVar;
+    var object sVar;
+    //Instructions
+    
+    begin:
+    
+    //aaload, aastore, aload, astore
+    aload this;
+    getfield objectArrayField;
+    iconst_0;
+    aaload;
+    astore objectVar;
+    aload this;
+    getfield objectArrayField;
+    iconst_0;
+    aload objectVar;
+    aastore;
+    
+    //iaload, iastore, iload, istore
+    aload this;
+    getfield intArrayField;
+    iconst_0;
+    iaload;
+    istore iVar;
+    aload this;
+    getfield intArrayField;
+    iconst_0;
+    iload iVar;
+    iastore;
+    
+    //baload, bastore, iload, istore
+    aload this;
+    getfield byteArrayField;
+    iconst_0;
+    baload;
+    istore iVar;
+    aload this;
+    getfield byteArrayField;
+    iconst_0;
+    iload iVar;
+    bastore;
+    
+    //caload, castore, iload, istore
+    aload this;
+    getfield charArrayField;
+    iconst_0;
+    caload;
+    istore iVar;
+    aload this;
+    getfield charArrayField;
+    iconst_0;
+    iload iVar;
+    castore;
+    
+    //saload, sastore, iload, istore
+    aload this;
+    getfield shortArrayField;
+    iconst_0;
+    saload;
+    istore iVar;
+    aload this;
+    getfield shortArrayField;
+    iconst_0;
+    iload iVar;
+    sastore;
+    
+     //faload, fastore, fload, fstore
+    aload this;
+    getfield floatArrayField;
+    iconst_0;
+    faload;
+    fstore fVar;
+    aload this;
+    getfield floatArrayField;
+    iconst_0;
+    fload fVar;
+    fastore;
+    
+     //daload, dastore, dload, dstore
+    aload this;
+    getfield doubleArrayField;
+    iconst_0;
+    daload;
+    dstore dVar;
+    aload this;
+    getfield doubleArrayField;
+    iconst_0;
+    dload dVar;
+    dastore;
+    
+     //laload, lastore, lload, lstore
+    aload this;
+    getfield longArrayField;
+    iconst_0;
+    laload;
+    lstore lVar;
+    aload this;
+    getfield longArrayField;
+    iconst_0;
+    lload lVar;
+    lastore;
+    
+    aconst_null;
+    astore objectVar;
+    
+    aload this;
+    getfield floatArrayField;
+    arraylength;
+    istore iVar;
+    
+    aload objectVar;
+    checkcast IntB;
+    astore objectVar;
+    
+    //conversions
+    
+    dload dVar;
+    d2f;
+    fstore fVar;
+    dload dVar;
+    d2i;
+    istore iVar;
+    dload dVar;
+    d2l;
+    lstore lVar;
+    
+    fload fVar;
+    f2d;
+    dstore dVar;
+    fload fVar;
+    f2i;
+    istore iVar;
+    fload fVar;
+    f2l;
+    lstore lVar;
+    
+    iload iVar;
+    i2d;
+    dstore dVar;
+    iload iVar;
+    i2f;
+    fstore fVar;
+    iload iVar;
+    i2l;
+    lstore lVar;
+    
+    lload lVar;
+    l2d;
+    dstore dVar;
+    lload lVar;
+    l2f;
+    fstore fVar;
+    lload lVar;
+    l2i;
+    istore iVar;
+    
+    //arithmetic boolean and biwise operations
+    
+    dload dVar;
+    dconst_1;
+    dadd;
+    dconst_1;
+    dsub;
+    dconst_1;
+    dmul;
+    dconst_1;
+    drem;
+    dconst_1;
+    ddiv;
+    dneg;
+    dstore dVar;
+    
+    fload fVar;
+    fconst_1;
+    fadd;
+    fconst_1;
+    fsub;
+    fconst_1;
+    fmul;
+    fconst_1;
+    frem;
+    fconst_1;
+    fdiv;
+    fneg;
+    fstore fVar;
+    
+    iload iVar;
+    iconst_1;
+    iadd;
+    iconst_1;
+    isub;
+    iconst_1;
+    iand;
+    iconst_1;
+    ior;
+    iconst_1;
+    ishl;
+    iconst_1;
+    ishr;
+    iconst_1;
+    imul;
+    iconst_1;
+    irem;
+    iconst_1;
+    idiv;
+    iconst_1;
+    iushr;
+    iconst_1;
+    ixor;
+    ineg;
+    istore iVar;
+    
+    
+    lload lVar;
+    lconst_1;
+    ladd;
+    lconst_1;
+    land;
+    lconst_1;
+    lsub;
+    lconst_1;
+    lmul;
+    lconst_1;
+    lrem;
+    lconst_1;
+    ldiv;
+    lconst_1;
+    lor;
+    lconst_1;
+    lxor;
+    iconst_1;
+    lshl;
+    iconst_1;
+    lshr;
+    iconst_1;
+    lushr;
+    lneg;
+    lstore lVar;
+    
+    //Dups
+    
+    iload iVar;
+    dup;
+    istore iVar;
+    istore iVar;
+    
+    iload iVar;
+    fload fVar;
+    dup_x1;
+    fstore fVar;
+    istore iVar;
+    fstore fVar;
+    
+    iload iVar;
+    fload fVar;
+    aload objectVar;
+    dup_x2;
+    astore objectVar;
+    fstore fVar;
+    istore iVar;
+    astore objectVar;
+    
+    lload lVar;
+    iload iVar;
+    dup_x2;
+    istore iVar;
+    lstore lVar;
+    istore iVar;
+    
+    iload iVar;
+    fload fVar;
+    dup2;
+    fstore fVar;
+    istore iVar;
+    fstore fVar;
+    istore iVar;
+    
+    iload iVar;
+    fload fVar;
+    aload objectVar;
+    dup2_x1;
+    astore objectVar;
+    fstore fVar;
+    istore iVar;
+    astore objectVar;
+    fstore fVar;
+    
+    iload iVar;
+    lload lVar;
+    dup2_x1;
+    lstore lVar;
+    istore iVar;
+    lstore lVar;
+    
+    iload iVar;
+    fload fVar;
+    aload objectVar;
+    iload iVar;
+    dup2_x2;
+    istore iVar;
+    astore objectVar;
+    fstore fVar;
+    istore iVar;
+    istore iVar;
+    astore objectVar;
+    
+    iload iVar;
+    fload fVar;
+    lload lVar;
+    dup2_x2;
+    lstore lVar;
+    fstore fVar;
+    istore iVar;
+    lstore lVar;
+    
+    lload lVar;
+    iload iVar;
+    fload fVar;
+    dup2_x2;
+    fstore fVar;
+    istore iVar;
+    lstore lVar;
+    fstore fVar;
+    istore iVar;
+    
+    lload lVar;
+    dload dVar;
+    dup2_x2;
+    dstore dVar;
+    lstore lVar;
+    dstore dVar;
+    
+    //Comparisons
+    dload dVar;
+    dconst_0;
+    dcmpg;
+    istore iVar;
+    dload dVar;
+    dconst_0;
+    dcmpl;
+    istore iVar;
+    
+    fload fVar;
+    fconst_0;
+    fcmpg;
+    istore iVar;
+    fload fVar;
+    fconst_0;
+    fcmpl;
+    istore iVar;
+    
+     fload fVar;
+    fconst_0;
+    fcmpg;
+    istore iVar;
+    fload fVar;
+    fconst_0;
+    fcmpl;
+    istore iVar;
+    
+   	
+   	getstatic intStaticField;
+   	putstatic intStaticField;
+   	
+   	iinc iVar, 10;
+   	
+   	aload objectVar;
+   	instanceof IntB;
+   	istore iVar;
+   	
+   
+   	ldc fConst;
+   	fstore fVar;
+   	ldc iConst;
+   	istore iVar;
+   	ldc sConst;
+   	astore sVar;
+   	ldc IntB;
+   	pop;
+   	
+   	ldc2 dConst;
+   	dstore dVar;
+   	ldc2 lConst;
+   	lstore lVar;
+   	
+   	aload this;
+   	monitorenter;
+   	aload this;
+   	monitorexit;
+   	
+   	bipush 1;
+   	pop;
+   	dload dVar;
+   	pop2;
+   	
+   	iload iVar;
+   	fload fVar;
+   	swap;
+   	istore iVar;
+   	fstore fVar;
+   	
+   	//invoking
+   	fload fVar;
+   	fconst_1;
+   	invokestatic AllInstructionsExecutable.fadd;
+   	fstore fVar; 
+   	
+   	aload this;
+   	dload dVar;
+   	dconst_1;
+   	invokevirtual AllInstructionsExecutable.dadd;
+   	dstore dVar; 
+   	
+   	aload this;
+   	iload iVar;
+   	iconst_1;
+   	invokevirtual AllInstructionsExecutable.iadd;
+   	istore iVar;
+   	
+   	aload this;
+   	lload lVar;
+   	lconst_1;
+   	invokevirtual AllInstructionsExecutable.ladd;
+   	lstore lVar;
+   	
+   	aload this;
+   	invokevirtual AllInstructionsExecutable.create;
+   	astore objectVar;
+   	
+   	goto ir1;
+   	
+   	ir1:
+   	goto_w ir2;
+   	
+   	ir2:
+   	aload objectVar;
+   	aload objectVar;
+   	if_acmpeq ir3;
+   	
+   	ir3:
+   	aload objectVar;
+   	aload objectVar;
+   	if_acmpne ir4;
+   	
+   	ir4:
+   	aload objectVar;
+   	ifnonnull ir5;
+   	
+   	ir5:
+   	aload objectVar;
+   	ifnull ir6;
+   	
+   	ir6:
+   	iload iVar;
+   	ifgt ir7;
+   	
+   	ir7:
+   	iload iVar;
+   	ifge ir8;
+   	
+   	ir8:
+   	iload iVar;
+   	iflt ir10;
+   	
+   	ir10:
+   	iload iVar;
+   	ifle ir11;
+   	
+   	ir11:
+   	iload iVar;
+   	ifeq ir12;
+   	
+   	ir12:
+   	iload iVar;
+   	ifne ir13;
+   	
+   	ir13:
+   	iload iVar;
+   	iload iVar;
+   	if_icmpeq ir14;
+   	
+   	ir14:
+   	iload iVar;
+   	iload iVar;
+   	if_icmpne ir15;
+   	
+   	ir15:
+   	iload iVar;
+   	iload iVar;
+   	if_icmpne ir16;
+   	
+   	ir16:
+   	iload iVar;
+   	iload iVar;
+   	if_icmpgt ir17;
+   	
+   	ir17:
+   	iload iVar;
+   	iload iVar;
+   	if_icmpge ir18;
+   	
+   	ir18:
+   	iload iVar;
+   	iload iVar;
+   	if_icmple ir19;
+   	
+   	ir19:
+   	iload iVar;
+   	iload iVar;
+   	if_icmplt ir20;
+   	
+   	ir20:
+   	iload iVar;
+   	lookupswitch default->ir21,0->ir21,1->ir21;
+   	
+	ir21:
+   	iload iVar;
+   	tableswitch default->ir22,0->ir22,1->ir22;
+   	
+	ir22:
+  
+    return;
+    
+    ir23:
+  
+    return;
+  }
+  
+  //goto_w,if_acmp*, if_icmp*,if*,ifnonnull,ifnull, lookupswitch
+  
+  private method {
+  	 name throwException_name;
+  	 descriptor throwException_desc;
+  	 
+  	 maxstack 5;
+  	 
+  	 //Variables
+  	 var object this;
+  	 
+  	 //Instructions
+  	 new RuntimeException;
+  	 dup;
+  	 ldc exceptionMessage;
+  	 invokespecial RuntimeException.init;
+  	 athrow;
+  }
+  
+  private static method {
+  	 name fadd_name;
+  	 descriptor fadd_desc;
+  	 
+  	 maxstack 5;
+  	 
+  	 //Variables
+  	 var float arg1;
+  	 var float arg2;
+  	 
+  	 //Instructions
+  	 fload arg1;
+  	 fload arg2;
+  	 fadd;
+  	 freturn;
+  }
+  
+  private method {
+  	 name iadd_name;
+  	 descriptor iadd_desc;
+  	 
+  	 maxstack 5;
+  	 
+  	 //Variables
+  	 var object this;
+  	 var int arg1;
+  	 var int arg2;
+  	 
+  	 //Instructions
+  	 iload arg1;
+  	 iload arg2;
+  	 iadd;
+  	 ireturn;
+  }
+  
+  private method {
+  	 name dadd_name;
+  	 descriptor dadd_desc;
+  	 
+  	 maxstack 5;
+  	 
+  	 //Variables
+  	 var object this;
+  	 var double arg1;
+  	 var double arg2;
+  	 
+  	 //Instructions
+  	 dload arg1;
+  	 dload arg2;
+  	 dadd;
+  	 dreturn;
+  }
+  
+  private method {
+  	 name ladd_name;
+  	 descriptor ladd_desc;
+  	 
+  	 maxstack 5;
+  	 
+  	 //Variables
+  	 var object this;
+  	 var long arg1;
+  	 var long arg2;
+  	 
+  	 //Instructions
+  	 lload arg1;
+  	 lload arg2;
+  	 ladd;
+  	 lreturn;
+  }
+  
+  private method {
+  	 name create_name;
+  	 descriptor create_desc;
+  	 
+  	 maxstack 5;
+  	 
+  	 //Variables
+  	 var object this;
+  	 
+  	 //Instructions
+  	 new IntB;
+  	 dup;
+  	 invokespecial  init0$0;
+  	 areturn;
+  }
+  
+  //goto, goto_w,if_acmp*, if_icmp*,if*,ifnonnull,ifnull, lookupswitch
+}
