@@ -50,19 +50,19 @@ public class PrettyPrinter {
 		}
 		if (item.isStructure()) {
 			if (item.getPrintName() != null) {
+				if (item.getPrintComment() != null) {
+					printTopComment(item.getPrintComment());
+				}
 				buf.append(item.getPrintName());
 				if (item.getPrintArgs() != null) {
 					buf.append(" "+item.getPrintArgs());
 				}
 				buf.append(" {");
-				if (item.getPrintComment() != null) {
-					buf.append(" //"+item.getPrintComment());
-				}
 				printLine(buf.toString());
 				addIndent();
 			} else {
 				if (item.getPrintComment() != null) {
-					printLine(" //"+item.getPrintComment());
+					printTopComment(item.getPrintComment());
 				}
 			}
 			for (IPrintable item1: item.getStructureParts()) {
@@ -92,6 +92,19 @@ public class PrettyPrinter {
 			
 			
 			printLine(buf.toString());
+		}
+	}
+	
+	private void printTopComment(String comment) {
+		if (comment.indexOf("\n")<0) {
+			printLine(" //"+comment);
+		} else {
+			String[] lines = comment.split("\n");
+			printLine("/**");
+			for (String line: lines) {
+				printLine(line);
+			}
+			printLine("**/");
 		}
 	}
 	
