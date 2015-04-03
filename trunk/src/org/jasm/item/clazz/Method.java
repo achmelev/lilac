@@ -25,6 +25,26 @@ public class Method extends AbstractClassMember<MethodModifier> {
 			return "method";
 		}
 	}
+	
+	
+
+	@Override
+	public String getPrintComment() {
+		if (modifier.isAbstract() || modifier.isNative()) {
+			return null;
+		}
+		if (getRoot().getMajorVersion()<50) {
+			return null;
+		}
+		
+		StringBuffer buf = new StringBuffer();
+		buf.append("NOTE: If you modify the code of method and the resulting code contains branch instructions,\n");
+		buf.append("you'll probably have to modify or create a stackmap as well.\n");
+		buf.append("You might use the short variant of the stackmap statement (just the keyword stackmap followed by a semicolon),\n"); 
+	    buf.append("this instructs the assembler to generate a stackmap for you, for this to work however the code verification must be enabled");
+		
+	    return buf.toString();
+	}
 
 	@Override
 	protected MethodModifier createModifier(int value) {
