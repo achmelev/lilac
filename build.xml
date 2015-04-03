@@ -12,7 +12,7 @@
 	<property name="target.dir" value="target" />
 	<property name="dest.dir.relative" value="target/dist" />
 	<property name="dest.dir" location="${dest.dir.relative}" />
-	<property name="jasm.version" value="0.1-SNAPSHOT" />
+	<property name="jasm.version" value="1.0" />
     
     <!-- paths used for compilation  -->
     <path id="lib.path.id">
