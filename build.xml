@@ -161,9 +161,11 @@
     	    <fileset dir="scripts"/>
     	</copy>
 		<copy file="src/org/jasm/environment/default.conf" tofile="${dest.dir}/conf/jasm.conf"/>
-		<mkdir dir="${dest.dir}/docs" />
+		<mkdir dir="${dest.dir}/docs"/>
     	<copy todir="${dest.dir}/docs">
-    	    <fileset dir="docs"/>
+    	    <fileset dir="docs">
+				<exclude name="reference/**"/>
+			</fileset>
     	</copy>
     	
     	
