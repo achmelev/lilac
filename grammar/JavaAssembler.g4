@@ -408,13 +408,6 @@ ABSTRACT      :  'abstract';
 SYNTETIC      :  'synthetic';
 ANNOTATION    :  'annotation';
 ENUM          :  'enum';
-CLASSINFO     :  'classref';
-UTF8INFO      :  'utf8';
-FIELDREFINFO  :  'fieldref';
-METHODREFINFO :  'methodref';
-DYNREFINFO    :  'dynref';
-INTERFACEMETHODREFINFO : 'intfmethodref';
-NAMEANDTYPEINFO :  'nameandtype';
 ATTRIBUTE     :  'attribute';
 SOURCE        :  'source';
 FILE          :  'file';
@@ -439,23 +432,12 @@ INVISIBLE     :  'invisible';
 TYPE          :  'type';
 TYPES         :  'types';
 ELEMENT       :  'element';
-BYTE          :  'byte';
-CHAR          :  'char';
-DOUBLE        :  'double';
-FLOAT         :  'float';
-INT           :  'int';
-LONG          :  'long';
-SHORT         :  'short';
-STRING        :  'string';
-BOOLEAN       :  'boolean';
 ARRAY         :  'array';
 INDEX         :  'index';
 PARAMETER     :  'parameter';
 INNER         :  'inner';
 OUTER         :  'outer';
 ENCLOSING     :  'enclosing';
-OBJECT        :  'object';
-RETURNADRESS  :  'returnadress';
 AT            :  'at';
 VAR           :  'var';
 VARS          :  'vars';
@@ -488,8 +470,6 @@ REFERENCE     :  'reference';
 CONSTRUCTOR   :  'constructor';
 CAST          :  'cast';
 RESOURCE      :  'resource';
-METHODHANDLE  :  'methodhandle';
-METHODTYPE    :  'methodtype';
 NEWINVOKESPECIAL : 'newinvokespecial';
 BOOTSTRAP     : 'bootstrap';
 APPEND        : 'append';
@@ -497,11 +477,39 @@ SAME          : 'same';
 LOCALS        : 'locals';
 EXTENDED      : 'extended';
 FULL          : 'full';
-NULL          : 'null';
 CHOP          : 'chop';
+
+
+//stopKeywords
+
+//Data types
+//startKeywords
+
+CLASSINFO     :  'classref';
+UTF8INFO      :  'utf8';
+FIELDREFINFO  :  'fieldref';
+METHODREFINFO :  'methodref';
+DYNREFINFO    :  'dynref';
+INTERFACEMETHODREFINFO : 'intfmethodref';
+NAMEANDTYPEINFO :  'nameandtype';
+BYTE          :  'byte';
+CHAR          :  'char';
+DOUBLE        :  'double';
+FLOAT         :  'float';
+INT           :  'int';
+LONG          :  'long';
+SHORT         :  'short';
+STRING        :  'string';
+BOOLEAN       :  'boolean';
+OBJECT        :  'object';
+RETURNADRESS  :  'returnadress';
 TOP           : 'top';
 UNINITIALIZED: 'uninitialized';
 UNINITIALIZEDTHIS: 'uninitializedthis';
+METHODHANDLE  :  'methodhandle';
+METHODTYPE    :  'methodtype';
+NULL          : 'null';
+
 
 //stopKeywords
 
