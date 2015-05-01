@@ -1,4 +1,8 @@
-#Java Assembler reference - Lilac version
+<h1>Java Assembler reference - Lilac version</h1>
+
+<h2>Table of Contents</h2>
+
+[TOC]
 
 ##Introduction
 
@@ -20,10 +24,13 @@ Throughout this specification the syntax definitions will be given in the [Exten
 
 ##Language Basics
 
-###Lexical Structure
+###Lexical Structure 
 
-On the lexical level a Java assembler program is a sequence of words and separators. There are following separators in the language: **,** **;** **:** **{** **}** **->**.
+On the lexical level a Java assembler program is a sequence of words and separators. There are following separators in the language: **,**&nbsp;&nbsp;**;**&nbsp;&nbsp;**:**&nbsp;&nbsp;**{**&nbsp;&nbsp;**}**&nbsp;&nbsp;**->** .
 The words of a Java Assembler program fall, like in other programming languages, into three broad categories: keywords, literals and identifiers. 
+
+####Literals
+
 There are three different different literal types: integer literals, float point literals and string literals whose syntax is the same as [in the Java language](https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.10). 
 
 Here are some examples of a Java assembler literal:
@@ -32,7 +39,9 @@ Here are some examples of a Java assembler literal:
 	"Hello Word"
 	1234
 	1235.56
-	
+
+####Identifiers
+
 The syntax of a Java assembler identifier is defined as follows:
 
 	:::ebnf
@@ -61,3 +70,27 @@ Here are some examples of a comment:
 	And this is
 	A multiple-line one
 	**/
+
+###Syntactic Structure
+
+####Names and labels
+
+On the syntactic level Java assembler has two different kinds of [identifiers](#identifiers): **names** and **labels**. Names identify an entity declared in a program, 
+in the context of Java assembler those entities can be [variables](#TODO) and [constants](#TODO).
+
+The following example shows two [constants](#TODO), the [string constant](#TODO) referencing the [utf8 costant](#TODO) by it's name:
+
+	:::lilac
+	const utf8 helloword_content "Hello World";
+	const string helloword helloword_content;
+
+Labels on the other hand identify a location inside the program to which, for example, the control flow of the program might be transferred. 
+This is illustrated in the following example where the [if_acmpne instruction](#TODO) transfers the control to the [return instruction](#TODO)
+
+	:::lilac
+	if_acmpne end;
+    iconst_1;
+    putfield MyClass.int_field;
+    end: return;
+	
+      
