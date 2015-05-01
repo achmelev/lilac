@@ -39,6 +39,7 @@
 			<arg line="-f content.tmp"/>
 			<arg line="-o html"/>
 			<arg line="-x markdown.extensions.codehilite" />
+			<arg line="-x markdown.extensions.toc" />
 			<arg line="${markdownFile}" />
 		</exec>
 		<loadfile property="content" srcFile="content.tmp"/>
