@@ -40,6 +40,7 @@
 			<arg line="-o html"/>
 			<arg line="-x markdown.extensions.codehilite" />
 			<arg line="-x markdown.extensions.toc" />
+			<arg line="-x markdown.extensions.tables" />
 			<arg line="${markdownFile}" />
 		</exec>
 		<loadfile property="content" srcFile="content.tmp"/>
