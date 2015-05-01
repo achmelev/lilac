@@ -96,7 +96,7 @@ This is illustrated in the following example where the [if_acmpne instruction](#
 ####Statements
 
 On the syntactic level a Java assembler program is a sequence of **statements**, which come in two flavors: **simple statements** and **block statements**. 
-A block statement in general consists of some keywords followed by a sequence of **child statements** enclosed in curly brackets as illustrated in the following
+A block statement in general consists of some keywords followed by a sequence of **member statements** enclosed in curly brackets as illustrated in the following
 example:
 
 	:::lilac
@@ -128,12 +128,11 @@ this [forest](http://en.wikipedia.org/wiki/Tree_%28graph_theory%29) is in fact j
 
 ##Language Statements
 
-Having described above the general lexical and syntactic structure of a Java assembler progam the rest of the document will discuss the particular statements  
-which can be used in Java assembler covering their syntax and semantics.
+Having described above the general lexical and syntactic structure of a Java assembler program the rest of the document will discuss the particular statements which can be used in Java assembler covering their syntax and semantics.
 
 ###Class statement
 
-A class statement declares (of course) a class. Als already mentioned the must be exactly one class declaration in a Java assembler source file. 
+A class statement declares (of course) a class. As already mentioned the must be exactly one class declaration in a Java assembler source file. 
 Note however, that in Java assembler the term "class" encompasses not only class types
 [as defined by the Java language specification](https://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html) which includes 
 [classes in the narrow sense](https://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.1) 
@@ -145,8 +144,82 @@ and then by some [class member statements](#TODO) enclosed in curly brackets as 
 
 	:::ebnf
 	class statement = {class modifier}, 'class', '{',{class member},'}';
-	class modifier = 'public'|'final'|'abstract'|'super'|'interface'|'syntetic'|'annotation'|'enum';
-	class member = version|name|extends|implements|source file|signature|syntetic|deprecated|annotation|type annotation|bootstrap method|inner class|enclosing method|unknown attribute
+	class modifier = 'public'|'final'|'abstract'|'super'|'interface'|'synthetic'|'annotation'|'enum';
+	class member = version|name|superclass|interfaces|source file|signature|synthetic|deprecated|constant|method|field|annotation|type annotation|bootstrap method|inner class|enclosing method|unknown attribute
 	
-	
+####Class modifiers
+
+Class modifiers in the Java assembler correspond one to one to the [access flags defined in the JVM specification](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.1-200-E.1)
+as shown in the following table:
+
+Assembler modifier keyword|access flag from the Jvm spec
+--------------------------|----------------------------
+public                    |ACC_PUBLIC
+final                     |ACC_FINAL
+abstract                  |ACC_ABSTRACT
+super                     |ACC_SUPER
+interface                 |ACC_INTERFACE
+synthetic                 |ACC_SYNTETHIC
+annotation                |ACC_ANNOTATION
+enum                      |ACC_ENUM
+
+Read more about the meaning of modifiers as well as as about the rules governing the allowed combinations of modifiers 
+[in the JVM specification](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.1-200-E.1)
+
+###Class members
+
+The class statement can contain some member statements, referred to in the definition above as **class members**.
+The following table lists all statements which can serve as members if a class statement. 
+The second column of the table defines for each statement how many instances of it are allowed or required 
+to exist within a class statement.
+
+class member              |how many
+--------------------------|----------------------------
+[version](#TODO)          |exactly one
+[name](#TODO)          	  |exactly one
+[superclass](#TODO)           |exactly one (except for the java.lang.Object class)
+[interfaces](#TODO)       |zero or one
+[synthetic](#TODO)        |zero or one
+[deprecated](#TODO)       |zero or one
+[constant](#TODO)		  |zero or more
+[method](#TODO)			  |zero or more
+[field](#TODO)			  |zero or more
+[annotation](#TODO)       |zero or more
+[type annotation](#TODO)  |zero or more
+[bootstrap method](#TODO) |zero or more
+[inner class](#TODO)      |zero or more
+[enclosing method](#TODO) |zero or more
+[unknown attribute](#TODO)|zero or more
+
+###Class example
+
+Here is an example of a class declaration including some members:
+
+	:::lilac
+	public interface abstract class {
+		version 52.0;
+		name ThisClass; 
+		extends Object;
+		const utf8 run_desc "()V";
+		const utf8 RuntimeVisibleAnnotations_utf8 "RuntimeVisibleAnnotations";
+		const utf8 SourceFile_utf8 "SourceFile";
+		const utf8 Object_name "java/lang/Object";
+		const utf8 ThisClass_name "java/lang/Runnable";
+		const utf8 run_name "run";
+		const classref Object Object_name; 
+		const classref ThisClass ThisClass_name; 
+		const utf8 type_desc "Ljava/lang/FunctionalInterface;";
+		const utf8 source_file_name "Runnable.java";
+		source file source_file_name; 
+		annotation {
+		   type type_desc; 
+		}
+	   
+		public abstract method {
+			name run_name; 
+			descriptor run_desc; 
+		}
+	}
+
+ 
       
