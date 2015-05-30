@@ -34,8 +34,7 @@
                replace="html"
                global="true" />
 		<echo message="${markdownFile} to ${targetFile}"/>
-		<exec  executable="c:\Python27\python.exe">
-			<arg line="c:\Python27\Scripts\markdown_py"/>
+		<exec  executable="/usr/local/bin/markdown_py">
 			<arg line="-f content.tmp"/>
 			<arg line="-o html"/>
 			<arg line="-x markdown.extensions.codehilite" />
