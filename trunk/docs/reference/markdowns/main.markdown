@@ -362,7 +362,7 @@ Example
 
 ####Name and type statement
 
-A name an type statement declares a name an type constant, that is, a constant combining a name and a type descriptor. The statement has the names of two [utf8 constants](#utf8-constant-statement) 
+A name an type statement declares a name and type constant, that is, a constant combining a name and a type descriptor. The statement has the names of two [utf8 constants](#utf8-constant-statement) 
 as arguments. The first utf8 constant contains a valid field or method name the second a valid field or method descriptor as defined in the [JVM specification](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6).
 The syntax of the statement is as follows:
 	
@@ -422,7 +422,7 @@ Example:
     
 ####String statement
 
-A string statement defines a string constant, which can be used by [instructions](#TODO). The statement has as a single argument the name of an [utf8 constant](#utf8-constant-statement),
+A string statement declares a string constant, which can be used by [instructions](#TODO). The statement has as a single argument the name of an [utf8 constant](#utf8-constant-statement),
 which specifies the actual string content.
 The syntax of the statement is as follows:
 
@@ -436,7 +436,7 @@ Example:
 
 ####Integer value statement
 
-An integer value statement defines an integer constant. It has as a single argument an [integer literal](#literals), which specifies the value of the constant.
+An integer value statement declares an integer constant. It has as a single argument an [integer literal](#literals), which specifies the value of the constant.
 The syntax of the statement is as follows:
 
     :::ebnf
@@ -449,7 +449,7 @@ Example:
 
 ####Long integer value statement
 
-A long integer value statement defines a long integer constant. It has as a single argument an [integer literal](#literals), which specifies the value of the constant.
+A long integer value statement declares a long integer constant. It has as a single argument an [integer literal](#literals), which specifies the value of the constant.
 The syntax of the statement is as follows:
 
     :::ebnf
@@ -462,7 +462,7 @@ Example:
 
 ####Floating point value statement
 
-A floating point value statement defines a floating point constant. It has as a single argument a [floating point literal](#literals), which specifies the value of the constant.
+A floating point value statement declares a floating point constant. It has as a single argument a [floating point literal](#literals), which specifies the value of the constant.
 The syntax of the statement is as follows:
 
     :::ebnf
@@ -475,7 +475,7 @@ Example:
 
 ####Double-precision floating point value statement
 
-A double-precision floating point value statement defines a double-precision floaing point constant. It has as a single argument a [floating point literal](#literals), which specifies the value of the constant.
+A double-precision floating point value statement declares a double-precision floaing point constant. It has as a single argument a [floating point literal](#literals), which specifies the value of the constant.
 The syntax of the statement is as follows:
 
     :::ebnf
@@ -488,16 +488,52 @@ Example:
 
 ####Method type statement
 
-A method type statement specifies a method type constant. It has as a single argument the name of a utf8 constant, which in turn specifies a valid method descriptor as defined in the [JVM specification](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6).
+A method type statement declares a method type constant. It has as a single argument the name of a utf8 constant, which in turn specifies a valid method descriptor as defined in the [JVM specification](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6).
 The syntax of the statement is as follows:
 
     :::ebnf
-	method type statement = 'method type', name, utf8 constant, ';'
+	method type statement = 'const methodtype', name, utf8 constant, ';'
     
 Example:
 
 	:::lilac
 	const methodtype mType mType_utf8;
+    
+####Method handle statement
+
+A method handle statement declares a method handle constant. The value of such constant is
+[a typed, directly executable reference to an underlying method, constructor, field, or similar low-level operation, with optional transformations of arguments or return values](http://docs.oracle.com/javase/8/docs/api/java/lang/invoke/MethodHandle.html).
+The syntax of the statement is as follows:
+
+    :::ebnf
+    method handle statement = 'const ', ('getfield'|'getstatic'|'putfield'|'putstatic'|'invokespecial'|'invokevirtual'|'invokeinterface'|'invokestatic'|'newinvokespecial'), 'methodhandle', name,constant, ';'
+
+
+As can be seen from the definition above a method handle defined by a method handle statement can belong to one of 9 different "kinds" (see more [here](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.8) ),
+declared by one of the 9 corresponding modifier keywords.
+The statement has as a single argument the name of a constant, which, dependent on the "kind", can be a [field reference](##field-reference-statement), a [method reference](#method-reference-statement)
+or an [interface method reference statement](#interface-method-reference-statement).
+
+Example:
+
+    :::lilac
+    const getstatic methodhandle System.out;
+
+####Dynamic method reference statement
+
+A dynamic method reference statement declares a dynamic method reference constant which can be used as the argument of an [invokedynamic instruction](#TODO).
+The statement has two arguments - the first argument specifies the name of a [bootstrap method](#TODO), the second argument specifies the name of [a name and type constant](#name-and-type-statement).
+Read more about the exact nature of these two arguments in the [JVM specification](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.10).
+The syntax of the statement is as follows:
+
+    :::ebnf
+    dynamic method reference statement = 'const dynref',name,bootstrapmethod,',',name and type constant,';'
+
+Example:
+
+    :::lilac
+    const dynref inv1 bootstrapmethod1, name_and_type1;
+    
 
 
 
