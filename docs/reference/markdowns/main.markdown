@@ -31,7 +31,7 @@ The words of a Java Assembler program fall, like in other programming languages,
 
 ####Literals
 
-There are three different different literal types: integer literals, float point literals and string literals whose syntax is the same as [in the Java language](https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.10). 
+There are three different different literal types: integer literals, floating point literals and string literals whose syntax is the same as [in the Java language](https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.10). 
 
 Here are some examples of a Java assembler literal:
 
@@ -229,7 +229,7 @@ A version statement specifies the [version of the class file format](http://docs
 The syntax of this statement is as follows:
  
 	:::ebnf
-	version statement = 'version', float point literal, ';'
+	version statement = 'version', floating point literal, ';'
 
 Example:
 
@@ -335,7 +335,7 @@ for literals as in high level program languages but also to hold symbolic inform
 
 ####Utf8 constant statement
 
-An utf8 constant statement declares an utf8 string constant. The syntax of the statement is as follows:
+An utf8 constant statement declares an utf8 string constant. In has as a singe argument a [string literal](#Literals), which specifies the value of the constant. The syntax of the statement is as follows:
 
 	:::ebnf
 	utf8 constant statement = 'const utf8',name, string literal, ';'
@@ -419,6 +419,85 @@ Example:
 
 	:::lilac
 	const intfmethodref CharSequence.length CharSequence, AbstractStringBuilder.length_nat;
+    
+####String statement
+
+A string statement defines a string constant, which can be used by [instructions](#TODO). The statement has as a single argument the name of an [utf8 constant](#utf8-constant-statement),
+which specifies the actual string content.
+The syntax of the statement is as follows:
+
+    :::ebnf
+	string statement = 'const string', name, utf8 constant ';'
+    
+Example:
+
+	:::lilac
+	const string string_16 utf8_319; // "charsetName"
+
+####Integer value statement
+
+An integer value statement defines an integer constant. It has as a single argument an [integer literal](#literals), which specifies the value of the constant.
+The syntax of the statement is as follows:
+
+    :::ebnf
+	integer statement = 'const int', name, integer literal, ';'
+
+Example:
+
+	:::lilac
+	const int int_15 124567;
+
+####Long integer value statement
+
+A long integer value statement defines a long integer constant. It has as a single argument an [integer literal](#literals), which specifies the value of the constant.
+The syntax of the statement is as follows:
+
+    :::ebnf
+	long integer statement = 'const long', name, integer literal, ';'
+
+Example:
+
+	:::lilac
+	const long long_15 124567;
+
+####Floating point value statement
+
+A floating point value statement defines a floating point constant. It has as a single argument a [floating point literal](#literals), which specifies the value of the constant.
+The syntax of the statement is as follows:
+
+    :::ebnf
+	floating point value statement = 'const float', name, floating point literal, ';'
+
+Example:
+
+	:::lilac
+	const float float_15 123.5;
+
+####Double-precision floating point value statement
+
+A double-precision floating point value statement defines a double-precision floaing point constant. It has as a single argument a [floating point literal](#literals), which specifies the value of the constant.
+The syntax of the statement is as follows:
+
+    :::ebnf
+	double-precision floating point value statement = 'const double', name, floating point literal, ';'
+
+Example:
+
+	:::lilac
+	const double double_15 123.5;
+
+####Method type statement
+
+A method type statement specifies a method type constant. It has as a single argument the name of a utf8 constant, which in turn specifies a valid method descriptor as defined in the [JVM specification](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6).
+The syntax of the statement is as follows:
+
+    :::ebnf
+	method type statement = 'method type', name, utf8 constant, ';'
+    
+Example:
+
+	:::lilac
+	const methodtype mType mType_utf8;
 
 
 
