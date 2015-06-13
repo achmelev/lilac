@@ -45,7 +45,7 @@ Here are some examples of a Java assembler literal:
 The syntax of a Java assembler identifier is defined as follows:
 
 	:::ebnf
-	identifier = javaidentifier, {'.' javaidentifier};
+	identifier = javaidentifier, {'.' javaidentifier} ;
 
 A **javaidentifier** from the definition above is a Java language identifier [as defined in the Java Language specification](https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.8).
 
@@ -139,8 +139,8 @@ Note however, that in Java assembler the term "class" encompasses not only class
 and [enums](https://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.9), but also [interface types](https://docs.oracle.com/javase/specs/jls/se7/html/jls-9.html) including 
 [interfaces](https://docs.oracle.com/javase/specs/jls/se7/html/jls-9.html#jls-9.1) and [annotation types](https://docs.oracle.com/javase/specs/jls/se7/html/jls-9.html#jls-9.7).
 
-A class statement, which is a [block statement](#statements),  consists of some [class modifier keywords](#TODO) followed by the keyword **class** 
-and then by some [class member statements](#TODO) enclosed in curly brackets as defined in the following EBNF expression:   
+A class statement, which is a [block statement](#statements),  consists of some [class modifier keywords](#class-modifiers) followed by the keyword **class** 
+and then by some [class member statements](#class-members) enclosed in curly brackets as defined in the following EBNF expression:   
 
 	:::ebnf
 	class statement = {class modifier}, 'class', '{',{class member},'}';
@@ -193,7 +193,7 @@ class member              |how many
 [enclosing method](#TODO) |zero or more
 [unknown attribute](#TODO)|zero or more
 
-####Class example
+####Class statement example
 
 Here is an example of a class declaration including some members:
 
@@ -229,7 +229,7 @@ A version statement specifies the [version of the class file format](http://docs
 The syntax of this statement is as follows:
  
 	:::ebnf
-	version statement = 'version', floating point literal, ';'
+	version statement = 'version', floating point literal, ';' ;
 
 Example:
 
@@ -243,7 +243,7 @@ It is a [simple statement](#statements) which has as a single argument the [name
 contains the actual name as shown in the following EBNF expression:
 
 	:::ebnf
-	name statement = 'name', utf8 constant, ';'
+	name statement = 'name', utf8 constant, ';' ;
 
 Example:
 
@@ -256,7 +256,7 @@ A superclass statement specifies the direct superclass of the current class. It 
 name of [class reference constant](#TODO) which in turn specifies the actual super class as shown in the folowing EBNF expression:
 
 	:::ebnf
-	superclass statement = 'extends', class reference constant, ';'
+	superclass statement = 'extends', class reference constant, ';' ;
 	
 Example:
 	
@@ -273,7 +273,7 @@ is a name of a [class reference constant](#TODO). The [class reference constants
 The following EBNF expression defines the syntax of an interfaces statement:
 
 	:::ebnf
-	interfaces statement = 'implements', class reference constant, {',',class reference constant} , ';'
+	interfaces statement = 'implements', class reference constant, {',',class reference constant} , ';' ;
 
 Example:
 
@@ -287,7 +287,7 @@ A signature statement specifies a [signature](http://docs.oracle.com/javase/spec
 an [utf8 constant](#TODO) which in turn contains the actual signature as shown in the following EBNF expression:
 
 	::ebnf
-	signature statement = 'signature', utf8 constant, ';'
+	signature statement = 'signature', utf8 constant, ';' ;
 	
 Example:
 
@@ -303,7 +303,7 @@ This statement marks a [class](#TODO), [method](#TODO) or [field](#TODO) as depr
 It consists of a single keyword as illustrated in the following EBNF expression:
 
 	:::ebnf
-	deprecated statement = 'deprecated', ';'
+	deprecated statement = 'deprecated', ';' ;
 	
 ###Synthetic statement
 
@@ -311,7 +311,7 @@ This statement marks a [class](#TODO), [method](#TODO) or [field](#TODO) as synt
 corresponding declaration in the underlying [source file](#source-file-statement). It consists of a single keyword as illustrated in the following EBNF expression:
 
 	:::ebnf
-	synthetic statement = 'synthetic', ';'
+	synthetic statement = 'synthetic', ';' ;
 
 ###Source file statement
 
@@ -320,7 +320,7 @@ It is a [simple statement](#statements) whose single argument the [name](#names-
 an [utf8 constant](#utf8-constant) which in turn contains the actual source file name as shown in the following EBNF expression:
 	
 	:::ebnf
-	source file statement = 'source file', utf8 constant, ';'
+	source file statement = 'source file', utf8 constant, ';' ;
 	
 Example:
 
@@ -338,7 +338,7 @@ for literals as in high level program languages but also to hold symbolic inform
 An utf8 constant statement declares an utf8 string constant. In has as a singe argument a [string literal](#Literals), which specifies the value of the constant. The syntax of the statement is as follows:
 
 	:::ebnf
-	utf8 constant statement = 'const utf8',name, string literal, ';'
+	utf8 constant statement = 'const utf8',name, string literal, ';' ;
 
 Example
 
@@ -353,7 +353,7 @@ an [utf8 constant](#utf8-constant-statement) which in turn contains the actual c
 
 
 	:::ebnf
-	class reference constant statement = 'const classref',name, utf8 constant, ';'
+	class reference constant statement = 'const classref',name, utf8 constant, ';' ;
 
 Example
 	
@@ -367,7 +367,7 @@ as arguments. The first utf8 constant contains a valid field or method name the 
 The syntax of the statement is as follows:
 	
 	:::ebnf
-	name and type constant statement = 'const nameandtype',name, utf8 constant, utf8 constant, ';'
+	name and type constant statement = 'const nameandtype',name, utf8 constant, utf8 constant, ';' ;
 
 Example:
 
@@ -381,7 +381,7 @@ the field in question resides. The second argument specifies the name of a  [nam
 The syntax of the statement is as follows:
 
 	:::ebnf
-	field reference statement = 'const fieldref',name, class reference constant, name and type constant, ';'
+	field reference statement = 'const fieldref',name, class reference constant, name and type constant, ';' ;
 	
 Example:
 
@@ -397,7 +397,7 @@ which in turn specifies the name an the type of the method.
 The syntax of the statement is as follows:
 
 	:::ebnf
-	method reference statement = 'const methodref',name, class reference constant, name and type constant, ';'
+	method reference statement = 'const methodref',name, class reference constant, name and type constant, ';' ;
 	
 Example:
 
@@ -413,7 +413,7 @@ which in turn specifies the name an the type of the method.
 The syntax of the statement is as follows:
 
 	:::ebnf
-	interface method reference statement = 'const intfmethodref',name, class reference constant, name and type constant, ';'
+	interface method reference statement = 'const intfmethodref',name, class reference constant, name and type constant, ';' ;
 	
 Example:
 
@@ -427,7 +427,7 @@ which specifies the actual string content.
 The syntax of the statement is as follows:
 
     :::ebnf
-	string statement = 'const string', name, utf8 constant ';'
+	string statement = 'const string', name, utf8 constant ';' ;
     
 Example:
 
@@ -440,7 +440,7 @@ An integer value statement declares an integer constant. It has as a single argu
 The syntax of the statement is as follows:
 
     :::ebnf
-	integer statement = 'const int', name, integer literal, ';'
+	integer statement = 'const int', name, integer literal, ';' ;
 
 Example:
 
@@ -453,7 +453,7 @@ A long integer value statement declares a long integer constant. It has as a sin
 The syntax of the statement is as follows:
 
     :::ebnf
-	long integer statement = 'const long', name, integer literal, ';'
+	long integer statement = 'const long', name, integer literal, ';' ;
 
 Example:
 
@@ -466,7 +466,7 @@ A floating point value statement declares a floating point constant. It has as a
 The syntax of the statement is as follows:
 
     :::ebnf
-	floating point value statement = 'const float', name, floating point literal, ';'
+	floating point value statement = 'const float', name, floating point literal, ';' ;
 
 Example:
 
@@ -479,7 +479,7 @@ A double-precision floating point value statement declares a double-precision fl
 The syntax of the statement is as follows:
 
     :::ebnf
-	double-precision floating point value statement = 'const double', name, floating point literal, ';'
+	double-precision floating point value statement = 'const double', name, floating point literal, ';' ;
 
 Example:
 
@@ -492,7 +492,7 @@ A method type statement declares a method type constant. It has as a single argu
 The syntax of the statement is as follows:
 
     :::ebnf
-	method type statement = 'const methodtype', name, utf8 constant, ';'
+	method type statement = 'const methodtype', name, utf8 constant, ';' ;
     
 Example:
 
@@ -506,7 +506,7 @@ A method handle statement declares a method handle constant. The value of such c
 The syntax of the statement is as follows:
 
     :::ebnf
-    method handle statement = 'const ', ('getfield'|'getstatic'|'putfield'|'putstatic'|'invokespecial'|'invokevirtual'|'invokeinterface'|'invokestatic'|'newinvokespecial'), 'methodhandle', name,constant, ';'
+    method handle statement = 'const ', ('getfield'|'getstatic'|'putfield'|'putstatic'|'invokespecial'|'invokevirtual'|'invokeinterface'|'invokestatic'|'newinvokespecial'), 'methodhandle', name,constant, ';' ;
 
 
 As can be seen from the definition above a method handle defined by a method handle statement can belong to one of 9 different "kinds" (see more [here](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.8) ),
@@ -527,16 +527,70 @@ Read more about the exact nature of these two arguments in the [JVM specificatio
 The syntax of the statement is as follows:
 
     :::ebnf
-    dynamic method reference statement = 'const dynref',name,bootstrapmethod,',',name and type constant,';'
+    dynamic method reference statement = 'const dynref',name,bootstrapmethod,',',name and type constant,';' ;
 
 Example:
 
     :::lilac
     const dynref inv1 bootstrapmethod1, name_and_type1;
     
+###Field statement
 
+A field statement declares a field withhin a class type. It is a [block statement](#statements),which  consists of some [field modifier keywords](#field-modifiers) followed by the keyword **field** 
+and then by some [field member statements](#field-members) enclosed in curly brackets as defined in the following EBNF expression:
 
+    :::ebnf
+	field statement = {field modifier}, 'class', '{',{class member},'}' ;
+	field modifier = 'public'|'final'|'abstract'|'super'|'interface'|'synthetic'|'annotation'|'enum' ;
+	field member = name|descriptor|constant value|signature|synthetic|deprecated|annotation|type annotation|unknown attribute ;
 
+####Field modifiers
+
+Field modifiers in the Java assembler correspond one to one to the [access flags defined in the JVM specification](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.5)
+as shown in the following table:
+
+Assembler modifier keyword|access flag from the Jvm spec
+--------------------------|----------------------------
+public                    |ACC_PUBLIC
+private                   |ACC_PRIVATE
+protected                 |ACC_PROTECTED
+static                    |ACC_STATIC
+final                     |ACC_FINAL
+volatile                  |ACC_VOLATILE
+transient                 |ACC_TRANSIENT
+synthetic                 |ACC_SYNTHETIC
+enum                      |ACC_ENUM
+
+Read more about the meaning of modifiers as well as as about the rules governing the allowed combinations of modifiers 
+[in the JVM specification](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.5)
+
+####Field members
+
+The field statement contain member statements, referred to in the definition above as **field members**.
+The following table lists all statements which can serve as members if a field statement. 
+The second column of the table defines for each statement how many instances of it are allowed or required 
+to exist within a field statement.
+
+class member              |how many
+--------------------------|----------------------------
+[name](#name-statement)          	  |exactly one
+[descriptor](#descriptor-statement)          	  |exactly one
+[constant value](#TODO)           |zero or one
+[synthetic](#synthetic-statement)        |zero or one
+[deprecated](#deprecated-statement)       |zero or one
+[signature](#signature-statement)        |zero or one
+[annotation](#TODO)       |zero or more
+[type annotation](#TODO)  |zero or more
+[unknown attribute](#TODO)|zero or more
+
+####Field statement example
+
+    :::lilac
+    private static final field {
+      name serialVersionUID_name; // serialVersionUID
+      descriptor serialVersionUID_desc; // J
+      constant value long_158; // -6849794470754667710
+    }
 
 
 
