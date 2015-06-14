@@ -593,8 +593,22 @@ class member              |how many
     }
 
 
+###Descriptor statement
 
-	
+A name statement specifies the descriptor of a [method](#TODO) or  a [field](#field-statement). 
+It is a [simple statement](#statements) which has as a single argument the [name](#names-and-labels) of an [utf8 constant](#utf8-constant-statement) which in turn
+contains the actual descriptor string as shown in the following EBNF expression:
+
+	:::ebnf
+	descriptor statement = 'descriptor', utf8 constant, ';' ;
+
+Dependent on the statement's context the descriptor string must contain either a [valid field descriptor](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.2)
+or a [valid method descriptor](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3).
+
+Example:
+
+	:::lilac
+	descriptor method_descriptor; 
 
 
   
