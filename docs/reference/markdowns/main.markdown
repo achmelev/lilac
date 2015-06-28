@@ -536,7 +536,7 @@ Example:
     
 ###Field statement
 
-A field statement declares a field withhin a class type. It is a [block statement](#statements),which  consists of some [field modifier keywords](#field-modifiers) followed by the keyword **field** 
+A field statement declares a field within a class type. It is a [block statement](#statements),which  consists of some [field modifier keywords](#field-modifiers) followed by the keyword **field** 
 and then by some [field member statements](#field-members) enclosed in curly brackets as defined in the following EBNF expression:
 
     :::ebnf
@@ -566,12 +566,12 @@ Read more about the meaning of modifiers as well as as about the rules governing
 
 ####Field members
 
-The field statement contain member statements, referred to in the definition above as **field members**.
-The following table lists all statements which can serve as members if a field statement. 
+A field statement contains member statements, referred to in the definition above as **field members**.
+The following table lists all statements which can serve as members of a field statement. 
 The second column of the table defines for each statement how many instances of it are allowed or required 
 to exist within a field statement.
 
-class member              |how many
+field member              |how many
 --------------------------|----------------------------
 [name](#name-statement)          	  |exactly one
 [descriptor](#descriptor-statement)          	  |exactly one
@@ -582,6 +582,7 @@ class member              |how many
 [annotation](#TODO)       |zero or more
 [type annotation](#TODO)  |zero or more
 [unknown attribute](#TODO)|zero or more
+
 
 ####Field statement example
 
@@ -608,14 +609,97 @@ or a [valid method descriptor](#http://docs.oracle.com/javase/specs/jvms/se8/htm
 Example:
 
 	:::lilac
-	descriptor method_descriptor; 
+	descriptor method_descriptor;
+    
+###Method statement
+
+A method statement declares a method within a class type. It is a [block statement](#statements),which  consists of some [method modifier keywords](#method-modifiers) followed by the keyword **method** 
+and then by some [method member statements](#method-members) enclosed in curly brackets as defined in the following EBNF expression:
+
+    :::ebnf
+	method statement = {method modifier}, 'method', '{',{method member},'}' ;
+	method modifier = 'public'|'private'|'protected'|'static'|'final'|'synchronized'|'bridge'|'varargs'|'native'|'abstract'|'strict'|'synthetic' ;
+	method member = name|descriptor|exception|signature|synthetic|deprecated|annotation|parameter annotation|type annotation|annotation default|stack map|unknown attribute|variable|instruction|exception handler|line number table|variable table|variable type table|max stack|max locals;
+
+####Method modifiers
+
+Method modifiers in the Java assembler correspond one to one to the [access flags defined in the JVM specification](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.6)
+as shown in the following table:
+
+Assembler modifier keyword|access flag from the Jvm spec
+--------------------------|----------------------------
+public                    |ACC_PUBLIC
+private                   |ACC_PRIVATE
+protected                 |ACC_PROTECTED
+static                    |ACC_STATIC
+final                     |ACC_FINAL
+synchronized              |ACC_SYNCHRONIZED
+bridge                    |ACC_BRIDGE
+varargs                   |ACC_VARARGS
+native                    |ACC_NATIVE
+abstract                  |ACC_ABSTRACT
+strict                    |ACC_STRICT
+synthetic                 |ACC_SYNTHETIC
 
 
+Read more about the meaning of modifiers as well as as about the rules governing the allowed combinations of modifiers 
+[in the JVM specification](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.6)
   
+####Method members
 
+A method statement contains member statements, referred to in the definition above as **method members**.
+The following table lists all statements which can serve as members of a members statement. 
+The second column of the table defines for each statement how many instances of it are allowed or required 
+to exist within a method statement.
 
+method member              |how many
+--------------------------|----------------------------
+[name](#name-statement)          	  |exactly one
+[descriptor](#descriptor-statement)          	  |exactly one
+[exception](#TODO)           |zero or more
+[synthetic](#synthetic-statement)        |zero or one
+[deprecated](#deprecated-statement)       |zero or one
+[signature](#signature-statement)        |zero or one
+[annotation](#TODO)       |zero or more
+[parameter annotation](#TODO)  |zero or more
+[type annotation](#TODO)  |zero or more
+[annotation default](#TODO)  |zero or one
+[stack map](#TODO)  |zero or one
+[unknown attribute](#TODO)|zero or more
+[variable](#TODO)|zero or more
+[instruction](#TODO)|zero or more
+[exception handler](#TODO)|zero or more
+[line number table](#TODO)|zero or more
+[variable table](#TODO)|zero or more
+[variable type table](#TODO)|zero or more
+[max stack](#TODO)|zero or one
+[max locals](#TODO)|zero or one
+ 
+**Note:** method members can appear in any order within a method statement. The order doesn't have any semantic meaning, however, different orders may result in binary different though
+semantically identical class files.
 
+####Method statement example
 
+    :::lilac
+    static method {
+        name clinit0_name; // <clinit>
+        descriptor method_desc$1; // ()V
+        line numbers {
+          line ir0, 129;
+          line ir7, 1171;
+        }
+        maxstack 3;
+        //Instructions
+        ir0: iconst_0;
+        anewarray ObjectStreamField;
+        putstatic serialPersistentFields;
+        ir7: new String$CaseInsensitiveComparator;
+        dup;
+        aconst_null;
+        invokespecial String$CaseInsensitiveComparator.init0;
+        putstatic CASE_INSENSITIVE_ORDER;
+        return;
+    }
 
 
 
