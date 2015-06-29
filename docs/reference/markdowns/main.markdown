@@ -717,15 +717,15 @@ semantically identical class files.
 
 ###Variable statement
 
-A variable statement declares a [local variable](#https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1) within a method.
+A variable statement declares a [local variable](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1) within a [method statement](#method-statement).
 The statement specifies the type and the name of the variable, the allowed types being: **double**, **float**, **int**, **long**,**object**,
-and **returnadress**. Additionally the index of the variable within the [local variable array](#https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1)
+and **returnadress**. Additionally the index of the variable within the [local variable array](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1)
 might be specified either as an absolute index value or  as an offset relative to the index an another variable. Note, that, dependent on the type, a variable
-can occupy one or two slots in the [local variable array](#https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1).
+can occupy one or two slots in the [local variable array](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1).
 For the variables whose declaration don't contain a index specification the assembler calculates the index itself such that the variable occupies the slot or
 two slots following on the last slot occupied by the previously declared variables.
 
-**Note:** it is allowed by the JVM specification, that multiple variables occupy the same slot in the [local variable array](#https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1).
+**Note:** it is allowed by the JVM specification, that multiple variables occupy the same slot in the [local variable array](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1).
 
 The exact syntax of the variable statement is as specified in the following EBNF expression:
 
@@ -751,3 +751,32 @@ occupies one slot. The floating point variable b also has an implicitly calculat
 has an explicitly specified index **0** (remember: it's allowed for multiple variables to occupy the same slots) and occupies two slots. The variable d2 has, again,
 an explicitly specified index 0, this time however, the index has been specified as an offset relative to the slot occupied by **b**.
 And so on...
+
+###Instruction statements
+
+An instruction statement specifies an instruction from the [JVM instruction set](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5) within a [method statement](#method-statement). An instruction statement generally starts
+with a **mnemonic keyword** which might be followed by one or more arguments. An argument of an instruction can be a name of a [constant](#constant-statements)
+or a [local variable](#variable-statement), a [label](#names-and-labels) of an instruction or a [literal](#literals). The instruction statement might be preceded by a
+[label](#names-and-labels).
+
+####Correspondence betweeen the mnemonic keywords in Java assembler and the [JVM instruction set](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5).
+
+In general the mnemonic keywords of the Java assembler correspond one to one with the instructions from the [JVM instruction set](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5).
+There are however the following exceptions:
+
+- The argument-less **load** and **store** instructions from the the [JVM instruction set](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5) such
+as [aload_0](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.aload_n) or [fstore_1](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fstore_n) don't have
+a corresponding **mnemonic keyword**. Instead they will always be created by the assembler if a **aload**, **astore**, **iload**, **istore**,**dload**, **dstore**,
+ **fload** or **fstore** instruction statement has as argument a [local variable](#variable-statement) whose index lies between **0** and **3**. If in such case
+you want the assembler to generate a "normal" load or store instruction, you have to precede the mnemonic keyword of the instruction with the modifier keyword
+**normal**.
+
+- To generate the **wide** instruction from the [JVM instruction set](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5) you have to precede
+the **mnemonic keyword** of an instruction statement with the modifier keyword **wide**.
+
+Examples:
+
+    ::lilac
+    normal load this;
+    wide store this;
+
