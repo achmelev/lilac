@@ -607,9 +607,23 @@ Dependent on the statement's context the descriptor string must contain either a
 or a [valid method descriptor](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3).
 
 Example:
-
+    
 	:::lilac
 	descriptor method_descriptor;
+    
+###Constant value statement
+
+A constant value statement specifies an  initial value for a static [field](#field statement) as described in the [JVM specification](#https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.2).
+It is a [simple statement](#statements) which has as a single argument the [name](#names-and-labels) of a [long, float, double, or string constant](#constant statements)
+which in turn contains the actual value to assign as shown in the following EBNF expression:
+
+    :::ebnf
+	constant value statement = 'constant','value', constant, ';' ;
+
+Example:
+    
+    ::lilac
+    constant value string123;
     
 ###Method statement
 
@@ -701,6 +715,39 @@ semantically identical class files.
         return;
     }
 
+###Variable statement
 
+A variable statement declares a [local variable](#https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1) within a method.
+The statement specifies the type and the name of the variable, the allowed types being: **double**, **float**, **int**, **long**,**object**,
+and **returnadress**. Additionally the index of the variable within the [local variable array](#https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1)
+might be specified either as an absolute index value or  as an offset relative to the index an another variable. Note, that, dependent on the type, a variable
+can occupy one or two slots in the [local variable array](#https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1).
+For the variables whose declaration don't contain a index specification the assembler calculates the index itself such that the variable occupies the slot or
+two slots following on the last slot occupied by the previously declared variables.
 
-      
+**Note:** it is allowed by the JVM specification, that multiple variables occupy the same slot in the [local variable array](#https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1).
+
+The exact syntax of the variable statement is as specified in the following EBNF expression:
+
+    ::ebnf
+    variable statement = 'var', variable type, identifier, [index], ';' ;
+    variable type = 'double'|'float'|'int'|'long'|'object'|'returnadress' ;
+    index  = 'at', [relative offset|non-negative integer] ;
+    relative offset = identifier, '+'|'-', non-negative integer ;
+    
+Example:
+
+    ::lilac
+    var int a;
+    var float b;
+    var double d1 at 0;
+    var double d2 at b - 1;
+    var double d2 at b;
+    var double d3;
+    var double d4 at b + 1;
+
+The example above illustrates various possibilities to specify the index of a variable. The integer variable **a** has an implicitly calculated index **0** and
+occupies one slot. The floating point variable b also has an implicitly calculated index, this time it is **1** and again occupies one slot. The double precision variable d1
+has an explicitly specified index **0** (remember: it's allowed for multiple variables to occupy the same slots) and occupies two slots. The variable d2 has, again,
+an explicitly specified index 0, this time however, the index has been specified as an offset relative to the slot occupied by **b**.
+And so on...
