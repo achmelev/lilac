@@ -348,8 +348,8 @@ Example
 ####Class reference statement
 
 A class reference statement declares a class reference constant. It has as a single argument the name of
-an [utf8 constant](#utf8-constant-statement) which in turn contains the actual class name. The utf8 constant must contain a valid binary class name 
-[as defined in the JVM specification](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.2.1). The syntax of the statement is as follows:
+an [utf8 constant](#utf8-constant-statement) which in turn contains the actual class name. The utf8 constant must contain either a [valid binary class name](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.2.1)
+or a [valid array type descriptor](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.2). The syntax of the statement is as follows:
 
 
 	:::ebnf
@@ -363,7 +363,7 @@ Example
 ####Name and type statement
 
 A name an type statement declares a name and type constant, that is, a constant combining a name and a type descriptor. The statement has the names of two [utf8 constants](#utf8-constant-statement) 
-as arguments. The first utf8 constant contains a valid field or method name the second a valid field or method descriptor as defined in the [JVM specification](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6).
+as arguments. The first utf8 constant contains a valid field or method name the second a valid field or method descriptor as defined in the [JVM specification](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.6).
 The syntax of the statement is as follows:
 	
 	:::ebnf
@@ -718,7 +718,7 @@ semantically identical class files.
 ###Variable statement
 
 A variable statement declares a [local variable](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1) within a [method statement](#method-statement).
-The statement specifies the type and the name of the variable, the allowed types being: **double**, **float**, **int**, **long**,**object**,
+The statement specifies the type and the name of the variable, the allowed types being: **double**, **float**, **int**, **long**, **object**
 and **returnadress**. Additionally the index of the variable within the [local variable array](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1)
 might be specified either as an absolute index value or  as an offset relative to the index an another variable. Note, that, dependent on the type, a variable
 can occupy one or two slots in the [local variable array](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1).
@@ -796,3 +796,84 @@ Example:
 
     ::lilac
     aaload;
+    
+**Note:** The adjective "argumentless" doesn't mean in the context of JVM instructions, that the instructions in questions don't manipulate any arguments as they are executed.
+They just take all their arguments from the JVM stack and so in the assembler source and in the bytecode generated from it they don't need to have any arguments specified.
+
+#####Instructions with constant arguments
+
+These are the instructions which have as a single argument the name of a [constant](#constant-statements). Dependent on the instruction there may be restrictions on the types of the constants allowed as argument.
+The following list contains all instructions from this category with every entry linkedto the corresponding section in the JVM specification:
+
+[invokeinterface](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokeinterface), [invokedynamic](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokedynamic), [anewarray](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.anewarray), [checkcast](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.checkcast), [getfield](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.getfield), [getstatic](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.getstatic), [instanceof](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.instanceof), [invokespecial](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokespecial), [invokestatic](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokestatic), [invokevirtual](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.invokevirtual), [ldc2_w](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ldc2_w), [ldc2](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ldc2), [new](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.new), [putfield](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.putfield), [putstatic](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.putstatic)
+
+Example:
+
+    ::lilac
+    new java.lang.String;
+    
+#####Instructions with local variable arguments
+
+These are the instructions which have a single argument the name of a [local valiable](#variable-statement). Dependent on the instruction there may be restrictions on the types of the variables allowed as argument.
+The following list contains all instructions from this category with every entry linkedto the corresponding section in the JVM specification:
+
+[aload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.aload), [astore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.astore), [dload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dload), [dstore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dstore), [fload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fload), [fstore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fstore), [iload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iload), [istore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.istore), [lload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lload), [lstore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lstore),[ret](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ret)
+
+Example:
+
+    ::lilac
+    aload this;
+
+#####Branch instructions
+
+These are the instructions causing the virtual machine to begin, conditionaly or unconditionally, to transfer the execution to an instruction different than the next instruction. Branch instructions
+have as a single argument the [label](#names-and-labels) of the instruction to which the execution will be transferred.
+The following list contains all instructions from this category with every entry linkedto the corresponding section in the JVM specification:
+
+[goto](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.goto), [goto_w](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.goto_w), [if_acmpeq](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_acmpeq), [if_acmpne](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_acmpne), [if_icmpeq](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_icmpeq), [if_icmpge](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_icmpge), [if_icmpgt](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_icmpgt), [if_icmple](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_icmple), [if_icmplt](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_icmplt), [if_icmpne](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_icmpne), [ifeq](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifeq), [ifge](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifge), [ifgt](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifgt), [ifle](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifle), [iflt](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iflt), [ifne](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifne), [ifnonnull](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifnonnull), [ifnull](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifnull), [jsr](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.jsr), [jsr_w](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.jsr_w)
+
+Example:
+
+    ::lilac
+    goto end;
+
+#####Integer literal instructions
+
+These are the instructions which take an integer literal as argument. There are two instructions of this type:
+[bipush](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.bipush), taking argument values from -128 to 127,
+and  [sipush](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.sipush), taking argument values from -32768 to 32767.
+
+Examples:
+    
+    ::lilac
+    bipush 120;
+    sipush 1000;
+
+#####iinc instruction
+
+The [iinc](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iinc) instruction takes two arguments:
+the name of a local variable and an integer literal in the value range from -128 to 127.
+
+Example:
+
+    ::lilac
+    iinc counter,2;
+
+#####newarray instruction
+
+The [newarray](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.newarray) instruction, which creates a primitive array on the stack,
+has a special syntax consisting of two keywords: the **newarray** keyword followed by the keyword designating a primitive type which can be one
+of the following: **boolean**, **byte**, **char**, **double**, **float**, **int**, **long, **short**.
+
+#####multianewarray instruction
+
+The [multianewarray](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.multinewarray) instruction, which creates a multidimensional
+array, takes two arguments: the name of a [class reference constant](#class-reference-statement) and a integer literal in the range from 1 to 255.
+
+Example:
+
+    ::lilac
+    multianewarray Object,3;
+
+
+
