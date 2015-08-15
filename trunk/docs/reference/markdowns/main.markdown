@@ -76,16 +76,16 @@ Here are some examples of a comment:
 ####Names and labels
 
 On the syntactic level Java assembler has two different kinds of [identifiers](#identifiers): **names** and **labels**. Names identify an entity declared in a program, 
-in the context of Java assembler those entities can be [variables](#TODO) and [constants](#TODO).
+in the context of Java assembler those entities can be [variables](#variable-statement) and [constants](#constant-statements).
 
-The following example shows two [constants](#TODO), the [string constant](#TODO) referencing the [utf8 costant](#TODO) by it's name:
+The following example shows two [constants](#constant-statements): a [string constant](#string-statement) referencing a [utf8 constant](#utf8-constant-statement) by it's name:
 
 	:::lilac
 	const utf8 helloword_content "Hello World";
 	const string helloword helloword_content;
 
 Labels on the other hand identify a location inside the program to which, for example, the control flow of the program might be transferred. 
-This is illustrated in the following example where the [if_acmpne instruction](#TODO) transfers the control to the [return instruction](#TODO)
+This is illustrated in the following example where the [if_acmpne instruction](#branch-instructions) transfers the control to the [return instruction](#branch-instructions)
 
 	:::lilac
 	if_acmpne end;
@@ -105,7 +105,7 @@ example:
 		descriptor type_desc; 
 	}
 
-In the example we see a [field statement](#TODO) which in turn contains two further statements: a [name statement](#TODO) and a [descriptor statement](#TODO).
+In the example we see a [field statement](#field-statement) which in turn contains two further statements: a [name statement](#name-statement) and a [descriptor statement](#descriptor-statement).
 
 A simple statement is just a sequence of [keywords, identifiers and literals](#lexical-structure) possibly separated by some [separators](#lexical-structure)
 and, this is important, *always* terminated by **;**
@@ -123,8 +123,8 @@ Here are some examples of a simple statement:
 
 From the fact that block statements themselves contain another statements follows, that the whole syntactic structure of a Java assembler program can be in effect 
 mathematically seen as a [forest](http://en.wikipedia.org/wiki/Tree_%28graph_theory%29) of statements as a with **block statements** being parent nodes of their **child statements**. 
-Indeed because on the semantic level there is an additional requirement, that a Java assembler source file contains exactly one [class statement](#TODO), 
-this [forest](http://en.wikipedia.org/wiki/Tree_%28graph_theory%29) is in fact just one tree with the [class statement](#TODO) at the root.
+Indeed because on the semantic level there is an additional requirement, that a Java assembler source file contains exactly one [class statement](#class-statement), 
+this [forest](http://en.wikipedia.org/wiki/Tree_%28graph_theory%29) is in fact just one tree with the [class statement](#class-statement) at the root.
 
 ##Language Statements
 
@@ -183,9 +183,9 @@ class member              |how many
 [deprecated](#deprecated-statement)       |zero or one
 [source file](#source-file-statement)      |zero or one
 [signature](#signature-statement)        |zero or one
-[constant](#TODO)		  |zero or more
-[method](#TODO)			  |zero or more
-[field](#TODO)			  |zero or more
+[constant](#constant-statements)		  |zero or more
+[method](#method-statement)			  |zero or more
+[field](#field-statement)			  |zero or more
 [annotation](#TODO)       |zero or more
 [type annotation](#TODO)  |zero or more
 [bootstrap method](#TODO) |zero or more
@@ -238,8 +238,8 @@ Example:
 
 ###Name statement
 
-A name statement specifies the name of a [class](class-statement), a [method](#TODO), [field](#TODO),[inner class](#TODO) or [annotation element](#TODO). 
-It is a [simple statement](#statements) which has as a single argument the [name](#names-and-labels) of an [utf8 constant](#TODO) which in turn
+A name statement specifies the name of a [class](#class-statement), a [method](#method-statement), [field](#field-statement),[inner class](#TODO) or [annotation element](#TODO). 
+It is a [simple statement](#statements) which has as a single argument the [name](#names-and-labels) of an [utf8 constant](#utf8-constant-statement) which in turn
 contains the actual name as shown in the following EBNF expression:
 
 	:::ebnf
@@ -253,7 +253,7 @@ Example:
 ###Superclass statement
 
 A superclass statement specifies the direct superclass of the current class. It is a [simple statement](#statements) which has as a single argument the
-name of [class reference constant](#TODO) which in turn specifies the actual super class as shown in the folowing EBNF expression:
+name of [class reference constant](#class-reference-statement) which in turn specifies the actual super class as shown in the folowing EBNF expression:
 
 	:::ebnf
 	superclass statement = 'extends', class reference constant, ';' ;
@@ -269,7 +269,7 @@ which is defined as the root of the Java class hierarchy.
 ###Interfaces statement
 
 An interfaces statement specifies the superintefaces of the current class. It is a [simple statement](#statements) with multiple arguments, every one of which
-is a name of a [class reference constant](#TODO). The [class reference constants](#TODO) in turn specify the actual super interfaces of the current class.
+is a name of a [class reference constant](#class-reference-statement). The [class reference constants](#class-reference-statement) in turn specify the actual super interfaces of the current class.
 The following EBNF expression defines the syntax of an interfaces statement:
 
 	:::ebnf
@@ -282,9 +282,9 @@ Example:
 
 ###Signature statement
 
-A signature statement specifies a [signature](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.9.1) for a [class](#TODO), 
-[method](#TODO) or [field](#TODO). It is a [simple statement](#statements) whose single argument ist the [name](#names-and-labels) of 
-an [utf8 constant](#TODO) which in turn contains the actual signature as shown in the following EBNF expression:
+A signature statement specifies a [signature](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.9.1) for a [class](#class-statement), 
+[method](#method-statement) or [field](#field-statement). It is a [simple statement](#statements) whose single argument ist the [name](#names-and-labels) of 
+an [utf8 constant](#utf8-constant-statement) which in turn contains the actual signature as shown in the following EBNF expression:
 
 	::ebnf
 	signature statement = 'signature', utf8 constant, ';' ;
@@ -299,7 +299,7 @@ Read more about this syntax [here](http://docs.oracle.com/javase/specs/jvms/se8/
 
 ###Deprecated statement
 
-This statement marks a [class](#TODO), [method](#TODO) or [field](#TODO) as deprecated. 
+This statement marks a [class](#class-statement), [method](#method-statement) or [field](#field-statement) as deprecated. 
 It consists of a single keyword as illustrated in the following EBNF expression:
 
 	:::ebnf
@@ -307,7 +307,7 @@ It consists of a single keyword as illustrated in the following EBNF expression:
 	
 ###Synthetic statement
 
-This statement marks a [class](#TODO), [method](#TODO) or [field](#TODO) as synthetic, that is, as have been generated by the compiler itself without having a 
+This statement marks a [class](#class-statement), [method](#method-statement) or [field](#field-statement) as synthetic, that is, as have been generated by the compiler itself without having a 
 corresponding declaration in the underlying [source file](#source-file-statement). It consists of a single keyword as illustrated in the following EBNF expression:
 
 	:::ebnf
@@ -317,7 +317,7 @@ corresponding declaration in the underlying [source file](#source-file-statement
 
 The source file statement specifies the source file out which the current class has been generated. The main use of this information is for debugging purposes.
 It is a [simple statement](#statements) whose single argument the [name](#names-and-labels) of 
-an [utf8 constant](#utf8-constant) which in turn contains the actual source file name as shown in the following EBNF expression:
+an [utf8 constant](#utf8-constant-statement) which in turn contains the actual source file name as shown in the following EBNF expression:
 	
 	:::ebnf
 	source file statement = 'source file', utf8 constant, ';' ;
@@ -335,7 +335,7 @@ for literals as in high level program languages but also to hold symbolic inform
 
 ####Utf8 constant statement
 
-An utf8 constant statement declares an utf8 string constant. In has as a singe argument a [string literal](#Literals), which specifies the value of the constant. The syntax of the statement is as follows:
+An utf8 constant statement declares an utf8 string constant. In has as a singe argument a [string literal](#literals), which specifies the value of the constant. The syntax of the statement is as follows:
 
 	:::ebnf
 	utf8 constant statement = 'const utf8',name, string literal, ';' ;
@@ -422,7 +422,7 @@ Example:
     
 ####String statement
 
-A string statement declares a string constant, which can be used by [instructions](#TODO). The statement has as a single argument the name of an [utf8 constant](#utf8-constant-statement),
+A string statement declares a string constant, which can be used by [instructions](#instruction-statements). The statement has as a single argument the name of an [utf8 constant](#utf8-constant-statement),
 which specifies the actual string content.
 The syntax of the statement is as follows:
 
@@ -511,7 +511,7 @@ The syntax of the statement is as follows:
 
 As can be seen from the definition above a method handle defined by a method handle statement can belong to one of 9 different "kinds" (see more [here](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.8) ),
 declared by one of the 9 corresponding modifier keywords.
-The statement has as a single argument the name of a constant, which, dependent on the "kind", can be a [field reference](##field-reference-statement), a [method reference](#method-reference-statement)
+The statement has as a single argument the name of a constant, which, dependent on the "kind", can be a [field reference](#field-reference-statement), a [method reference](#method-reference-statement)
 or an [interface method reference statement](#interface-method-reference-statement).
 
 Example:
@@ -521,7 +521,7 @@ Example:
 
 ####Dynamic method reference statement
 
-A dynamic method reference statement declares a dynamic method reference constant which can be used as the argument of an [invokedynamic instruction](#TODO).
+A dynamic method reference statement declares a dynamic method reference constant which can be used as the argument of an [invokedynamic instruction](#nstructions-with-constant-arguments).
 The statement has two arguments - the first argument specifies the name of a [bootstrap method](#TODO), the second argument specifies the name of [a name and type constant](#name-and-type-statement).
 Read more about the exact nature of these two arguments in the [JVM specification](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.10).
 The syntax of the statement is as follows:
@@ -575,7 +575,7 @@ field member              |how many
 --------------------------|----------------------------
 [name](#name-statement)          	  |exactly one
 [descriptor](#descriptor-statement)          	  |exactly one
-[constant value](#TODO)           |zero or one
+[constant value](#constant-value-statement)           |zero or one
 [synthetic](#synthetic-statement)        |zero or one
 [deprecated](#deprecated-statement)       |zero or one
 [signature](#signature-statement)        |zero or one
@@ -596,7 +596,7 @@ field member              |how many
 
 ###Descriptor statement
 
-A name statement specifies the descriptor of a [method](#TODO) or  a [field](#field-statement). 
+A name statement specifies the descriptor of a [method](#method-statement) or  a [field](#field-statement). 
 It is a [simple statement](#statements) which has as a single argument the [name](#names-and-labels) of an [utf8 constant](#utf8-constant-statement) which in turn
 contains the actual descriptor string as shown in the following EBNF expression:
 
@@ -614,7 +614,7 @@ Example:
 ###Constant value statement
 
 A constant value statement specifies an  initial value for a static [field](#field statement) as described in the [JVM specification](#https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.2).
-It is a [simple statement](#statements) which has as a single argument the [name](#names-and-labels) of a [long, float, double, or string constant](#constant statements)
+It is a [simple statement](#statements) which has as a single argument the [name](#names-and-labels) of a [long, float, double, or string constant](#constant-statements)
 which in turn contains the actual value to assign as shown in the following EBNF expression:
 
     :::ebnf
@@ -680,8 +680,8 @@ method member              |how many
 [annotation default](#TODO)  |zero or one
 [stack map](#TODO)  |zero or one
 [unknown attribute](#TODO)|zero or more
-[variable](#TODO)|zero or more
-[instruction](#TODO)|zero or more
+[variable](#variable-statement)|zero or more
+[instruction](#instruction-statements)|zero or more
 [exception handler](#TODO)|zero or more
 [line number table](#TODO)|zero or more
 [variable table](#TODO)|zero or more
@@ -782,7 +782,7 @@ Examples:
 
 ####Instruction categories
 
-Most JVM instructions belong to one of three following categories: [argumentless instructions](#argumentless-instructions), [constant instructions](#TODO), [variable instructions](#TODO) and [branch instructions](#TODO). Additionally there are some instructions which don't
+Most JVM instructions belong to one of three following categories: [argumentless instructions](#argumentless-instructions), [constant instructions](#instructions-with-constant-arguments), [variable instructions](#instructions-with-local-variable-arguments) and [branch instructions](#branch-instructions). Additionally there are some instructions which don't
 fit an any of thost broad categories but stand on their own.
 
 #####Argumentless instructions
@@ -874,6 +874,18 @@ Example:
 
     ::lilac
     multianewarray Object,3;
+
+#####Switch instructions
+
+Switch instructions, which include [tableswitch](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.tableswitch) and [lookupswitch](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lookupswitch),
+are special branch instructions which calculate their target dependent on the integer value from the stack. A switch instruction has multiple arguments in a special syntax: an integer literal or the keyword
+**default** followed by **->** and then by the label of the target instruction. 
+
+Example:
+
+    ::lilac
+    tableswitch 0->target0,1->target1,default->defaulttarget;
+
 
 
 
