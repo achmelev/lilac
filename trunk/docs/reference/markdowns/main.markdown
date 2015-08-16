@@ -4,7 +4,7 @@
 
 [TOC]
 
-##Introduction
+##Introductionƒ
 
 A [Java](http://en.wikipedia.org/wiki/Java_%28programming_language%29) assembler (or assembly) language is a low level programming language for the [Java Virtual Machine (JVM)](http://en.wikipedia.org/wiki/Java_virtual_machine) in which there is a strong correspondence 
 between the language constructs and the [JVM bytecode](http://en.wikipedia.org/wiki/Java_bytecode). There is no official standard for the syntax of a Java assembler language. 
@@ -253,7 +253,7 @@ Example:
 ###Superclass statement
 
 A superclass statement specifies the direct superclass of the current class. It is a [simple statement](#statements) which has as a single argument the
-name of [class reference constant](#class-reference-statement) which in turn specifies the actual super class as shown in the folowing EBNF expression:
+name of a [class reference constant](#class-reference-statement) which in turn specifies the actual super class as shown in the folowing EBNF expression:
 
 	:::ebnf
 	superclass statement = 'extends', class reference constant, ';' ;
@@ -662,7 +662,7 @@ Read more about the meaning of modifiers as well as as about the rules governing
 ####Method members
 
 A method statement contains member statements, referred to in the definition above as **method members**.
-The following table lists all statements which can serve as members of a members statement. 
+The following table lists all statements which can serve as members of a method statement. 
 The second column of the table defines for each statement how many instances of it are allowed or required 
 to exist within a method statement.
 
@@ -885,6 +885,72 @@ Example:
 
     ::lilac
     tableswitch 0->target0,1->target1,default->defaulttarget;
+
+###Inner class statement
+
+An inner class statement within a [class statement](#class-statement) designates another class as nested class within the surrounding class.  It is a [block statement](#statements),which  consists of some [modifier keywords](#inner-class-modifiers) followed by the keywords **inner** and **class** 
+and then by some [inner class member statements](#inner-class-members) enclosed in curly brackets as defined in the following EBNF expression:
+
+    :::ebnf
+	inner class statement = {inner class modifier}, 'inner', 'class', '{',{inner class member},'}' ;
+	inner class modifier = 'public'|'private'|'protected'|'static'|'final'|'interface'|'abstract'|'synthetic'|'annotation'|'enum' ;
+	inner class member = name|inner|outer;
+
+Example:
+
+    ::lilac
+    public inner class {
+        inner Foo$;
+        outer Foo;
+        name Foo_name;
+    }
+
+####Inner class modifiers
+
+Inner class modifiers in the Java assembler correspond one to one to the [access flags defined in the JVM specification](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.6)
+as shown in the following table:
+
+Assembler modifier keyword|access flag from the Jvm spec
+--------------------------|----------------------------
+public                    |ACC_PUBLIC
+private                   |ACC_PRIVATE
+protected                 |ACC_PROTECTED
+static                    |ACC_STATIC
+final                     |ACC_FINAL
+interface                 |ACC_INTERFACE
+abstract                  |ACC_ABSTRACT
+synthetic                 |ACC_SYNTHETIC
+annotation                |ACC_ANNOTATION
+enum                      |ACC_ANNOTATION
+
+####Inner class members
+
+An inner class statement contains member statements, referred to in the definition above as **inner class members**.
+The following table lists all statements which can serve as members of an inner class statement. 
+The second column of the table defines for each statement how many instances of it are allowed or required 
+to exist within a method statement.
+
+method member              |how many
+--------------------------|----------------------------
+[inner](#inner-and-outer-statement)          	  |exactly one
+[outer](#outer-statement)          	  |zero or one
+[name](#name-statement)           |zero or one
+
+####Inner statement
+
+This statement within an [inner-class-statement](#inner-class-statement) specifies which concrete class is the nested class.
+It has as a single argument the name of a [class reference constant](#class-reference-statement) which in turn specifies the actual class as shown in the folowing EBNF expression:
+
+    ::ebnf
+    inner statement = 'inner', class reference, ';'
+
+####Outer statement
+
+This statement within an [inner-class-statement](#inner-class-statement) specifies which class is the outer class of the nested class.
+It has as a single argument the name of a [class reference constant](#class-reference-statement) which in turn specifies the actual class as shown in the folowing EBNF expression:
+
+    ::ebnf
+    outer statement = 'outer', class reference, ';'
 
 
 
