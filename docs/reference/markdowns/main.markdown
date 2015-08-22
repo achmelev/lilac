@@ -4,7 +4,7 @@
 
 [TOC]
 
-##Introductionƒ
+##Introduction
 
 A [Java](http://en.wikipedia.org/wiki/Java_%28programming_language%29) assembler (or assembly) language is a low level programming language for the [Java Virtual Machine (JVM)](http://en.wikipedia.org/wiki/Java_virtual_machine) in which there is a strong correspondence 
 between the language constructs and the [JVM bytecode](http://en.wikipedia.org/wiki/Java_bytecode). There is no official standard for the syntax of a Java assembler language. 
@@ -189,8 +189,8 @@ class member              |how many
 [annotation](#TODO)       |zero or more
 [type annotation](#TODO)  |zero or more
 [bootstrap method](#TODO) |zero or more
-[inner class](#TODO)      |zero or more
-[enclosing method](#TODO) |zero or more
+[inner class](#inner-class-statement) |zero or more
+[enclosing method](#enclosing-method-statement) |zero or more
 [unknown attribute](#TODO)|zero or more
 
 ####Class statement example
@@ -238,7 +238,7 @@ Example:
 
 ###Name statement
 
-A name statement specifies the name of a [class](#class-statement), a [method](#method-statement), [field](#field-statement),[inner class](#TODO) or [annotation element](#TODO). 
+A name statement specifies the name of a [class](#class-statement), a [method](#method-statement), [field](#field-statement),[inner class](#inner-class-statement) or [annotation element](#TODO). 
 It is a [simple statement](#statements) which has as a single argument the [name](#names-and-labels) of an [utf8 constant](#utf8-constant-statement) which in turn
 contains the actual name as shown in the following EBNF expression:
 
@@ -377,7 +377,7 @@ Example:
 ####Field reference statement
 
 A field reference statement declares a field rerefence constant. It has two arguments. The first argument specifies the name of a [class reference constant](#class-reference-statement) which in turn specifies the actual class or interface in which
-the field in question resides. The second argument specifies the name of a  [name an type constant](#name-and-type-statement) which in turn specifies the name an the type of the field.
+the field in question resides. The second argument specifies the name of a  [name and type constant](#name-and-type-statement) which in turn specifies the name an the type of the field.
 The syntax of the statement is as follows:
 
 	:::ebnf
@@ -888,7 +888,8 @@ Example:
 
 ###Inner class statement
 
-An inner class statement within a [class statement](#class-statement) designates another class as nested class within the surrounding class.  It is a [block statement](#statements),which  consists of some [modifier keywords](#inner-class-modifiers) followed by the keywords **inner** and **class** 
+An inner class statement within a [class statement](#class-statement) declares an ["inner class"-relationship](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.6) between two classes.One of the classes participating in the relationship is usually the current class, though it is not a requirement.
+The  inner class statement is a [block statement](#statements),which  consists of some [modifier keywords](#inner-class-modifiers) followed by the keywords **inner** and **class** 
 and then by some [inner class member statements](#inner-class-members) enclosed in curly brackets as defined in the following EBNF expression:
 
     :::ebnf
@@ -938,7 +939,7 @@ method member              |how many
 
 ####Inner statement
 
-This statement within an [inner-class-statement](#inner-class-statement) specifies which concrete class is the nested class.
+This statement within an [inner-class-statement](#inner-class-statement) specifies the inner end of the "inner class"-relationship.
 It has as a single argument the name of a [class reference constant](#class-reference-statement) which in turn specifies the actual class as shown in the folowing EBNF expression:
 
     ::ebnf
@@ -946,11 +947,28 @@ It has as a single argument the name of a [class reference constant](#class-refe
 
 ####Outer statement
 
-This statement within an [inner-class-statement](#inner-class-statement) specifies which class is the outer class of the nested class.
+This statement within an [inner-class-statement](#inner-class-statement) specifies the outer end of the "inner class"-relationship.
 It has as a single argument the name of a [class reference constant](#class-reference-statement) which in turn specifies the actual class as shown in the folowing EBNF expression:
 
     ::ebnf
     outer statement = 'outer', class reference, ';'
+
+###Enclosing method statement
+
+An enclosing statement specifies [the enclosing method](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.7) for the inner end of an "inner class"-relationship between two classes
+(see also [Inner class statement](#inner-class-statement).
+This is a simple statement, which has two arguments of which the second is optional. The first argument is the name of a [class reference constant](#class-reference-statement), which specifies
+the class of the enclosing method. The second argument is the name of a [name and type constant](#name-and-type-statement), which specifies the name and the type of the enclosing method.
+The absence of the second argument means, that the inner class isn't enclosed in a method. The exact syntax of the statement is as in the following EBNF expression:
+
+    ::ebnf
+    enclosing method statement = 'enclosing', 'method', class reference, [',', name and type]
+    
+Example:
+
+    ::lilac
+    enclosing method InnerClassTests, nameandtype_26;
+
 
 
 
