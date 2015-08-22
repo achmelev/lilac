@@ -121,10 +121,10 @@ Here are some examples of a simple statement:
 	lookupswitch 1->ir36,3->ir41,100->ir46,default->ir53;
 	append else, {int};
 
-From the fact that block statements themselves contain another statements follows, that the whole syntactic structure of a Java assembler program can be in effect 
-mathematically seen as a [forest](http://en.wikipedia.org/wiki/Tree_%28graph_theory%29) of statements as a with **block statements** being parent nodes of their **child statements**. 
-Indeed because on the semantic level there is an additional requirement, that a Java assembler source file contains exactly one [class statement](#class-statement), 
-this [forest](http://en.wikipedia.org/wiki/Tree_%28graph_theory%29) is in fact just one tree with the [class statement](#class-statement) at the root.
+From the fact that block statements themselves contain another statements immediately follows that the whole syntactic structure of a Java assembler program can be in effect 
+mathematically seen as a [forest](http://en.wikipedia.org/wiki/Tree_%28graph_theory%29) of statements with **block statements** being parent nodes of their **member statements**. 
+Because on the semantic level there is an additional requirement, that a Java assembler source file contains exactly one [class statement](#class-statement), 
+this [forest](http://en.wikipedia.org/wiki/Tree_%28graph_theory%29) is in fact just a tree with the [class statement](#class-statement) at the root.
 
 ##Language Statements
 
@@ -962,13 +962,84 @@ the class of the enclosing method. The second argument is the name of a [name an
 The absence of the second argument means, that the inner class isn't enclosed in a method. The exact syntax of the statement is as in the following EBNF expression:
 
     ::ebnf
-    enclosing method statement = 'enclosing', 'method', class reference, [',', name and type]
+    enclosing method statement = 'enclosing', 'method', class reference, [',', name and type], ';'
     
 Example:
 
     ::lilac
     enclosing method InnerClassTests, nameandtype_26;
 
+###Annotation statement
+
+An annotation statement declares an [annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.6.1) for a class, method, or field. An annotation statement, which is a [block statement](#statements),  consists of the keyword **annotation** possibly preceded by the keyword **invisible** and
+followed by some [annotation member statements](#annotation-members) enclosed in curly brackets as defined in the following EBNF expression:
+
+    ::ebnf
+	annotation statement = {'invisible'}, 'annotation', '{',{annotation member},'}' ;
+	annotation member = annotation type|annotation element
+    
+The key word 'invisible', if present, marks the annotation as invisible at runtime.
+
+Example (Deprecated annotation):
+
+    ::lilac
+    annotation {
+      type type_desc; // Ljava/lang/Deprecated;
+    }
+    
+####Annotation members
+
+An annotation statement contains member statements, referred to in the definition above as **annotation members**.
+The following table lists all statements which can serve as members of an annotation statement. 
+The second column of the table defines for each statement how many instances of it are allowed or required 
+to exist within an annotation statement.
+
+method member              |how many
+--------------------------|----------------------------
+[annotation type](#annotation-type-statement)          	  |exactly one
+[annotation element](#annotation-element-statement)       |zero or more
+
+####Annotation type statement
+
+An annotation type statement declares the type (annotation class) of the surrounding annotation. It is a [simple statement](#statements) which has as a single argument a name of [class reference constant](#class-reference-statement),
+which in turn specifies the annotation class as shown in the following EBNF expression:
+
+    ::ebnf
+    annotation type statement = 'type', class reference, ';'
+
+Example:
+
+    ::lilac
+    type type_desc;
+
+####Annotation element statement
+
+An annotation element statement specifies the value of an annotation element for an [annotation](#annotation-statement). An annotation element statement, which is [block statement](#statements), consists auf the keyword **element**
+followed by some [annotation member statements](#annotation-members) enclosed in curly brackets as defined in the following EBNF expression:
+
+    ::ebnf
+    annotation element statement = 'element','{',{annotation element member},'}'
+    annotation element member = name|annotation element value
+    
+Example:
+
+    ::lilac
+    element {
+        name element1_name;
+        string value empty_string; 
+    }
+
+#####Annotation element members
+
+An annotation element statement contains member statements, referred to in the definition above as **annotation element members**.
+The following table lists all statements which can serve as members of an annotation element statement. 
+The second column of the table defines for each statement how many instances of it are allowed or required 
+to exist within a annotation element statement.
+
+method member              |how many
+--------------------------|----------------------------
+[name](#name-statement)          	  |exactly one
+[annotation element-value](#annotation-element-value-statement)       |exactly one
 
 
 
