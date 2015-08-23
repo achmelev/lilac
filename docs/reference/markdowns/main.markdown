@@ -186,8 +186,7 @@ class member              |how many
 [constant](#constant-statements)		  |zero or more
 [method](#method-statement)			  |zero or more
 [field](#field-statement)			  |zero or more
-[annotation](#TODO)       |zero or more
-[type annotation](#TODO)  |zero or more
+[annotation](#annotation-statement)       |zero or more
 [bootstrap method](#TODO) |zero or more
 [inner class](#inner-class-statement) |zero or more
 [enclosing method](#enclosing-method-statement) |zero or more
@@ -238,7 +237,7 @@ Example:
 
 ###Name statement
 
-A name statement specifies the name of a [class](#class-statement), a [method](#method-statement), [field](#field-statement),[inner class](#inner-class-statement) or [annotation element](#TODO). 
+A name statement specifies the name of a [class](#class-statement), a [method](#method-statement), [field](#field-statement),[inner class](#inner-class-statement) or [annotation element](#annotation-element-statement). 
 It is a [simple statement](#statements) which has as a single argument the [name](#names-and-labels) of an [utf8 constant](#utf8-constant-statement) which in turn
 contains the actual name as shown in the following EBNF expression:
 
@@ -579,8 +578,7 @@ field member              |how many
 [synthetic](#synthetic-statement)        |zero or one
 [deprecated](#deprecated-statement)       |zero or one
 [signature](#signature-statement)        |zero or one
-[annotation](#TODO)       |zero or more
-[type annotation](#TODO)  |zero or more
+[annotation](#annotation-statement)       |zero or more
 [unknown attribute](#TODO)|zero or more
 
 
@@ -674,9 +672,7 @@ method member              |how many
 [synthetic](#synthetic-statement)        |zero or one
 [deprecated](#deprecated-statement)       |zero or one
 [signature](#signature-statement)        |zero or one
-[annotation](#TODO)       |zero or more
-[parameter annotation](#TODO)  |zero or more
-[type annotation](#TODO)  |zero or more
+[annotation](#annotation-statement)       |zero or more
 [annotation default](#TODO)  |zero or one
 [stack map](#TODO)  |zero or one
 [unknown attribute](#TODO)|zero or more
@@ -971,14 +967,23 @@ Example:
 
 ###Annotation statement
 
-An annotation statement declares either an [annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.6.1) for a class, method,field or a [nested annotation within another annotation](#annotation-element-members). An annotation statement, which is a [block statement](#statements),  consists of the keyword **annotation** possibly preceded by the keyword **invisible** and
-followed by some [annotation member statements](#annotation-members) enclosed in curly brackets as defined in the following EBNF expression:
+An annotation statement declares either an [annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.6.1) for a class, method,method parameter,field or [a type declaration](https://docs.oracle.com/javase/tutorial/java/annotations/type_annotations.html)
+or a [nested annotation within another annotation](#annotation-element-members).
+An annotation statement, which is a [block statement](#statements),  consists of the keyword **annotation**  folowed by [annotation member statements](#annotation-members) enclosed in curly brackets
+and possibly preceded by some of the following keywords: **invisible**, **parameter**, **type** as defined in the following EBNF expression:
 
     ::ebnf
-	annotation statement = {'invisible'}, 'annotation', '{',{annotation member},'}' ;
+	annotation statement = {'invisible'|'parameter'|type}, 'annotation', '{',{annotation member},'}' ;
 	annotation member = annotation type|annotation element
     
-The key word 'invisible', if present, marks the annotation as invisible at runtime.
+The meaning of the keywords preceding **annotaion** is as follows:
+
+ **invisible** - marks the annotation as invisible as runtime
+ 
+ **parameter** - required if declaring a method parameter annotation. In this case the presence of the a [annotation parameter index](#annotation-parameter-index-statement)  as member is also requred.
+ **Note**: parameter annotations are only allowed within of a [method statement](#method-statement)
+ 
+ **type** - required if declaring a type annotation
 
 Example (Deprecated annotation):
 
@@ -986,6 +991,7 @@ Example (Deprecated annotation):
     annotation {
       type type_desc; // Ljava/lang/Deprecated;
     }
+
     
 ####Annotation members
 
@@ -998,6 +1004,7 @@ method member              |how many
 --------------------------|----------------------------
 [annotation type](#annotation-type-statement)          	  |exactly one
 [annotation element](#annotation-element-statement)       |zero or more
+[annotation parameter index](#annotation-parameter-index-statement)       |zero or more
 
 ####Annotation type statement
 
@@ -1011,6 +1018,21 @@ Example:
 
     ::lilac
     type type_desc;
+
+####Annotation parameter index statement
+
+An annotation parameter index statement specifies the index of a method parameter for which the surrounding annotation is being declared. It is a [simple statement](#statements) which has as a single argument an integer literal
+specifying the actual index as shown in following EBNF expression:
+
+    ::ebnf
+    annotation parameter index statement = 'index',integer literal,';'
+
+The index specified has to be a valid index of a parameter of the method for which the annotation has been declared. 
+
+Example:
+
+    ::lilac
+    index 0;
 
 ####Annotation element statement
 
