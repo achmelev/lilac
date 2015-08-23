@@ -971,7 +971,7 @@ Example:
 
 ###Annotation statement
 
-An annotation statement declares an [annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.6.1) for a class, method, or field. An annotation statement, which is a [block statement](#statements),  consists of the keyword **annotation** possibly preceded by the keyword **invisible** and
+An annotation statement declares either an [annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.6.1) for a class, method,field or a [nested annotation within another annotation](#annotation-element-members). An annotation statement, which is a [block statement](#statements),  consists of the keyword **annotation** possibly preceded by the keyword **invisible** and
 followed by some [annotation member statements](#annotation-members) enclosed in curly brackets as defined in the following EBNF expression:
 
     ::ebnf
@@ -1039,7 +1039,61 @@ to exist within a annotation element statement.
 method member              |how many
 --------------------------|----------------------------
 [name](#name-statement)          	  |exactly one
-[annotation element-value](#annotation-element-value-statement)       |exactly one
+[annotation element value](#annotation-element-value-statement)       |zero or one
+[annotation](#annotation statement)       |zero or one
+
+An annotation element always has exactly two members: a name statement, specifying the name of the element and a value statement, which is either a  [annotation element value statement](#annotation-element-value-statement) or or
+a [nested annotation](#annotation statement)
+
+#####Annotation element value statement
+
+An annotation element value statement either specifies a value for an annotation element or serves as a member for [another array annotation element value](#array-value) . This value can be a **simple value**, an **enumeration value** or an **array value**. Every one of these three possibility has a different syntax which
+will be explained below:
+
+######Simple value
+
+The syntax for a simple value is that of a [simple statement](#statements) which consists of **type keyword** followed by the keyword **value** an the by a single argument.
+The single argument is the name of a constant, the exact type of which dependends on the type of the value specified by the type keyword. The EBNF expression fo the syntax is as follows:
+
+    ::ebnf
+    simple value = type keyword, 'value', constant name, ';'
+    type keyword = 'byte'|'boolean'|'char'|'class'|'float'|'double'|'int'|'long'|'short'|'string'
+
+Example:
+
+    ::lilac
+    boolean value int_0;
+
+######Enumeration value
+
+The syntax for an enumeration is that of a [simple statement](#statements) which has two arguments as shown in the following EBNF experssion:
+
+    ::ebnf
+    enumeration value = 'enum', 'value', utf8 constant name, utf8 constant name, ';'
+
+The first argument is the name of a [utf8 constant](#utf8-constant-statement) specifing the [type descriptor](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.2) an enumeration class, the second is the name of an [utf8 constant](#utf8-constant-statement) which
+specifies the name of the enumeration member.
+
+Example:
+
+    ::lilac
+    enum value type_desc, utf8_DAYS;
+
+######Array value
+
+The syntax for an array value ist that of a [block statement](#statements). This block statement can contain any number of nested [annotation element values](#annotation-element-value-statement) as shown in the foolowing EBNF expression:
+
+    ::ebnf
+    array value = 'array','value','{',{annotation element value},'}'
+
+Example:
+
+    ::lilac
+    array value {
+        boolean value int_0;
+        boolean value int_1;
+    }
+    
 
 
 
