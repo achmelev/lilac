@@ -269,15 +269,15 @@ which is defined as the root of the Java class hierarchy.
 
 An interfaces statement specifies the superintefaces of the current class. It is a [simple statement](#statements) with multiple arguments, every one of which
 is a name of a [class reference constant](#class-reference-statement). The [class reference constants](#class-reference-statement) in turn specify the actual super interfaces of the current class.
-The following EBNF expression defines the syntax of an interfaces statement:
+Every constant name may be preceded by a [label](#names-and-labels). The following EBNF expression defines the syntax of an interfaces statement:
 
 	:::ebnf
-	interfaces statement = 'implements', class reference constant, {',',class reference constant} , ';' ;
+	interfaces statement = 'implements', [label, ':'], class reference constant, {',',[label, ':'], class reference constant} , ';' ;
 
 Example:
 
 	:::lilac
-	implements Runnable,Serializable;
+	implements runnable: Runnable,Serializable;
 
 ###Signature statement
 
@@ -668,7 +668,7 @@ method member              |how many
 --------------------------|----------------------------
 [name](#name-statement)          	  |exactly one
 [descriptor](#descriptor-statement)          	  |exactly one
-[exception](#TODO)           |zero or more
+[exceptions](#exceptions-statement)           |zero or more
 [synthetic](#synthetic-statement)        |zero or one
 [deprecated](#deprecated-statement)       |zero or one
 [signature](#signature-statement)        |zero or one
@@ -710,6 +710,20 @@ semantically identical class files.
         putstatic CASE_INSENSITIVE_ORDER;
         return;
     }
+
+###Exceptions statement
+
+An exceptions statement specifies exceptions which may be thrown by the surrounding method. It is a simple statement with multiple arguments every which of one specifes a name of
+a [class reference constant](#class-reference-statement). The [class reference constants](#class-reference-statement) in turn specify the actual exceptions thrown by the method.
+Every class reference constant may be preceded by a [label](names-and-labels). The following EBNF expression defines the syntax of an exceptions statement:
+
+	:::ebnf
+	exceptions statement = 'throws', [label, ':'], class reference constant, {',',[label, ':'], class reference constant} , ';' ;
+
+Example:
+
+	:::lilac
+	throws ioexception: IOException,IllegalArgumentException;
 
 ###Variable statement
 
@@ -980,10 +994,12 @@ The meaning of the keywords preceding **annotaion** is as follows:
 
  **invisible** - marks the annotation as invisible as runtime
  
- **parameter** - required if declaring a method parameter annotation. In this case the presence of the a [annotation parameter index](#annotation-parameter-index-statement)  as member is also requred.
+ **parameter** - states that that the current annotation is a [method parameter annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.4).
+ In this case the presence of the a [annotation parameter index](#annotation-parameter-index-statement)  as member is also requred.
  **Note**: parameter annotations are only allowed within of a [method statement](#method-statement)
  
- **type** - required if declaring a type annotation
+ **type** - states that the current annotation is a a [type annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.4). In this case the presence of the [annotation target](#annotation-target-statement)
+ as member is also required.
 
 Example (Deprecated annotation):
 
@@ -1004,7 +1020,8 @@ method member              |how many
 --------------------------|----------------------------
 [annotation type](#annotation-type-statement)          	  |exactly one
 [annotation element](#annotation-element-statement)       |zero or more
-[annotation parameter index](#annotation-parameter-index-statement)       |zero or more
+[annotation parameter index](#annotation-parameter-index-statement)       |zero or one
+[annotation target](#annotation-target-statement)       |zero or one
 
 ####Annotation type statement
 
@@ -1116,6 +1133,138 @@ Example:
         boolean value int_1;
     }
     
+
+####Annotation target statement
+
+An annotation target statement denotes the kind of target on which a [type annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.4) appears.
+The various kinds of target correspond to the type contexts of the Java programming language where types are used in declarations and expressions.
+Dependent on the actual target the statement can have many different syntaxtic forms, which be listed below.
+
+#####Return target
+
+States that the annotation appears on the return type of а method.
+
+Syntax:
+    
+    ::ebnf
+    return target statement = 'targets', 'return', 'type', ';'
+
+Example:
+
+    ::lilac
+    targets return type;
+
+#####Receiver type target
+
+States that the annotation appears on the type of the [receiver parameter](http://docs.oracle.com/javase/specs/jls/se8/html/jls-8.html#jls-8.4.1) of а method.
+
+Syntax:
+    
+    ::ebnf
+    receiver type target statement = 'targets', 'receiver', 'type', ';'
+
+Example:
+
+    ::lilac
+    targets receiver type;
+
+#####Field type target
+
+States that the annotation appears on the type of а field.
+
+Syntax:
+    
+    ::ebnf
+    field type target statement = 'targets', 'field', 'type', ';'
+
+Example:
+
+    ::lilac
+    targets field type;
+    
+#####Parameter type target
+
+States that the annotation appears on the type of а method parameter. This statement has an integer literal which denotes the index of the parameter
+
+Syntax:
+    
+    ::ebnf
+    parameter type target statement = 'targets', 'parameter', 'type', integer literal, ';'
+
+Example:
+
+    ::lilac
+    targets parameter 0;
+
+#####Parameter type bound target
+
+States that the annotation appears on the type in the bound of а method parameter. This statement has two  integer literals, where the first denotes the index of the parameter
+and the second the index of the annotated type within the bound.
+
+Syntax:
+    
+    ::ebnf
+    parameter type bound target statement = 'targets', 'type', 'parameter', 'bound', integer literal, ',', integer literal, ';'
+
+Example:
+
+    ::lilac
+    targets type parameter bound 0, 1;
+
+
+#####Type parameter target
+
+States that the annotation appears on the type parameter of a generic class, interface, method or constructor. This statement has an integer literal as parameter,
+which denotes the index of the type parameter.
+
+Syntax:
+    
+    ::ebnf
+    type parameter target statement = 'targets', 'type', 'parameter', integer literal, ';'
+
+Example:
+
+    ::lilac
+    targets type parameter 0;
+
+####Supertype target
+
+States that the annotation appears on the type in the **extends** or **implements** clause of a class. This statement has an optional label parameter, which, if present,
+denotes annotated type from the [**implements** clause](#interfaces-statement). The absence of this parameter indicates that the annotation appears in the **extends** clause.
+
+Syntax
+
+    ::ebnf
+    supertype target statement = 'targets', 'supertype', [interface label]
+
+Example:
+
+    ::lilac
+    targets supertype runnable;
+
+####Exception type target
+
+States that the annotation appears on the exception type in the **throws** clause of a method. This statement has an label parameter, denoting the actual exception type
+from the [**throws clause**](#exceptions-statement).
+
+Syntax
+
+    ::ebnf
+    exception type target statement = 'targets', 'throws', exception label
+
+Example:
+
+    ::lilac
+    targets throws illegalargumentexception;
+
+
+
+
+    
+
+
+
+
 
 
 
