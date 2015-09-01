@@ -187,7 +187,7 @@ class member              |how many
 [method](#method-statement)			  |zero or more
 [field](#field-statement)			  |zero or more
 [annotation](#annotation-statement)       |zero or more
-[bootstrap method](#TODO) |zero or more
+[bootstrap method](#bootstrap-method-statement) |zero or more
 [inner class](#inner-class-statement) |zero or more
 [enclosing method](#enclosing-method-statement) |zero or more
 [unknown attribute](#TODO)|zero or more
@@ -521,7 +521,7 @@ Example:
 ####Dynamic method reference statement
 
 A dynamic method reference statement declares a dynamic method reference constant which can be used as the argument of an [invokedynamic instruction](#nstructions-with-constant-arguments).
-The statement has two arguments - the first argument specifies the name of a [bootstrap method](#TODO), the second argument specifies the name of [a name and type constant](#name-and-type-statement).
+The statement has two arguments - the first argument specifies the name of a [bootstrap method](#bootstrap-method-statement), the second argument specifies the name of [a name and type constant](#name-and-type-statement).
 Read more about the exact nature of these two arguments in the [JVM specification](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.10).
 The syntax of the statement is as follows:
 
@@ -673,7 +673,7 @@ method member              |how many
 [deprecated](#deprecated-statement)       |zero or one
 [signature](#signature-statement)        |zero or one
 [annotation](#annotation-statement)       |zero or more
-[annotation default](#TODO)  |zero or one
+[annotation default](#annotation-default-statement)  |zero or one
 [stack map](#TODO)  |zero or one
 [unknown attribute](#TODO)|zero or more
 [variable](#variable-statement)|zero or more
@@ -997,6 +997,22 @@ Example:
 
     ::lilac
     enclosing method InnerClassTests, nameandtype_26;
+
+###Bootstrap method statement
+
+A bootstrap method statement specifies a bootstrap method which can be referenced by a [dynamic method reference](#dynamic-method-reference-statement). It is a [simple statement](#statements) with has at least one
+argument. The statement consists of the keywords **bootstrap** and **method** followed by the name of the method and then by comma separated arguments.
+The first argument specifies a name of a [method handle constant](#method-handle-statement). Further arguments if present specify names of further constants
+to be used as arguments of the bootstrap method as defined in the [JVM specification](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.23).
+The exact syntax of the statement is as in the following EBNF expression:
+
+    ::ebnf
+    bootstrap method statement = 'bootstrap', 'method', method name, method handle constant, {',', argument constant} ;
+
+Example:
+    
+    ::lilac
+    bootstrap method firstBootstrapMethod method_handle, string1, string2;
 
 ###Annotation statement
 
@@ -1445,6 +1461,21 @@ Example:
         begin -> end
     }
 
+###Annotation default statement
+
+An annotation default statement specifies the default value of an [annotation type element](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.6.1). Because annotation type elements are technically methods of
+[annotation classes](#class-statement) annotation default statements are always members of the corresponding [method statements](#method-statement).
+An annotation default statement is a block statement with exact one member - an [annotation element value](annotation-element-value-statement) which specifies the actual value. The syntax is defined in the following EBNF expression:
+
+    ::ebnf
+    annotation default statement = 'annotation', 'default', '{', {annotation element value}, '}' ;
+
+Example:
+
+    ::lilac
+    annotation default {
+        boolean value int_0;
+    }
 
 
 
