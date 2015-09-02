@@ -679,7 +679,7 @@ method member              |how many
 [variable](#variable-statement)|zero or more
 [instruction](#instruction-statements)|zero or more
 [exception handler](#exception-handler-statement)|zero or more
-[line number table](#TODO)|zero or more
+[line numbers table](#line-numbers-statement)|zero or more
 [variable table](#TODO)|zero or more
 [variable type table](#TODO)|zero or more
 [max stack](#TODO)|zero or one
@@ -914,6 +914,32 @@ Example:
 
     ::lilac
     firstHandler: try begin -> end catch RuntimeException go to handlerBegin;
+
+###Line numbers statement
+
+A line numbers statement specifies line numbers of the original [source file](#source-file-statement). It is a [block statement](#statements) with [line member statements](#line member statement) as members as defined
+in the following EBNF expression:
+
+    ::ebnf
+    line numbers statement = 'line', 'numbers', '{', {line number}, '}' ;
+    
+    ::lilac
+    line numbers {
+        line number label, 5;
+    }
+
+####Line number statement
+
+A line number statement specifies the correspondence between an [instruction](#instruction-statements) and a line in the original [source file](#source-file-statement). This is a [simple statement](#statements) with two arguments,
+the first argument is the label of the instruction, the second is an integer literal specifing the number of the source file line. The exact syntax is as follows:
+
+    ::ebnf
+    line number statement = 'line', 'number', label, line number ;
+
+Example:
+    
+    ::lilac
+    line number label, 5;
 
 ###Inner class statement
 
