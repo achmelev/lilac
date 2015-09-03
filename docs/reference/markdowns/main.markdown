@@ -602,7 +602,7 @@ contains the actual descriptor string as shown in the following EBNF expression:
 	descriptor statement = 'descriptor', utf8 constant, ';' ;
 
 Dependent on the statement's context the descriptor string must contain either a [valid field descriptor](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.2)
-or a [valid method descriptor](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3).
+or a [valid method descriptor](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3).
 
 Example:
     
@@ -896,6 +896,19 @@ Example:
 
     ::lilac
     tableswitch 0->target0,1->target1,default->defaulttarget;
+    
+
+####Bytecode ranges
+
+Some statements require as arguments so called **bytecode ranges**. A **bytecode range** is just a sequence of instructions specified by two instruction labels separated by **->** : the label of the first instruction in the range and,
+dependent on the context, either the label of the last instruction in the sequence or the label of the first instruction after the sequence. In the first case the specified **bytecode range** is an **including bytecode range**
+otherwise an **excluding byte code range**. When specifying an **excluding byte code range** the second label may be omitted indicating, that the **bytecode range** includes all instructions beginning with the first instruction and ending
+with the last instruction of the method.
+
+Example:
+
+    ::lilac    
+    begin->end
 
 ###Exception Handler statement
 
@@ -903,10 +916,9 @@ An exception handler statement specifies an exception handler within a method. T
 is specified in the following EBNF expression:
 
     ::ebnf
-    exception handler statement = [label, ':'], 'try', label, '->', label, catch, class reference constant|'all', 'go', 'to', label, ';'
+    exception handler statement = [label, ':'], 'try', including bytecode range, catch, class reference constant|'all', 'go', 'to', label, ';'
 
-**In words**: the statement starts with the **try** keyword, possibly preceded by a label. It follows a instructions range, to which the handler applies, specified as the label of the first instruction in the range,
-followed by **->** and then by the label of the last instruction in the range. As next appears the keyword **catch** followed either by the name of a [class reference constant](#class-reference-statement), which
+**In words**: the statement starts with the **try** keyword, possibly preceded by a label. It follows an [including bytecode range](#bytecode-range), to which the handler applies. As next appears the keyword **catch** followed either by the name of a [class reference constant](#class-reference-statement), which
 specifies the exception class handled by the handler, or by the keyword **all**, which indicates that the handler handles all exception. As last we see keywords **go** and **to** followed by the label of the instruction,
 to which the handler transfers control when an exception occures.
 
@@ -917,7 +929,7 @@ Example:
 
 ###Line numbers statement
 
-A line numbers statement specifies line numbers of the original [source file](#source-file-statement). It is a [block statement](#statements) with [line member statements](#line member statement) as members as defined
+A line numbers statement specifies line numbers of the original [source file](#source-file-statement). It is a [block statement](#statements) with [line number statements](#line number statement) as members as defined
 in the following EBNF expression:
 
     ::ebnf
@@ -936,10 +948,43 @@ the first argument is the label of the instruction, the second is an integer lit
     ::ebnf
     line number statement = 'line', 'number', label, line number ;
 
+###Debug variables statement
+
+A debug variables statement specifies a mapping between the [local variables](variable-statement) in a method and variables in the original [source file](source-file-statement). It is a [block statement](#statements) with with [debug variable statements](#debug variable statement) as members as defined
+in the following EBNF expression:
+
+    ::ebnf
+    debug variables statement = 'debug', 'variables',{'types'} '{', {debug variable}, '}' ;
+
 Example:
     
     ::lilac
-    line number label, 5;
+    debug variables {
+        var this, ir0, this_name, this_desc;
+    }
+
+**Note**: the optional keyword **types** indicates that the mapping includes [signatures](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.9.1) of the source variables. The absence of the keyword
+indicates that the [descriptors](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3) are included.
+
+####Debug variable statement
+
+A debug variable statement specifies a mapping between a [local variable](variable-statement) in a method and a variable in the original [source file](source-file-statement). It is a [simple statement](#statements) with four arguments:
+the name of the local variable, the [excluding bytecode range](#bytecode ranges), a name of an [utf8 constant](#utf8-constant-statement) specifying the name of the variable in the original source file, and at last a name
+of an [utf8 constant](#utf8-constant-statement) specifying, dependent on the type of the surrounding [block statement](#debug-variables-statement) either the [descriptor](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3)
+of the variable in the original source file or its [signature](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.9.1).
+
+The exact syntax is defined in the following EBNF expression:
+
+    ::ebnf
+    debug variable statement = 'var', name, ',', excluding bytecode range, ',',  utf8 constant, ',', utf8 constant ;
+    
+Example
+
+    ::lilac
+    var this, ir0, this_name, this_desc;
+    
+
+
 
 ###Inner class statement
 
@@ -1474,11 +1519,10 @@ Example:
 States  that the annotation appears on the type of a local variable including resource variables. This is a [block statement](#statements) with the following syntax:
 
     ::ebnf
-    variable type target statement = 'targets', ['resource'], 'var', 'types', '{', {variable range},'}' ;
-    variable range = label, ['->', label] ;
+    variable type target statement = 'targets', ['resource'], 'var', 'types', '{', {excluding bytecode range},'}' ;
 
-The member statements of the block statement are **bytecode ranges** where the local variable is valid. Every range is specified as as the label of the first instruction possibly followed
-bei **->** and then by the label of the first instruction after the range.
+The member statements of the block statement are [excluding bytecode ranges](#bytecode-ranges) specifying the areas of the method's bytecode where the variable is valid.
+
 
 Example:
     
