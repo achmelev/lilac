@@ -1128,6 +1128,7 @@ method member              |how many
 [annotation element](#annotation-element-statement)       |zero or more
 [annotation parameter index](#annotation-parameter-index-statement)       |zero or one
 [annotation target](#annotation-target-statement)       |zero or one
+[annotation target path](#annotation-target-path-statement)       |zero or one
 
 ####Annotation type statement
 
@@ -1244,7 +1245,7 @@ Example:
 
 An annotation target statement denotes the kind of target on which a [type annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.4) appears.
 The various kinds of target correspond to the type contexts of the Java programming language where types are used in declarations and expressions.
-Dependent on the actual target the statement can have many different syntaxtic forms, which be listed below.
+Dependent on the actual target the statement can have many different syntaxtic forms, which wiil be listed below.
 
 #####Return target
 
@@ -1530,6 +1531,27 @@ Example:
     targets var types {
         begin -> end
     }
+    
+####Annotation target path statement
+
+An annotation target path statements specifies the exact location of the annotation within a array, nested or parametrized type.
+(see also the [explanations](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.20.2) in the JVM specification).
+It is a [simple statement](#statements) with a variable number of arguments each of which specifies
+an iterative, left-to-right step towards the precise location of the annotation in the type. The exact syntax of the statement is defined
+in the following EBNF expression:
+
+    ::ebnf
+    annotation target path statement = 'target', 'path', path part, {path part} ;
+    path part = 'array'|'nested'|'type', 'argument', 'bound'|'type', 'argument', '(', integer literal, ')' ;
+
+Examples:
+    
+    ::lilac
+    target path array;
+    target path type argument bound;
+    target path type argument(1);
+
+Read more about the the meaning of the different argument types in the [JVM specification](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.20.2-220-B-A.1).
 
 ###Annotation default statement
 
