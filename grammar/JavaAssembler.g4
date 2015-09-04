@@ -293,7 +293,7 @@ localvartypemember_vararg: IntegerLiteral|Identifier;
 
 			 
 
-annotationtargetpath: TARGET PATH annotationtargetpath_arg (COMMA annotationtargetpath_arg)? SEMI;
+annotationtargetpath: TARGET PATH annotationtargetpath_arg (COMMA annotationtargetpath_arg)* SEMI;
 annotationtargetpath_arg: ARRAY #targetPathArray
 						  |NESTED #targetPathNested
 						  |TYPE ARGUMENT BOUND #targetPathTypeArgumentBound
