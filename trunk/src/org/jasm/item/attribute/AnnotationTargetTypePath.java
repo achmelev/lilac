@@ -154,6 +154,7 @@ public class AnnotationTargetTypePath extends AbstractByteCodeItem {
 	public void setArgument(short pathKind, IntegerLiteral argumentIndexLiteral ) {
 		pathKinds[currentIndex] = pathKind;
 		argumentIndexLiterals[currentIndex] = argumentIndexLiteral;
+		currentIndex++;
 	}
 
 }
