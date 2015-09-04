@@ -679,9 +679,8 @@ method member              |how many
 [variable](#variable-statement)|zero or more
 [instruction](#instruction-statements)|zero or more
 [exception handler](#exception-handler-statement)|zero or more
-[line numbers table](#line-numbers-statement)|zero or more
-[variable table](#TODO)|zero or more
-[variable type table](#TODO)|zero or more
+[line numbers](#line-numbers-statement)|zero or more
+[debug variables](#debug-variables-statement)|zero or more
 [max stack](#TODO)|zero or one
 [max locals](#TODO)|zero or one
  
@@ -934,10 +933,12 @@ in the following EBNF expression:
 
     ::ebnf
     line numbers statement = 'line', 'numbers', '{', {line number}, '}' ;
+
+Example:
     
     ::lilac
     line numbers {
-        line number label, 5;
+        line label, 5;
     }
 
 ####Line number statement
@@ -946,7 +947,13 @@ A line number statement specifies the correspondence between an [instruction](#i
 the first argument is the label of the instruction, the second is an integer literal specifing the number of the source file line. The exact syntax is as follows:
 
     ::ebnf
-    line number statement = 'line', 'number', label, line number ;
+    line number statement = 'line', label, line number ;
+
+Example:
+
+    ::lilac
+    line label, 5;
+    
 
 ###Debug variables statement
 
