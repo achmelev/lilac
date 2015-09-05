@@ -1,0 +1,65 @@
+<project name="jasm-doc" default="build">
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
+	<target name="clean">
+		 <delete dir="dist"/>
+	</target>
+	
+	<target name="prepare">
+		 <mkdir dir="dist"/>
+	</target>
+	
+	<target name="generate">
+		 <copy todir="dist/css">
+			<fileset dir="css"/>
+		</copy>
+		
+		<foreach target="generate-markdown" param="markdownFile">
+			<fileset dir="markdowns" casesensitive="yes">
+			  <include name="**/*.markdown"/>
+			</fileset>
+		</foreach>
+	</target>
+	
+	<target name="generate-markdown">
+		<propertyregex property="targetFile.tmp"
+				input="${markdownFile}"
+               regexp="markdowns"
+               replace="dist"
+               global="true" />
+		<propertyregex property="targetFile"
+				input="${targetFile.tmp}"
+               regexp="markdown"
+               replace="html"
+               global="true" />
+		<echo message="${markdownFile} to ${targetFile}"/>
+		<!--<exec  executable="/usr/local/bin/markdown_py">
+			<arg line="-f content.tmp"/>
+			<arg line="-o html"/>
+			<arg line="-x markdown.extensions.codehilite" />
+			<arg line="-x markdown.extensions.toc" />
+			<arg line="-x markdown.extensions.tables" />
+			<arg line="${markdownFile}" />
+		</exec>-->
+		<exec  executable="c:\Python27\python.exe">
+			<arg line="c:\Python27\Scripts\markdown_py"/>
+			<arg line="-f content.tmp"/>
+			<arg line="-o html"/>
+			<arg line="-x markdown.extensions.codehilite" />
+			<arg line="-x markdown.extensions.toc" />
+			<arg line="-x markdown.extensions.tables" />
+			<arg line="${markdownFile}" />
+		</exec>
+		<loadfile property="content" srcFile="content.tmp"/>
+	
+		<copy file="template.html" tofile="${targetFile}"/>
+		
+		<replace file="${targetFile}" token="CONTENT" value="${content}"/>
+	</target>
+	
+	
+	
+	<target name="build" depends="prepare,generate"/>
+    
+</project>
