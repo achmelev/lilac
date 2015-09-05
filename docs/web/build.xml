@@ -15,11 +15,23 @@
 			<fileset dir="css"/>
 		</copy>
 		
-		<foreach target="generate-markdown" param="markdownFile">
+		 <antcall target="generate-markdown">
+			<param name="markdownFile" value="markdowns/reference.markdown"/>
+			<param name="title" value="Java assembler language reference"/>
+			<param name="description" value="Java assembler language reference - Lilac version"/>
+		 </antcall>
+		 
+		 <antcall target="generate-markdown">
+			<param name="markdownFile" value="markdowns/qanda.markdown"/>
+			<param name="title" value="Lilac - Q&amp;A"/>
+			<param name="description" value="Lilac - Questions and answers"/>
+		 </antcall>
+		
+		<!--<foreach target="generate-markdown" param="markdownFile">
 			<fileset dir="markdowns" casesensitive="yes">
 			  <include name="**/*.markdown"/>
 			</fileset>
-		</foreach>
+		</foreach>-->
 	</target>
 	
 	<target name="generate-markdown">
@@ -56,6 +68,8 @@
 		<copy file="template.html" tofile="${targetFile}"/>
 		
 		<replace file="${targetFile}" token="CONTENT" value="${content}"/>
+		<replace file="${targetFile}" token="TITLE" value="${title}"/>
+		<replace file="${targetFile}" token="DESCRIPTION" value="${description}"/>
 	</target>
 	
 	
