@@ -1,5 +1,3 @@
-<h1>Java Assembler reference - Lilac version</h1>
-
 <h2>Table of Contents</h2>
 
 [TOC]
