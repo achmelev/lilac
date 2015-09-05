@@ -31,7 +31,8 @@ The words of a Java Assembler program fall, like in other programming languages,
 
 ####Literals
 
-There are three different different literal types: integer literals, floating point literals and string literals whose syntax is the same as [in the Java language](https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.10). 
+There are four different different literal types: integer literals, floating point literals, string literals and base64 literals. The syntax of the first three is the same as [in the Java language](https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.10).
+A base64 literal is just a [base64 encoded byte sequence](https://de.wikipedia.org/wiki/Base64) enclosed in square brackets.
 
 Here are some examples of a Java assembler literal:
 
@@ -39,6 +40,7 @@ Here are some examples of a Java assembler literal:
 	"Hello Word"
 	1234
 	1235.56
+    [UG9seWZvbiB6d2l0c2NoZXJuZCBhw59lbiBNw6R4Y2hlbnMgVsO2Z2VsIFLDvGJlbiwgSm9naHVydCB1bmQgUXVhcms=]
 
 ####Identifiers
 
@@ -674,15 +676,15 @@ method member              |how many
 [signature](#signature-statement)        |zero or one
 [annotation](#annotation-statement)       |zero or more
 [annotation default](#annotation-default-statement)  |zero or one
-[stack map](#TODO)  |zero or one
+[stack map](#stackmap-statement)  |zero or one
 [unknown attribute](#TODO)|zero or more
 [variable](#variable-statement)|zero or more
 [instruction](#instruction-statements)|zero or more
 [exception handler](#exception-handler-statement)|zero or more
 [line numbers](#line-numbers-statement)|zero or more
 [debug variables](#debug-variables-statement)|zero or more
-[max stack](#TODO)|zero or one
-[max locals](#TODO)|zero or one
+[max stack](#max-stack-statement)|zero or one
+[max locals](#max-locals-statement)|zero or one
  
 **Note:** method members can appear in any order within a method statement. The order doesn't have any semantic meaning, however, different orders may result in binary different though
 semantically identical class files.
@@ -1018,6 +1020,43 @@ Example:
     ::lilac
     maxlocals 5;
 
+###Stackmap statement
+
+A stackmap statement specifies the [stackmap](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.10.1). There are two variants of this statement:
+The first simple variant, to be used by developers, consists just of a single keyword **stackmap**. This variant tells the assembler to generate the stackmap
+of the method itself. The second variant actually specifies the entire complicated stackmap structure and is primarily intended for the use by the disassembler
+in order to ensure the perfect assembler/disassembler roundtrip.
+In this specification no detailed explanation will be given for the second variant, as it shouldn't be used by developers. You might however get additional
+information from the [JVM specification](#http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.4).
+The syntax of the second variant is as defined in the folowing EBNF expression:
+
+    ::ebnf
+    stackmap statement = 'stackmap', '{', {stackmap frame}, '}';
+    stackmap frame = append|chop|same frame|same frame extended|same locals|same locals extended|full ;
+    append = 'append', label, typeslist, ';' ;
+    chop = 'chop', label, integer literal, ';' ;
+    same frame = 'same', label, ';' ;
+    same frame extended = 'same', 'extended', label, ';' ;
+    same locals = 'same', 'locals', label, types list, ';' ;
+    same locals extended = 'same', 'locals',  'extended', label, typeslist, ';' ;
+    full = 'full', label, typeslist, typeslist, ';' ;
+    typeslist = '{', {'double'|'float'|'int'|'long'|'null'|'uninitialized'|'unititializedthis'|'top'},  '}' ;
+
+Example (first variant):
+
+    ::lilac
+    stackmap;
+
+Example (second variant):
+
+    ::lilac
+    stackmap {
+      full ir17, {object ThisClass,object classref_214,int,int}, {};
+      same ir30;
+      same ir49;
+    }
+        
+    
     
 
 ###Inner class statement
@@ -1603,7 +1642,21 @@ Example:
         boolean value int_0;
     }
 
+###Unknown attribute
 
+An unknown attribute statement specifies an [attribute](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7) of the class file whose
+syntax is unknown to the assembler. This statement is primarily intended for the use by the disassembler in order to represent attributes either specific
+to a JVM implementation or just, though standard, not implemented by the assembler - the second case ensuring a compatibility to
+the future versions of the JVM. It is a [simple statement](#statements) with a [base64 literal](#literals) as a single argument. The base64 literal specifies
+the binary content of the attribute. The exact syntax of the statement is defined in the following EBNF expression:
+
+    ::ebnf
+    unknown attribute statement = 'unknown', 'attribute', ['code'], base64 literal ;
+
+Example:
+
+    ::lilac
+    unknown attribute [UG9seWZvbiB6d2l0c2NoZXJuZCBhw59lbiBNw6R4Y2hlbnMgVsO2Z2VsIFLDvGJlbiwgSm9naHVydCB1bmQgUXVhcms=];
 
 
 

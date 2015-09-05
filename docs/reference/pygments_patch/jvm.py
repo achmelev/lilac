@@ -1571,7 +1571,7 @@ class LilacLexer(RegexLexer):
 			(r'[0-9][0-9]*\.[0-9]+([eE][0-9]+)?[fd]?', Number.Float),
             (r'0x[0-9a-fA-F]+', Number.Hex),
             (r'[0-9]+(_+[0-9]+)*L?', Number.Integer),
-			(r'[;\,\:<\->\{\}+-]', Punctuation),
+			(r'[;\,\:<\->\{\}+-\]\[\(\)\=]', Punctuation),
             (r'\n', Text)
         ]
     }
