@@ -915,7 +915,7 @@ An exception handler statement specifies an exception handler within a method. T
 is specified in the following EBNF expression:
 
     ::ebnf
-    exception handler statement = [label, ':'], 'try', including bytecode range, catch, class reference constant|'all', 'go', 'to', label, ';'
+    exception handler statement = [label, ':'], 'try', including bytecode range, catch, class reference constant|'all', 'go', 'to', label, ';' ;
 
 **In words**: the statement starts with the **try** keyword, possibly preceded by a label. It follows an [including bytecode range](#bytecode-range), to which the handler applies. As next appears the keyword **catch** followed either by the name of a [class reference constant](#class-reference-statement), which
 specifies the exception class handled by the handler, or by the keyword **all**, which indicates that the handler handles all exception. As last we see keywords **go** and **to** followed by the label of the instruction,
@@ -947,7 +947,7 @@ A line number statement specifies the correspondence between an [instruction](#i
 the first argument is the label of the instruction, the second is an integer literal specifing the number of the source file line. The exact syntax is as follows:
 
     ::ebnf
-    line number statement = 'line', label, line number ;
+    line number statement = 'line', label, line number, ';' ;
 
 Example:
 
@@ -983,15 +983,42 @@ of the variable in the original source file or its [signature](http://docs.oracl
 The exact syntax is defined in the following EBNF expression:
 
     ::ebnf
-    debug variable statement = 'var', name, ',', excluding bytecode range, ',',  utf8 constant, ',', utf8 constant ;
+    debug variable statement = 'var', name, ',', excluding bytecode range, ',',  utf8 constant, ',', utf8 constant, ';' ;
     
 Example
 
     ::lilac
     var this, ir0, this_name, this_desc;
+
+###Max stack statement
+
+A max stack statement specifies the maximum runtime size of the stack of a method. If this member is absent in a [method statement](#method-statement) the Java
+assembler will calculate this size itself. It is a [simple statement](#statements) with one argument - an integer literal specifying the actual stack size as
+defined in the following EBNF expression:
+
+    ::ebnf
+    max stack statement = 'maxstack', integer literal, ';' ;
+
+Example:
+
+    ::lilac
+    maxstack 5;
+
+###Max locals statement
+
+A max locals statement specifies the size of the [local variable array](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1) of a method. If this member is absent in a [method statement](#method-statement) the Java
+assembler will infer this size from the [variable statements](#variable-statement). It is a [simple statement](#statements) with one argument - an integer literal specifying the actual size as
+defined in the following EBNF expression:
+
+    ::ebnf
+    max locals statement = 'maxlocals', integer literal, ';' ;
+
+Example:
+
+    ::lilac
+    maxlocals 5;
+
     
-
-
 
 ###Inner class statement
 
