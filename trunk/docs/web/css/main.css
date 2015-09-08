@@ -8,26 +8,36 @@ body {
    margin-left: 10px;
 }
 
-body > *:first-child {
-   margin-top: 0 !important; }
-body > *:last-child {
-   margin-bottom: 0 !important; }
-
-
-
 .clearfix {
     overflow: auto;
 }
 
+#header {
+	padding: 10px;
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 20px;
+    color: #C8A2C8;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+#header p {
+   position: relative;
+   left:130px;
+   top: -70px;
+}
+
 #main {
-	margin-left: 230px;
-	padding:10px;
+	margin-left: 250px;
+	padding:0px;
 }
 
 #sidebar {
 	float:left;
-	width:230px;
-	padding:10px;
+	width:250px;
+	padding:0px;
 }
 
 #sidebar .header {
@@ -36,7 +46,7 @@ body > *:last-child {
     font-size: 11px;
     font-weight: bold;
     line-height: 20px;
-    color: #999;
+    color: #C8A2C8;
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
     text-transform: uppercase;
 }

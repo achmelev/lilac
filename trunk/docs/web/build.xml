@@ -14,6 +14,10 @@
 		 <copy todir="dist/css">
 			<fileset dir="css"/>
 		</copy>
+		 
+		<copy todir="dist/images">
+			<fileset dir="images"/>
+		</copy>
 		
 		 <antcall target="generate-markdown">
 			<param name="markdownFile" value="markdowns/reference.markdown"/>
@@ -46,16 +50,7 @@
                replace="html"
                global="true" />
 		<echo message="${markdownFile} to ${targetFile}"/>
-		<!--<exec  executable="/usr/local/bin/markdown_py">
-			<arg line="-f content.tmp"/>
-			<arg line="-o html"/>
-			<arg line="-x markdown.extensions.codehilite" />
-			<arg line="-x markdown.extensions.toc" />
-			<arg line="-x markdown.extensions.tables" />
-			<arg line="${markdownFile}" />
-		</exec>-->
-		<exec  executable="c:\Python27\python.exe">
-			<arg line="c:\Python27\Scripts\markdown_py"/>
+		<exec  executable="/usr/local/bin/markdown_py">
 			<arg line="-f content.tmp"/>
 			<arg line="-o html"/>
 			<arg line="-x markdown.extensions.codehilite" />
@@ -63,6 +58,15 @@
 			<arg line="-x markdown.extensions.tables" />
 			<arg line="${markdownFile}" />
 		</exec>
+		<!--<exec  executable="c:\Python27\python.exe">
+			<arg line="c:\Python27\Scripts\markdown_py"/>
+			<arg line="-f content.tmp"/>
+			<arg line="-o html"/>
+			<arg line="-x markdown.extensions.codehilite" />
+			<arg line="-x markdown.extensions.toc" />
+			<arg line="-x markdown.extensions.tables" />
+			<arg line="${markdownFile}" />
+		</exec>-->
 		<loadfile property="content" srcFile="content.tmp"/>
 	
 		<copy file="template.html" tofile="${targetFile}"/>
