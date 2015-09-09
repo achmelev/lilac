@@ -39,6 +39,20 @@
 			<param name="title" value="Lilac - Q&amp;ampA"/>
 			<param name="description" value="Lilac - Questions and answers"/>
 		 </antcall>
+		 
+		  <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_news"/>
+			<param name="markdownFile" value="markdowns/news.markdown"/>
+			<param name="title" value="Lilac - News"/>
+			<param name="description" value="News about Lilac"/>
+		 </antcall>
+		  
+		 <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_instconf"/>
+			<param name="markdownFile" value="markdowns/instconf.markdown"/>
+			<param name="title" value="Lilac - Installation/Configuration"/>
+			<param name="description" value="How to install and configure Lilac"/>
+		 </antcall>
 		
 	</target>
 	
