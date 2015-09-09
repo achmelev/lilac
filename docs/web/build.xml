@@ -20,6 +20,13 @@
 		</copy>
 		
 		 <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_index"/>
+			<param name="markdownFile" value="markdowns/index.markdown"/>
+			<param name="title" value="Lilac - a Java assembler"/>
+			<param name="description" value="Lilac - a Java assembler"/>
+		 </antcall>
+		
+		 <antcall target="generate-markdown">
 			<param name="menuid" value="MENUID_reference"/>
 			<param name="markdownFile" value="markdowns/reference.markdown"/>
 			<param name="title" value="Java assembler language reference"/>
