@@ -54,11 +54,22 @@ body {
 #sidebar  li {
     display: block;
     padding: 3px 15px;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: bold;
     line-height: 20px;
     color: #999;
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
+
+#sidebar a:link {
+   text-decoration: none;
+}
+
+#sidebar a#MENUID_active {
+   color:white;
+   background-color: #4183C4;
+   text-shadow: none;
 }
 
 
