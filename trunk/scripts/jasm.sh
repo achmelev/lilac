@@ -6,7 +6,7 @@ else
 	JASM_JAVA_CMD=$JASM_JAVA_HOME/bin/java
 	if [ -f $JASM_JAVA_CMD ]; then 
 		JASM_INSTALL_DIR=`dirname "$0"`
-		$JASM_JAVA_CMD -classpath $JASM_INSTALL_DIR/jasm.jar org.jasm.tools.Assembler $*
+		"$JASM_JAVA_CMD" -classpath "$JASM_INSTALL_DIR/jasm.jar" org.jasm.tools.Assembler $*
 	else 
 		echo "Couldn't find $JASM_JAVA_CMD! Please adjust JASM_JAVA_HOME to the correct value."
 	fi
