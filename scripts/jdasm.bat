@@ -10,7 +10,7 @@ if not exist %JASM_JAVA_CMD% goto error_javanotfound
 
 set JASM_INSTALL_DIR=%~dp0
 
-%JASM_JAVA_CMD% -classpath %JASM_INSTALL_DIR%\jasm.jar org.jasm.tools.Disassembler %*
+"%JASM_JAVA_CMD%" -classpath "%JASM_INSTALL_DIR%\jasm.jar" org.jasm.tools.Disassembler %*
 goto end
 
 :error_varnotset
