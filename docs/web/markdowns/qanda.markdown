@@ -1,7 +1,7 @@
 ##Questions and answers
 
 
-###Q: Why does anyone need a java assembler and disassembler?*
+###Q: Why does anyone need a java assembler and disassembler?
 
 A: There are two major groups of people, who might need a java assembler and disassembler.
 To the first group belong people interested in internal workings of the Java Virtual Machine. An assembler and a disassembler can be a great help if your want to develop an understanding for the JVM,
