@@ -53,6 +53,20 @@
 			<param name="title" value="Lilac - Installation/Configuration"/>
 			<param name="description" value="How to install and configure Lilac"/>
 		 </antcall>
+		 
+		 <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_usage"/>
+			<param name="markdownFile" value="markdowns/usage.markdown"/>
+			<param name="title" value="Lilac - Usage"/>
+			<param name="description" value="How to use Lilac"/>
+		 </antcall>
+		 
+		 <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_sysprops"/>
+			<param name="markdownFile" value="markdowns/sysprops.markdown"/>
+			<param name="title" value="Lilac - System properties"/>
+			<param name="description" value="Lilac-specific system properties and their meaning"/>
+		 </antcall>
 		
 	</target>
 	
