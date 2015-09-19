@@ -592,7 +592,7 @@ field member              |how many
 
 A name statement specifies the descriptor of a [method](#method-statement) or  a [field](#field-statement). 
 It is a [simple statement](#statements) which has as a single argument the [name](#names-and-labels) of an [utf8 constant](#utf8-constant-statement) which in turn
-specifies the actual descriptor string as shown in the following EBNF expression:
+specifies the actual descriptor string as defined in the following EBNF expression:
 
 	:::ebnf
 	descriptor statement = 'descriptor', utf8 constant, ';' ;
@@ -725,13 +725,13 @@ Example:
 A variable statement declares a [local variable](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1) within a [method statement](#method-statement).
 The statement specifies the type and the name of the variable, the allowed types being: **double**, **float**, **int**, **long**, **object**
 and **returnadress**. Additionally the index of the variable within the [local variable array](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1)
-may be specified, either as an absolute index value or  as an offset relative to the index an another variable. Note, that, dependent on the type, a variable
+may be specified, either as an absolute index value or  as an offset relative to the index of another variable. Note, that, dependent on the type, a variable
 can occupy one or two slots in the [local variable array](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1).
 For the variables whose declarations do not contain an index specification the assembler assigns an implicit index which is the slot following on the last slot occupied by the previously declared variables.
 
-**Note:** it is allowed by the JVM specification that multiple variables occupy the same slot in the [local variable array](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1).
+**Note:** The JVM specification allows multiple variables occupying the same slot in the [local variable array](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6.1).
 
-The exact syntax of the variable statement is as specified in the following EBNF expression:
+The exact syntax of the variable statement is as defined in the following EBNF expression:
 
     ::ebnf
     variable statement = 'var', variable type, identifier, [index], ';' ;
@@ -751,9 +751,9 @@ Example:
     var double d4 at b + 1;
 
 The example above illustrates various possibilities to specify the index of a variable. The integer variable **a** has an implicit index **0** and
-occupies one slot. The floating point variable b also has an implicitl index, this time it is **1** and again occupies one slot. The double precision variable d1
-has an explicitly specified index **0** (remember: it's allowed for multiple variables to occupy the same slots) and occupies two slots. The variable d2 has, again,
-an explicitly specified index 0, this time however, the index has been specified as an offset relative to the slot occupied by **b**.
+occupies one slot. The floating point variable **b** also has an implicitl index, this time it is **1** and again occupies one slot. The double precision variable d1
+has an explicitly specified index **0** (remember: multiple variables can occupy same slots) and occupies two slots. The variable **d2** has, again,
+an explicitly specified index, this time however, the index has been specified as an offset relative to the slot occupied by **b**.
 And so on...
 
 ###Instruction statements
@@ -787,12 +787,11 @@ Examples:
 ####Instruction categories
 
 Most JVM instructions belong to one of three following categories: [argumentless instructions](#argumentless-instructions), [constant instructions](#instructions-with-constant-arguments), [variable instructions](#instructions-with-local-variable-arguments) and [branch instructions](#branch-instructions). Additionally there are some instructions which don't
-fit an any of thost broad categories but stand on their own.
+fit an any of those broad categories but stand on their own.
 
 #####Argumentless instructions
 
-These are the instructions which don't have any arguments. The majority of the of the JVM instructions belongs to this category. The following list contains all argumentless instructions with every entry linked to
-the corresponding section in the JVM specification:
+These are the instruction which don't have any specified arguments (they may however require parameters pushed on the stack bevore execution). The majority of the JVM instructions belong to this category. The following list contains all argumentless instructions with every entry linked to the corresponding section in the JVM specification:
 
 [aaload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.aaload), [aastore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.aastore), [aconst_null](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.aconst_null), [areturn](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.areturn), [arraylength](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.arraylength), [athrow](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.athrow), [baload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.baload), [bastore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.bastore), [caload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.caload), [castore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.castore), [d2f](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.d2f), [d2i](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.d2i), [d2l](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.d2l), [dadd](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dadd), [daload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.daload), [dastore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dastore), [dcmpg](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dcmpg), [dcmpl](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dcmpl), [dconst_0](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dconst_0), [dconst_1](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dconst_1), [ddiv](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ddiv), [dmul](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dmul), [dneg](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dneg), [drem](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.drem), [dreturn](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dreturn), [dsub](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dsub), [dup](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dup), [dup_x1](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dup_x1), [dup_x2](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dup_x2), [dup2](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dup2), [dup2_x1](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dup2_x1), [dup2_x2](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dup2_x2), [f2d](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.f2d), [f2i](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.f2i), [f2l](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.f2l), [fadd](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fadd), [faload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.faload), [fastore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fastore), [fcmpg](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fcmpg), [fcmpl](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fcmpl), [fconst_0](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fconst_0), [fconst_1](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fconst_1), [fconst_2](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fconst_2), [fdiv](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fdiv), [fmul](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fmul), [fneg](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fneg), [frem](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.frem), [freturn](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.freturn), [fsub](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fsub), [i2b](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.i2b), [i2c](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.i2c), [i2d](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.i2d), [i2f](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.i2f), [i2l](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.i2l), [i2s](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.i2s), [iadd](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iadd), [iaload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iaload), [iand](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iand), [iastore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iastore), [iconst_m1](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_m1), [iconst_0](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_0), [iconst_1](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_1), [iconst_2](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_2), [iconst_3](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_3), [iconst_4](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_4), [iconst_5](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iconst_5), [idiv](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.idiv), [imul](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.imul), [ineg](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ineg), [ior](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ior), [irem](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.irem), [ireturn](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ireturn), [ishl](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ishl), [ishr](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ishr), [isub](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.isub), [iushr](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iushr), [ixor](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ixor), [l2d](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.l2d), [l2f](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.l2f), [l2i](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.l2i), [ladd](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ladd), [laload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.laload), [land](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.land), [lastore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lastore), [lcmp](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lcmp), [lconst_0](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lconst_0), [lconst_1](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lconst_1), [ldiv](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ldiv), [lmul](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lmul), [lneg](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lneg), [lor](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lor), [lrem](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lrem), [lreturn](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lreturn), [lshl](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lshl), [lshr](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lshr), [lsub](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lsub), [lushr](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lushr), [lxor](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lxor), [monitorenter](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.monitorenter), [monitorexit](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.monitorexit), [nop](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.nop), [pop](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.pop), [pop2](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.pop2), [return](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.return), [saload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.saload), [sastore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.sastore), [swap](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.swap)
 
@@ -801,8 +800,6 @@ Example:
     ::lilac
     aaload;
     
-**Note:** The adjective "argumentless" doesn't mean in the context of JVM instructions, that the instructions in questions don't manipulate any arguments as they are executed.
-They just take all their arguments from the JVM stack and so in the assembler source and in the bytecode generated from it they don't need to have any arguments specified.
 
 #####Instructions with constant arguments
 
@@ -818,8 +815,8 @@ Example:
     
 #####Instructions with local variable arguments
 
-These are the instructions which have a single argument the name of a [local valiable](#variable-statement). Dependent on the instruction there may be restrictions on the types of the variables allowed as argument.
-The following list contains all instructions from this category with every entry linkedto the corresponding section in the JVM specification:
+These are the instructions which have as a single argument the name of a [local valiable](#variable-statement). Dependent on the instruction there may be restrictions on the types of the variables allowed as argument.
+The following list contains all instructions from this category with every entry linked to the corresponding section in the JVM specification:
 
 [aload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.aload), [astore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.astore), [dload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dload), [dstore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.dstore), [fload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fload), [fstore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.fstore), [iload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iload), [istore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.istore), [lload](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lload), [lstore](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lstore),[ret](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ret)
 
@@ -830,8 +827,8 @@ Example:
 
 #####Branch instructions
 
-These are the instructions causing the virtual machine to begin, conditionaly or unconditionally, to transfer the execution to an instruction different than the next instruction. Branch instructions
-have as a single argument the [label](#names-and-labels) of the instruction to which the execution will be transferred.
+These are the instructions ordering the virtual machine to transfer, conditionaly or unconditionally,the execution flow to an instruction different than the next instruction. Branch instructions
+have as a single argument the [label](#names-and-labels) of the instruction to which the execution flow will be transferred.
 The following list contains all instructions from this category with every entry linkedto the corresponding section in the JVM specification:
 
 [goto](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.goto), [goto_w](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.goto_w), [if_acmpeq](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_acmpeq), [if_acmpne](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_acmpne), [if_icmpeq](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_icmpeq), [if_icmpge](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_icmpge), [if_icmpgt](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_icmpgt), [if_icmple](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_icmple), [if_icmplt](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_icmplt), [if_icmpne](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.if_icmpne), [ifeq](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifeq), [ifge](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifge), [ifgt](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifgt), [ifle](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifle), [iflt](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.iflt), [ifne](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifne), [ifnonnull](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifnonnull), [ifnull](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.ifnull), [jsr](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.jsr), [jsr_w](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.jsr_w)
@@ -882,7 +879,7 @@ Example:
 #####Switch instructions
 
 Switch instructions, which include [tableswitch](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.tableswitch) and [lookupswitch](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.lookupswitch),
-are special branch instructions which calculate their target dependent on the integer value from the stack. A switch instruction has multiple arguments in a special syntax: an integer literal or the keyword
+are special branch instructions which calculate their target dependent on the integer value on the stack. A switch instruction has multiple arguments with a special syntax: an integer literal or the keyword
 **default** followed by **->** and then by the label of the target instruction. 
 
 Example:
@@ -893,10 +890,7 @@ Example:
 
 ####Bytecode ranges
 
-Some statements require as arguments so called **bytecode ranges**. A **bytecode range** is just a sequence of instructions specified by two instruction labels separated by **->** : the label of the first instruction in the range and,
-dependent on the context, either the label of the last instruction in the sequence or the label of the first instruction after the sequence. In the first case the specified **bytecode range** is an **including bytecode range**
-otherwise an **excluding byte code range**. When specifying an **excluding byte code range** the second label may be omitted indicating, that the **bytecode range** includes all instructions beginning with the first instruction and ending
-with the last instruction of the method.
+Some statements require as arguments so called **bytecode ranges**. A **bytecode range** is just a sequence of instructions specified by two instruction labels separated by **->**. The first of the two labels is the label of the first instruction in the range. The second labeld is either the label of the last instruction in the sequence or the label of the first instruction after the sequence. In the first case the specified **bytecode range** is an **including bytecode range** otherwise it is an **excluding byte code range**. When specifying an **excluding byte code range** the second label may be omitted indicating that the **bytecode range** includes all instructions beginning with the first instruction and ending with the last instruction in the method.
 
 Example:
 
@@ -905,15 +899,15 @@ Example:
 
 ###Exception Handler statement
 
-An exception handler statement specifies an exception handler within a method. This statement is neither a [simple statement](#statement) nor a [block statement](#statement) but has instead it's own syntax which
-is specified in the following EBNF expression:
+An exception handler statement specifies an exception handler within a method. This statement is neither a [simple statement](#statement) nor a [block statement](#statement) but has it's own special syntax which
+is defined in the following EBNF expression:
 
     ::ebnf
     exception handler statement = [label, ':'], 'try', including bytecode range, catch, class reference constant|'all', 'go', 'to', label, ';' ;
 
-**In words**: the statement starts with the **try** keyword, possibly preceded by a label. It follows an [including bytecode range](#bytecode-range), to which the handler applies. As next appears the keyword **catch** followed either by the name of a [class reference constant](#class-reference-statement), which
-specifies the exception class handled by the handler, or by the keyword **all**, which indicates that the handler handles all exception. As last we see keywords **go** and **to** followed by the label of the instruction,
-to which the handler transfers control when an exception occures.
+The statement starts with the **try** keyword, possibly preceded by a label. It follows an [including bytecode range](#bytecode-range), to which the handler applies. As next appears the keyword **catch** followed either by the name of a [class reference constant](#class-reference-statement), which
+specifies the exception class handled by the handler, or by the keyword **all**, which indicates that the handler handles all exceptions. At last we see keywords **go** and **to** followed by the label of the instruction,
+to which the handler transfers the execution flow if an exception occures.
 
 Example:
 
@@ -922,8 +916,7 @@ Example:
 
 ###Line numbers statement
 
-A line numbers statement specifies line numbers of the original [source file](#source-file-statement). It is a [block statement](#statements) with [line number statements](#line number statement) as members as defined
-in the following EBNF expression:
+A line numbers statement specifies a mapping between the line numbers of the original [source file](#source-file-statement) and the instructions of the surrounding method. It is a [block statement](#statements) which contains a sequence of [line number statements](#line number statement) as defined in the following EBNF expression:
 
     ::ebnf
     line numbers statement = 'line', 'numbers', '{', {line number}, '}' ;
@@ -951,8 +944,7 @@ Example:
 
 ###Debug variables statement
 
-A debug variables statement specifies a mapping between the [local variables](variable-statement) in a method and variables in the original [source file](source-file-statement). It is a [block statement](#statements) with with [debug variable statements](#debug variable statement) as members as defined
-in the following EBNF expression:
+A debug variables statement specifies a mapping between the [local variables](variable-statement) in a method and variables in the original [source file](source-file-statement). It is a [block statement](#statements) which contains a sequence of [debug variable statements](#debug variable statement) as defined in the following EBNF expression:
 
     ::ebnf
     debug variables statement = 'debug', 'variables',{'types'} '{', {debug variable}, '}' ;
@@ -970,9 +962,7 @@ indicates that the [descriptors](http://docs.oracle.com/javase/specs/jvms/se8/ht
 ####Debug variable statement
 
 A debug variable statement specifies a mapping between a [local variable](variable-statement) in a method and a variable in the original [source file](source-file-statement). It is a [simple statement](#statements) with four arguments:
-the name of the local variable, the [excluding bytecode range](#bytecode ranges), a name of an [utf8 constant](#utf8-constant-statement) specifying the name of the variable in the original source file, and at last a name
-of an [utf8 constant](#utf8-constant-statement) specifying, dependent on the type of the surrounding [block statement](#debug-variables-statement) either the [descriptor](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3)
-of the variable in the original source file or its [signature](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.9.1).
+the name of the local variable, an [excluding bytecode range](#bytecode ranges) to which the mapping applies, a name of an [utf8 constant](#utf8-constant-statement) specifying the name of the variable in the original source file, and at last a name of an [utf8 constant](#utf8-constant-statement) specifying, dependent on the type of the surrounding [block statement](#debug-variables-statement) either the [descriptor](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3) of the variable in the original source file or its [signature](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.9.1).
 
 The exact syntax is defined in the following EBNF expression:
 
@@ -1105,7 +1095,7 @@ method member              |how many
 ####Inner statement
 
 This statement within an [inner-class-statement](#inner-class-statement) specifies the inner end of the "inner class"-relationship.
-It has as a single argument the name of a [class reference constant](#class-reference-statement) which in turn specifies the actual class as shown in the folowing EBNF expression:
+It has as a single argument the name of a [class reference constant](#class-reference-statement) which in turn specifies the actual class as defined in the folowing EBNF expression:
 
     ::ebnf
     inner statement = 'inner', class reference, ';' ;
@@ -1113,7 +1103,7 @@ It has as a single argument the name of a [class reference constant](#class-refe
 ####Outer statement
 
 This statement within an [inner-class-statement](#inner-class-statement) specifies the outer end of the "inner class"-relationship.
-It has as a single argument the name of a [class reference constant](#class-reference-statement) which in turn specifies the actual class as shown in the folowing EBNF expression:
+It has as a single argument the name of a [class reference constant](#class-reference-statement) which in turn specifies the actual class as defined in the folowing EBNF expression:
 
     ::ebnf
     outer statement = 'outer', class reference, ';' ;
@@ -1121,10 +1111,10 @@ It has as a single argument the name of a [class reference constant](#class-refe
 ###Enclosing method statement
 
 An enclosing statement specifies [the enclosing method](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.7) for the inner end of an "inner class"-relationship between two classes
-(see also [Inner class statement](#inner-class-statement).
+(see also [Inner class statement](#inner-class-statement)).
 This is a simple statement, which has two arguments of which the second is optional. The first argument is the name of a [class reference constant](#class-reference-statement), which specifies
 the class of the enclosing method. The second argument is the name of a [name and type constant](#name-and-type-statement), which specifies the name and the type of the enclosing method.
-The absence of the second argument means, that the inner class isn't enclosed in a method. The exact syntax of the statement is as in the following EBNF expression:
+The absence of the second argument means that the inner class isn't enclosed in a method. The exact syntax of the statement is as defined in the following EBNF expression:
 
     ::ebnf
     enclosing method statement = 'enclosing', 'method', class reference, [',', name and type], ';' ;
@@ -1136,11 +1126,10 @@ Example:
 
 ###Bootstrap method statement
 
-A bootstrap method statement specifies a bootstrap method which can be referenced by a [dynamic method reference](#dynamic-method-reference-statement). It is a [simple statement](#statements) with has at least one
-argument. The statement consists of the keywords **bootstrap** and **method** followed by the name of the method and then by comma separated arguments.
-The first argument specifies a name of a [method handle constant](#method-handle-statement). Further arguments if present specify names of further constants
+A bootstrap method statement specifies a bootstrap method which can be referenced by a [dynamic method reference](#dynamic-method-reference-statement). It is a [simple statement](#statements) with multiple (at least one) arguments. The statement consists of the keywords **bootstrap** and **method** followed by the name of the method and then by comma separated arguments.
+The first argument specifies a name of a [method handle constant](#method-handle-statement). Further arguments, if present, specify names of further constants
 to be used as arguments of the bootstrap method as defined in the [JVM specification](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.23).
-The exact syntax of the statement is as in the following EBNF expression:
+The exact syntax of the statement is as defined in the following EBNF expression:
 
     ::ebnf
     bootstrap method statement = 'bootstrap', 'method', method name, method handle constant, {',', argument constant} ;
