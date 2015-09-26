@@ -1143,7 +1143,7 @@ Example:
 
 An annotation statement declares either an [annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.6.1) for a class, method,method parameter,field or [a type declaration](https://docs.oracle.com/javase/tutorial/java/annotations/type_annotations.html)
 or a [nested annotation within another annotation](#annotation-element-members).
-An annotation statement, which is a [block statement](#statements),  consists of the keyword **annotation**  folowed by [annotation member statements](#annotation-members) enclosed in curly brackets
+It is a [block statement](#statements) which  consists of the keyword **annotation**  folowed by [annotation member statements](#annotation-members) enclosed in curly brackets
 and possibly preceded by some of the following keywords: **invisible**, **parameter**, **type** as defined in the following EBNF expression:
 
     ::ebnf
@@ -1152,13 +1152,13 @@ and possibly preceded by some of the following keywords: **invisible**, **parame
     
 The meaning of the keywords preceding **annotaion** is as follows:
 
- **invisible** - marks the annotation as invisible as runtime
+ **invisible** - marks the annotation as invisible at runtime
  
- **parameter** - states that that the current annotation is a [method parameter annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.4).
- In this case the presence of the a [annotation parameter index](#annotation-parameter-index-statement)  as member is also requred.
- **Note**: parameter annotations are only allowed within of a [method statement](#method-statement)
+ **parameter** - states that the current annotation is a [method parameter annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.4).
+ In this case the presence of the [annotation parameter index](#annotation-parameter-index-statement)  as member is also requred.
+ **Note**: parameter annotations are only allowed within a [method statement](#method-statement)
  
- **type** - states that the current annotation is a a [type annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.4). In this case the presence of the [annotation target](#annotation-target-statement)
+ **type** - states that the current annotation is a [type annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.4). In this case the presence of the [annotation target](#annotation-target-statement)
  as member is also required.
 
 Example (Deprecated annotation):
@@ -1187,7 +1187,7 @@ method member              |how many
 ####Annotation type statement
 
 An annotation type statement declares the type (annotation class) of the surrounding annotation. It is a [simple statement](#statements) which has as a single argument a name of [class reference constant](#class-reference-statement),
-which in turn specifies the annotation class as shown in the following EBNF expression:
+which in turn specifies the annotation class as defined in the following EBNF expression:
 
     ::ebnf
     annotation type statement = 'type', class reference, ';' ;
@@ -1200,7 +1200,7 @@ Example:
 ####Annotation parameter index statement
 
 An annotation parameter index statement specifies the index of a method parameter for which the surrounding annotation is being declared. It is a [simple statement](#statements) which has as a single argument an integer literal
-specifying the actual index as shown in following EBNF expression:
+specifying the actual index as defined in following EBNF expression:
 
     ::ebnf
     annotation parameter index statement = 'index',integer literal,';'
@@ -1214,7 +1214,7 @@ Example:
 
 ####Annotation element statement
 
-An annotation element statement specifies the value of an annotation element for an [annotation](#annotation-statement). An annotation element statement, which is [block statement](#statements), consists auf the keyword **element**
+An annotation element statement specifies the value of an annotation element within [annotation](#annotation-statement). An annotation element statement, which is [block statement](#statements), consists auf the keyword **element**
 followed by some [annotation member statements](#annotation-members) enclosed in curly brackets as defined in the following EBNF expression:
 
     ::ebnf
@@ -1242,18 +1242,18 @@ method member              |how many
 [annotation element value](#annotation-element-value-statement)       |zero or one
 [annotation](#annotation statement)       |zero or one
 
-An annotation element always has exactly two members: a name statement, specifying the name of the element and a value statement, which is either a  [annotation element value statement](#annotation-element-value-statement) or or
+An annotation element always has exactly two members: a name statement, specifying the name of the element and a value statement, which is either a  [annotation element value statement](#annotation-element-value-statement) or
 a [nested annotation](#annotation statement)
 
 #####Annotation element value statement
 
-An annotation element value statement either specifies a value for an annotation element or serves as a member for [another array annotation element value](#array-value) . This value can be a **simple value**, an **enumeration value** or an **array value**. Every one of these three possibility has a different syntax which
+An annotation element value statement either specifies a value for an annotation element or serves as a member for [another array annotation element value](#array-value) . This value can be a **simple value**, an **enumeration value** or an **array value**. Every one of these three varieties has a different syntax which
 will be explained below:
 
 ######Simple value
 
 The syntax for a simple value is that of a [simple statement](#statements) which consists of **type keyword** followed by the keyword **value** an the by a single argument.
-The single argument is the name of a constant, the exact type of which dependends on the type of the value specified by the type keyword. The EBNF expression fo the syntax is as follows:
+The single argument is the name of a constant, the exact type of which dependends on the type of the value specified by the type keyword. The EBNF expression of the syntax is as follows:
 
     ::ebnf
     simple value = type keyword, 'value', constant name, ';'
@@ -1266,7 +1266,7 @@ Example:
 
 ######Enumeration value
 
-The syntax for an enumeration is that of a [simple statement](#statements) which has two arguments as shown in the following EBNF experssion:
+The syntax for an enumeration value is that of a [simple statement](#statements) which has two arguments as defined in the following EBNF experssion:
 
     ::ebnf
     enumeration value = 'enum', 'value', utf8 constant name, utf8 constant name, ';' ;
@@ -1281,7 +1281,7 @@ Example:
 
 ######Array value
 
-The syntax for an array value ist that of a [block statement](#statements). This block statement can contain any number of nested [annotation element values](#annotation-element-value-statement) as shown in the foolowing EBNF expression:
+The syntax for an array value ist that of a [block statement](#statements). This block statement can contain any number of nested [annotation element values](#annotation-element-value-statement) as defined in the foolowing EBNF expression:
 
     ::ebnf
     array value = 'array','value','{',{annotation element value},'}' ;
@@ -1298,8 +1298,8 @@ Example:
 ####Annotation target statement
 
 An annotation target statement denotes the kind of target on which a [type annotation](https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.4) appears.
-The various kinds of target correspond to the type contexts of the Java programming language where types are used in declarations and expressions.
-Dependent on the actual target the statement can have many different syntaxtic forms, which wiil be listed below.
+The various kinds of targets correspond to the contexts of the Java programming language in which types can be used in declarations and expressions.
+Dependent on the actual target the statement can have various syntactic forms, which will be listed below.
 
 #####Return target
 
@@ -1571,7 +1571,7 @@ Example:
 
 #####Variable type targetVariable
 
-States  that the annotation appears on the type of a local variable including resource variables. This is a [block statement](#statements) with the following syntax:
+States  that the annotation appears on the type of a local variable or resource variable. This is a [block statement](#statements) with the following syntax:
 
     ::ebnf
     variable type target statement = 'targets', ['resource'], 'var', 'types', '{', {excluding bytecode range},'}' ;
