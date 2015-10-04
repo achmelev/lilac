@@ -572,7 +572,11 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		try {
 			if (!verifier.isHasErrors() && !verifier.isHasUnsupportedCode()) {
 				verifier.verify();
-				//Dump verifier to save memory.
+				CodeAttributeContent code = (CodeAttributeContent)getParent();
+				if (code.getMaxStack()<0) {
+					code.setMaxStack(verifier.getMaxRecordedStackSize());
+				}
+				//Dump verifier to save memory .
 				verifier = null;
 			}
 		} catch (VerifyException e) {
@@ -589,8 +593,6 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		instr.emitError(null, "verification error - "+e.getMessage());
 		
 	}
-
-	
 	
 
 }

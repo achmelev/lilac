@@ -83,6 +83,8 @@ public class Verifier implements IClassQuery {
 	private CodeAttributeContent code;
 	private Interpreter interpeter;
 	
+	private int maxRecordedStackSize;
+	
 	
 	private List<Set<Integer>> followers = new ArrayList<Set<Integer>>();
 	private List<Set<ExceptionHandler>> exceptionHandlers = new ArrayList<Set<ExceptionHandler>>();
@@ -164,7 +166,7 @@ public class Verifier implements IClassQuery {
 	public void verify() {
 		try {
 			double version = clazz.getDecimalVersion().doubleValue();
-			
+			maxRecordedStackSize = -1;
 			createInitialFrame();
 			if (version>=50 && !generateStackmap()) {
 				try {
@@ -968,6 +970,14 @@ public class Verifier implements IClassQuery {
 		return content;
 	}
 	
+	public void updateMaxRecordedStackSize(int newSize) {
+		maxRecordedStackSize = Math.max(newSize, maxRecordedStackSize);
+	}
+	
+	public int getMaxRecordedStackSize() {
+		return maxRecordedStackSize;
+	}
+
 	private boolean generateStackmap() {
 		return method.isGenerateStackMap() || Environment.getBooleanValue("jasm.forcestackmaps");
 	}

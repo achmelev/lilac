@@ -6,6 +6,7 @@ import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.bytebuffer.print.IPrintable;
 import org.jasm.bytebuffer.print.SimplePrintable;
+import org.jasm.environment.Environment;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.IContainerBytecodeItem;
 import org.jasm.item.clazz.IAttributesContainer;
@@ -161,7 +162,12 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 					emitError(maxStackLiteral, "max stack out of bounds");
 				}
 			} else {
-				//TODO - maxStack berechnen
+				boolean verifyByteCode = Environment.getBooleanValue("jasm.verification.bytecode.enabled");
+				if (!verifyByteCode) {
+					emitError(null, "missing max stack statement");
+				} else {
+					maxStack = -1;
+				}
 			}
 			
 			int calculatedMaxLocals = calculateMaxLocals();
@@ -224,6 +230,10 @@ public class CodeAttributeContent extends AbstractSimpleAttributeContent impleme
 
 	public int getMaxStack() {
 		return maxStack;
+	}
+	
+	public void setMaxStack(int maxStack) {
+		this.maxStack = maxStack;
 	}
 
 	public int getMaxLocals() {
