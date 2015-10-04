@@ -2080,6 +2080,7 @@ public class Interpreter {
 		  } else {
 			  throw new IllegalStateException(t.getClass().getName());
 		  }
+		  parent.updateMaxRecordedStackSize(inputFrame.getCurrentStackSize());
 		  return inputFrame;
 	}
 	
