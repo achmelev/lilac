@@ -85,7 +85,7 @@
     
 	<target name="test" unless="skipTests">
 		<!-- Compile tests -->
-			<javac srcdir="${test.src.dir}" encoding="iso-8859-1" debug="on" debuglevel="lines,source" destdir="${test.build.dir}" classpathref="test.lib.path.id" includeAntRuntime="false"/>
+			<javac srcdir="${test.src.dir}" encoding="UTF-8" debug="on" debuglevel="lines,source" destdir="${test.build.dir}" classpathref="test.lib.path.id" includeAntRuntime="false"/>
 			<copy todir="${test.build.dir}">
 				<fileset dir="${test.src.dir}">
 					<include name="**/*.properties"/>
@@ -120,7 +120,7 @@
     	<mkdir dir="${report.dir}" />
     	<mkdir dir="${test.report.dir}" />
     	<!-- Compile src-gen -->
-    	<javac encoding="iso-8859-1" srcdir="${src.gen.dir}" debug="on" debuglevel="lines,source" destdir="${build.dir}" classpathref="lib.path.id" includeAntRuntime="false"/>
+    	<javac encoding="UTF-8" srcdir="${src.gen.dir}" debug="on" debuglevel="lines,source" destdir="${build.dir}" classpathref="lib.path.id" includeAntRuntime="false"/>
     	<copy todir="${build.dir}">
     	    <fileset dir="${src.gen.dir}">
     	    	<include name="**/*.properties"/>
@@ -129,7 +129,7 @@
     	    </fileset>
     	</copy>
     	<!-- Compile -->
-        <javac srcdir="${src.dir}" debug="on" debuglevel="lines,source" destdir="${build.dir}" classpathref="lib.path.id" includeAntRuntime="false"/>
+        <javac srcdir="${src.dir}" debug="on" debuglevel="lines,source" destdir="${build.dir}" classpathref="lib.path.id" includeAntRuntime="false" encoding="UTF-8"/>
     	<copy todir="${build.dir}">
     	    <fileset dir="${src.dir}">
     	    	<include name="**/*.properties"/>
