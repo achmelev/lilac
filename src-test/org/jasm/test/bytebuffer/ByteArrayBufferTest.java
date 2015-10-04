@@ -137,7 +137,7 @@ public class ByteArrayBufferTest {
 		assertEquals(d, b.readDouble(5),0.0);
 		
 		//String 
-		String st = "Hello World mit ‹ml‰ten";
+		String st = "Hello World mit √úml√§ten";
 		b.writeUTF8(5, st);
 		assertEquals(st, b.readUTF8(5).getValue());
 		assertEquals(st.length()+2+2, b.readUTF8(5).getLength());

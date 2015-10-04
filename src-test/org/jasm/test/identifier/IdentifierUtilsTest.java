@@ -12,7 +12,7 @@ public class IdentifierUtilsTest {
 		Assert.assertTrue(IdentifierUtils.isValidIdentifier("n"));
 		Assert.assertFalse(IdentifierUtils.isValidIdentifier("/na"));
 		Assert.assertFalse(IdentifierUtils.isValidIdentifier(".na"));
-		Assert.assertTrue(IdentifierUtils.isValidIdentifier("n‰me$2"));
+		Assert.assertTrue(IdentifierUtils.isValidIdentifier("n√§me$2"));
 		
 		Assert.assertTrue(IdentifierUtils.isValidJasmClassName("name/name2"));
 		Assert.assertFalse(IdentifierUtils.isValidJasmClassName("name//name2"));
