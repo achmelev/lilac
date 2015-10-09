@@ -1,0 +1,256 @@
+super class {
+  version 52.0;
+  name ThisClass; // org/jasm/test/testclass/LambdaExample$FirstLevel
+  extends Object; // java/lang/Object
+   //Constants
+  const classref ThisClass ThisClass_name; // org/jasm/test/testclass/LambdaExample$FirstLevel
+  const utf8 ThisClass_name "org/jasm/test/testclass/LambdaExample$FirstLevel";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const utf8 x_name "x";
+  const utf8 x_desc "I";
+  const utf8 this$0_name "this$0";
+  const utf8 this$0_desc "Lorg/jasm/test/testclass/LambdaExample;";
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "(Lorg/jasm/test/testclass/LambdaExample;)V";
+  const utf8 Code_utf8 "Code";
+  const fieldref this$0 ThisClass, this$0_nat; // class=org/jasm/test/testclass/LambdaExample$FirstLevel, name=this$0, descriptor=Lorg/jasm/test/testclass/LambdaExample;
+  const nameandtype this$0_nat this$0_name, this$0_desc; // name=this$0 type=Lorg/jasm/test/testclass/LambdaExample;
+  const methodref Object.init0 Object, Object.init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype Object.init0_nat init0_name, init0_desc$0; // name=<init> type=()V
+  const utf8 init0_desc$0 "()V";
+  const fieldref x ThisClass, x_nat; // class=org/jasm/test/testclass/LambdaExample$FirstLevel, name=x, descriptor=I
+  const nameandtype x_nat x_name, x_desc; // name=x type=I
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/testclass/LambdaExample$FirstLevel;";
+  const utf8 methodInFirstLevel_name "methodInFirstLevel";
+  const utf8 methodInFirstLevel_desc "(I)V";
+  const nameandtype nameandtype_24 accept_name, accept_desc; // name=accept type=(Lorg/jasm/test/testclass/LambdaExample$FirstLevel;I)Ljava/util/function/Consumer;
+  const utf8 accept_name "accept";
+  const utf8 accept_desc "(Lorg/jasm/test/testclass/LambdaExample$FirstLevel;I)Ljava/util/function/Consumer;";
+  const dynref accept_name_dyn bootstrap_LambdaMetafactory.metafactory, nameandtype_24;
+  const methodref Integer.valueOf Integer, Integer.valueOf_nat; // class=java/lang/Integer, name=valueOf, descriptor=(I)Ljava/lang/Integer;
+  const classref Integer Integer_name; // java/lang/Integer
+  const utf8 Integer_name "java/lang/Integer";
+  const nameandtype Integer.valueOf_nat valueOf_name, valueOf_desc; // name=valueOf type=(I)Ljava/lang/Integer;
+  const utf8 valueOf_name "valueOf";
+  const utf8 valueOf_desc "(I)Ljava/lang/Integer;";
+  const intfmethodref Consumer.accept Consumer, Consumer.accept_nat; // class=java/util/function/Consumer, name=accept, descriptor=(Ljava/lang/Object;)V
+  const classref Consumer Consumer_name; // java/util/function/Consumer
+  const utf8 Consumer_name "java/util/function/Consumer";
+  const nameandtype Consumer.accept_nat accept_name, accept_desc$0; // name=accept type=(Ljava/lang/Object;)V
+  const utf8 accept_desc$0 "(Ljava/lang/Object;)V";
+  const utf8 myConsumer_name "myConsumer";
+  const utf8 myConsumer_desc "Ljava/util/function/Consumer;";
+  const utf8 LocalVariableTypeTable_utf8 "LocalVariableTypeTable";
+  const utf8 myConsumer_desc$0 "Ljava/util/function/Consumer<Ljava/lang/Integer;>;";
+  const utf8 lambda$0_name "lambda$0";
+  const utf8 lambda$0_desc "(ILjava/lang/Integer;)V";
+  const fieldref System.out System, System.out_nat; // class=java/lang/System, name=out, descriptor=Ljava/io/PrintStream;
+  const classref System System_name; // java/lang/System
+  const utf8 System_name "java/lang/System";
+  const nameandtype System.out_nat out_name, out_desc; // name=out type=Ljava/io/PrintStream;
+  const utf8 out_name "out";
+  const utf8 out_desc "Ljava/io/PrintStream;";
+  const classref StringBuilder StringBuilder_name; // java/lang/StringBuilder
+  const utf8 StringBuilder_name "java/lang/StringBuilder";
+  const string string_53 utf8_54; // "x = "
+  const utf8 utf8_54 "x = ";
+  const methodref StringBuilder.init0 StringBuilder, StringBuilder.init0_nat; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
+  const nameandtype StringBuilder.init0_nat init0_name, method_desc; // name=<init> type=(Ljava/lang/String;)V
+  const utf8 method_desc "(Ljava/lang/String;)V";
+  const methodref StringBuilder.append StringBuilder, StringBuilder.append_nat; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
+  const nameandtype StringBuilder.append_nat append_name, append_desc; // name=append type=(I)Ljava/lang/StringBuilder;
+  const utf8 append_name "append";
+  const utf8 append_desc "(I)Ljava/lang/StringBuilder;";
+  const methodref StringBuilder.toString StringBuilder, StringBuilder.toString_nat; // class=java/lang/StringBuilder, name=toString, descriptor=()Ljava/lang/String;
+  const nameandtype StringBuilder.toString_nat toString_name, toString_desc; // name=toString type=()Ljava/lang/String;
+  const utf8 toString_name "toString";
+  const utf8 toString_desc "()Ljava/lang/String;";
+  const methodref PrintStream.println PrintStream, PrintStream.println_nat; // class=java/io/PrintStream, name=println, descriptor=(Ljava/lang/String;)V
+  const classref PrintStream PrintStream_name; // java/io/PrintStream
+  const utf8 PrintStream_name "java/io/PrintStream";
+  const nameandtype PrintStream.println_nat println_name, method_desc; // name=println type=(Ljava/lang/String;)V
+  const utf8 println_name "println";
+  const string string_71 utf8_72; // "y = "
+  const utf8 utf8_72 "y = ";
+  const methodref StringBuilder.append$0 StringBuilder, StringBuilder.append$0_nat; // class=java/lang/StringBuilder, name=append, descriptor=(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+  const nameandtype StringBuilder.append$0_nat append_name, append_desc$0; // name=append type=(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+  const utf8 append_desc$0 "(Ljava/lang/Object;)Ljava/lang/StringBuilder;";
+  const string string_76 utf8_77; // "this.x = "
+  const utf8 utf8_77 "this.x = ";
+  const string string_78 utf8_79; // "LambdaScopeTest.this.x = "
+  const utf8 utf8_79 "LambdaScopeTest.this.x = ";
+  const fieldref LambdaExample.x LambdaExample, x_nat; // class=org/jasm/test/testclass/LambdaExample, name=x, descriptor=I
+  const classref LambdaExample LambdaExample_name; // org/jasm/test/testclass/LambdaExample
+  const utf8 LambdaExample_name "org/jasm/test/testclass/LambdaExample";
+  const utf8 y_name "y";
+  const utf8 y_desc "Ljava/lang/Integer;";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "LambdaExample.java";
+  const utf8 BootstrapMethods_utf8 "BootstrapMethods";
+  const methodref LambdaMetafactory.metafactory LambdaMetafactory, LambdaMetafactory.metafactory_nat; // class=java/lang/invoke/LambdaMetafactory, name=metafactory, descriptor=(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+  const classref LambdaMetafactory LambdaMetafactory_name; // java/lang/invoke/LambdaMetafactory
+  const utf8 LambdaMetafactory_name "java/lang/invoke/LambdaMetafactory";
+  const nameandtype LambdaMetafactory.metafactory_nat metafactory_name, metafactory_desc; // name=metafactory type=(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+  const utf8 metafactory_name "metafactory";
+  const utf8 metafactory_desc "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;";
+  const invokestatic methodhandle LambdaMetafactory.metafactory_handle LambdaMetafactory.metafactory; // class=java/lang/invoke/LambdaMetafactory, name=metafactory, descriptor=(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+  const methodtype methodtype_95 accept_desc$0; // (Ljava/lang/Object;)V
+  const methodref lambda$0 ThisClass, lambda$0_nat; // class=org/jasm/test/testclass/LambdaExample$FirstLevel, name=lambda$0, descriptor=(ILjava/lang/Integer;)V
+  const nameandtype lambda$0_nat lambda$0_name, lambda$0_desc; // name=lambda$0 type=(ILjava/lang/Integer;)V
+  const invokespecial methodhandle lambda$0_handle lambda$0; // class=org/jasm/test/testclass/LambdaExample$FirstLevel, name=lambda$0, descriptor=(ILjava/lang/Integer;)V
+  const utf8 method_desc$0 "(Ljava/lang/Integer;)V";
+  const methodtype methodtype_100 method_desc$0; // (Ljava/lang/Integer;)V
+  const utf8 InnerClasses_utf8 "InnerClasses";
+  const classref MethodHandles$Lookup MethodHandles$Lookup_name; // java/lang/invoke/MethodHandles$Lookup
+  const utf8 MethodHandles$Lookup_name "java/lang/invoke/MethodHandles$Lookup";
+  const classref MethodHandles MethodHandles_name; // java/lang/invoke/MethodHandles
+  const utf8 MethodHandles_name "java/lang/invoke/MethodHandles";
+  const utf8 Lookup_name "Lookup";
+  const utf8 FirstLevel_name "FirstLevel";
+  source file source_file_name; // LambdaExample.java
+  bootstrap method bootstrap_LambdaMetafactory.metafactory LambdaMetafactory.metafactory_handle, methodtype_95, lambda$0_handle, methodtype_100;
+  public static final inner class {
+    inner MethodHandles$Lookup; // java/lang/invoke/MethodHandles$Lookup
+    outer MethodHandles; // java/lang/invoke/MethodHandles
+    name Lookup_name; // Lookup
+  }
+  inner class {
+    inner ThisClass; // org/jasm/test/testclass/LambdaExample$FirstLevel
+    outer LambdaExample; // org/jasm/test/testclass/LambdaExample
+    name FirstLevel_name; // FirstLevel
+  }
+   //Fields
+  public field {
+    name x_name; // x
+    descriptor x_desc; // I
+  }
+  final synthetic field {
+    name this$0_name; // this$0
+    descriptor this$0_desc; // Lorg/jasm/test/testclass/LambdaExample;
+  }
+   //Methods
+  method {
+    name init0_name; // <init>
+    descriptor init0_desc; // (Lorg/jasm/test/testclass/LambdaExample;)V
+    line numbers {
+      line ir0, 9;
+      line ir9, 11;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/LambdaExample$FirstLevel;
+    }
+    maxstack 2;
+    //Variables
+    var object this;
+    var object a_1;
+    //Instructions
+    ir0: aload this;
+    aload a_1;
+    putfield this$0;
+    aload this;
+    invokespecial Object.init0;
+    ir9: aload this;
+    iconst_1;
+    putfield x;
+    return;
+  }
+  method {
+    name methodInFirstLevel_name; // methodInFirstLevel
+    descriptor methodInFirstLevel_desc; // (I)V
+    line numbers {
+      line ir0, 21;
+      line ir8, 30;
+      line ir18, 32;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/LambdaExample$FirstLevel;
+      var x, ir0, x_name, x_desc; // name=x,  descriptor=I
+      var myConsumer, ir8, myConsumer_name, myConsumer_desc; // name=myConsumer,  descriptor=Ljava/util/function/Consumer;
+    }
+    debug var types {
+      var myConsumer, ir8, myConsumer_name, myConsumer_desc$0; // name=myConsumer,  descriptor=Ljava/util/function/Consumer<Ljava/lang/Integer;>;
+    }
+    maxstack 2;
+    //Variables
+    var object this;
+    var int x;
+    var object myConsumer;
+    //Instructions
+    ir0: aload this;
+    iload x;
+    invokedynamic accept_name_dyn;
+    astore myConsumer;
+    ir8: aload myConsumer;
+    iload x;
+    invokestatic Integer.valueOf;
+    invokeinterface Consumer.accept;
+    ir18: return;
+  }
+  private synthetic method {
+    name lambda$0_name; // lambda$0
+    descriptor lambda$0_desc; // (ILjava/lang/Integer;)V
+    line numbers {
+      line ir0, 23;
+      line ir22, 24;
+      line ir44, 25;
+      line ir69, 26;
+      line ir81, 27;
+      line ir94, 26;
+      line ir97, 28;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/LambdaExample$FirstLevel;
+      var y, ir0, y_name, y_desc; // name=y,  descriptor=Ljava/lang/Integer;
+    }
+    maxstack 4;
+    //Variables
+    var object this;
+    var int i_1;
+    var object y;
+    //Instructions
+    ir0: getstatic System.out;
+    new StringBuilder;
+    dup;
+    ldc string_53; // "x = "
+    invokespecial StringBuilder.init0;
+    iload i_1;
+    invokevirtual StringBuilder.append;
+    invokevirtual StringBuilder.toString;
+    invokevirtual PrintStream.println;
+    ir22: getstatic System.out;
+    new StringBuilder;
+    dup;
+    ldc string_71; // "y = "
+    invokespecial StringBuilder.init0;
+    aload y;
+    invokevirtual StringBuilder.append$0;
+    invokevirtual StringBuilder.toString;
+    invokevirtual PrintStream.println;
+    ir44: getstatic System.out;
+    new StringBuilder;
+    dup;
+    ldc string_76; // "this.x = "
+    invokespecial StringBuilder.init0;
+    aload this;
+    getfield x;
+    invokevirtual StringBuilder.append;
+    invokevirtual StringBuilder.toString;
+    invokevirtual PrintStream.println;
+    ir69: getstatic System.out;
+    new StringBuilder;
+    dup;
+    ldc string_78; // "LambdaScopeTest.this.x = "
+    invokespecial StringBuilder.init0;
+    ir81: aload this;
+    getfield this$0;
+    getfield LambdaExample.x;
+    invokevirtual StringBuilder.append;
+    invokevirtual StringBuilder.toString;
+    ir94: invokevirtual PrintStream.println;
+    ir97: return;
+  }
+}

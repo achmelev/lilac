@@ -1,0 +1,564 @@
+public super abstract class {
+  version 51.0;
+  name classref_0; // org/jasm/test/testclass/Class2
+  extends classref_2; // java/lang/Object
+   //Constants
+  const classref classref_0 utf8_1; // org/jasm/test/testclass/Class2
+  const utf8 utf8_1 "org/jasm/test/testclass/Class2";
+  const classref classref_2 utf8_3; // java/lang/Object
+  const utf8 utf8_3 "java/lang/Object";
+  const utf8 utf8_4 "staticString";
+  const utf8 utf8_5 "Ljava/lang/String;";
+  const utf8 utf8_6 "finalIntField";
+  const utf8 utf8_7 "I";
+  const utf8 utf8_8 "ConstantValue";
+  const int int_9 0;
+  const utf8 utf8_10 "transientField";
+  const utf8 utf8_11 "Ljava/lang/Boolean;";
+  const utf8 utf8_12 "constInt";
+  const int int_13 1;
+  const utf8 utf8_14 "<clinit>";
+  const utf8 utf8_15 "()V";
+  const utf8 utf8_16 "Code";
+  const string string_17 utf8_18; // "HELLO \n \u00C4 WORLD"
+  const utf8 utf8_18 "HELLO \n \u00C4 WORLD";
+  const fieldref fieldref_19 classref_0, nameandtype_20; // class=org/jasm/test/testclass/Class2, name=staticString, descriptor=Ljava/lang/String;
+  const nameandtype nameandtype_20 utf8_4, utf8_5; // name=staticString type=Ljava/lang/String;
+  const utf8 utf8_21 "LineNumberTable";
+  const utf8 utf8_22 "LocalVariableTable";
+  const utf8 utf8_23 "<init>";
+  const methodref methodref_24 classref_2, nameandtype_25; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype nameandtype_25 utf8_23, utf8_15; // name=<init> type=()V
+  const fieldref fieldref_26 classref_0, nameandtype_27; // class=org/jasm/test/testclass/Class2, name=finalIntField, descriptor=I
+  const nameandtype nameandtype_27 utf8_6, utf8_7; // name=finalIntField type=I
+  const methodref methodref_28 classref_29, nameandtype_31; // class=java/lang/Boolean, name=valueOf, descriptor=(Z)Ljava/lang/Boolean;
+  const classref classref_29 utf8_30; // java/lang/Boolean
+  const utf8 utf8_30 "java/lang/Boolean";
+  const nameandtype nameandtype_31 utf8_32, utf8_33; // name=valueOf type=(Z)Ljava/lang/Boolean;
+  const utf8 utf8_32 "valueOf";
+  const utf8 utf8_33 "(Z)Ljava/lang/Boolean;";
+  const fieldref fieldref_34 classref_0, nameandtype_35; // class=org/jasm/test/testclass/Class2, name=transientField, descriptor=Ljava/lang/Boolean;
+  const nameandtype nameandtype_35 utf8_10, utf8_11; // name=transientField type=Ljava/lang/Boolean;
+  const utf8 utf8_36 "this";
+  const utf8 utf8_37 "Lorg/jasm/test/testclass/Class2;";
+  const utf8 utf8_38 "privateMethod";
+  const utf8 utf8_39 "(I)V";
+  const utf8 utf8_40 "Deprecated";
+  const utf8 utf8_41 "RuntimeVisibleAnnotations";
+  const utf8 utf8_42 "Ljava/lang/Deprecated;";
+  const utf8 utf8_43 "a";
+  const utf8 utf8_44 "protectedAbstractMethod";
+  const utf8 utf8_45 "synchronizedStaticMethod";
+  const utf8 utf8_46 "methodMitException";
+  const utf8 utf8_47 "Exceptions";
+  const classref classref_48 utf8_49; // java/lang/IllegalArgumentException
+  const utf8 utf8_49 "java/lang/IllegalArgumentException";
+  const string string_50 utf8_51; // "XXX"
+  const utf8 utf8_51 "XXX";
+  const methodref methodref_52 classref_48, nameandtype_53; // class=java/lang/IllegalArgumentException, name=<init>, descriptor=(Ljava/lang/String;)V
+  const nameandtype nameandtype_53 utf8_23, utf8_54; // name=<init> type=(Ljava/lang/String;)V
+  const utf8 utf8_54 "(Ljava/lang/String;)V";
+  const utf8 utf8_55 "methodWithAnonymousClass";
+  const classref classref_56 utf8_57; // org/jasm/test/testclass/Class2$1
+  const utf8 utf8_57 "org/jasm/test/testclass/Class2$1";
+  const methodref methodref_58 classref_56, nameandtype_59; // class=org/jasm/test/testclass/Class2$1, name=<init>, descriptor=(Lorg/jasm/test/testclass/Class2;)V
+  const nameandtype nameandtype_59 utf8_23, utf8_60; // name=<init> type=(Lorg/jasm/test/testclass/Class2;)V
+  const utf8 utf8_60 "(Lorg/jasm/test/testclass/Class2;)V";
+  const utf8 utf8_61 "run";
+  const utf8 utf8_62 "Ljava/lang/Runnable;";
+  const utf8 utf8_63 "methodMitException2";
+  const classref classref_64 utf8_65; // [[I
+  const utf8 utf8_65 "[[I";
+  const double double_66 1.8p1; // 3.0
+  const float float_68 1.0p2; // 4.0
+  const classref classref_69 utf8_70; // java/lang/RuntimeException
+  const utf8 utf8_70 "java/lang/RuntimeException";
+  const utf8 utf8_71 "x";
+  const utf8 utf8_72 "y";
+  const utf8 utf8_73 "J";
+  const utf8 utf8_74 "z";
+  const utf8 utf8_75 "D";
+  const utf8 utf8_76 "s";
+  const utf8 utf8_77 "S";
+  const utf8 utf8_78 "f";
+  const utf8 utf8_79 "F";
+  const utf8 utf8_80 "by";
+  const utf8 utf8_81 "B";
+  const utf8 utf8_82 "multi";
+  const utf8 utf8_83 "e";
+  const utf8 utf8_84 "Ljava/lang/RuntimeException;";
+  const utf8 utf8_85 "StackMapTable";
+  const classref classref_86 utf8_87; // java/lang/Throwable
+  const utf8 utf8_87 "java/lang/Throwable";
+  const utf8 utf8_88 "interfaceCall";
+  const classref classref_89 utf8_90; // org/jasm/test/testclass/Class3
+  const utf8 utf8_90 "org/jasm/test/testclass/Class3";
+  const methodref methodref_91 classref_89, nameandtype_25; // class=org/jasm/test/testclass/Class3, name=<init>, descriptor=()V
+  const intfmethodref intfmethodref_92 classref_93, nameandtype_95; // class=org/jasm/test/testclass/Interface1, name=testMethod, descriptor=(I)V
+  const classref classref_93 utf8_94; // org/jasm/test/testclass/Interface1
+  const utf8 utf8_94 "org/jasm/test/testclass/Interface1";
+  const nameandtype nameandtype_95 utf8_96, utf8_39; // name=testMethod type=(I)V
+  const utf8 utf8_96 "testMethod";
+  const intfmethodref intfmethodref_97 classref_93, nameandtype_98; // class=org/jasm/test/testclass/Interface1, name=testMethodWithoutArgs, descriptor=()V
+  const nameandtype nameandtype_98 utf8_99, utf8_15; // name=testMethodWithoutArgs type=()V
+  const utf8 utf8_99 "testMethodWithoutArgs";
+  const utf8 utf8_100 "intf";
+  const utf8 utf8_101 "Lorg/jasm/test/testclass/Interface1;";
+  const utf8 utf8_102 "switchMethod";
+  const utf8 utf8_103 "r";
+  const utf8 utf8_104 "switchMethod2";
+  const utf8 utf8_105 "arraysMethod";
+  const utf8 utf8_106 "ba";
+  const utf8 utf8_107 "[Z";
+  const utf8 utf8_108 "ca";
+  const utf8 utf8_109 "[C";
+  const utf8 utf8_110 "bya";
+  const utf8 utf8_111 "[B";
+  const utf8 utf8_112 "da";
+  const utf8 utf8_113 "[D";
+  const utf8 utf8_114 "fa";
+  const utf8 utf8_115 "[F";
+  const utf8 utf8_116 "ia";
+  const utf8 utf8_117 "[I";
+  const utf8 utf8_118 "la";
+  const utf8 utf8_119 "[J";
+  const utf8 utf8_120 "sa";
+  const utf8 utf8_121 "[S";
+  const utf8 utf8_122 "SourceFile";
+  const utf8 utf8_123 "Class2.java";
+  const utf8 utf8_124 "InnerClasses";
+  const classref classref_125 utf8_126; // org/jasm/test/testclass/Class2$InnerClass
+  const utf8 utf8_126 "org/jasm/test/testclass/Class2$InnerClass";
+  const utf8 utf8_127 "InnerClass";
+  source file utf8_123; // Class2.java
+  inner class {
+    inner classref_56; // org/jasm/test/testclass/Class2$1
+  }
+  private inner class {
+    inner classref_125; // org/jasm/test/testclass/Class2$InnerClass
+    outer classref_0; // org/jasm/test/testclass/Class2
+    name utf8_127; // InnerClass
+  }
+   //Fields
+  public static field {
+    name utf8_4; // staticString
+    descriptor utf8_5; // Ljava/lang/String;
+  }
+  private final field {
+    name utf8_6; // finalIntField
+    descriptor utf8_7; // I
+    constant value int_9; // 0
+  }
+  protected transient field {
+    name utf8_10; // transientField
+    descriptor utf8_11; // Ljava/lang/Boolean;
+  }
+  public static final field {
+    name utf8_12; // constInt
+    descriptor utf8_7; // I
+    constant value int_13; // 1
+  }
+   //Methods
+  static method {
+    name utf8_14; // <clinit>
+    descriptor utf8_15; // ()V
+    line numbers {
+      line ir0, 5;
+      line ir5, 3;
+    }
+    maxstack 1;
+    maxlocals 0;
+    //Instructions
+    ir0: ldc string_17; // "HELLO \n \u00C4 WORLD"
+    putstatic fieldref_19; // class=org/jasm/test/testclass/Class2, name=staticString, descriptor=Ljava/lang/String;
+    ir5: return;
+  }
+  public method {
+    name utf8_23; // <init>
+    descriptor utf8_15; // ()V
+    line numbers {
+      line ir0, 3;
+      line ir4, 7;
+      line ir9, 9;
+      line ir17, 3;
+    }
+    debug vars {
+      var a_0, ir0, utf8_36, utf8_37; // name=this,  descriptor=Lorg/jasm/test/testclass/Class2;
+    }
+    maxstack 2;
+    maxlocals 1;
+    //Variables
+    var object a_0;
+    //Instructions
+    ir0: aload a_0;
+    invokespecial methodref_24; // class=java/lang/Object, name=<init>, descriptor=()V
+    ir4: aload a_0;
+    iconst_0;
+    putfield fieldref_26; // class=org/jasm/test/testclass/Class2, name=finalIntField, descriptor=I
+    ir9: aload a_0;
+    iconst_0;
+    invokestatic methodref_28; // class=java/lang/Boolean, name=valueOf, descriptor=(Z)Ljava/lang/Boolean;
+    putfield fieldref_34; // class=org/jasm/test/testclass/Class2, name=transientField, descriptor=Ljava/lang/Boolean;
+    ir17: return;
+  }
+  private method {
+    name utf8_38; // privateMethod
+    descriptor utf8_39; // (I)V
+    deprecated;
+    annotation {
+      type utf8_42; // Ljava/lang/Deprecated;
+    }
+    line numbers {
+      line ir0, 16;
+    }
+    debug vars {
+      var a_0, ir0, utf8_36, utf8_37; // name=this,  descriptor=Lorg/jasm/test/testclass/Class2;
+      var i_1, ir0, utf8_43, utf8_7; // name=a,  descriptor=I
+    }
+    maxstack 0;
+    maxlocals 2;
+    //Variables
+    var object a_0;
+    var int i_1;
+    //Instructions
+    ir0: return;
+  }
+  protected abstract method {
+    name utf8_44; // protectedAbstractMethod
+    descriptor utf8_15; // ()V
+  }
+  static synchronized method {
+    name utf8_45; // synchronizedStaticMethod
+    descriptor utf8_15; // ()V
+    line numbers {
+      line ir0, 22;
+    }
+    maxstack 0;
+    maxlocals 0;
+    //Instructions
+    ir0: return;
+  }
+  public method {
+    name utf8_46; // methodMitException
+    descriptor utf8_15; // ()V
+    throws classref_48; // java/lang/IllegalArgumentException
+    line numbers {
+      line ir0, 25;
+    }
+    debug vars {
+      var a_0, ir0, utf8_36, utf8_37; // name=this,  descriptor=Lorg/jasm/test/testclass/Class2;
+    }
+    maxstack 3;
+    maxlocals 1;
+    //Variables
+    var object a_0;
+    //Instructions
+    ir0: new classref_48; // java/lang/IllegalArgumentException
+    dup;
+    ldc string_50; // "XXX"
+    invokespecial methodref_52; // class=java/lang/IllegalArgumentException, name=<init>, descriptor=(Ljava/lang/String;)V
+    athrow;
+  }
+  protected method {
+    name utf8_55; // methodWithAnonymousClass
+    descriptor utf8_15; // ()V
+    line numbers {
+      line ir0, 29;
+      line ir9, 36;
+    }
+    debug vars {
+      var a_0, ir0, utf8_36, utf8_37; // name=this,  descriptor=Lorg/jasm/test/testclass/Class2;
+      var a_1, ir9, utf8_61, utf8_62; // name=run,  descriptor=Ljava/lang/Runnable;
+    }
+    maxstack 3;
+    maxlocals 2;
+    //Variables
+    var object a_0;
+    var object a_1;
+    //Instructions
+    ir0: new classref_56; // org/jasm/test/testclass/Class2$1
+    dup;
+    aload a_0;
+    invokespecial methodref_58; // class=org/jasm/test/testclass/Class2$1, name=<init>, descriptor=(Lorg/jasm/test/testclass/Class2;)V
+    astore a_1;
+    ir9: return;
+  }
+  public method {
+    name utf8_63; // methodMitException2
+    descriptor utf8_15; // ()V
+    throws classref_48; // java/lang/IllegalArgumentException
+    line numbers {
+      line ir0, 47;
+      line ir9, 50;
+      line ir13, 51;
+      line ir15, 52;
+      line ir18, 53;
+      line ir20, 54;
+      line ir24, 55;
+      line ir29, 56;
+      line ir32, 57;
+      line ir36, 58;
+      line ir42, 59;
+      line ir44, 60;
+      line ir46, 62;
+      line ir51, 61;
+      line ir53, 62;
+      line ir55, 63;
+      line ir58, 62;
+      line ir60, 64;
+    }
+    debug vars {
+      var a_0, ir0, utf8_36, utf8_37; // name=this,  descriptor=Lorg/jasm/test/testclass/Class2;
+      var i_1, ir15->ir42, utf8_71, utf8_7; // name=x,  descriptor=I
+      var i_1, ir46->ir51, utf8_71, utf8_7; // name=x,  descriptor=I
+      var i_1, ir55, utf8_71, utf8_7; // name=x,  descriptor=I
+      var l_2, ir20->ir39, utf8_72, utf8_73; // name=y,  descriptor=J
+      var d_4, ir29->ir39, utf8_74, utf8_75; // name=z,  descriptor=D
+      var i_6, ir32->ir39, utf8_76, utf8_77; // name=s,  descriptor=S
+      var f_7, ir36->ir39, utf8_78, utf8_79; // name=f,  descriptor=F
+      var i_9, ir13->ir39, utf8_80, utf8_81; // name=by,  descriptor=B
+      var a_10, ir9, utf8_82, utf8_65; // name=multi,  descriptor=[[I
+      var a_11, ir44->ir46, utf8_83, utf8_84; // name=e,  descriptor=Ljava/lang/RuntimeException;
+    }
+    maxstack 4;
+    maxlocals 13;
+    try ir9->ir39 catch classref_69 go to ir42; // java/lang/RuntimeException
+    try ir9->ir46 catch all go to ir51;
+    //Variables
+    var object a_0;
+    var int i_1;
+    var long l_2;
+    var double d_4;
+    var int i_6;
+    var float f_7;
+    var int i_8;
+    var int i_9;
+    var object a_10;
+    var object a_11;
+    var object a_12;
+    //Instructions
+    ir0: iconst_4;
+    bipush 6;
+    multianewarray classref_64, 2; // [[I
+    astore a_10;
+    ir9: bipush -56;
+    istore i_9;
+    ir13: iconst_2;
+    istore i_1;
+    ir15: iinc i_1, 1;
+    ir18: lconst_1;
+    lstore l_2;
+    ir20: lload l_2;
+    lconst_1;
+    ladd;
+    lstore l_2;
+    ir24: ldc2_w double_66; // 3.0
+    dstore d_4;
+    ir29: iconst_5;
+    istore i_6;
+    ir32: ldc float_68; // 4.0
+    fstore f_7;
+    ir36: iconst_0;
+    istore i_8;
+    ir39: goto ir58;
+    ir42: astore a_11;
+    ir44: iconst_1;
+    istore i_1;
+    ir46: iconst_3;
+    istore i_1;
+    goto ir60;
+    ir51: astore a_12;
+    ir53: iconst_3;
+    istore i_1;
+    ir55: aload a_12;
+    athrow;
+    ir58: iconst_3;
+    istore i_1;
+    ir60: return;
+  }
+  public method {
+    name utf8_88; // interfaceCall
+    descriptor utf8_15; // ()V
+    line numbers {
+      line ir0, 67;
+      line ir8, 68;
+      line ir15, 69;
+      line ir21, 70;
+    }
+    debug vars {
+      var a_0, ir0, utf8_36, utf8_37; // name=this,  descriptor=Lorg/jasm/test/testclass/Class2;
+      var a_1, ir8, utf8_100, utf8_101; // name=intf,  descriptor=Lorg/jasm/test/testclass/Interface1;
+    }
+    maxstack 2;
+    maxlocals 2;
+    //Variables
+    var object a_0;
+    var object a_1;
+    //Instructions
+    ir0: new classref_89; // org/jasm/test/testclass/Class3
+    dup;
+    invokespecial methodref_91; // class=org/jasm/test/testclass/Class3, name=<init>, descriptor=()V
+    astore a_1;
+    ir8: aload a_1;
+    iconst_3;
+    invokeinterface intfmethodref_92; // class=org/jasm/test/testclass/Interface1, name=testMethod, descriptor=(I)V
+    ir15: aload a_1;
+    invokeinterface intfmethodref_97; // class=org/jasm/test/testclass/Interface1, name=testMethodWithoutArgs, descriptor=()V
+    ir21: return;
+  }
+  public method {
+    name utf8_102; // switchMethod
+    descriptor utf8_39; // (I)V
+    line numbers {
+      line ir0, 73;
+      line ir2, 74;
+      line ir36, 75;
+      line ir38, 76;
+      line ir41, 77;
+      line ir43, 78;
+      line ir46, 79;
+      line ir49, 80;
+      line ir52, 81;
+      line ir55, 84;
+    }
+    debug vars {
+      var a_0, ir0, utf8_36, utf8_37; // name=this,  descriptor=Lorg/jasm/test/testclass/Class2;
+      var i_1, ir0, utf8_43, utf8_7; // name=a,  descriptor=I
+      var i_2, ir2, utf8_103, utf8_7; // name=r,  descriptor=I
+    }
+    maxstack 1;
+    maxlocals 3;
+    //Variables
+    var object a_0;
+    var int i_1;
+    var int i_2;
+    //Instructions
+    ir0: iconst_m1;
+    istore i_2;
+    ir2: iload i_1;
+    tableswitch 1->ir36,2->ir52,3->ir41,4->ir52,5->ir46,default->ir52;
+    ir36: iconst_1;
+    istore i_2;
+    ir38: goto ir55;
+    ir41: iconst_5;
+    istore i_2;
+    ir43: goto ir55;
+    ir46: bipush 7;
+    istore i_2;
+    ir49: goto ir55;
+    ir52: bipush 10;
+    istore i_2;
+    ir55: return;
+  }
+  public method {
+    name utf8_104; // switchMethod2
+    descriptor utf8_39; // (I)V
+    line numbers {
+      line ir0, 87;
+      line ir2, 88;
+      line ir36, 89;
+      line ir38, 90;
+      line ir41, 91;
+      line ir43, 92;
+      line ir46, 93;
+      line ir50, 94;
+      line ir53, 95;
+      line ir56, 98;
+    }
+    debug vars {
+      var a_0, ir0, utf8_36, utf8_37; // name=this,  descriptor=Lorg/jasm/test/testclass/Class2;
+      var i_1, ir0, utf8_43, utf8_7; // name=a,  descriptor=I
+      var i_2, ir2, utf8_103, utf8_7; // name=r,  descriptor=I
+    }
+    maxstack 1;
+    maxlocals 3;
+    //Variables
+    var object a_0;
+    var int i_1;
+    var int i_2;
+    //Instructions
+    ir0: iconst_m1;
+    istore i_2;
+    ir2: iload i_1;
+    lookupswitch 1->ir36,3->ir41,100->ir46,default->ir53;
+    ir36: iconst_1;
+    istore i_2;
+    ir38: goto ir56;
+    ir41: iconst_5;
+    istore i_2;
+    ir43: goto ir56;
+    ir46: sipush 300;
+    istore i_2;
+    ir50: goto ir56;
+    ir53: bipush 10;
+    istore i_2;
+    ir56: return;
+  }
+  public method {
+    name utf8_105; // arraysMethod
+    descriptor utf8_39; // (I)V
+    line numbers {
+      line ir0, 101;
+      line ir4, 102;
+      line ir8, 103;
+      line ir13, 104;
+      line ir18, 105;
+      line ir23, 106;
+      line ir28, 107;
+      line ir33, 108;
+      line ir38, 109;
+    }
+    debug vars {
+      var a_0, ir0, utf8_36, utf8_37; // name=this,  descriptor=Lorg/jasm/test/testclass/Class2;
+      var i_1, ir0, utf8_43, utf8_7; // name=a,  descriptor=I
+      var a_2, ir4, utf8_106, utf8_107; // name=ba,  descriptor=[Z
+      var a_3, ir8, utf8_108, utf8_109; // name=ca,  descriptor=[C
+      var a_4, ir13, utf8_110, utf8_111; // name=bya,  descriptor=[B
+      var a_5, ir18, utf8_112, utf8_113; // name=da,  descriptor=[D
+      var a_6, ir23, utf8_114, utf8_115; // name=fa,  descriptor=[F
+      var a_7, ir28, utf8_116, utf8_117; // name=ia,  descriptor=[I
+      var a_8, ir33, utf8_118, utf8_119; // name=la,  descriptor=[J
+      var a_9, ir38, utf8_120, utf8_121; // name=sa,  descriptor=[S
+    }
+    maxstack 1;
+    maxlocals 10;
+    //Variables
+    var object a_0;
+    var int i_1;
+    var object a_2;
+    var object a_3;
+    var object a_4;
+    var object a_5;
+    var object a_6;
+    var object a_7;
+    var object a_8;
+    var object a_9;
+    //Instructions
+    ir0: iload i_1;
+    newarray boolean;
+    astore a_2;
+    ir4: iload i_1;
+    newarray char;
+    astore a_3;
+    ir8: iload i_1;
+    newarray byte;
+    astore a_4;
+    ir13: iload i_1;
+    newarray double;
+    astore a_5;
+    ir18: iload i_1;
+    newarray float;
+    astore a_6;
+    ir23: iload i_1;
+    newarray int;
+    astore a_7;
+    ir28: iload i_1;
+    newarray long;
+    astore a_8;
+    ir33: iload i_1;
+    newarray short;
+    astore a_9;
+    ir38: return;
+  }
+}
+
