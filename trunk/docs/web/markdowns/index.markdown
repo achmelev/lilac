@@ -6,4 +6,4 @@ Lilac has been created after the author has for some years searched in vain for 
 Two minimum goals Lilac sets out to achieve are:
 
 * A perfect roundtrip - the assembling of a disassembled class file should yield the original file
-* Symbolic syntax - the assembler sytax should use symblic names instead of magic numbers while accessing variables and constants
+* Symbolic syntax - the assembler syntax should use symbolic names instead of magic numbers while accessing variables and constants
