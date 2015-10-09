@@ -8,6 +8,8 @@ public interface AnnotatedInterface {
 	@TestInvisibleAnnotation
 	public String annotatedField = null;
 	
+	public @TargetPathAnnotation String [] [] annotatedString = null;
+	
 	@TestAnnotation(booleanValue = false, byteValue = 5, charValue = 'A', enumValue=Days.WEDNESDAY,clazzValue = Integer.class, intValue = 20, longValue = -60000L, shortValue = 700, nestedAnnotation = @NestedAnnotation, intArrayValue = {10,20,30})
 	@TestInvisibleAnnotation
 	public void annotatedMethod(boolean b, @TestAnnotation(booleanValue = false, byteValue = 1, charValue = 2,enumValue=Days.THURSDAY, clazzValue = Void.class, intValue = 5, longValue = 6, shortValue = 7, nestedAnnotation = @NestedAnnotation, intArrayValue = {2,5,6})  @TestInvisibleAnnotation int a);
