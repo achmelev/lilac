@@ -6,7 +6,7 @@ if "%JASM_JAVA_HOME%" == "" goto error_varnotset
 
 set JASM_JAVA_CMD=%JASM_JAVA_HOME%\bin\java.exe
 
-if not exist %JASM_JAVA_CMD% goto error_javanotfound
+if not exist "%JASM_JAVA_CMD%" goto error_javanotfound
 
 set JASM_INSTALL_DIR=%~dp0
 
