@@ -77,9 +77,6 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 	        if (readOptions(line)) {
 	        	initLog4J(line);
 	        	
-	        	if (log.isDebugEnabled()) {
-	        		log.debug("START");
-	        	}
 	        	
 	        	if (prepare()) {
 	        		int numberOfWorkUnits = getNumberOfWorkUnits();
