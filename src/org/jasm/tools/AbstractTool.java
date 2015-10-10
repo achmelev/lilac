@@ -77,6 +77,10 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 	        if (readOptions(line)) {
 	        	initLog4J(line);
 	        	
+	        	if (log.isDebugEnabled()) {
+	        		log.debug("START");
+	        	}
+	        	
 	        	if (prepare()) {
 	        		int numberOfWorkUnits = getNumberOfWorkUnits();
 	        		for (int i=0;i<numberOfWorkUnits; i++) {
@@ -210,6 +214,7 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 					}
 				} else {
 					all.add(new DirResourceCollection(input));
+					addZipsAndJarsFromDir(input, all);
 				}
 			} else {
 				printer.printWarning(input.getAbsolutePath()+" doesn't exist");
@@ -218,6 +223,29 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 		
 		return all;
 	}
+	
+	private void addZipsAndJarsFromDir(File rootDir, CompositeResourceCollection all) {
+		File [] children = rootDir.listFiles();
+		for (File input: children) {
+			if (input.isDirectory()) {
+				addZipsAndJarsFromDir(input, all);
+			} if (input.getName().endsWith(".jar")) {
+				try {
+					all.add(new JarResourceCollection(new JarFile(input)));
+				} catch (IOException e) {
+					printer.printWarning("couldn't read jar file "+input.getAbsolutePath());
+				}
+			} else if (input.getName().endsWith(".zip")) {
+				try {
+					all.add(new ZipResourceCollection(new ZipFile(input)));
+				} catch (IOException e) {
+					printer.printWarning("couldn't read zip file "+input.getAbsolutePath());
+				}
+			}
+				
+		}
+	}
+
 	
 	protected File createOutputDirectory(String key) {
 		String path = line.getOptionValue(key);
