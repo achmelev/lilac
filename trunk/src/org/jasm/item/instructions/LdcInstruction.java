@@ -53,8 +53,13 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 	
 	@Override
 	public String getPrintName() {
-		boolean wideModifier = (this.cpEntry.getIndexInPool()<=255 && opCode == OpCodes.ldc_w);
-		return (wideModifier?"wide ":"")+OpCodes.getNameForOpcode(OpCodes.ldc);
+		if (this.cpEntry == null) {
+			return OpCodes.getNameForOpcode(OpCodes.ldc);
+		} else {
+			boolean wideModifier = (this.cpEntry.getIndexInPool()<=255 && opCode == OpCodes.ldc_w);
+			return (wideModifier?"wide ":"")+OpCodes.getNameForOpcode(OpCodes.ldc);
+		}
+		
 	}
 
 	@Override
