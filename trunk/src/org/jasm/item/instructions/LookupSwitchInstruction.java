@@ -92,9 +92,18 @@ public class LookupSwitchInstruction extends AbstractSwitchInstruction {
 		}
 	}
 	
-	
+	private int calculatedPad = -1;
 	
 	private int calculatePad() {
+		if (calculatedPad >=0) {
+			return calculatedPad;
+		} else {
+			calculatedPad = doCalculatePad();
+			return calculatedPad;
+		}
+	}
+	
+	private int doCalculatePad() {
 		int offset = getOffsetInCode();
 		if ((offset+1)%4 == 0) {
 			return 0;
