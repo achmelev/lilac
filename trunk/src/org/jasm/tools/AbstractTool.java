@@ -425,14 +425,17 @@ public abstract class AbstractTool implements Runnable, ITaskCallback{
 	
 	protected abstract boolean acceptInput(File f);
 	
-	protected static void runTool(AbstractTool tool) {
+	protected static int runTool(AbstractTool tool) {
 		try {
 			tool.run();
+			if (tool.printer.getErrorCounter()>0) {
+				return 1;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(1);
+			return 1;
 		}
-		System.exit(0);
+		return 0;
 	}
 
 }

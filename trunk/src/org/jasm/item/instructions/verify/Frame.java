@@ -8,6 +8,7 @@ import org.jasm.item.attribute.AbstractStackmapFrame;
 import org.jasm.item.attribute.SameExtendedStackmapFrame;
 import org.jasm.item.attribute.SameStackmapFrame;
 import org.jasm.item.instructions.verify.error.InconsistentStackSizeException;
+import org.jasm.item.instructions.verify.error.LocalVariablesMissingException;
 import org.jasm.item.instructions.verify.error.StackOverflowException;
 import org.jasm.item.instructions.verify.error.StackUnderflowException;
 import org.jasm.item.instructions.verify.error.StackmapAppendOverflowException;
@@ -327,7 +328,7 @@ public class Frame {
 			}
 		}
 		if (maxLocals<locals.size()) {
-			throw new IllegalArgumentException("max locals: "+maxLocals+"<"+locals.size());
+			throw new LocalVariablesMissingException();
 		}
 		
 		Stack<VerificationType> stack = new Stack<VerificationType>();

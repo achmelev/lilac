@@ -1,10 +1,13 @@
 package org.jasm.tools.print;
 
 public class ConsolePrinter implements IPrinter {
+	
+	private int counter = 0;
 
 	@Override
 	public void printError(String message) {
 		System.out.println("error: "+message);
+		counter++;
 		
 	}
 
@@ -19,5 +22,12 @@ public class ConsolePrinter implements IPrinter {
 		System.out.println(message);
 		
 	}
+
+	@Override
+	public int getErrorCounter() {
+		return counter;
+	}
+	
+	
 
 }
