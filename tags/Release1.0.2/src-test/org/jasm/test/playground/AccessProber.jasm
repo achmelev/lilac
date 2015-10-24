@@ -1,0 +1,74 @@
+public super class {
+  version 52.0;
+  name AccessProber; // org/jasm/test/playground/AccessProber
+  extends Object; // java/lang/Object
+  implements Prober; // org/jasm/test/playground/Prober
+   //Constants
+  const classref AccessProber AccessProber_name; // org/jasm/test/playground/AccessProber
+  const utf8 AccessProber_name "org/jasm/test/playground/AccessProber";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const classref Prober Prober_name; // org/jasm/test/playground/Prober
+  const utf8 Prober_name "org/jasm/test/playground/Prober";
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref init0 Object, init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype init0_nat init0_name, init0_desc; // name=<init> type=()V
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/AccessProber;";
+  const utf8 check_name "check";
+  const utf8 method_desc "(I)I";
+  const methodref calculate Calculator, calculate_nat; // class=org/jasm/test/playground/calc/Calculator, name=calculate, descriptor=(I)I
+  const classref Calculator Calculator_name; // org/jasm/test/playground/calc/Calculator
+  const utf8 Calculator_name "org/jasm/test/playground/calc/Calculator";
+  const nameandtype calculate_nat calculate_name, method_desc; // name=calculate type=(I)I
+  const utf8 calculate_name "calculate";
+  const utf8 a_name "a";
+  const utf8 a_desc "I";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "AccessProber.java";
+  source file source_file_name; // AccessProber.java
+   //Fields
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor init0_desc; // ()V
+    line numbers {
+      line ir0, 5;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/AccessProber;
+    }
+    maxstack 1;
+    maxlocals 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial init0; // class=java/lang/Object, name=<init>, descriptor=()V
+    return;
+  }
+  public method {
+    name check_name; // check
+    descriptor method_desc; // (I)I
+    line numbers {
+      line ir0, 10;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/AccessProber;
+      var a, ir0, a_name, a_desc; // name=a,  descriptor=I
+    }
+    maxstack 1;
+    maxlocals 2;
+    //Variables
+    var object this;
+    var int a;
+    //Instructions
+    ir0: iload a;
+    invokestatic calculate; // class=org/jasm/test/playground/calc/Calculator, name=calculate, descriptor=(I)I
+    ireturn;
+  }
+}

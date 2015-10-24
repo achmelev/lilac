@@ -1,0 +1,84 @@
+public super class {
+  version 48.0;
+  name ThisClass; // org/jasm/test/playground/ArrayExecutable
+  extends Object; // java/lang/Object
+  implements IExecutable; // org/jasm/test/playground/IExecutable
+   //Constants
+  const classref ThisClass ThisClass_name; // org/jasm/test/playground/ArrayExecutable
+  const utf8 ThisClass_name "org/jasm/test/playground/ArrayExecutable";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const classref IExecutable IExecutable_name; // org/jasm/test/playground/IExecutable
+  const utf8 IExecutable_name "org/jasm/test/playground/IExecutable";
+  const utf8 init0_name "<init>";
+  const utf8 method_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref Object.init0 Object, Object.init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype Object.init0_nat init0_name, method_desc; // name=<init> type=()V
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/ArrayExecutable;";
+  const utf8 execute_name "execute";
+  const classref String String_name; // java/lang/String
+  const utf8 String_name "java/lang/String";
+  const utf8 array_name "array";
+  const utf8 array_desc "[Ljava/lang/String;";
+  const utf8 o_name "o";
+  const utf8 o_desc "Ljava/lang/Object;";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "ArrayExecutable.java";
+  source file source_file_name; // ArrayExecutable.java
+   //Fields
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 3;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/ArrayExecutable;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial Object.init0;
+    return;
+  }
+  public method {
+    name execute_name; // execute
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 7;
+      line ir5, 8;
+      line ir13, 9;
+      line ir20, 11;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/ArrayExecutable;
+      var array$0, ir5, array_name, array_desc; // name=array,  descriptor=[Ljava/lang/String;
+      var o, ir13, o_name, o_desc; // name=o,  descriptor=Ljava/lang/Object;
+    }
+    maxstack 3;
+    //Variables
+    var object this;
+    var object array$0;
+    var object o;
+    //Instructions
+    ir0: iconst_2;
+    anewarray String;
+    astore array$0;
+    ir5: new Object;
+    dup;
+    invokespecial Object.init0;
+    astore o;
+    ir13: aload array$0;
+    iconst_1;
+    aload o;
+    aastore;
+    ir20: return;
+  }
+}

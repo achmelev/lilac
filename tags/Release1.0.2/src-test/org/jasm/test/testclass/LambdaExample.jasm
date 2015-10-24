@@ -1,0 +1,119 @@
+public super class {
+  version 52.0;
+  name ThisClass; // org/jasm/test/testclass/LambdaExample
+  extends Object; // java/lang/Object
+   //Constants
+  const classref ThisClass ThisClass_name; // org/jasm/test/testclass/LambdaExample
+  const utf8 ThisClass_name "org/jasm/test/testclass/LambdaExample";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const utf8 x_name "x";
+  const utf8 x_desc "I";
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref Object.init0 Object, Object.init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype Object.init0_nat init0_name, init0_desc; // name=<init> type=()V
+  const fieldref x ThisClass, x_nat; // class=org/jasm/test/testclass/LambdaExample, name=x, descriptor=I
+  const nameandtype x_nat x_name, x_desc; // name=x type=I
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 type_desc "Lorg/jasm/test/testclass/LambdaExample;";
+  const utf8 main_name "main";
+  const utf8 main_desc "([Ljava/lang/String;)V";
+  const methodref init0 ThisClass, Object.init0_nat; // class=org/jasm/test/testclass/LambdaExample, name=<init>, descriptor=()V
+  const classref LambdaExample$FirstLevel LambdaExample$FirstLevel_name; // org/jasm/test/testclass/LambdaExample$FirstLevel
+  const utf8 LambdaExample$FirstLevel_name "org/jasm/test/testclass/LambdaExample$FirstLevel";
+  const methodref Object.getClass Object, Object.getClass_nat; // class=java/lang/Object, name=getClass, descriptor=()Ljava/lang/Class;
+  const nameandtype Object.getClass_nat getClass_name, getClass_desc; // name=getClass type=()Ljava/lang/Class;
+  const utf8 getClass_name "getClass";
+  const utf8 getClass_desc "()Ljava/lang/Class;";
+  const methodref LambdaExample$FirstLevel.init0 LambdaExample$FirstLevel, LambdaExample$FirstLevel.init0_nat; // class=org/jasm/test/testclass/LambdaExample$FirstLevel, name=<init>, descriptor=(Lorg/jasm/test/testclass/LambdaExample;)V
+  const nameandtype LambdaExample$FirstLevel.init0_nat init0_name, init0_desc$0; // name=<init> type=(Lorg/jasm/test/testclass/LambdaExample;)V
+  const utf8 init0_desc$0 "(Lorg/jasm/test/testclass/LambdaExample;)V";
+  const methodref LambdaExample$FirstLevel.methodInFirstLevel LambdaExample$FirstLevel, LambdaExample$FirstLevel.methodInFirstLevel_nat; // class=org/jasm/test/testclass/LambdaExample$FirstLevel, name=methodInFirstLevel, descriptor=(I)V
+  const nameandtype LambdaExample$FirstLevel.methodInFirstLevel_nat methodInFirstLevel_name, methodInFirstLevel_desc; // name=methodInFirstLevel type=(I)V
+  const utf8 methodInFirstLevel_name "methodInFirstLevel";
+  const utf8 methodInFirstLevel_desc "(I)V";
+  const utf8 args_name "args";
+  const utf8 args_desc "[Ljava/lang/String;";
+  const utf8 st_name "st";
+  const utf8 fl_name "fl";
+  const utf8 fl_desc "Lorg/jasm/test/testclass/LambdaExample$FirstLevel;";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "LambdaExample.java";
+  const utf8 InnerClasses_utf8 "InnerClasses";
+  const utf8 FirstLevel_name "FirstLevel";
+  source file source_file_name; // LambdaExample.java
+  inner class {
+    inner LambdaExample$FirstLevel; // org/jasm/test/testclass/LambdaExample$FirstLevel
+    outer ThisClass; // org/jasm/test/testclass/LambdaExample
+    name FirstLevel_name; // FirstLevel
+  }
+   //Fields
+  public field {
+    name x_name; // x
+    descriptor x_desc; // I
+  }
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor init0_desc; // ()V
+    line numbers {
+      line ir0, 5;
+      line ir4, 7;
+      line ir9, 5;
+    }
+    debug vars {
+      var this, ir0, this_name, type_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/LambdaExample;
+    }
+    maxstack 2;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial Object.init0;
+    ir4: aload this;
+    iconst_0;
+    putfield x;
+    ir9: return;
+  }
+  public static varargs method {
+    name main_name; // main
+    descriptor main_desc; // ([Ljava/lang/String;)V
+    line numbers {
+      line ir0, 36;
+      line ir8, 37;
+      line ir22, 38;
+      line ir28, 39;
+    }
+    debug vars {
+      var args, ir0, args_name, args_desc; // name=args,  descriptor=[Ljava/lang/String;
+      var st, ir8, st_name, type_desc; // name=st,  descriptor=Lorg/jasm/test/testclass/LambdaExample;
+      var fl, ir22, fl_name, fl_desc; // name=fl,  descriptor=Lorg/jasm/test/testclass/LambdaExample$FirstLevel;
+    }
+    maxstack 4;
+    //Variables
+    var object args;
+    var object st;
+    var object fl;
+    //Instructions
+    ir0: new ThisClass;
+    dup;
+    invokespecial init0;
+    astore st;
+    ir8: new LambdaExample$FirstLevel;
+    dup;
+    aload st;
+    dup;
+    invokevirtual Object.getClass;
+    pop;
+    invokespecial LambdaExample$FirstLevel.init0;
+    astore fl;
+    ir22: aload fl;
+    bipush 23;
+    invokevirtual LambdaExample$FirstLevel.methodInFirstLevel;
+    ir28: return;
+  }
+}

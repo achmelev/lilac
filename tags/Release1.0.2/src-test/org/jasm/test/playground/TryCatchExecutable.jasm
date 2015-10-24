@@ -1,0 +1,101 @@
+public super class {
+  version 52.0;
+  name TryCatchExecutable; // org/jasm/test/playground/TryCatchExecutable
+  extends Object; // java/lang/Object
+  implements IExecutable; // org/jasm/test/playground/IExecutable
+   //Constants
+  const classref TryCatchExecutable TryCatchExecutable_name;
+  const utf8 TryCatchExecutable_name "org/jasm/test/playground/TryCatchExecutable";
+  const classref Object Object_name;
+  const utf8 Object_name "java/lang/Object";
+  const classref IExecutable IExecutable_name;
+  const utf8 IExecutable_name "org/jasm/test/playground/IExecutable";
+  const utf8 init0_name "<init>";
+  const utf8 method_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref init0 Object, init0_nat;
+  const nameandtype init0_nat init0_name, method_desc;
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/TryCatchExecutable;";
+  const utf8 execute_name "execute";
+  const fieldref out System, out_nat;
+  const classref System System_name;
+  const utf8 System_name "java/lang/System";
+  const nameandtype out_nat out_name, out_desc;
+  const utf8 out_name "out";
+  const utf8 out_desc "Ljava/io/PrintStream;";
+  
+  const methodref println PrintStream, println_nat;
+  const classref PrintStream PrintStream_name;
+  const utf8 PrintStream_name "java/io/PrintStream";
+  const nameandtype println_nat println_name, println_desc;
+  const utf8 println_name "println";
+  const utf8 println_desc "(Ljava/lang/String;)V";
+  const classref IllegalArgumentException IllegalArgumentException_name;
+  const utf8 IllegalArgumentException_name "java/lang/IllegalArgumentException";
+  const utf8 e_name "e";
+  const utf8 e_desc "Ljava/lang/IllegalArgumentException;";
+  const utf8 StackMapTable_utf8 "StackMapTable";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "TryCatchExecutable.java";
+  source file source_file_name;
+  
+  const string retString retUtf8;
+  const utf8 retUtf8 "RETURN1";
+  
+  const string ret2String retUtf8;
+  const utf8 ret2Utf8 "RETURN2";
+  
+   //Fields
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor method_desc; // ()V
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    aload this;
+    invokespecial init0;
+    return;
+  }
+  public method {
+    name execute_name; // execute
+    descriptor method_desc; // ()V
+    stackmap {
+      same locals catchl, {object IllegalArgumentException};
+      same end;
+      same unreachable;
+    }
+    maxstack 2;
+    try trybegin->tryend catch IllegalArgumentException go to catchl;
+    //Variables
+    var object this;
+    //Instructions
+    trybegin:
+     
+    getstatic out;
+    ldc retString;
+    invokevirtual println;
+    
+    tryend: 
+    goto end;
+    
+    catchl:
+     
+    pop;
+    getstatic out;
+    ldc ret2String;
+    invokevirtual println;
+    
+    end:
+    return;
+    
+    unreachable:
+    
+    getstatic out;
+    ldc retString;
+    invokevirtual println;
+    return;
+  }
+}

@@ -1,0 +1,534 @@
+public super class {
+  version 52.0;
+  name ThisClass; // org/jasm/test/testclass/AssemblerClassLoader
+  extends ClassLoader; // java/lang/ClassLoader
+   //Constants
+  const classref ThisClass ThisClass_name; // org/jasm/test/testclass/AssemblerClassLoader
+  const utf8 ThisClass_name "org/jasm/test/testclass/AssemblerClassLoader";
+  const classref ClassLoader ClassLoader_name; // java/lang/ClassLoader
+  const utf8 ClassLoader_name "java/lang/ClassLoader";
+  const utf8 parentFirst_name "parentFirst";
+  const utf8 type_desc "Z";
+  const utf8 log_name "log";
+  const utf8 log_desc "Lorg/slf4j/Logger;";
+  const utf8 verify_name "verify";
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "(Ljava/lang/ClassLoader;Z)V";
+  const utf8 Code_utf8 "Code";
+  const methodref ClassLoader.init0 ClassLoader, ClassLoader.init0_nat; // class=java/lang/ClassLoader, name=<init>, descriptor=(Ljava/lang/ClassLoader;)V
+  const nameandtype ClassLoader.init0_nat init0_name, init0_desc$0; // name=<init> type=(Ljava/lang/ClassLoader;)V
+  const utf8 init0_desc$0 "(Ljava/lang/ClassLoader;)V";
+  const fieldref parentFirst ThisClass, parentFirst_nat; // class=org/jasm/test/testclass/AssemblerClassLoader, name=parentFirst, descriptor=Z
+  const nameandtype parentFirst_nat parentFirst_name, type_desc; // name=parentFirst type=Z
+  const methodref Object.getClass Object, Object.getClass_nat; // class=java/lang/Object, name=getClass, descriptor=()Ljava/lang/Class;
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const nameandtype Object.getClass_nat getClass_name, getClass_desc; // name=getClass type=()Ljava/lang/Class;
+  const utf8 getClass_name "getClass";
+  const utf8 getClass_desc "()Ljava/lang/Class;";
+  const methodref LoggerFactory.getLogger LoggerFactory, LoggerFactory.getLogger_nat; // class=org/slf4j/LoggerFactory, name=getLogger, descriptor=(Ljava/lang/Class;)Lorg/slf4j/Logger;
+  const classref LoggerFactory LoggerFactory_name; // org/slf4j/LoggerFactory
+  const utf8 LoggerFactory_name "org/slf4j/LoggerFactory";
+  const nameandtype LoggerFactory.getLogger_nat getLogger_name, getLogger_desc; // name=getLogger type=(Ljava/lang/Class;)Lorg/slf4j/Logger;
+  const utf8 getLogger_name "getLogger";
+  const utf8 getLogger_desc "(Ljava/lang/Class;)Lorg/slf4j/Logger;";
+  const fieldref log ThisClass, log_nat; // class=org/jasm/test/testclass/AssemblerClassLoader, name=log, descriptor=Lorg/slf4j/Logger;
+  const nameandtype log_nat log_name, log_desc; // name=log type=Lorg/slf4j/Logger;
+  const fieldref verify ThisClass, verify_nat; // class=org/jasm/test/testclass/AssemblerClassLoader, name=verify, descriptor=Z
+  const nameandtype verify_nat verify_name, type_desc; // name=verify type=Z
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/testclass/AssemblerClassLoader;";
+  const utf8 parent_name "parent";
+  const utf8 parent_desc "Ljava/lang/ClassLoader;";
+  const utf8 loadClass_name "loadClass";
+  const utf8 loadClass_desc "(Ljava/lang/String;Z)Ljava/lang/Class;";
+  const utf8 Exceptions_utf8 "Exceptions";
+  const classref ClassNotFoundException ClassNotFoundException_name; // java/lang/ClassNotFoundException
+  const utf8 ClassNotFoundException_name "java/lang/ClassNotFoundException";
+  const utf8 Signature_utf8 "Signature";
+  const utf8 signature_name "(Ljava/lang/String;Z)Ljava/lang/Class<*>;";
+  const methodref ClassLoader.loadClass ClassLoader, ClassLoader.loadClass_nat; // class=java/lang/ClassLoader, name=loadClass, descriptor=(Ljava/lang/String;Z)Ljava/lang/Class;
+  const nameandtype ClassLoader.loadClass_nat loadClass_name, loadClass_desc; // name=loadClass type=(Ljava/lang/String;Z)Ljava/lang/Class;
+  const methodref tryFindClass ThisClass, tryFindClass_nat; // class=org/jasm/test/testclass/AssemblerClassLoader, name=tryFindClass, descriptor=(Ljava/lang/String;)[B
+  const nameandtype tryFindClass_nat tryFindClass_name, tryFindClass_desc; // name=tryFindClass type=(Ljava/lang/String;)[B
+  const utf8 tryFindClass_name "tryFindClass";
+  const utf8 tryFindClass_desc "(Ljava/lang/String;)[B";
+  const methodref defineClass ThisClass, defineClass_nat; // class=org/jasm/test/testclass/AssemblerClassLoader, name=defineClass, descriptor=(Ljava/lang/String;[BII)Ljava/lang/Class;
+  const nameandtype defineClass_nat defineClass_name, defineClass_desc; // name=defineClass type=(Ljava/lang/String;[BII)Ljava/lang/Class;
+  const utf8 defineClass_name "defineClass";
+  const utf8 defineClass_desc "(Ljava/lang/String;[BII)Ljava/lang/Class;";
+  const methodref ClassLoader.resolveClass ClassLoader, ClassLoader.resolveClass_nat; // class=java/lang/ClassLoader, name=resolveClass, descriptor=(Ljava/lang/Class;)V
+  const nameandtype ClassLoader.resolveClass_nat resolveClass_name, resolveClass_desc; // name=resolveClass type=(Ljava/lang/Class;)V
+  const utf8 resolveClass_name "resolveClass";
+  const utf8 resolveClass_desc "(Ljava/lang/Class;)V";
+  const methodref ClassNotFoundException.init0 ClassNotFoundException, ClassNotFoundException.init0_nat; // class=java/lang/ClassNotFoundException, name=<init>, descriptor=(Ljava/lang/String;)V
+  const nameandtype ClassNotFoundException.init0_nat init0_name, method_desc; // name=<init> type=(Ljava/lang/String;)V
+  const utf8 method_desc "(Ljava/lang/String;)V";
+  const utf8 name_name "name";
+  const utf8 type_desc$0 "Ljava/lang/String;";
+  const utf8 resolve_name "resolve";
+  const utf8 data_name "data";
+  const utf8 type_desc$1 "[B";
+  const utf8 result_name "result";
+  const utf8 result_desc "Ljava/lang/Class;";
+  const utf8 StackMapTable_utf8 "StackMapTable";
+  const classref classref_71 type_desc$1; // [B
+  const classref Class Class_name; // java/lang/Class
+  const utf8 Class_name "java/lang/Class";
+  const classref StringBuilder StringBuilder_name; // java/lang/StringBuilder
+  const utf8 StringBuilder_name "java/lang/StringBuilder";
+  const methodref String.replace String, String.replace_nat; // class=java/lang/String, name=replace, descriptor=(CC)Ljava/lang/String;
+  const classref String String_name; // java/lang/String
+  const utf8 String_name "java/lang/String";
+  const nameandtype String.replace_nat replace_name, replace_desc; // name=replace type=(CC)Ljava/lang/String;
+  const utf8 replace_name "replace";
+  const utf8 replace_desc "(CC)Ljava/lang/String;";
+  const methodref String.valueOf String, String.valueOf_nat; // class=java/lang/String, name=valueOf, descriptor=(Ljava/lang/Object;)Ljava/lang/String;
+  const nameandtype String.valueOf_nat valueOf_name, valueOf_desc; // name=valueOf type=(Ljava/lang/Object;)Ljava/lang/String;
+  const utf8 valueOf_name "valueOf";
+  const utf8 valueOf_desc "(Ljava/lang/Object;)Ljava/lang/String;";
+  const methodref StringBuilder.init0 StringBuilder, ClassNotFoundException.init0_nat; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
+  const string string_87 utf8_88; // ".jasm"
+  const utf8 utf8_88 ".jasm";
+  const methodref StringBuilder.append StringBuilder, StringBuilder.append_nat; // class=java/lang/StringBuilder, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  const nameandtype StringBuilder.append_nat append_name, append_desc; // name=append type=(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  const utf8 append_name "append";
+  const utf8 append_desc "(Ljava/lang/String;)Ljava/lang/StringBuilder;";
+  const methodref StringBuilder.toString StringBuilder, StringBuilder.toString_nat; // class=java/lang/StringBuilder, name=toString, descriptor=()Ljava/lang/String;
+  const nameandtype StringBuilder.toString_nat toString_name, toString_desc; // name=toString type=()Ljava/lang/String;
+  const utf8 toString_name "toString";
+  const utf8 toString_desc "()Ljava/lang/String;";
+  const methodref ClassLoader.getResourceAsStream ClassLoader, ClassLoader.getResourceAsStream_nat; // class=java/lang/ClassLoader, name=getResourceAsStream, descriptor=(Ljava/lang/String;)Ljava/io/InputStream;
+  const nameandtype ClassLoader.getResourceAsStream_nat getResourceAsStream_name, getResourceAsStream_desc; // name=getResourceAsStream type=(Ljava/lang/String;)Ljava/io/InputStream;
+  const utf8 getResourceAsStream_name "getResourceAsStream";
+  const utf8 getResourceAsStream_desc "(Ljava/lang/String;)Ljava/io/InputStream;";
+  const intfmethodref Logger.isDebugEnabled Logger, Logger.isDebugEnabled_nat; // class=org/slf4j/Logger, name=isDebugEnabled, descriptor=()Z
+  const classref Logger Logger_name; // org/slf4j/Logger
+  const utf8 Logger_name "org/slf4j/Logger";
+  const nameandtype Logger.isDebugEnabled_nat isDebugEnabled_name, isDebugEnabled_desc; // name=isDebugEnabled type=()Z
+  const utf8 isDebugEnabled_name "isDebugEnabled";
+  const utf8 isDebugEnabled_desc "()Z";
+  const string string_107 utf8_108; // "Loading from "
+  const utf8 utf8_108 "Loading from ";
+  const intfmethodref Logger.debug Logger, Logger.debug_nat; // class=org/slf4j/Logger, name=debug, descriptor=(Ljava/lang/String;)V
+  const nameandtype Logger.debug_nat debug_name, method_desc; // name=debug type=(Ljava/lang/String;)V
+  const utf8 debug_name "debug";
+  const classref AssemblerParser AssemblerParser_name; // org/jasm/parser/AssemblerParser
+  const utf8 AssemblerParser_name "org/jasm/parser/AssemblerParser";
+  const methodref AssemblerParser.init0 AssemblerParser, AssemblerParser.init0_nat; // class=org/jasm/parser/AssemblerParser, name=<init>, descriptor=()V
+  const nameandtype AssemblerParser.init0_nat init0_name, method_desc$0; // name=<init> type=()V
+  const utf8 method_desc$0 "()V";
+  const classref SimpleParserErrorListener SimpleParserErrorListener_name; // org/jasm/parser/SimpleParserErrorListener
+  const utf8 SimpleParserErrorListener_name "org/jasm/parser/SimpleParserErrorListener";
+  const methodref SimpleParserErrorListener.init0 SimpleParserErrorListener, AssemblerParser.init0_nat; // class=org/jasm/parser/SimpleParserErrorListener, name=<init>, descriptor=()V
+  const methodref AssemblerParser.addErrorListener AssemblerParser, AssemblerParser.addErrorListener_nat; // class=org/jasm/parser/AssemblerParser, name=addErrorListener, descriptor=(Lorg/jasm/parser/IParserErrorListener;)V
+  const nameandtype AssemblerParser.addErrorListener_nat addErrorListener_name, addErrorListener_desc; // name=addErrorListener type=(Lorg/jasm/parser/IParserErrorListener;)V
+  const utf8 addErrorListener_name "addErrorListener";
+  const utf8 addErrorListener_desc "(Lorg/jasm/parser/IParserErrorListener;)V";
+  const methodref AssemblerParser.parse AssemblerParser, AssemblerParser.parse_nat; // class=org/jasm/parser/AssemblerParser, name=parse, descriptor=(Ljava/io/InputStream;)Lorg/jasm/item/clazz/Clazz;
+  const nameandtype AssemblerParser.parse_nat parse_name, parse_desc; // name=parse type=(Ljava/io/InputStream;)Lorg/jasm/item/clazz/Clazz;
+  const utf8 parse_name "parse";
+  const utf8 parse_desc "(Ljava/io/InputStream;)Lorg/jasm/item/clazz/Clazz;";
+  const methodref AssemblerParser.getErrorCounter AssemblerParser, AssemblerParser.getErrorCounter_nat; // class=org/jasm/parser/AssemblerParser, name=getErrorCounter, descriptor=()I
+  const nameandtype AssemblerParser.getErrorCounter_nat getErrorCounter_name, method_desc$1; // name=getErrorCounter type=()I
+  const utf8 getErrorCounter_name "getErrorCounter";
+  const utf8 method_desc$1 "()I";
+  const methodref AssemblerParser.flushErrors AssemblerParser, AssemblerParser.flushErrors_nat; // class=org/jasm/parser/AssemblerParser, name=flushErrors, descriptor=()V
+  const nameandtype AssemblerParser.flushErrors_nat flushErrors_name, method_desc$0; // name=flushErrors type=()V
+  const utf8 flushErrors_name "flushErrors";
+  const classref AssemblerClassLoaderException AssemblerClassLoaderException_name; // org/jasm/loader/AssemblerClassLoaderException
+  const utf8 AssemblerClassLoaderException_name "org/jasm/loader/AssemblerClassLoaderException";
+  const string string_137 utf8_138; // "invalid assembler file"
+  const utf8 utf8_138 "invalid assembler file";
+  const methodref AssemblerClassLoaderException.init0 AssemblerClassLoaderException, AssemblerClassLoaderException.init0_nat; // class=org/jasm/loader/AssemblerClassLoaderException, name=<init>, descriptor=(Ljava/lang/String;Ljava/lang/String;)V
+  const nameandtype AssemblerClassLoaderException.init0_nat init0_name, init0_desc$1; // name=<init> type=(Ljava/lang/String;Ljava/lang/String;)V
+  const utf8 init0_desc$1 "(Ljava/lang/String;Ljava/lang/String;)V";
+  const classref ClassInfoResolver ClassInfoResolver_name; // org/jasm/resolver/ClassInfoResolver
+  const utf8 ClassInfoResolver_name "org/jasm/resolver/ClassInfoResolver";
+  const methodref ClassInfoResolver.init0 ClassInfoResolver, AssemblerParser.init0_nat; // class=org/jasm/resolver/ClassInfoResolver, name=<init>, descriptor=()V
+  const classref ClazzClassPathEntry ClazzClassPathEntry_name; // org/jasm/resolver/ClazzClassPathEntry
+  const utf8 ClazzClassPathEntry_name "org/jasm/resolver/ClazzClassPathEntry";
+  const methodref ClazzClassPathEntry.init0 ClazzClassPathEntry, ClazzClassPathEntry.init0_nat; // class=org/jasm/resolver/ClazzClassPathEntry, name=<init>, descriptor=(Lorg/jasm/item/clazz/Clazz;)V
+  const nameandtype ClazzClassPathEntry.init0_nat init0_name, init0_desc$2; // name=<init> type=(Lorg/jasm/item/clazz/Clazz;)V
+  const utf8 init0_desc$2 "(Lorg/jasm/item/clazz/Clazz;)V";
+  const methodref ClassInfoResolver.add ClassInfoResolver, ClassInfoResolver.add_nat; // class=org/jasm/resolver/ClassInfoResolver, name=add, descriptor=(Lorg/jasm/resolver/IClassPathEntry;)V
+  const nameandtype ClassInfoResolver.add_nat add_name, add_desc; // name=add type=(Lorg/jasm/resolver/IClassPathEntry;)V
+  const utf8 add_name "add";
+  const utf8 add_desc "(Lorg/jasm/resolver/IClassPathEntry;)V";
+  const classref ClassLoaderClasspathEntry ClassLoaderClasspathEntry_name; // org/jasm/resolver/ClassLoaderClasspathEntry
+  const utf8 ClassLoaderClasspathEntry_name "org/jasm/resolver/ClassLoaderClasspathEntry";
+  const methodref ClassLoaderClasspathEntry.init0 ClassLoaderClasspathEntry, ClassLoader.init0_nat; // class=org/jasm/resolver/ClassLoaderClasspathEntry, name=<init>, descriptor=(Ljava/lang/ClassLoader;)V
+  const methodref Clazz.setResolver Clazz, Clazz.setResolver_nat; // class=org/jasm/item/clazz/Clazz, name=setResolver, descriptor=(Lorg/jasm/resolver/ClassInfoResolver;)V
+  const classref Clazz Clazz_name; // org/jasm/item/clazz/Clazz
+  const utf8 Clazz_name "org/jasm/item/clazz/Clazz";
+  const nameandtype Clazz.setResolver_nat setResolver_name, setResolver_desc; // name=setResolver type=(Lorg/jasm/resolver/ClassInfoResolver;)V
+  const utf8 setResolver_name "setResolver";
+  const utf8 setResolver_desc "(Lorg/jasm/resolver/ClassInfoResolver;)V";
+  const methodref Clazz.verify Clazz, Clazz.verify_nat; // class=org/jasm/item/clazz/Clazz, name=verify, descriptor=()V
+  const nameandtype Clazz.verify_nat verify_name, method_desc$0; // name=verify type=()V
+  const methodref Clazz.getLength Clazz, Clazz.getLength_nat; // class=org/jasm/item/clazz/Clazz, name=getLength, descriptor=()I
+  const nameandtype Clazz.getLength_nat getLength_name, method_desc$1; // name=getLength type=()I
+  const utf8 getLength_name "getLength";
+  const classref ByteArrayByteBuffer ByteArrayByteBuffer_name; // org/jasm/bytebuffer/ByteArrayByteBuffer
+  const utf8 ByteArrayByteBuffer_name "org/jasm/bytebuffer/ByteArrayByteBuffer";
+  const methodref ByteArrayByteBuffer.init0 ByteArrayByteBuffer, ByteArrayByteBuffer.init0_nat; // class=org/jasm/bytebuffer/ByteArrayByteBuffer, name=<init>, descriptor=([B)V
+  const nameandtype ByteArrayByteBuffer.init0_nat init0_name, init0_desc$3; // name=<init> type=([B)V
+  const utf8 init0_desc$3 "([B)V";
+  const methodref Clazz.write Clazz, Clazz.write_nat; // class=org/jasm/item/clazz/Clazz, name=write, descriptor=(Lorg/jasm/bytebuffer/IByteBuffer;J)V
+  const nameandtype Clazz.write_nat write_name, write_desc; // name=write type=(Lorg/jasm/bytebuffer/IByteBuffer;J)V
+  const utf8 write_name "write";
+  const utf8 write_desc "(Lorg/jasm/bytebuffer/IByteBuffer;J)V";
+  const utf8 rName_name "rName";
+  const utf8 inp_name "inp";
+  const utf8 inp_desc "Ljava/io/InputStream;";
+  const utf8 parser_name "parser";
+  const utf8 parser_desc "Lorg/jasm/parser/AssemblerParser;";
+  const utf8 clazz_name "clazz";
+  const utf8 clazz_desc "Lorg/jasm/item/clazz/Clazz;";
+  const utf8 clp_name "clp";
+  const utf8 clp_desc "Lorg/jasm/resolver/ClassInfoResolver;";
+  const utf8 bbuf_name "bbuf";
+  const utf8 bbuf_desc "Lorg/jasm/bytebuffer/ByteArrayByteBuffer;";
+  const classref InputStream InputStream_name; // java/io/InputStream
+  const utf8 InputStream_name "java/io/InputStream";
+  const utf8 setParentFirst_name "setParentFirst";
+  const utf8 setParentFirst_desc "(Z)V";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "AssemblerClassLoader.java";
+  source file source_file_name; // AssemblerClassLoader.java
+   //Fields
+  private field {
+    name parentFirst_name; // parentFirst
+    descriptor type_desc; // Z
+  }
+  private field {
+    name log_name; // log
+    descriptor log_desc; // Lorg/slf4j/Logger;
+  }
+  private field {
+    name verify_name; // verify
+    descriptor type_desc; // Z
+  }
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor init0_desc; // (Ljava/lang/ClassLoader;Z)V
+    line numbers {
+      line ir0, 27;
+      line ir5, 19;
+      line ir10, 21;
+      line ir21, 24;
+      line ir26, 28;
+      line ir31, 29;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerClassLoader;
+      var parent, ir0, parent_name, parent_desc; // name=parent,  descriptor=Ljava/lang/ClassLoader;
+      var verify, ir0, verify_name, type_desc; // name=verify,  descriptor=Z
+    }
+    maxstack 2;
+    //Variables
+    var object this;
+    var object parent;
+    var int verify;
+    //Instructions
+    ir0: aload this;
+    aload parent;
+    invokespecial ClassLoader.init0;
+    ir5: aload this;
+    iconst_0;
+    putfield parentFirst;
+    ir10: aload this;
+    aload this;
+    invokevirtual Object.getClass;
+    invokestatic LoggerFactory.getLogger;
+    putfield log;
+    ir21: aload this;
+    iconst_0;
+    putfield verify;
+    ir26: aload this;
+    iload verify;
+    putfield verify;
+    ir31: return;
+  }
+  protected method {
+    name loadClass_name; // loadClass
+    descriptor loadClass_desc; // (Ljava/lang/String;Z)Ljava/lang/Class;
+    throws ClassNotFoundException; // java/lang/ClassNotFoundException
+    signature signature_name; // (Ljava/lang/String;Z)Ljava/lang/Class<*>;
+    line numbers {
+      line ir0, 34;
+      line ir7, 36;
+      line ir14, 37;
+      line ir18, 41;
+      line ir24, 42;
+      line ir28, 43;
+      line ir39, 44;
+      line ir43, 45;
+      line ir49, 47;
+      line ir52, 49;
+      line ir59, 50;
+      line ir66, 52;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerClassLoader;
+      var name$0, ir0, name_name, type_desc$0; // name=name,  descriptor=Ljava/lang/String;
+      var resolve, ir0, resolve_name, type_desc; // name=resolve,  descriptor=Z
+      var data, ir24, data_name, type_desc$1; // name=data,  descriptor=[B
+      var result, ir39->ir52, result_name, result_desc; // name=result,  descriptor=Ljava/lang/Class;
+    }
+    stackmap {
+      same locals ir17, object ClassNotFoundException;
+      same ir18;
+      append ir49, {object classref_71,object Class};
+      chop ir52, 1;
+      same ir66;
+    }
+    maxstack 5;
+    try ir7->ir13 catch ClassNotFoundException go to ir17; // java/lang/ClassNotFoundException
+    //Variables
+    var object this;
+    var object name$0;
+    var int resolve;
+    var object data;
+    var object result;
+    //Instructions
+    ir0: aload this;
+    getfield parentFirst;
+    ifeq ir18;
+    ir7: aload this;
+    aload name$0;
+    iload resolve;
+    invokespecial ClassLoader.loadClass;
+    ir13: pop;
+    ir14: goto ir18;
+    ir17: astore data;
+    ir18: aload this;
+    aload name$0;
+    invokespecial tryFindClass;
+    astore data;
+    ir24: aload data;
+    ifnull ir52;
+    ir28: aload this;
+    aload name$0;
+    aload data;
+    iconst_0;
+    aload data;
+    arraylength;
+    invokevirtual defineClass;
+    astore result;
+    ir39: iload resolve;
+    ifeq ir49;
+    ir43: aload this;
+    aload result;
+    invokespecial ClassLoader.resolveClass;
+    ir49: aload result;
+    areturn;
+    ir52: aload this;
+    getfield parentFirst;
+    ifne ir66;
+    ir59: aload this;
+    aload name$0;
+    iload resolve;
+    invokespecial ClassLoader.loadClass;
+    areturn;
+    ir66: new ClassNotFoundException;
+    dup;
+    aload name$0;
+    invokespecial ClassNotFoundException.init0;
+    athrow;
+  }
+  private method {
+    name tryFindClass_name; // tryFindClass
+    descriptor tryFindClass_desc; // (Ljava/lang/String;)[B
+    throws ClassNotFoundException; // java/lang/ClassNotFoundException
+    line numbers {
+      line ir0, 61;
+      line ir27, 63;
+      line ir33, 64;
+      line ir37, 65;
+      line ir39, 68;
+      line ir51, 69;
+      line ir76, 72;
+      line ir85, 73;
+      line ir97, 74;
+      line ir105, 75;
+      line ir113, 76;
+      line ir118, 77;
+      line ir129, 79;
+      line ir138, 80;
+      line ir152, 81;
+      line ir165, 83;
+      line ir172, 85;
+      line ir179, 86;
+      line ir184, 89;
+      line ir192, 90;
+      line ir197, 91;
+      line ir208, 93;
+      line ir217, 94;
+      line ir228, 95;
+      line ir236, 96;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerClassLoader;
+      var name$0, ir0, name_name, type_desc$0; // name=name,  descriptor=Ljava/lang/String;
+      var rName, ir27, rName_name, type_desc$0; // name=rName,  descriptor=Ljava/lang/String;
+      var inp, ir33, inp_name, inp_desc; // name=inp,  descriptor=Ljava/io/InputStream;
+      var parser, ir85, parser_name, parser_desc; // name=parser,  descriptor=Lorg/jasm/parser/AssemblerParser;
+      var clazz, ir105, clazz_name, clazz_desc; // name=clazz,  descriptor=Lorg/jasm/item/clazz/Clazz;
+      var clp, ir138, clp_name, clp_desc; // name=clp,  descriptor=Lorg/jasm/resolver/ClassInfoResolver;
+      var data, ir217, data_name, type_desc$1; // name=data,  descriptor=[B
+      var bbuf, ir228, bbuf_name, bbuf_desc; // name=bbuf,  descriptor=Lorg/jasm/bytebuffer/ByteArrayByteBuffer;
+    }
+    stackmap {
+      append ir39, {object String,object InputStream};
+      same ir76;
+      append ir129, {object AssemblerParser,object Clazz};
+      append ir184, {object ClassInfoResolver};
+      same ir208;
+    }
+    maxstack 5;
+    //Variables
+    var object this;
+    var object name$0;
+    var object rName;
+    var object inp;
+    var object parser;
+    var object clazz;
+    var object clp;
+    var object data;
+    var object bbuf;
+    //Instructions
+    ir0: new StringBuilder;
+    dup;
+    aload name$0;
+    bipush 46;
+    bipush 47;
+    invokevirtual String.replace;
+    invokestatic String.valueOf;
+    invokespecial StringBuilder.init0;
+    ldc string_87; // ".jasm"
+    invokevirtual StringBuilder.append;
+    invokevirtual StringBuilder.toString;
+    astore rName;
+    ir27: aload this;
+    aload rName;
+    invokespecial ClassLoader.getResourceAsStream;
+    astore inp;
+    ir33: aload inp;
+    ifnonnull ir39;
+    ir37: aconst_null;
+    areturn;
+    ir39: aload this;
+    getfield log;
+    invokeinterface Logger.isDebugEnabled;
+    ifeq ir76;
+    ir51: aload this;
+    getfield log;
+    new StringBuilder;
+    dup;
+    ldc string_107; // "Loading from "
+    invokespecial StringBuilder.init0;
+    aload rName;
+    invokevirtual StringBuilder.append;
+    invokevirtual StringBuilder.toString;
+    invokeinterface Logger.debug;
+    ir76: new AssemblerParser;
+    dup;
+    invokespecial AssemblerParser.init0;
+    astore parser;
+    ir85: aload parser;
+    new SimpleParserErrorListener;
+    dup;
+    invokespecial SimpleParserErrorListener.init0;
+    invokevirtual AssemblerParser.addErrorListener;
+    ir97: aload parser;
+    aload inp;
+    invokevirtual AssemblerParser.parse;
+    astore clazz;
+    ir105: aload parser;
+    invokevirtual AssemblerParser.getErrorCounter;
+    ifle ir129;
+    ir113: aload parser;
+    invokevirtual AssemblerParser.flushErrors;
+    ir118: new AssemblerClassLoaderException;
+    dup;
+    ldc string_137; // "invalid assembler file"
+    aload rName;
+    invokespecial AssemblerClassLoaderException.init0;
+    athrow;
+    ir129: new ClassInfoResolver;
+    dup;
+    invokespecial ClassInfoResolver.init0;
+    astore clp;
+    ir138: aload clp;
+    new ClazzClassPathEntry;
+    dup;
+    aload clazz;
+    invokespecial ClazzClassPathEntry.init0;
+    invokevirtual ClassInfoResolver.add;
+    ir152: aload clp;
+    new ClassLoaderClasspathEntry;
+    dup;
+    aload this;
+    invokespecial ClassLoaderClasspathEntry.init0;
+    invokevirtual ClassInfoResolver.add;
+    ir165: aload clazz;
+    aload clp;
+    invokevirtual Clazz.setResolver;
+    ir172: aload this;
+    getfield verify;
+    ifeq ir184;
+    ir179: aload clazz;
+    invokevirtual Clazz.verify;
+    ir184: aload parser;
+    invokevirtual AssemblerParser.getErrorCounter;
+    ifle ir208;
+    ir192: aload parser;
+    invokevirtual AssemblerParser.flushErrors;
+    ir197: new AssemblerClassLoaderException;
+    dup;
+    ldc string_137; // "invalid assembler file"
+    aload rName;
+    invokespecial AssemblerClassLoaderException.init0;
+    athrow;
+    ir208: aload clazz;
+    invokevirtual Clazz.getLength;
+    newarray byte;
+    astore data;
+    ir217: new ByteArrayByteBuffer;
+    dup;
+    aload data;
+    invokespecial ByteArrayByteBuffer.init0;
+    astore bbuf;
+    ir228: aload clazz;
+    aload bbuf;
+    lconst_0;
+    invokevirtual Clazz.write;
+    ir236: aload data;
+    areturn;
+  }
+  public method {
+    name setParentFirst_name; // setParentFirst
+    descriptor setParentFirst_desc; // (Z)V
+    line numbers {
+      line ir0, 100;
+      line ir5, 101;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/testclass/AssemblerClassLoader;
+      var parentFirst, ir0, parentFirst_name, type_desc; // name=parentFirst,  descriptor=Z
+    }
+    maxstack 2;
+    //Variables
+    var object this;
+    var int parentFirst;
+    //Instructions
+    ir0: aload this;
+    iload parentFirst;
+    putfield parentFirst;
+    ir5: return;
+  }
+}

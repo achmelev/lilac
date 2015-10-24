@@ -1,0 +1,48 @@
+public super class {
+  version 52.0;
+  name FieldContainer; // org/jasm/test/playground/FieldContainer
+  extends Object; // java/lang/Object
+   //Constants
+  const classref FieldContainer FieldContainer_name; // org/jasm/test/playground/FieldContainer
+  const utf8 FieldContainer_name "org/jasm/test/playground/FieldContainer";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const utf8 text_name "text";
+  const utf8 text_desc "Ljava/lang/String2;";
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref init0 Object, init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype init0_nat init0_name, init0_desc; // name=<init> type=()V
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/FieldContainer;";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "FieldContainer.java";
+  source file source_file_name; // FieldContainer.java
+   //Fields
+  public field {
+    name text_name; // text
+    descriptor text_desc; // Ljava/lang/String;
+  }
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor init0_desc; // ()V
+    line numbers {
+      line ir0, 3;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/FieldContainer;
+    }
+    maxstack 1;
+    maxlocals 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial init0; // class=java/lang/Object, name=<init>, descriptor=()V
+    return;
+  }
+}

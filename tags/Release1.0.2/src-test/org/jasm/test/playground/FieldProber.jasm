@@ -1,0 +1,76 @@
+public super class {
+  version 52.0;
+  name FieldProber; // org/jasm/test/playground/FieldProber
+  extends Object; // java/lang/Object
+  implements Prober; // org/jasm/test/playground/Prober
+   //Constants
+  const classref FieldProber FieldProber_name; // org/jasm/test/playground/FieldProber
+  const utf8 FieldProber_name "org/jasm/test/playground/FieldProber";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const classref Prober Prober_name; // org/jasm/test/playground/Prober
+  const utf8 Prober_name "org/jasm/test/playground/Prober";
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref init0 Object, init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype init0_nat init0_name, init0_desc; // name=<init> type=()V
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/FieldProber;";
+  const utf8 check_name "check";
+  const utf8 check_desc "(I)I";
+  const classref FieldContainer FieldContainer_name; // org/jasm/test/playground/FieldContainer
+  const utf8 FieldContainer_name "org/jasm/test/playground/FieldContainer";
+  const methodref init0$0 FieldContainer, init0_nat; // class=org/jasm/test/playground/FieldContainer, name=<init>, descriptor=()V
+  const string string_20 utf8_21; // "XXX"
+  const utf8 utf8_21 "XXX";
+  const fieldref text FieldContainer, text_nat; // class=org/jasm/test/playground/FieldContainer, name=text, descriptor=Ljava/lang/String;
+  const nameandtype text_nat text_name, text_desc; // name=text type=Ljava/lang/String;
+  const utf8 text_name "text";
+  const utf8 text_desc "Ljava/lang/String2;";
+  const utf8 a_name "a";
+  const utf8 a_desc "I";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "FieldProber.java";
+  source file source_file_name; // FieldProber.java
+   //Fields
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor init0_desc; // ()V
+    line numbers {
+      line ir0, 3;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/FieldProber;
+    }
+    maxstack 1;
+    maxlocals 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial init0; // class=java/lang/Object, name=<init>, descriptor=()V
+    return;
+  }
+  public method {
+    name check_name; // check
+    descriptor check_desc; // (I)I
+    maxstack 10;
+    maxlocals 2;
+    //Variables
+    var object this;
+    var int a;
+    //Instructions
+    ir0: new FieldContainer; // org/jasm/test/playground/FieldContainer
+    dup;
+    dup;
+    invokespecial init0$0; // class=org/jasm/test/playground/FieldContainer, name=<init>, descriptor=()V
+    getfield text; // class=org/jasm/test/playground/FieldContainer, name=text, descriptor=Ljava/lang/String;
+    putfield text;
+    ir12: iconst_0;
+    ireturn;
+  }
+}

@@ -1,0 +1,130 @@
+super class {
+  version 52.0;
+  name CalculatorDelegate$1; // org/jasm/test/playground/CalculatorDelegate$1
+  extends Object; // java/lang/Object
+  implements ICalculator; // org/jasm/test/playground/ICalculator
+   //Constants
+  const classref CalculatorDelegate$1 CalculatorDelegate$1_name; // org/jasm/test/playground/CalculatorDelegate$1
+  const utf8 CalculatorDelegate$1_name "org/jasm/test/playground/CalculatorDelegate$1";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const classref ICalculator ICalculator_name; // org/jasm/test/playground/ICalculator
+  const utf8 ICalculator_name "org/jasm/test/playground/ICalculator";
+  const utf8 this$0_name "this$0";
+  const utf8 this$0_desc "Lorg/jasm/test/playground/CalculatorDelegate;";
+  const utf8 val$c_name "val$c";
+  const utf8 type_desc "I";
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "(Lorg/jasm/test/playground/CalculatorDelegate;I)V";
+  const utf8 Code_utf8 "Code";
+  const fieldref this$0 CalculatorDelegate$1, this$0_nat; // class=org/jasm/test/playground/CalculatorDelegate$1, name=this$0, descriptor=Lorg/jasm/test/playground/CalculatorDelegate;
+  const nameandtype this$0_nat this$0_name, this$0_desc; // name=this$0 type=Lorg/jasm/test/playground/CalculatorDelegate;
+  const fieldref val$c CalculatorDelegate$1, val$c_nat; // class=org/jasm/test/playground/CalculatorDelegate$1, name=val$c, descriptor=I
+  const nameandtype val$c_nat val$c_name, type_desc; // name=val$c type=I
+  const methodref init0 Object, init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype init0_nat init0_name, init0_desc$0; // name=<init> type=()V
+  const utf8 init0_desc$0 "()V";
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/CalculatorDelegate$1;";
+  const utf8 calculate2_name "calculate2";
+  const utf8 method_desc "(II)I";
+  const utf8 a_name "a";
+  const utf8 b_name "b";
+  const utf8 calculate_name "calculate";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "CalculatorDelegate.java";
+  const utf8 EnclosingMethod_utf8 "EnclosingMethod";
+  const classref CalculatorDelegate CalculatorDelegate_name; // org/jasm/test/playground/CalculatorDelegate
+  const utf8 CalculatorDelegate_name "org/jasm/test/playground/CalculatorDelegate";
+  const nameandtype nameandtype_34 calculate_name, method_desc; // name=calculate type=(II)I
+  const utf8 InnerClasses_utf8 "InnerClasses";
+  source file source_file_name; // CalculatorDelegate.java
+  enclosing method CalculatorDelegate, nameandtype_34; // org/jasm/test/playground/CalculatorDelegate, calculate (II)I
+  private inner class {
+    inner CalculatorDelegate$1; // org/jasm/test/playground/CalculatorDelegate$1
+  }
+   //Fields
+  final synthetic field {
+    name this$0_name; // this$0
+    descriptor this$0_desc; // Lorg/jasm/test/playground/CalculatorDelegate;
+  }
+  private final synthetic field {
+    name val$c_name; // val$c
+    descriptor type_desc; // I
+  }
+   //Methods
+  method {
+    name init0_name; // <init>
+    descriptor init0_desc; // (Lorg/jasm/test/playground/CalculatorDelegate;I)V
+    line numbers {
+      line ir0, 1;
+      line ir10, 8;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/CalculatorDelegate$1;
+    }
+    maxstack 2;
+    maxlocals 3;
+    //Variables
+    var object this;
+    var object a_1;
+    var int i_2;
+    //Instructions
+    ir0: aload this;
+    aload a_1;
+    putfield this$0; // class=org/jasm/test/playground/CalculatorDelegate$1, name=this$0, descriptor=Lorg/jasm/test/playground/CalculatorDelegate;
+    aload this;
+    iload i_2;
+    putfield val$c; // class=org/jasm/test/playground/CalculatorDelegate$1, name=val$c, descriptor=I
+    ir10: aload this;
+    invokespecial init0; // class=java/lang/Object, name=<init>, descriptor=()V
+    return;
+  }
+  public method {
+    name calculate2_name; // calculate2
+    descriptor method_desc; // (II)I
+    line numbers {
+      line ir0, 12;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/CalculatorDelegate$1;
+      var a, ir0, a_name, type_desc; // name=a,  descriptor=I
+      var b, ir0, b_name, type_desc; // name=b,  descriptor=I
+    }
+    maxstack 1;
+    maxlocals 3;
+    //Variables
+    var object this;
+    var int a;
+    var int b;
+    //Instructions
+    ir0: aload this;
+    getfield val$c; // class=org/jasm/test/playground/CalculatorDelegate$1, name=val$c, descriptor=I
+    ireturn;
+  }
+  public method {
+    name calculate_name; // calculate
+    descriptor method_desc; // (II)I
+    line numbers {
+      line ir0, 17;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/playground/CalculatorDelegate$1;
+      var a, ir0, a_name, type_desc; // name=a,  descriptor=I
+      var b, ir0, b_name, type_desc; // name=b,  descriptor=I
+    }
+    maxstack 2;
+    maxlocals 3;
+    //Variables
+    var object this;
+    var int a;
+    var int b;
+    //Instructions
+    ir0: iload a;
+    iload b;
+    iadd;
+    ireturn;
+  }
+}

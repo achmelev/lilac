@@ -1,0 +1,60 @@
+public super class {
+  version 52.0;
+  name MaxStack; 
+  extends Object; 
+  implements ICalculator; 
+  
+   //Constants
+  const classref MaxStack MaxStack_name; 
+  const utf8 MaxStack_name "org/jasm/test/testclass/MaxStack";
+  
+  const classref ICalculator ICalculator_name; 
+  const utf8 ICalculator_name "org/jasm/test/testclass/ICalculator";
+
+  const classref Object Object_name; 
+  const utf8 Object_name "java/lang/Object";
+  
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "()V";
+  
+  const utf8 Code_utf8 "Code";
+  
+  const methodref init0 Object, init0_nat; 
+  const nameandtype init0_nat init0_name, init0_desc;
+  
+ 
+  const utf8 calculate_name "calculate";
+  const utf8 calculate_desc "()I";
+    
+  
+  //Fields
+   //Methods
+  public method {
+    name init0_name; 
+    descriptor init0_desc; 
+
+    //Variables
+    var object this;
+    //Instructions
+    aload this;
+    invokespecial init0; 
+    return;
+  }
+  
+  
+  
+  public method {
+    name calculate_name; 
+    descriptor calculate_desc; 
+    
+
+    //Variables
+    var object this;
+    //Instructions
+
+    bipush 10;
+    bipush 10;
+    imul;
+    ireturn;
+  }
+}

@@ -1,0 +1,405 @@
+final super class {
+  version 49.0;
+  name ThreadPoolExecutor$Worker; // java/util/concurrent/ThreadPoolExecutor$Worker
+  extends Object; // java/lang/Object
+  implements Runnable; // java/lang/Runnable
+   //Constants
+  const utf8 method_desc "()V";
+  const utf8 method_desc$0 "()Z";
+  const utf8 init0_name "<init>";
+  const utf8 Code_utf8 "Code";
+  const utf8 runState_desc "I";
+  const utf8 InnerClasses_utf8 "InnerClasses";
+  const utf8 completedTasks_desc "J";
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 afterExecute_name "afterExecute";
+  const utf8 beforeExecute_name "beforeExecute";
+  const utf8 completedTasks_name "completedTasks";
+  const utf8 currentThread_name "currentThread";
+  const utf8 firstTask_name "firstTask";
+  const utf8 getTask_name "getTask";
+  const utf8 interrupt_name "interrupt";
+  const utf8 interruptIfIdle_name "interruptIfIdle";
+  const utf8 interruptNow_name "interruptNow";
+  const utf8 interrupted_name "interrupted";
+  const utf8 isActive_name "isActive";
+  const utf8 isLocked_name "isLocked";
+  const utf8 Object_name "java/lang/Object";
+  const utf8 Runnable_name "java/lang/Runnable";
+  const utf8 RuntimeException_name "java/lang/RuntimeException";
+  const utf8 Thread_name "java/lang/Thread";
+  const utf8 ThreadPoolExecutor_name "java/util/concurrent/ThreadPoolExecutor";
+  const utf8 ThreadPoolExecutor$Worker_name "java/util/concurrent/ThreadPoolExecutor$Worker";
+  const utf8 ReentrantLock_name "java/util/concurrent/locks/ReentrantLock";
+  const utf8 lock_name "lock";
+  const utf8 run_name "run";
+  const utf8 runLock_name "runLock";
+  const utf8 runState_name "runState";
+  const utf8 runTask_name "runTask";
+  const utf8 this$0_name "this$0";
+  const utf8 thread_name "thread";
+  const utf8 tryLock_name "tryLock";
+  const utf8 unlock_name "unlock";
+  const utf8 workerDone_name "workerDone";
+  const classref Object Object_name; // java/lang/Object
+  const classref Runnable Runnable_name; // java/lang/Runnable
+  const classref RuntimeException RuntimeException_name; // java/lang/RuntimeException
+  const classref Thread Thread_name; // java/lang/Thread
+  const classref ThreadPoolExecutor ThreadPoolExecutor_name; // java/util/concurrent/ThreadPoolExecutor
+  const classref ThreadPoolExecutor$Worker ThreadPoolExecutor$Worker_name; // java/util/concurrent/ThreadPoolExecutor$Worker
+  const classref ReentrantLock ReentrantLock_name; // java/util/concurrent/locks/ReentrantLock
+  const utf8 firstTask_desc "Ljava/lang/Runnable;";
+  const utf8 thread_desc "Ljava/lang/Thread;";
+  const utf8 this$0_desc "Ljava/util/concurrent/ThreadPoolExecutor;";
+  const utf8 runLock_desc "Ljava/util/concurrent/locks/ReentrantLock;";
+  const utf8 getTask_desc "()Ljava/lang/Runnable;";
+  const utf8 runTask_desc "(Ljava/lang/Runnable;)V";
+  const utf8 currentThread_desc "()Ljava/lang/Thread;";
+  const utf8 workerDone_desc "(Ljava/util/concurrent/ThreadPoolExecutor$Worker;)V";
+  const utf8 beforeExecute_desc "(Ljava/lang/Thread;Ljava/lang/Runnable;)V";
+  const utf8 init0_desc "(Ljava/util/concurrent/ThreadPoolExecutor;Ljava/lang/Runnable;)V";
+  const utf8 afterExecute_desc "(Ljava/lang/Runnable;Ljava/lang/Throwable;)V";
+  const nameandtype runState_nat runState_name, runState_desc; // name=runState type=I
+  const nameandtype completedTasks_nat completedTasks_name, completedTasks_desc; // name=completedTasks type=J
+  const nameandtype firstTask_nat firstTask_name, firstTask_desc; // name=firstTask type=Ljava/lang/Runnable;
+  const nameandtype thread_nat thread_name, thread_desc; // name=thread type=Ljava/lang/Thread;
+  const nameandtype this$0_nat this$0_name, this$0_desc; // name=this$0 type=Ljava/util/concurrent/ThreadPoolExecutor;
+  const nameandtype runLock_nat runLock_name, runLock_desc; // name=runLock type=Ljava/util/concurrent/locks/ReentrantLock;
+  const nameandtype init0_nat init0_name, method_desc; // name=<init> type=()V
+  const nameandtype interrupt_nat interrupt_name, method_desc; // name=interrupt type=()V
+  const nameandtype lock_nat lock_name, method_desc; // name=lock type=()V
+  const nameandtype run_nat run_name, method_desc; // name=run type=()V
+  const nameandtype unlock_nat unlock_name, method_desc; // name=unlock type=()V
+  const nameandtype interrupted_nat interrupted_name, method_desc$0; // name=interrupted type=()Z
+  const nameandtype isLocked_nat isLocked_name, method_desc$0; // name=isLocked type=()Z
+  const nameandtype tryLock_nat tryLock_name, method_desc$0; // name=tryLock type=()Z
+  const nameandtype getTask_nat getTask_name, getTask_desc; // name=getTask type=()Ljava/lang/Runnable;
+  const nameandtype runTask_nat runTask_name, runTask_desc; // name=runTask type=(Ljava/lang/Runnable;)V
+  const nameandtype currentThread_nat currentThread_name, currentThread_desc; // name=currentThread type=()Ljava/lang/Thread;
+  const nameandtype workerDone_nat workerDone_name, workerDone_desc; // name=workerDone type=(Ljava/util/concurrent/ThreadPoolExecutor$Worker;)V
+  const nameandtype beforeExecute_nat beforeExecute_name, beforeExecute_desc; // name=beforeExecute type=(Ljava/lang/Thread;Ljava/lang/Runnable;)V
+  const nameandtype afterExecute_nat afterExecute_name, afterExecute_desc; // name=afterExecute type=(Ljava/lang/Runnable;Ljava/lang/Throwable;)V
+  const fieldref runState ThreadPoolExecutor, runState_nat; // class=java/util/concurrent/ThreadPoolExecutor, name=runState, descriptor=I
+  const fieldref completedTasks ThreadPoolExecutor$Worker, completedTasks_nat; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=completedTasks, descriptor=J
+  const fieldref firstTask ThreadPoolExecutor$Worker, firstTask_nat; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=firstTask, descriptor=Ljava/lang/Runnable;
+  const fieldref thread ThreadPoolExecutor$Worker, thread_nat; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=thread, descriptor=Ljava/lang/Thread;
+  const fieldref this$0 ThreadPoolExecutor$Worker, this$0_nat; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=this$0, descriptor=Ljava/util/concurrent/ThreadPoolExecutor;
+  const fieldref runLock ThreadPoolExecutor$Worker, runLock_nat; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=runLock, descriptor=Ljava/util/concurrent/locks/ReentrantLock;
+  const methodref init0 Object, init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const methodref interrupt Thread, interrupt_nat; // class=java/lang/Thread, name=interrupt, descriptor=()V
+  const methodref interrupted Thread, interrupted_nat; // class=java/lang/Thread, name=interrupted, descriptor=()Z
+  const methodref currentThread Thread, currentThread_nat; // class=java/lang/Thread, name=currentThread, descriptor=()Ljava/lang/Thread;
+  const methodref getTask ThreadPoolExecutor, getTask_nat; // class=java/util/concurrent/ThreadPoolExecutor, name=getTask, descriptor=()Ljava/lang/Runnable;
+  const methodref workerDone ThreadPoolExecutor, workerDone_nat; // class=java/util/concurrent/ThreadPoolExecutor, name=workerDone, descriptor=(Ljava/util/concurrent/ThreadPoolExecutor$Worker;)V
+  const methodref beforeExecute ThreadPoolExecutor, beforeExecute_nat; // class=java/util/concurrent/ThreadPoolExecutor, name=beforeExecute, descriptor=(Ljava/lang/Thread;Ljava/lang/Runnable;)V
+  const methodref afterExecute ThreadPoolExecutor, afterExecute_nat; // class=java/util/concurrent/ThreadPoolExecutor, name=afterExecute, descriptor=(Ljava/lang/Runnable;Ljava/lang/Throwable;)V
+  const methodref runTask ThreadPoolExecutor$Worker, runTask_nat; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=runTask, descriptor=(Ljava/lang/Runnable;)V
+  const methodref init0$0 ReentrantLock, init0_nat; // class=java/util/concurrent/locks/ReentrantLock, name=<init>, descriptor=()V
+  const methodref lock ReentrantLock, lock_nat; // class=java/util/concurrent/locks/ReentrantLock, name=lock, descriptor=()V
+  const methodref unlock ReentrantLock, unlock_nat; // class=java/util/concurrent/locks/ReentrantLock, name=unlock, descriptor=()V
+  const methodref isLocked ReentrantLock, isLocked_nat; // class=java/util/concurrent/locks/ReentrantLock, name=isLocked, descriptor=()Z
+  const methodref tryLock ReentrantLock, tryLock_nat; // class=java/util/concurrent/locks/ReentrantLock, name=tryLock, descriptor=()Z
+  const intfmethodref run Runnable, run_nat; // class=java/lang/Runnable, name=run, descriptor=()V
+  const utf8 source_file_name "ThreadPoolExecutor.java";
+  const utf8 Worker_name "Worker";
+  source file source_file_name; // ThreadPoolExecutor.java
+  private final inner class {
+    inner ThreadPoolExecutor$Worker; // java/util/concurrent/ThreadPoolExecutor$Worker
+    outer ThreadPoolExecutor; // java/util/concurrent/ThreadPoolExecutor
+    name Worker_name; // Worker
+  }
+   //Fields
+  private final field {
+    name runLock_name; // runLock
+    descriptor runLock_desc; // Ljava/util/concurrent/locks/ReentrantLock;
+  }
+  private field {
+    name firstTask_name; // firstTask
+    descriptor firstTask_desc; // Ljava/lang/Runnable;
+  }
+  volatile field {
+    name completedTasks_name; // completedTasks
+    descriptor completedTasks_desc; // J
+  }
+  field {
+    name thread_name; // thread
+    descriptor thread_desc; // Ljava/lang/Thread;
+  }
+  final synthetic field {
+    name this$0_name; // this$0
+    descriptor this$0_desc; // Ljava/util/concurrent/ThreadPoolExecutor;
+  }
+   //Methods
+  method {
+    name init0_name; // <init>
+    descriptor init0_desc; // (Ljava/util/concurrent/ThreadPoolExecutor;Ljava/lang/Runnable;)V
+    line numbers {
+      line ir0, 828;
+      line ir9, 809;
+      line ir20, 829;
+      line ir25, 830;
+    }
+    maxstack 3;
+    //Variables
+    var object a_0;
+    var object a_1;
+    var object a_2;
+    //Instructions
+    ir0: aload a_0;
+    aload a_1;
+    putfield this$0; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=this$0, descriptor=Ljava/util/concurrent/ThreadPoolExecutor;
+    aload a_0;
+    invokespecial init0; // class=java/lang/Object, name=<init>, descriptor=()V
+    ir9: aload a_0;
+    new ReentrantLock; // java/util/concurrent/locks/ReentrantLock
+    dup;
+    invokespecial init0$0; // class=java/util/concurrent/locks/ReentrantLock, name=<init>, descriptor=()V
+    putfield runLock; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=runLock, descriptor=Ljava/util/concurrent/locks/ReentrantLock;
+    ir20: aload a_0;
+    aload a_2;
+    putfield firstTask; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=firstTask, descriptor=Ljava/lang/Runnable;
+    ir25: return;
+  }
+  method {
+    name isActive_name; // isActive
+    descriptor method_desc$0; // ()Z
+    line numbers {
+      line ir0, 833;
+    }
+    maxstack 1;
+    //Variables
+    var object a_0;
+    //Instructions
+    ir0: aload a_0;
+    getfield runLock; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=runLock, descriptor=Ljava/util/concurrent/locks/ReentrantLock;
+    invokevirtual isLocked; // class=java/util/concurrent/locks/ReentrantLock, name=isLocked, descriptor=()Z
+    ireturn;
+  }
+  method {
+    name interruptIfIdle_name; // interruptIfIdle
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 840;
+      line ir5, 841;
+      line ir12, 843;
+      line ir22, 844;
+      line ir29, 845;
+      line ir32, 847;
+      line ir35, 846;
+      line ir48, 849;
+    }
+    maxstack 2;
+    try ir12->ir29 catch all go to ir35;
+    try ir35->ir36 catch all go to ir35;
+    //Variables
+    var object a_0;
+    var object a_1;
+    var object a_2;
+    var returnadress r_3;
+    var object a_3 at r_3;
+    //Instructions
+    ir0: aload a_0;
+    getfield runLock; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=runLock, descriptor=Ljava/util/concurrent/locks/ReentrantLock;
+    astore a_1;
+    ir5: aload a_1;
+    invokevirtual tryLock; // class=java/util/concurrent/locks/ReentrantLock, name=tryLock, descriptor=()Z
+    ifeq ir48;
+    ir12: aload a_0;
+    getfield thread; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=thread, descriptor=Ljava/lang/Thread;
+    invokestatic currentThread; // class=java/lang/Thread, name=currentThread, descriptor=()Ljava/lang/Thread;
+    if_acmpeq ir29;
+    ir22: aload a_0;
+    getfield thread; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=thread, descriptor=Ljava/lang/Thread;
+    invokevirtual interrupt; // class=java/lang/Thread, name=interrupt, descriptor=()V
+    ir29: jsr ir41;
+    ir32: goto ir48;
+    ir35: astore a_2;
+    ir36: jsr ir41;
+    aload a_2;
+    athrow;
+    ir41: astore a_3;
+    aload a_1;
+    invokevirtual unlock; // class=java/util/concurrent/locks/ReentrantLock, name=unlock, descriptor=()V
+    ret r_3;
+    ir48: return;
+  }
+  method {
+    name interruptNow_name; // interruptNow
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 855;
+      line ir7, 856;
+    }
+    maxstack 1;
+    //Variables
+    var object a_0;
+    //Instructions
+    ir0: aload a_0;
+    getfield thread; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=thread, descriptor=Ljava/lang/Thread;
+    invokevirtual interrupt; // class=java/lang/Thread, name=interrupt, descriptor=()V
+    ir7: return;
+  }
+  private method {
+    name runTask_name; // runTask
+    descriptor runTask_desc; // (Ljava/lang/Runnable;)V
+    line numbers {
+      line ir0, 862;
+      line ir5, 863;
+      line ir9, 872;
+      line ir37, 875;
+      line ir44, 883;
+      line ir46, 884;
+      line ir58, 886;
+      line ir64, 887;
+      line ir66, 888;
+      line ir75, 889;
+      line ir85, 894;
+      line ir88, 890;
+      line ir90, 891;
+      line ir94, 892;
+      line ir104, 893;
+      line ir107, 895;
+      line ir110, 897;
+      line ir113, 896;
+      line ir129, 898;
+    }
+    maxstack 5;
+    try ir58->ir82 catch RuntimeException go to ir88; // java/lang/RuntimeException
+    try ir9->ir107 catch all go to ir113;
+    try ir113->ir115 catch all go to ir113;
+    //Variables
+    var object a_0;
+    var object a_1;
+    var object a_2;
+    var int i_3;
+    var object a_4;
+    var object a_5;
+    var object a_6;
+    var returnadress r_6 at a_6;
+    //Instructions
+    ir0: aload a_0;
+    getfield runLock; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=runLock, descriptor=Ljava/util/concurrent/locks/ReentrantLock;
+    astore a_2;
+    ir5: aload a_2;
+    invokevirtual lock; // class=java/util/concurrent/locks/ReentrantLock, name=lock, descriptor=()V
+    ir9: aload a_0;
+    getfield this$0; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=this$0, descriptor=Ljava/util/concurrent/ThreadPoolExecutor;
+    getfield runState; // class=java/util/concurrent/ThreadPoolExecutor, name=runState, descriptor=I
+    iconst_2;
+    if_icmpge ir44;
+    invokestatic interrupted; // class=java/lang/Thread, name=interrupted, descriptor=()Z
+    ifeq ir44;
+    aload a_0;
+    getfield this$0; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=this$0, descriptor=Ljava/util/concurrent/ThreadPoolExecutor;
+    getfield runState; // class=java/util/concurrent/ThreadPoolExecutor, name=runState, descriptor=I
+    iconst_2;
+    if_icmplt ir44;
+    ir37: aload a_0;
+    getfield thread; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=thread, descriptor=Ljava/lang/Thread;
+    invokevirtual interrupt; // class=java/lang/Thread, name=interrupt, descriptor=()V
+    ir44: iconst_0;
+    istore i_3;
+    ir46: aload a_0;
+    getfield this$0; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=this$0, descriptor=Ljava/util/concurrent/ThreadPoolExecutor;
+    aload a_0;
+    getfield thread; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=thread, descriptor=Ljava/lang/Thread;
+    aload a_1;
+    invokevirtual beforeExecute; // class=java/util/concurrent/ThreadPoolExecutor, name=beforeExecute, descriptor=(Ljava/lang/Thread;Ljava/lang/Runnable;)V
+    ir58: aload a_1;
+    invokeinterface run; // class=java/lang/Runnable, name=run, descriptor=()V
+    ir64: iconst_1;
+    istore i_3;
+    ir66: aload a_0;
+    getfield this$0; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=this$0, descriptor=Ljava/util/concurrent/ThreadPoolExecutor;
+    aload a_1;
+    aconst_null;
+    invokevirtual afterExecute; // class=java/util/concurrent/ThreadPoolExecutor, name=afterExecute, descriptor=(Ljava/lang/Runnable;Ljava/lang/Throwable;)V
+    ir75: aload a_0;
+    dup;
+    getfield completedTasks; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=completedTasks, descriptor=J
+    lconst_1;
+    ladd;
+    ir82: putfield completedTasks; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=completedTasks, descriptor=J
+    ir85: goto ir107;
+    ir88: astore a_4;
+    ir90: iload i_3;
+    ifne ir104;
+    ir94: aload a_0;
+    getfield this$0; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=this$0, descriptor=Ljava/util/concurrent/ThreadPoolExecutor;
+    aload a_1;
+    aload a_4;
+    invokevirtual afterExecute; // class=java/util/concurrent/ThreadPoolExecutor, name=afterExecute, descriptor=(Ljava/lang/Runnable;Ljava/lang/Throwable;)V
+    ir104: aload a_4;
+    athrow;
+    ir107: jsr ir121;
+    ir110: goto ir129;
+    ir113: astore a_5;
+    ir115: jsr ir121;
+    aload a_5;
+    athrow;
+    ir121: astore a_6;
+    aload a_2;
+    invokevirtual unlock; // class=java/util/concurrent/locks/ReentrantLock, name=unlock, descriptor=()V
+    ret r_6;
+    ir129: return;
+  }
+  public method {
+    name run_name; // run
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 905;
+      line ir5, 906;
+      line ir10, 907;
+      line ir26, 908;
+      line ir31, 909;
+      line ir36, 911;
+      line ir39, 913;
+      line ir42, 912;
+      line ir59, 914;
+    }
+    maxstack 2;
+    try ir0->ir36 catch all go to ir42;
+    try ir42->ir43 catch all go to ir42;
+    //Variables
+    var object a_0;
+    var object a_1;
+    var object a_2;
+    var returnadress r_3;
+    var object a_3 at r_3;
+    //Instructions
+    ir0: aload a_0;
+    getfield firstTask; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=firstTask, descriptor=Ljava/lang/Runnable;
+    astore a_1;
+    ir5: aload a_0;
+    aconst_null;
+    putfield firstTask; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=firstTask, descriptor=Ljava/lang/Runnable;
+    ir10: aload a_1;
+    ifnonnull ir26;
+    aload a_0;
+    getfield this$0; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=this$0, descriptor=Ljava/util/concurrent/ThreadPoolExecutor;
+    invokevirtual getTask; // class=java/util/concurrent/ThreadPoolExecutor, name=getTask, descriptor=()Ljava/lang/Runnable;
+    dup;
+    astore a_1;
+    ifnull ir36;
+    ir26: aload a_0;
+    aload a_1;
+    invokespecial runTask; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=runTask, descriptor=(Ljava/lang/Runnable;)V
+    ir31: aconst_null;
+    astore a_1;
+    goto ir10;
+    ir36: jsr ir48;
+    ir39: goto ir59;
+    ir42: astore a_2;
+    ir43: jsr ir48;
+    aload a_2;
+    athrow;
+    ir48: astore a_3;
+    aload a_0;
+    getfield this$0; // class=java/util/concurrent/ThreadPoolExecutor$Worker, name=this$0, descriptor=Ljava/util/concurrent/ThreadPoolExecutor;
+    aload a_0;
+    invokevirtual workerDone; // class=java/util/concurrent/ThreadPoolExecutor, name=workerDone, descriptor=(Ljava/util/concurrent/ThreadPoolExecutor$Worker;)V
+    ret r_3;
+    ir59: return;
+  }
+}
