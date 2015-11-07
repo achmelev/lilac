@@ -19,6 +19,10 @@
 			<fileset dir="images"/>
 		</copy>
 		
+		<copy todir="dist/codeexamples">
+			<fileset dir="codeexamples"/>
+		</copy>
+		
 		 <antcall target="generate-markdown">
 			<param name="menuid" value="MENUID_index"/>
 			<param name="markdownFile" value="markdowns/index.markdown"/>
@@ -66,6 +70,27 @@
 			<param name="markdownFile" value="markdowns/sysprops.markdown"/>
 			<param name="title" value="Lilac - System properties"/>
 			<param name="description" value="Lilac-specific system properties and their meaning"/>
+		 </antcall>
+		 
+		  <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_examples"/>
+			<param name="markdownFile" value="markdowns/examples.markdown"/>
+			<param name="title" value="Lilac - Code examples"/>
+			<param name="description" value="Code examples"/>
+		 </antcall>
+		 
+		  <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_dummy"/>
+			<param name="markdownFile" value="markdowns/example_helloworld.markdown"/>
+			<param name="title" value="Lilac - Code example - Hello world"/>
+			<param name="description" value="A 'Hello World' java assembler programm"/>
+		 </antcall>
+		 
+		  <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_dummy"/>
+			<param name="markdownFile" value="markdowns/example_calculatesum.markdown"/>
+			<param name="title" value="Lilac - Code example - Calculate sum of numbers"/>
+			<param name="description" value="A java assembler programm which calculates a sum of numbers" />
 		 </antcall>
 		
 	</target>
