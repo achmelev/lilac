@@ -79,9 +79,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		}
 		if (entry instanceof ITextReferencingEntry) {
 			ITextReferencingEntry ref = (ITextReferencingEntry)entry;
-			if (!entriesByText.containsKey(ref.getContent())) {
-				entriesByText.addToList(ref.getContent(),entry );
-			} 
+			entriesByText.addToList(ref.getContent(),entry ); 
 		}
 		if (entry instanceof IPrimitiveValueReferencingEntry) {
 			IPrimitiveValueReferencingEntry ref = (IPrimitiveValueReferencingEntry)entry;
@@ -443,7 +441,6 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	
 	//getOrAdd methods
 	
-	
 	public Utf8Info getOrAddUtf8nfo(String text) {
 		if (getUtf8Infos(text).size() > 0) {
 			return getUtf8Infos(text).get(0);
@@ -457,21 +454,280 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	}
 	
 	public ClassInfo  getOrAddClassInfo(String name) {
-		List<AbstractConstantPoolEntry> entries = entriesByName.get(name);
-		for (AbstractConstantPoolEntry entry:entries) {
-			if (entry instanceof ClassInfo) {
-				return (ClassInfo)entry;
-			}
-		}
-		ClassInfo result = new ClassInfo();
-		Utf8Info nameUtf8 = getOrAddUtf8nfo(name);
-		result.setReference(new AbstractConstantPoolEntry[]{nameUtf8}, false);
-		addGeneratedEntry(result);
 		
+		ClassInfo result = getNameReferencingEntry(ClassInfo.class, name);
+		if (result != null) {
+			return result;
+		} else {
+			result = new ClassInfo();
+			Utf8Info nameUtf8 = getOrAddUtf8nfo(name);
+			result.setReference(new AbstractConstantPoolEntry[]{nameUtf8}, false);
+			addGeneratedEntry(result);
+		}
 		
 		return result;
+	}
+	
+	public FloatInfo  getOrAddFloatInfo(Float value) {
 		
+		FloatInfo result = getPrimitiveValueReferencingEntry(FloatInfo.class, value);
+		if (result != null) {
+			return result;
+		} else {
+			result = new FloatInfo();
+			result.setValue(value);
+			addGeneratedEntry(result);
+		}
 		
+		return result;
+	}
+	
+	public DoubleInfo  getOrAddDoubleInfo(Double value) {
+		
+		DoubleInfo result = getPrimitiveValueReferencingEntry(DoubleInfo.class, value);
+		if (result != null) {
+			return result;
+		} else {
+			result = new DoubleInfo();
+			result.setValue(value);
+			addGeneratedEntry(result);
+		}
+		
+		return result;
+	}
+	
+	public IntegerInfo  getOrAddIntegerInfo(Integer value) {
+		
+		IntegerInfo result = getPrimitiveValueReferencingEntry(IntegerInfo.class, value);
+		if (result != null) {
+			return result;
+		} else {
+			result = new IntegerInfo();
+			result.setValue(value);
+			addGeneratedEntry(result);
+		}
+		
+		return result;
+	}
+	
+	public LongInfo  getOrAddLongInfo(Long value) {
+		
+		LongInfo result = getPrimitiveValueReferencingEntry(LongInfo.class, value);
+		if (result != null) {
+			return result;
+		} else {
+			result = new LongInfo();
+			result.setValue(value);
+			addGeneratedEntry(result);
+		}
+		
+		return result;
+	}
+	
+	public StringInfo  getOrAddStringInfo(String value) {
+		
+		StringInfo result = getTextReferencingEntry(StringInfo.class, value);
+		if (result != null) {
+			return result;
+		} else {
+			result = new StringInfo();
+			Utf8Info valueUtf8 = getOrAddUtf8nfo(value);
+			result.setReference(new AbstractConstantPoolEntry[]{valueUtf8}, false); 
+			addGeneratedEntry(result);
+		}
+		
+		return result;
+	}
+	
+	public MethodTypeInfo  getOrAddMethodTypeInfo(String descriptor) {
+		
+		MethodTypeInfo result = getDescriptorReferencingEntry(MethodTypeInfo.class, descriptor);
+		if (result != null) {
+			return result;
+		} else {
+			result = new MethodTypeInfo();
+			Utf8Info valueUtf8 = getOrAddUtf8nfo(descriptor);
+			result.setReference(new AbstractConstantPoolEntry[]{valueUtf8}, false); 
+			addGeneratedEntry(result);
+		}
+		
+		return result;
+	}
+	
+	public NameAndTypeInfo  getOrAddNameAndTypeInfo(String name,  String descriptor) {
+		
+		NameAndTypeInfo result = getNameAndDescriptorReferencingEntry(NameAndTypeInfo.class, name, descriptor);
+		if (result != null) {
+			return result;
+		} else {
+			result = new NameAndTypeInfo();
+			Utf8Info nameUtf8 = getOrAddUtf8nfo(name);
+			Utf8Info descriptorUtf8 = getOrAddUtf8nfo(descriptor);
+			result.setReference(new AbstractConstantPoolEntry[]{nameUtf8, descriptorUtf8}, false); 
+			addGeneratedEntry(result);
+		}
+		
+		return result;
+	}
+	
+	public FieldrefInfo  getOrAddFieldrefInfo(String clazz, String name,  String descriptor) {
+		
+		FieldrefInfo result = getRefEntry(FieldrefInfo.class, clazz, name, descriptor);
+		if (result != null) {
+			return result;
+		} else {
+			result = new FieldrefInfo();
+			ClassInfo clazzInfo = getOrAddClassInfo(clazz);
+			NameAndTypeInfo nt = getOrAddNameAndTypeInfo(name, descriptor);
+			result.setReference(new AbstractConstantPoolEntry[]{clazzInfo, nt}, false); 
+			addGeneratedEntry(result);
+		}
+		
+		return result;
+	}
+	
+	public MethodrefInfo  getOrAddMethofdrefInfo(String clazz, String name,  String descriptor) {
+		
+		MethodrefInfo result = getRefEntry(MethodrefInfo.class, clazz, name, descriptor);
+		if (result != null) {
+			return result;
+		} else {
+			result = new MethodrefInfo();
+			ClassInfo clazzInfo = getOrAddClassInfo(clazz);
+			NameAndTypeInfo nt = getOrAddNameAndTypeInfo(name, descriptor);
+			result.setReference(new AbstractConstantPoolEntry[]{clazzInfo, nt}, false); 
+			addGeneratedEntry(result);
+		}
+		
+		return result;
+	}
+	
+	public InterfaceMethodrefInfo getOrAddInterfaceMethofdrefInfo(String clazz, String name,  String descriptor) {
+		
+		InterfaceMethodrefInfo result = getRefEntry(InterfaceMethodrefInfo.class, clazz, name, descriptor);
+		if (result != null) {
+			return result;
+		} else {
+			result = new InterfaceMethodrefInfo();
+			ClassInfo clazzInfo = getOrAddClassInfo(clazz);
+			NameAndTypeInfo nt = getOrAddNameAndTypeInfo(name, descriptor);
+			result.setReference(new AbstractConstantPoolEntry[]{clazzInfo, nt}, false); 
+			addGeneratedEntry(result);
+		}
+		
+		return result;
+	}
+	
+	public MethodHandleInfo getOrAddMethodHandleInfo(MethodHandleInfo.MethodHandleReferenceKind kind, String clazz, String name,  String descriptor, boolean forInterface) {
+		
+		MethodHandleInfo result = getMethodHandleEntry(kind, clazz, name, descriptor);
+		if (result != null) {
+			return result;
+		} else {
+			result = new MethodHandleInfo();
+			result.setKind(kind);
+			AbstractRefInfo reference = null;
+			if (kind.getKind()>=1 && kind.getKind()<=4  ) {
+				reference = getOrAddFieldrefInfo(clazz, name, descriptor);
+			}
+			if (kind.getKind()==5 || kind.getKind()==8  ) {
+				reference = getOrAddMethofdrefInfo(clazz, name, descriptor);
+			}
+			if (kind.getKind()==6 || kind.getKind()==7  ) {
+				if (forInterface) {
+					reference = getOrAddInterfaceMethofdrefInfo(clazz, name, descriptor);
+				} else {
+					reference = getOrAddMethofdrefInfo(clazz, name, descriptor);
+				}
+			}
+			if (kind.getKind() == 9 ) {
+				reference = getOrAddInterfaceMethofdrefInfo(clazz, name, descriptor);
+			}
+			result.setReference(reference);
+			addGeneratedEntry(result);
+		}
+		
+		return result;
+	}
+	
+	private <T extends INameReferencingEntry> T getNameReferencingEntry(Class<T> type, String name) {
+		List<AbstractConstantPoolEntry> entries = entriesByName.get(name);
+		for (AbstractConstantPoolEntry entry:entries) {
+			if (entry.getClass().equals(type)) {
+				return (T)entry;
+			}
+		}
+		return null;
+	}
+	
+	private <T extends IDescriptorReferencingEntry> T getDescriptorReferencingEntry(Class<T> type, String descriptor) {
+		List<AbstractConstantPoolEntry> entries = entriesByDescriptor.get(descriptor);
+		for (AbstractConstantPoolEntry entry:entries) {
+			if (entry.getClass().equals(type)) {
+				return (T)entry;
+			}
+		}
+		return null;
+	}
+	
+	private <T extends INameReferencingEntry, IDescriptorReferencingEntry> T getNameAndDescriptorReferencingEntry(Class<T> type, String name, String descriptor) {
+		List<AbstractConstantPoolEntry> entries = entriesByName.get(name);
+		List<AbstractConstantPoolEntry> entries2 = entriesByDescriptor.get(descriptor);
+		for (AbstractConstantPoolEntry entry:entries) {
+			if (entry.getClass().equals(type) && entries2.contains(entry)) {
+				return (T)entry;
+			}
+		}
+		return null;
+	}
+	
+	private <T extends AbstractRefInfo> T getRefEntry(Class<T> type, String clazz, String name, String descriptor) {
+		List<AbstractConstantPoolEntry> entries = entriesByName.get(name);
+		List<AbstractConstantPoolEntry> entries2 = entriesByDescriptor.get(descriptor);
+		for (AbstractConstantPoolEntry entry:entries) {
+			if (entry.getClass().equals(type) && entries2.contains(entry)) {
+				T abstractref = (T)entry;
+				if (abstractref.getClassName().equals(clazz)) {
+					return abstractref;
+				}
+			}
+		}
+		return null;
+	}
+	
+	private  MethodHandleInfo getMethodHandleEntry(MethodHandleInfo.MethodHandleReferenceKind kind, String clazz, String name, String descriptor) {
+		List<AbstractConstantPoolEntry> entries = entriesByName.get(name);
+		List<AbstractConstantPoolEntry> entries2 = entriesByDescriptor.get(descriptor);
+		for (AbstractConstantPoolEntry entry:entries) {
+			if (entry instanceof MethodHandleInfo && entries2.contains(entry)) {
+				MethodHandleInfo handle = (MethodHandleInfo)entry;
+				if (handle.getKind() == kind && handle.getReference().getClassName().equals(clazz)) {
+					return handle;
+				}
+				
+			}
+		}
+		return null;
+	}
+	
+	private <T extends IPrimitiveValueReferencingEntry> T getPrimitiveValueReferencingEntry(Class<T> type, Object value) {
+		List<AbstractConstantPoolEntry> entries = entriesByPrimitive.get(value);
+		for (AbstractConstantPoolEntry entry:entries) {
+			if (entry.getClass().equals(type)) {
+				return (T)entry;
+			}
+		}
+		return null;
+	}
+	
+	private <T extends ITextReferencingEntry> T getTextReferencingEntry(Class<T> type, String value) {
+		List<AbstractConstantPoolEntry> entries = entriesByText.get(value);
+		for (AbstractConstantPoolEntry entry:entries) {
+			if (entry.getClass().equals(type)) {
+				return (T)entry;
+			}
+		}
+		return null;
 	}
 	
 	private void addGeneratedEntry(AbstractConstantPoolEntry info) {
