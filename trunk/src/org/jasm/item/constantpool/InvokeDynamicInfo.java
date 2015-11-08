@@ -1,6 +1,9 @@
 package org.jasm.item.constantpool;
 
+import java.util.List;
+
 import org.jasm.bytebuffer.IByteBuffer;
+import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.BootstrapMethod;
 import org.jasm.item.attribute.BootstrapMethodsAttributeContent;
 import org.jasm.item.clazz.Clazz;
@@ -96,18 +99,29 @@ public class InvokeDynamicInfo extends AbstractConstantPoolEntry implements INam
 		if (nameAndType != null && nameAndType.isField()) {
 			emitError(nameAndTypeReference, "wrong nameandtype const");
 		}
-		method = getBootstrapMethodsAttributeContent().checkAndLoadFromSymbolTable(this, methodReference);
 		if (nameAndType != null && (nameAndType.getName().equals("<init>") || nameAndType.getName().equals("<clinit>"))) {
 			emitError(nameAndTypeReference, "illegal dynamic callsite name");
+		}
+		BootstrapMethodsAttributeContent bm = getBootstrapMethodsAttributeContent();
+		if (bm != null) {
+			method = bm.checkAndLoadFromSymbolTable(this, methodReference);
+		} else {
+			emitError(methodReference, "unknown bootstrap method "+methodReference.getSymbolName());
 		}
 	}
 	
 	private BootstrapMethodsAttributeContent getBootstrapMethodsAttributeContent() {
-		return (BootstrapMethodsAttributeContent)getAncestor(Clazz.class).getAttributes().
-				getAttributesByContentType(BootstrapMethodsAttributeContent.class)
-
-				.get(0).getContent();
+		
+		List<Attribute> attributes =  getAncestor(Clazz.class).getAttributes().
+				getAttributesByContentType(BootstrapMethodsAttributeContent.class);
+		if (attributes.isEmpty()) {
+			return null;
+		} else {
+			return (BootstrapMethodsAttributeContent)attributes.get(0).getContent();
+		}
 	}
+	
+	
 
 	public void setMethodReference(SymbolReference methodReference) {
 		this.methodReference = methodReference;
