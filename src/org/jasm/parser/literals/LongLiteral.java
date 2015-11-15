@@ -1,7 +1,9 @@
 package org.jasm.parser.literals;
 
+import org.jasm.item.instructions.macros.IMacroArgument;
 
-public class LongLiteral extends AbstractLiteral {
+
+public class LongLiteral extends AbstractLiteral implements IMacroArgument {
 	
 	public LongLiteral(int line, int charPosition, String content) {
 		super(line, charPosition, content);

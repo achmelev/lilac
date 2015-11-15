@@ -22,6 +22,7 @@ import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.DebugLocalVariable;
 import org.jasm.item.attribute.LocalVariableTableAttributeContent;
 import org.jasm.item.clazz.Clazz;
+import org.jasm.item.instructions.macros.MacroCall;
 import org.jasm.item.instructions.verify.Verifier;
 import org.jasm.item.instructions.verify.VerifyException;
 import org.jasm.item.instructions.verify.error.BadCodeException;
@@ -43,6 +44,8 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	private Map<Integer, AbstractInstruction> offsets ;
 	
 	private List<AbstractInstruction> items ;
+	
+	private List<MacroCall> macrocalls;
 	
 	private KeyToListMap<AbstractInstruction, IBytecodeItem> instructionReferences;
 	
@@ -66,6 +69,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		variablesPool.setParent(this);
 		offsets = new HashMap<>();
 		items = new ArrayList<>();
+		macrocalls = new ArrayList<MacroCall>();
 		localVariableReferences = new HashSet<>();
 		instructionReferences = new KeyToListMap<>();
 		verifier = new Verifier();
@@ -146,7 +150,11 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		item.setParent(this);
 		items.add(item);
 	}
-
+	
+	public void addWithoutSetOffsets(int index, AbstractInstruction item) {
+		item.setParent(this);
+		items.add(index, item);
+	}
 
 	public void add(AbstractInstruction item) {
 		item.setParent(this);
@@ -160,6 +168,11 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		item.setParent(this);
 		items.add(index, item);
 		setOffsets();
+	}
+	
+	public void addMacroCall(MacroCall call) {
+		call.setIndex(items.size());
+		macrocalls.add(call);
 	}
 
 
@@ -593,6 +606,13 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		instr.emitError(null, "verification error - "+e.getMessage());
 		
 	}
+
+
+	public List<MacroCall> getMacrocalls() {
+		return macrocalls;
+	}
+	
+	
 	
 
 }

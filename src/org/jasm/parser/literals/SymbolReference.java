@@ -1,6 +1,8 @@
 package org.jasm.parser.literals;
 
-public class SymbolReference extends AbstractLiteral {
+import org.jasm.item.instructions.macros.IMacroArgument;
+
+public class SymbolReference extends AbstractLiteral implements IMacroArgument {
 	
 	private String referenceLabel;
 
