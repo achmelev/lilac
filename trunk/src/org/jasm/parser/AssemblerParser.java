@@ -130,6 +130,7 @@ import org.jasm.item.instructions.NewarrayInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.SipushInstruction;
 import org.jasm.item.instructions.TableSwitchInstruction;
+import org.jasm.item.instructions.macros.MacroCall;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.JavaAssemblerParser.AnnotationContext;
 import org.jasm.parser.JavaAssemblerParser.AnnotationdeclarationContext;
@@ -195,8 +196,10 @@ import org.jasm.parser.JavaAssemblerParser.FieldnameContext;
 import org.jasm.parser.JavaAssemblerParser.FieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FloatStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.FloatinfoContext;
+import org.jasm.parser.JavaAssemblerParser.FloatmacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.FormalparametertypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.FullStackmapFrameContext;
+import org.jasm.parser.JavaAssemblerParser.IdmacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.IincopContext;
 import org.jasm.parser.JavaAssemblerParser.InnerclassContext;
 import org.jasm.parser.JavaAssemblerParser.Innerclass_innerContext;
@@ -217,6 +220,7 @@ import org.jasm.parser.JavaAssemblerParser.IntStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacemethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacesContext;
+import org.jasm.parser.JavaAssemblerParser.IntmacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.LabeledIdentifierContext;
 import org.jasm.parser.JavaAssemblerParser.LdcopContext;
 import org.jasm.parser.JavaAssemblerParser.LinenumberContext;
@@ -225,6 +229,8 @@ import org.jasm.parser.JavaAssemblerParser.LocalvartypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.LocalvartypememberContext;
 import org.jasm.parser.JavaAssemblerParser.LongStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
+import org.jasm.parser.JavaAssemblerParser.MacroargumentContext;
+import org.jasm.parser.JavaAssemblerParser.MacrocallContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.MethodexceptionhandlerContext;
@@ -276,6 +282,7 @@ import org.jasm.parser.JavaAssemblerParser.SimpleStackmapAttributeContext;
 import org.jasm.parser.JavaAssemblerParser.SimpleannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.StackitemstackmapvarinfosContext;
 import org.jasm.parser.JavaAssemblerParser.StringinfoContext;
+import org.jasm.parser.JavaAssemblerParser.StringmacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.SuperclassContext;
 import org.jasm.parser.JavaAssemblerParser.SupertypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.SwitchMemberContext;
@@ -1286,6 +1293,8 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		addInstruction(instr);
 	}
 	
+	
+	
 	private void setInstructionLabel(ParserRuleContext context, AbstractInstruction instr) {
 		MethodinstructionContext ctx = (MethodinstructionContext)context.getParent();
 		if (ctx.label() != null) {
@@ -1294,8 +1303,44 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		
 	}
 	
+	private MacroCall call;
+
+	@Override
+	public void enterMacrocall(MacrocallContext ctx) {
+		call = new MacroCall();
+		setMacroLabel(ctx, call);
+		call.setSourceLocation(createSourceLocation(ctx.Identifier()));
+		call.setNameReference(createSymbolReference(ctx.Identifier()));
+		addMacroCall(call);
+	}
 	
-	
+	@Override
+	public void enterIdmacroargument(IdmacroargumentContext ctx) {
+		call.addArgument(createSymbolReference(ctx.Identifier()));
+	}
+
+	@Override
+	public void enterStringmacroargument(StringmacroargumentContext ctx) {
+		call.addArgument(createStringLiteral(ctx.StringLiteral()));
+	}
+
+	@Override
+	public void enterIntmacroargument(IntmacroargumentContext ctx) {
+		call.addArgument(createLongLiteral(ctx.IntegerLiteral()));
+	}
+
+	@Override
+	public void enterFloatmacroargument(FloatmacroargumentContext ctx) {
+		call.addArgument(createDoubleLiteral(ctx.FloatingPointLiteral()));
+	}
+
+	private void setMacroLabel(ParserRuleContext context, MacroCall call) {
+		MethodinstructionContext ctx = (MethodinstructionContext)context.getParent();
+		if (ctx.label() != null) {
+			call.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		
+	}
 
 	@Override
 	public void enterMethodexceptionhandler(MethodexceptionhandlerContext ctx) {
@@ -1350,6 +1395,20 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 		
 		content.getInstructions().addWithoutSetOffsets(instr);
+	}
+	
+	private void addMacroCall(MacroCall call) {
+		CodeAttributeContent content = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+		Instructions instrs = content.getInstructions();
+		if (call.getLabel() != null) {
+			if (!instrs.getSymbolTable().contains(call.getSymbolName())) {
+				instrs.getSymbolTable().add(call);
+			} else {
+				emitError(call.getSourceLocation().getLine(), call.getSourceLocation().getCharPosition(), "dublicate instruction label "+call.getSymbolName());
+			}
+		}
+		
+		content.getInstructions().addMacroCall(call);
 	}
 
 

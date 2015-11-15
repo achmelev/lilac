@@ -1,6 +1,8 @@
 package org.jasm.parser.literals;
 
-public class DoubleLiteral extends AbstractLiteral {
+import org.jasm.item.instructions.macros.IMacroArgument;
+
+public class DoubleLiteral extends AbstractLiteral implements IMacroArgument {
 
 	public DoubleLiteral(int line, int charPosition, String content) {
 		super(line, charPosition, content);

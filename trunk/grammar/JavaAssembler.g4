@@ -163,7 +163,7 @@ methodvarimplicit: VAR methodvartype Identifier SEMI;
 methodvarrelative: VAR methodvartype Identifier AT Identifier ( Plus? IntegerLiteral)? SEMI;
 methodvarabsolute: VAR methodvartype Identifier AT IntegerLiteral SEMI;
 
-methodinstruction: (label COLON)? instruction SEMI;
+methodinstruction: (label COLON)? (instruction|macrocall) SEMI;
 
 methodexceptionhandler: (label COLON)? TRY Identifier Pointer Identifier CATCH identifierOrAll GO TO Identifier SEMI;
 
@@ -198,6 +198,14 @@ instruction: argumentlessop_keyword #argumentlessop
 			 | switchop_keyword switchMember (COMMA switchMember)* #switchop 
 			 | branchop_keyword Identifier #branchop
 			 ;
+
+macrocall: Identifier macroarguments?;
+macroarguments: macroargument (COMMA macroargument)*;
+macroargument: IntegerLiteral #intmacroargument
+			   |FloatingPointLiteral #floatmacroargument
+			   |StringLiteral #stringmacroargument
+			   |Identifier #idmacroargument
+			   ;
 
 methodmaxstack: MAXSTACK IntegerLiteral SEMI;
 methodmaxlocals: MAXLOCALS IntegerLiteral SEMI;
