@@ -11,6 +11,7 @@ import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.parser.SimpleParserErrorListener;
+import org.jasm.test.macro.TestMacroFactory;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ public abstract class AbstractParseAndLoadTestCase {
 	private Clazz parse() {
 		InputStream inp = this.getClass().getClassLoader().getResourceAsStream("org/jasm/test/parser/"+getDateiName());
 		parser = new AssemblerParser();
+		parser.setMacroFactory(new TestMacroFactory());
 		parser.addErrorListener(new SimpleParserErrorListener());
 		Clazz clazz =  parser.parse(inp);
 		if (parser.getErrorCounter() > 0) {

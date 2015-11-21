@@ -21,17 +21,16 @@ import org.jasm.item.attribute.Attribute;
 import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.DebugLocalVariable;
 import org.jasm.item.attribute.LocalVariableTableAttributeContent;
-import org.jasm.item.clazz.Clazz;
+import org.jasm.item.instructions.macros.IMacro;
+import org.jasm.item.instructions.macros.IMacroFactory;
 import org.jasm.item.instructions.macros.MacroCall;
 import org.jasm.item.instructions.verify.Verifier;
 import org.jasm.item.instructions.verify.VerifyException;
-import org.jasm.item.instructions.verify.error.BadCodeException;
 import org.jasm.item.utils.IdentifierUtils;
 import org.jasm.map.KeyToListMap;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.SymbolTable;
 import org.jasm.parser.literals.SymbolReference;
-import org.jasm.type.verifier.VerifierParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -453,6 +452,33 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 				}
 			}
 		}
+		
+		//Inserting instructions from MacroCalls
+		IMacroFactory macroFactory = getRoot().getParser().getMacroFactory();
+		int offset = 0;
+		for (MacroCall call: macrocalls) {
+			String name = call.getNameReference().getContent();
+			if (macroFactory == null) {
+				emitError(call.getNameReference(), "unknown macro "+name);
+			} else {
+				IMacro macro = macroFactory.createMacroByName(name);
+				if (macro == null) {
+					emitError(call.getNameReference(), "unknown macro "+name);
+				} else {
+					if (macro.resolve()) {
+						List<AbstractInstruction> instructions = macro.createInstructions();
+						for (AbstractInstruction instr: instructions) {
+							instr.setParent(this);
+							instr.setResolved(true);
+							instr.setGenerated(true);
+							items.add(offset+call.getIndex(), instr);
+							offset++;
+						}
+					}
+				}
+			}
+		}
+		
 		setOffsets();
 	}
 
