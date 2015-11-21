@@ -114,15 +114,15 @@ public abstract class AbstractMacro implements IMacro {
 		return value instanceof SymbolReference;
 	}
 	
-	public String getStringValue(IMacroArgument value) {
+	protected String getStringValue(IMacroArgument value) {
 		return ((StringLiteral)value).getContent();
 	}
 	
-	public double getFloatingPointValue(IMacroArgument value) {
+	protected double getFloatingPointValue(IMacroArgument value) {
 		return ((DoubleLiteral)value).getValue();
 	}
 	
-	public long getIntegerValue(IMacroArgument value) {
+	protected long getIntegerValue(IMacroArgument value) {
 		return ((LongLiteral)value).getValue();
 	}
 	
