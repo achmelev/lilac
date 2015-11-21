@@ -66,7 +66,6 @@ public class MacroCall implements ISymbolTableEntry{
 
 	@Override
 	public boolean hasErrors() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	

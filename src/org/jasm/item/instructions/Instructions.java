@@ -22,6 +22,7 @@ import org.jasm.item.attribute.CodeAttributeContent;
 import org.jasm.item.attribute.DebugLocalVariable;
 import org.jasm.item.attribute.LocalVariableTableAttributeContent;
 import org.jasm.item.instructions.macros.IMacro;
+import org.jasm.item.instructions.macros.IMacroArgument;
 import org.jasm.item.instructions.macros.IMacroFactory;
 import org.jasm.item.instructions.macros.MacroCall;
 import org.jasm.item.instructions.verify.Verifier;
@@ -465,7 +466,17 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 				if (macro == null) {
 					emitError(call.getNameReference(), "unknown macro "+name);
 				} else {
-					if (macro.resolve()) {
+					boolean argumentsOK = true;
+					for (IMacroArgument arg: call.getArguments()) {
+						if (!arg.isValid()) {
+							argumentsOK = false;
+							emitErrorOnLocation(arg.getSourceLocation(), arg.getInvalidErrorMessage());
+						}
+					}
+					if (argumentsOK) {
+						macro.init(call, this);
+					}
+					if (argumentsOK && macro.resolve()) {
 						List<AbstractInstruction> instructions = macro.createInstructions();
 						for (AbstractInstruction instr: instructions) {
 							instr.setParent(this);

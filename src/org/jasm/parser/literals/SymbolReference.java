@@ -21,6 +21,16 @@ public class SymbolReference extends AbstractLiteral implements IMacroArgument {
 	public void setReferenceLabel(String referenceLabel) {
 		this.referenceLabel = referenceLabel;
 	}
+
+	@Override
+	public boolean isValid() {
+		return true;
+	}
+
+	@Override
+	public String getInvalidErrorMessage() {
+		return null;
+	}
 	
 	
 

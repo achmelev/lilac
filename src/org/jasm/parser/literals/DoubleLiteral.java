@@ -164,6 +164,11 @@ public class DoubleLiteral extends AbstractLiteral implements IMacroArgument {
 		return result;
 		
 	}
+
+	@Override
+	public String getInvalidErrorMessage() {
+		return "malformed floating point value";
+	}
 	
 
 }

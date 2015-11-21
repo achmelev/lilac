@@ -30,6 +30,15 @@ public class LdcInstruction extends AbstractInstruction implements IConstantPool
 			opCode = OpCodes.ldc;
 		}
 	}
+	
+	public LdcInstruction(AbstractConstantPoolEntry cpEntry) {
+		if (cpEntry.getIndexInPool()>255) {
+			opCode = OpCodes.ldc_w;
+		} else {
+			opCode = OpCodes.ldc;
+		}
+		this.cpEntry = cpEntry;
+	}
 
 	@Override
 	public int getLength() {

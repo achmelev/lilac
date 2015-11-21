@@ -47,4 +47,9 @@ public class LongLiteral extends AbstractLiteral implements IMacroArgument {
 		return result;
 	}
 
+	@Override
+	public String getInvalidErrorMessage() {
+		return "malformed integer value";
+	}
+
 }

@@ -13,4 +13,15 @@ public class StringLiteral extends AbstractLiteral implements IMacroArgument {
 		return StringEscapeUtils.unescapeJava(getContent().substring(1,getContent().length()-1));
 	}
 
+	@Override
+	public boolean isValid() {
+		return true;
+	}
+
+	@Override
+	public String getInvalidErrorMessage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
