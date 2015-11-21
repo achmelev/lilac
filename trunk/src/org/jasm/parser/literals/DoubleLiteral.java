@@ -28,15 +28,15 @@ public class DoubleLiteral extends AbstractLiteral implements IMacroArgument {
 		}
 		
 		if (content.equals("NaN")) {
-			result = Float.NaN;
+			result = Double.NaN;
 		} else if (content.equals("Infinity")) {
 			if (sign == '-') {
-				result = Float.NEGATIVE_INFINITY;
+				result = Double.NEGATIVE_INFINITY;
 			} else {
-				result = Float.POSITIVE_INFINITY;
+				result = Double.POSITIVE_INFINITY;
 			}
 		} else if (!(content.indexOf('p')>0 || content.indexOf('P')>0)){
-			result = Float.parseFloat(sign+content);
+			result = Double.parseDouble(sign+content);
 		} else {
 			result = parseFromPositiveExactBinaryLiteral(content);
 			if (sign == '-') {

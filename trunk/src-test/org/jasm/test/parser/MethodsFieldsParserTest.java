@@ -59,11 +59,11 @@ public class MethodsFieldsParserTest extends AbstractParserTestCase {
 		Assert.assertEquals(1,clazz.getConstantPool().getFloatEntries(Float.NEGATIVE_INFINITY).size());
 		
 		Assert.assertEquals(1,clazz.getConstantPool().getDoubleEntries(0).size());
-		Assert.assertEquals(1,clazz.getConstantPool().getDoubleEntries(0x1.9066666666666p6).size());
-		Assert.assertEquals(1,clazz.getConstantPool().getDoubleEntries(-0x1.9066666666666p6).size());
-		Assert.assertEquals(1,clazz.getConstantPool().getDoubleEntries(Float.NaN).size());
-		Assert.assertEquals(1,clazz.getConstantPool().getDoubleEntries(Float.POSITIVE_INFINITY).size());
-		Assert.assertEquals(1,clazz.getConstantPool().getDoubleEntries(Float.NEGATIVE_INFINITY).size());
+		Assert.assertEquals(2,clazz.getConstantPool().getDoubleEntries(0x1.9066666666666p6).size());
+		Assert.assertEquals(2,clazz.getConstantPool().getDoubleEntries(-0x1.9066666666666p6).size());
+		Assert.assertEquals(1,clazz.getConstantPool().getDoubleEntries(Double.NaN).size());
+		Assert.assertEquals(1,clazz.getConstantPool().getDoubleEntries(Double.POSITIVE_INFINITY).size());
+		Assert.assertEquals(1,clazz.getConstantPool().getDoubleEntries(Double.NEGATIVE_INFINITY).size());
 		
 		Assert.assertEquals(1,clazz.getConstantPool().getLongEntries(10000).size());
 		Assert.assertEquals(1,clazz.getConstantPool().getLongEntries(-10000).size());
