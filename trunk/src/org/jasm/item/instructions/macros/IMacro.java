@@ -7,7 +7,7 @@ import org.jasm.item.instructions.Instructions;
 
 public interface IMacro {
 	
-	public void init(MacroCall call, Instructions instrs, List<IMacroArgument> arguments);
+	public void init(MacroCall call, Instructions instrs);
 	public boolean resolve();
 	public List<AbstractInstruction> createInstructions();
 
