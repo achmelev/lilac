@@ -6,7 +6,7 @@ public super class {
   
    //Constants
   const classref MaxStack MaxStack_name; 
-  const utf8 MaxStack_name "org/jasm/test/testclass/MaxStack";
+  const utf8 MaxStack_name "org/jasm/test/testclass/Macro";
   
   const classref ICalculator ICalculator_name; 
   const utf8 ICalculator_name "org/jasm/test/testclass/ICalculator";
@@ -53,12 +53,9 @@ public super class {
     //Variables
     var object this;
     //Instructions
-	
 	nop;
-	
 	macro:
-    test.mul 10, 15.0, "20", i30;
-	bipush 20;
+    test.argumentlessmul 10, 15.0, "20", i30;
     ireturn;
   }
 }

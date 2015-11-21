@@ -39,7 +39,7 @@ public class MacroParserTest extends AbstractParserTestCase {
 		Assert.assertEquals(1, instrs.getMacrocalls().size());
 		
 		MacroCall call = instrs.getMacrocalls().get(0);
-		Assert.assertEquals("test.mul", call.getNameReference().getSymbolName());
+		Assert.assertEquals("test.argumentlessmul", call.getNameReference().getSymbolName());
 		Assert.assertEquals("macro", call.getSymbolName());
 		Assert.assertEquals(1, call.getIndex());
 		Assert.assertEquals(4, call.getArguments().size());
@@ -47,6 +47,8 @@ public class MacroParserTest extends AbstractParserTestCase {
 		Assert.assertEquals(15.0,((DoubleLiteral)call.getArguments().get(1)).getValue());
 		Assert.assertEquals("20",((StringLiteral)call.getArguments().get(2)).getStringValue());
 		Assert.assertEquals("i30",((SymbolReference)call.getArguments().get(3)).getSymbolName());
+		
+		Assert.assertEquals(5, instrs.getSize());
 		
 		
 		

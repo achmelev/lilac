@@ -1,5 +1,7 @@
 package org.jasm.item.instructions.macros;
 
-public interface IMacroArgument {
+import org.jasm.parser.SourceLocation;
 
+public interface IMacroArgument {
+	public SourceLocation getSourceLocation();
 }

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.parser.SimpleParserErrorListener;
+import org.jasm.test.macro.TestMacroFactory;
 import org.junit.Assert;
 
 public abstract class AbstractParserTestCase {
@@ -14,6 +15,7 @@ public abstract class AbstractParserTestCase {
 	protected Clazz parse() {
 		InputStream inp = this.getClass().getClassLoader().getResourceAsStream("org/jasm/test/parser/"+getDateiName());
 		parser = new AssemblerParser();
+		parser.setMacroFactory(new TestMacroFactory());
 		parser.addErrorListener(new SimpleParserErrorListener());
 		return parser.parse(inp);
 	}
@@ -29,5 +31,7 @@ public abstract class AbstractParserTestCase {
 		Assert.assertNotNull(clazz);
 		return clazz;
 	}
+	
+	
 
 }

@@ -733,6 +733,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	private void addGeneratedEntry(AbstractConstantPoolEntry info) {
 		info.setParent(this);
 		info.setResolved(true);
+		info.setGenerated(true);
 		add(info);
 		addToIndex(info);
 	}

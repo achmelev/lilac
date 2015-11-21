@@ -46,8 +46,12 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 			throw new IllegalStateException("Cannot resolve orphan item!");
 		}
 		if (this.resolved) {
-			throw new IllegalStateException("Resolve can be called only once on the same instance");
-		}
+			if (!generated) {
+				throw new IllegalStateException("Resolve can be called only once on the same instance");
+			} else {
+				return;
+			}
+		}	
 		
 		if (isAfterParse()) {
 			try {
@@ -66,12 +70,10 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 		if ((this.parent == null) && !isRoot()) {
 			throw new IllegalStateException("Cannot verify orphan item!");
 		}
-		if (!isAfterParse() || isGenerated()) {
-			throw new IllegalStateException("verify can be called only after parse and resolve or on generated items");
+		if (!(isAfterParse() && this.resolved)) {
+			throw new IllegalStateException("verify can be called only after parse and resolve");
 		}
-		if (!this.resolved) {
-			throw new IllegalStateException("verify can be called only after parse and resolve or on generated items");
-		}
+		
 		if (this.verified) {
 			throw new IllegalStateException("Verify can be called only once on the same instance");
 		}
@@ -253,8 +255,6 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 	public void hasResolveErrors(boolean value) {
 		this.hasResolveErrors = value;
 	}
-	
-	
 	
 	public boolean isGenerated() {
 		return generated;

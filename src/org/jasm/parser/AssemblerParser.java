@@ -130,6 +130,7 @@ import org.jasm.item.instructions.NewarrayInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.SipushInstruction;
 import org.jasm.item.instructions.TableSwitchInstruction;
+import org.jasm.item.instructions.macros.IMacroFactory;
 import org.jasm.item.instructions.macros.MacroCall;
 import org.jasm.item.modifier.ClassModifier;
 import org.jasm.parser.JavaAssemblerParser.AnnotationContext;
@@ -229,7 +230,6 @@ import org.jasm.parser.JavaAssemblerParser.LocalvartypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.LocalvartypememberContext;
 import org.jasm.parser.JavaAssemblerParser.LongStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
-import org.jasm.parser.JavaAssemblerParser.MacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.MacrocallContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
@@ -330,10 +330,20 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private int errorCounter = 0;
 	
+	private IMacroFactory macroFactory;
+	
 	public void addErrorListener(IParserErrorListener listener) {
 		errorListeners.add(listener);
 	}
 	
+	public void setMacroFactory(IMacroFactory macroFactory) {
+		this.macroFactory = macroFactory;
+	}
+	
+	public IMacroFactory getMacroFactory() {
+		return macroFactory;
+	}
+
 	public void emitError(int line, int charPos, String msg) {
 		errorCounter++;
 		for (IParserErrorListener listener: errorListeners) {
@@ -2702,7 +2712,7 @@ class SyntaxErrorListener extends BaseErrorListener {
 		}
 	}
 	
-
+	
 	
 	
 	
