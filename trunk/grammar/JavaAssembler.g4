@@ -204,7 +204,10 @@ macroarguments: macroargument (COMMA macroargument)*;
 macroargument: IntegerLiteral #intmacroargument
 			   |FloatingPointLiteral #floatmacroargument
 			   |StringLiteral #stringmacroargument
+			   |NULL #nullmacroargument
 			   |Identifier #idmacroargument
+			   |FieldIdentifier #fieldidmacroargument
+			   |MethodIdentifier #methodidmacroargument
 			   ;
 
 methodmaxstack: MAXSTACK IntegerLiteral SEMI;
@@ -692,8 +695,6 @@ WIDE: 'wide';
 Plus            :  '+';
 Pointer   : '->';
 
-
-
 // Integer Literals
 
 IntegerLiteral
@@ -888,7 +889,6 @@ SEMI            : ';';
 COMMA           : ',';
 COLON           : ':';
 
-
 // Identifiers
 
 Identifier: SimpleIdentifier ('.' SimpleIdentifier)*;
@@ -896,6 +896,10 @@ Identifier: SimpleIdentifier ('.' SimpleIdentifier)*;
 SimpleIdentifier
     :   JavaLetter JavaLetterOrDigit*
     ;
+
+FieldIdentifier: Identifier '@' TypeDescriptor;
+MethodIdentifier: Identifier '@' MethodDescriptor;
+
 
 fragment
 JavaLetter
@@ -918,6 +922,17 @@ JavaLetterOrDigit
         [\uD800-\uDBFF] [\uDC00-\uDFFF]
         {Character.isJavaIdentifierPart(Character.toCodePoint((char)_input.LA(-2), (char)_input.LA(-1)))}?
     ;
+
+//Descriptors
+fragment TypeDescriptor : BaseTypeDescriptor | ObjectTypeDescriptor | ArrayTypeDescriptor;
+fragment BaseTypeDescriptor: 'B' | 'C' | 'D' | 'F' | 'I' | 'J' | 'S' | 'Z';
+fragment InternalClassName: SimpleIdentifier ('/' SimpleIdentifier)*;
+fragment ObjectTypeDescriptor: 'L' InternalClassName ';';
+fragment ArrayTypeDescriptor: '[' TypeDescriptor;
+
+fragment MethodDescriptor: '(' TypeDescriptor? ')' ReturnDescriptor;
+fragment ReturnDescriptor: TypeDescriptor | 'V';
+
 
 //Base64
 
