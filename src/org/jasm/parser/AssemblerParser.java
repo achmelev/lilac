@@ -16,6 +16,7 @@ import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -184,6 +185,7 @@ import org.jasm.parser.JavaAssemblerParser.ExtendedStackmapAttributeContext;
 import org.jasm.parser.JavaAssemblerParser.FieldContext;
 import org.jasm.parser.JavaAssemblerParser.FieldattributeConstantValueContext;
 import org.jasm.parser.JavaAssemblerParser.FielddescriptorContext;
+import org.jasm.parser.JavaAssemblerParser.FieldidmacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.FieldmodifierEnumContext;
 import org.jasm.parser.JavaAssemblerParser.FieldmodifierFinalContext;
 import org.jasm.parser.JavaAssemblerParser.FieldmodifierPrivateContext;
@@ -235,6 +237,7 @@ import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.MethodexceptionhandlerContext;
 import org.jasm.parser.JavaAssemblerParser.MethodhandleinfoContext;
+import org.jasm.parser.JavaAssemblerParser.MethodidmacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.MethodinstructionContext;
 import org.jasm.parser.JavaAssemblerParser.MethodlinenumbertableContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmaxlocalsContext;
@@ -267,6 +270,7 @@ import org.jasm.parser.JavaAssemblerParser.NameandtypeinfoContext;
 import org.jasm.parser.JavaAssemblerParser.NewarrayopContext;
 import org.jasm.parser.JavaAssemblerParser.NewtypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.NullStackmapvarinfoContext;
+import org.jasm.parser.JavaAssemblerParser.NullmacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.ObjectStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.ParameterTypeBoundTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.ParameterTypeTargetTypeContext;
@@ -302,11 +306,14 @@ import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
 import org.jasm.parser.literals.Base64Literal;
 import org.jasm.parser.literals.DoubleLiteral;
+import org.jasm.parser.literals.FieldReference;
 import org.jasm.parser.literals.FloatLiteral;
 import org.jasm.parser.literals.IntegerLiteral;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.Label;
 import org.jasm.parser.literals.LongLiteral;
+import org.jasm.parser.literals.MethodReference;
+import org.jasm.parser.literals.NullLiteral;
 import org.jasm.parser.literals.StringLiteral;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.parser.literals.VersionLiteral;
@@ -408,25 +415,24 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		JavaAssemblerLexer lexer = new JavaAssemblerLexer(input);
 		lexer.removeErrorListeners();
 		lexer.addErrorListener(errorListener);
-		/*for (Token tok: lexer.getAllTokens()) {
+		/**for (Token tok: lexer.getAllTokens()) {
 			log.info(tok.getType() +" "+tok.getText());
-		}*/
+		}**/
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		JavaAssemblerParser parser = new JavaAssemblerParser(tokens);
 		parser.removeErrorListeners();
 		parser.addErrorListener(errorListener);
 		//parser.getInterpreter().setPredictionMode(PredictionMode.LL_EXACT_AMBIG_DETECTION);
-		if (log.isDebugEnabled()) {
-			//parser.setTrace(true);
+		//parser.setTrace(true);
 			
-		}
+		
 		
 		//Parse
 		ParseTree tree = parser.clazz();
 		
-		/*if (log.isDebugEnabled()) {
-			log.debug("tree: "+tree.toStringTree());
-		}*/
+		
+		//log.debug("tree: "+tree.toStringTree());
+		
 		
 		if (errorCounter == 0) {
 			//Walk tree an create class
@@ -1342,6 +1348,21 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterFloatmacroargument(FloatmacroargumentContext ctx) {
 		call.addArgument(createDoubleLiteral(ctx.FloatingPointLiteral()));
+	}
+	
+	@Override
+	public void enterFieldidmacroargument(FieldidmacroargumentContext ctx) {
+		call.addArgument(createFieldReference(ctx.FieldIdentifier()));
+	}
+
+	@Override
+	public void enterMethodidmacroargument(MethodidmacroargumentContext ctx) {
+		call.addArgument(createMethodReference(ctx.MethodIdentifier()));
+	}
+
+	@Override
+	public void enterNullmacroargument(NullmacroargumentContext ctx) {
+		call.addArgument(createNullLiteral(ctx.NULL()));
 	}
 
 	private void setMacroLabel(ParserRuleContext context, MacroCall call) {
@@ -2636,6 +2657,18 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private Base64Literal createBase64Literal(TerminalNode node) {
 		return new Base64Literal(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private NullLiteral createNullLiteral(TerminalNode node) {
+		return new NullLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private FieldReference createFieldReference(TerminalNode node) {
+		return new FieldReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private MethodReference createMethodReference(TerminalNode node) {
+		return new MethodReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
 	}
 	
 	
