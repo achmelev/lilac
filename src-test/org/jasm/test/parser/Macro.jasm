@@ -55,7 +55,7 @@ public super class {
     //Instructions
 	nop;
 	macro:
-    test.argumentlessmul 10, 15.0, "20", i30;
+    test.argumentlessmul 10, 15.0, "20", i30, null, this.class.counter@I, this.class.calculate@()I;
     ireturn;
   }
 }
