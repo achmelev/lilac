@@ -27,6 +27,7 @@ public super class {
   const utf8 calculate_desc "()I";
   
   const int i30 30;
+  const int i200 200;
     
   
   //Fields
@@ -55,7 +56,8 @@ public super class {
     //Instructions
 	nop;
 	macro:
-    test.imul 10, 200, 40000;
+    test.imul(10, i200, 40000, 
+    				test.imul(1,1));
     ireturn;
   }
 }

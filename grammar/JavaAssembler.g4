@@ -199,7 +199,7 @@ instruction: argumentlessop_keyword #argumentlessop
 			 | branchop_keyword Identifier #branchop
 			 ;
 
-macrocall: Identifier macroarguments?;
+macrocall: Identifier LROUNDBRACE macroarguments? RROUNDBRACE;
 macroarguments: macroargument (COMMA macroargument)*;
 macroargument: IntegerLiteral #intmacroargument
 			   |FloatingPointLiteral #floatmacroargument
@@ -208,6 +208,7 @@ macroargument: IntegerLiteral #intmacroargument
 			   |Identifier #idmacroargument
 			   |FieldIdentifier #fieldidmacroargument
 			   |MethodIdentifier #methodidmacroargument
+			   |macrocall #macrocallmacroargument
 			   ;
 
 methodmaxstack: MAXSTACK IntegerLiteral SEMI;
@@ -888,6 +889,8 @@ RBRACE          : '}';
 SEMI            : ';';
 COMMA           : ',';
 COLON           : ':';
+LROUNDBRACE     : '(';
+RROUNDBRACE     : ')';
 
 // Identifiers
 

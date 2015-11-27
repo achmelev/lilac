@@ -16,7 +16,6 @@ import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -24,7 +23,6 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.jasm.JasmConsts;
 import org.jasm.item.AbstractByteCodeItem;
-import org.jasm.item.IBytecodeItem;
 import org.jasm.item.attribute.AbstractAnnotationsAttributeContent;
 import org.jasm.item.attribute.AbstractParameterAnnotationsAttributeContent;
 import org.jasm.item.attribute.AbstractStackmapVariableinfo;
@@ -321,10 +319,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
-
-
-
 public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -333,7 +327,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private Clazz result = null;
 	
-	Stack<IBytecodeItem> stack = new Stack<>();
+	Stack<Object> stack = new Stack<>();
 	
 	private int errorCounter = 0;
 	
@@ -372,8 +366,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			listener.flush();
 		}
 	}
-	
-	
 	
 	public int getErrorCounter() {
 		return errorCounter;
@@ -1319,58 +1311,75 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		
 	}
 	
-	private MacroCall call;
-
 	@Override
 	public void enterMacrocall(MacrocallContext ctx) {
-		call = new MacroCall();
+		MacroCall call = new MacroCall();
 		setMacroLabel(ctx, call);
 		call.setSourceLocation(createSourceLocation(ctx.Identifier()));
 		call.setNameReference(createSymbolReference(ctx.Identifier()));
-		addMacroCall(call);
+		stack.push(call);
 	}
 	
 	@Override
+	public void exitMacrocall(MacrocallContext ctx) {
+		MacroCall call = (MacroCall)stack.pop();
+		if (stack.peek() instanceof MacroCall) {
+			((MacroCall)stack.peek()).addArgument(call);
+		} else {
+			addMacroCall(call);
+		}
+		
+	}
+
+	@Override
 	public void enterIdmacroargument(IdmacroargumentContext ctx) {
+		MacroCall call = (MacroCall)stack.peek();
 		call.addArgument(createSymbolReference(ctx.Identifier()));
 	}
 
 	@Override
 	public void enterStringmacroargument(StringmacroargumentContext ctx) {
+		MacroCall call = (MacroCall)stack.peek();
 		call.addArgument(createStringLiteral(ctx.StringLiteral()));
 	}
 
 	@Override
 	public void enterIntmacroargument(IntmacroargumentContext ctx) {
+		MacroCall call = (MacroCall)stack.peek();
 		call.addArgument(createLongLiteral(ctx.IntegerLiteral()));
 	}
 
 	@Override
 	public void enterFloatmacroargument(FloatmacroargumentContext ctx) {
+		MacroCall call = (MacroCall)stack.peek();
 		call.addArgument(createDoubleLiteral(ctx.FloatingPointLiteral()));
 	}
 	
 	@Override
 	public void enterFieldidmacroargument(FieldidmacroargumentContext ctx) {
+		MacroCall call = (MacroCall)stack.peek();
 		call.addArgument(createFieldReference(ctx.FieldIdentifier()));
 	}
 
 	@Override
 	public void enterMethodidmacroargument(MethodidmacroargumentContext ctx) {
+		MacroCall call = (MacroCall)stack.peek();
 		call.addArgument(createMethodReference(ctx.MethodIdentifier()));
 	}
 
 	@Override
 	public void enterNullmacroargument(NullmacroargumentContext ctx) {
+		MacroCall call = (MacroCall)stack.peek();
 		call.addArgument(createNullLiteral(ctx.NULL()));
 	}
 
 	private void setMacroLabel(ParserRuleContext context, MacroCall call) {
-		MethodinstructionContext ctx = (MethodinstructionContext)context.getParent();
-		if (ctx.label() != null) {
-			call.setLabel(createLabel(ctx.label().Identifier()));
+		if (context.getParent() instanceof MethodinstructionContext) {
+			MethodinstructionContext ctx = (MethodinstructionContext)context.getParent();
+			if (ctx.label() != null) {
+				call.setLabel(createLabel(ctx.label().Identifier()));
+			}
 		}
-		
 	}
 
 	@Override
