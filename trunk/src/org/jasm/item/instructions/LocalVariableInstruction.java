@@ -15,6 +15,11 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 	
 	private ShortLocalVariableInstruction shortReplacement = null;
 	
+	public LocalVariableInstruction(short opCode, LocalVariable var) {
+		super(opCode, var.getIndex()>255);
+		localVariable = var;
+	}
+	
 	
 	public LocalVariableInstruction(short opCode,boolean isWide, int localVariableIndex) {
 		super(opCode, isWide);

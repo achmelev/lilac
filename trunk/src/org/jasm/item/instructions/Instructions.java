@@ -455,42 +455,64 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		}
 		
 		//Inserting instructions from MacroCalls
-		IMacroFactory macroFactory = getRoot().getParser().getMacroFactory();
 		int offset = 0;
 		for (MacroCall call: macrocalls) {
-			String name = call.getNameReference().getContent();
-			if (macroFactory == null) {
-				emitError(call.getNameReference(), "unknown macro "+name);
-			} else {
-				IMacro macro = macroFactory.createMacroByName(name);
-				if (macro == null) {
-					emitError(call.getNameReference(), "unknown macro "+name);
-				} else {
-					boolean argumentsOK = true;
-					for (IMacroArgument arg: call.getArguments()) {
-						if (!arg.isValid()) {
-							argumentsOK = false;
-							emitErrorOnLocation(arg.getSourceLocation(), arg.getInvalidErrorMessage());
-						}
-					}
-					if (argumentsOK) {
-						macro.init(call, this);
-					}
-					if (argumentsOK && macro.resolve()) {
-						List<AbstractInstruction> instructions = macro.createInstructions();
-						for (AbstractInstruction instr: instructions) {
-							instr.setParent(this);
-							instr.setResolved(true);
-							instr.setGenerated(true);
-							items.add(offset+call.getIndex(), instr);
-							offset++;
-						}
-					}
+			
+			IMacro macro = resolveMacroCall(call);
+			if (macro != null) {
+				List<AbstractInstruction> instructions = macro.createInstructions();
+				for (AbstractInstruction instr: instructions) {
+					instr.setParent(this);
+					instr.setResolved(true);
+					instr.setGenerated(true);
+					items.add(offset+call.getIndex(), instr);
+					offset++;
 				}
-			}
+			}	
 		}
 		
 		setOffsets();
+	}
+	
+	private IMacro resolveMacroCall(MacroCall call) {
+		IMacroFactory macroFactory = getRoot().getParser().getMacroFactory();
+		String name = call.getNameReference().getContent();
+		IMacro macro = null;
+		if (macroFactory == null) {
+			emitError(call.getNameReference(), "unknown macro "+name);
+		} else {
+			macro = macroFactory.createMacroByName(name);
+			if (macro == null) {
+				emitError(call.getNameReference(), "unknown macro "+name);
+			} else {
+				boolean argumentsOK = true;
+				for (IMacroArgument arg: call.getArguments()) {
+					if (!arg.isValid()) {
+						argumentsOK = false;
+						emitErrorOnLocation(arg.getSourceLocation(), arg.getInvalidErrorMessage());
+					} else if (arg instanceof MacroCall) {
+						MacroCall recursiveCall = (MacroCall)arg;
+						if (resolveMacroCall(recursiveCall) == null) {
+							argumentsOK = false;
+						}
+					}
+				}
+				
+				if (argumentsOK) {
+					macro.init(call, this);
+					if (!macro.resolve()) {
+						macro = null;
+					}
+				} else {
+					macro = null;
+				}
+				
+			}
+		}
+		if (macro != null) {
+			call.setMacro(macro);
+		}
+		return macro;
 	}
 
 

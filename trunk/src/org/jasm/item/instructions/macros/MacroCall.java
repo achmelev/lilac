@@ -8,13 +8,15 @@ import org.jasm.parser.SourceLocation;
 import org.jasm.parser.literals.Label;
 import org.jasm.parser.literals.SymbolReference;
 
-public class MacroCall implements ISymbolTableEntry{
+public class MacroCall implements ISymbolTableEntry, IMacroArgument {
 	
 	private SymbolReference nameReference;
 	private List<IMacroArgument> arguments = new ArrayList<IMacroArgument>();
 	private SourceLocation sourceLocation = null;
 	private int index=0;
 	private Label label;
+	
+	private IMacro macro;
 	
 	public void setNameReference(SymbolReference nameReference) {
 		this.nameReference = nameReference;
@@ -68,10 +70,25 @@ public class MacroCall implements ISymbolTableEntry{
 	public boolean hasErrors() {
 		return false;
 	}
-	
-	
-	
-	
+
+	@Override
+	public boolean isValid() {
+		return true;
+	}
+
+	@Override
+	public String getInvalidErrorMessage() {
+		return null;
+	}
+
+	public IMacro getMacro() {
+		return macro;
+	}
+
+	public void setMacro(IMacro macro) {
+		this.macro = macro;
+	}
+
 	
 
 }
