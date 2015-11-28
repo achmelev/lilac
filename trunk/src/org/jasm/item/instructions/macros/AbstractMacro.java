@@ -42,6 +42,7 @@ public abstract class AbstractMacro implements IMacro {
 	private Instructions instructions;
 	private MacroCall call;
 	
+	
 	private boolean hasError = false;
 
 	@Override
@@ -51,16 +52,12 @@ public abstract class AbstractMacro implements IMacro {
 		this.call = call;
 	}
 	
-	
 	protected void emitError(SourceLocation location, String message) {
 		instructions.emitErrorOnLocation((location != null)?location:call.getSourceLocation(), message);
 		hasError = true;
 	}
 	
 	protected AbstractInstruction createArgumentLessInstruction(short opCode) {
-		if (!OpCodes.isArgumentLessInstruction(opCode)) {
-			throw new IllegalArgumentException("Unknown argumentless opcode: "+Integer.toHexString(opCode));
-		}
 		return new ArgumentLessInstruction(opCode);
 	}
 	
@@ -86,6 +83,7 @@ public abstract class AbstractMacro implements IMacro {
 		}
 	}
 	
+	
 	protected AbstractInstruction createLoadLocalVariableInstruction(LocalVariable var) {
 		if (var.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS) {
 			throw new IllegalArgumentException("return adress!");
@@ -100,13 +98,8 @@ public abstract class AbstractMacro implements IMacro {
 		return createLocalVariableInstruction(OpCodes.getOpcodeForName(var.getType()+"store"), var);
 	}
 	
-	protected ClassInfo getClassInfo(String className, SourceLocation location) {
-		if (!IdentifierUtils.isValidJasmClassName(className)) {
-			emitError(location, "malformed class or array name: "+className);
-			return null;
-		} else {
-			return instructions.getConstantPool().getOrAddClassInfo(className);
-		}
+	protected ClassInfo getClassInfo(String className) {
+		return instructions.getConstantPool().getOrAddClassInfo(className);
 	}
 	
 	protected DoubleInfo getDoubleInfo(double value) {
@@ -186,31 +179,43 @@ public abstract class AbstractMacro implements IMacro {
 		if (!isSymbolReference(arg)) {
 			return false;
 		}
-		return resolveSymbolReference(arg) instanceof AbstractConstantPoolEntry;			
+		return resolveSymbolReference(arg, false) instanceof AbstractConstantPoolEntry;			
 	}
 	
 	protected boolean isVariableReference(IMacroArgument arg) {
 		if (!isSymbolReference(arg)) {
 			return false;
 		}
-		return resolveSymbolReference(arg) instanceof AbstractConstantPoolEntry;			
+		return resolveSymbolReference(arg, false) instanceof AbstractConstantPoolEntry;			
 	}
 	
-	protected Object resolveSymbolReference(IMacroArgument arg) {
+	protected Object resolveSymbolReference(IMacroArgument arg, boolean emitError) {
+		Object result = null;
 		SymbolReference sym = (SymbolReference)arg;
 		LocalVariable var = instructions.getVariablesPool().getByName(sym.getSymbolName());
 		if (var != null) {
-			return var;
+			result =  var;
 		} else {
-			return instructions.getConstantPool().getSymbolTable().get(sym.getSymbolName());
+			result =  instructions.getConstantPool().getSymbolTable().get(sym.getSymbolName());
 		}
+		
+		if (result == null && emitError) {
+			if (emitError) {
+				emitError(arg.getSourceLocation(), "unknown name");
+			} else {
+				throw new RuntimeException("unknown name: "+sym.getSymbolName());
+			}
+			
+		} 
+		
+		return result;
 	}
 	
 	protected TypeDescriptor resolveArgumentType(IMacroArgument arg) {
 		if (isLiteral(arg)) {
 			return getLiteralType(arg);
 		} else if (isSymbolReference(arg)) {
-			Object ref = resolveSymbolReference(arg);
+			Object ref = resolveSymbolReference(arg, true);
 			if (ref != null) {
 				if (ref instanceof LocalVariable) {
 					return getVariableType((LocalVariable)ref);
@@ -218,7 +223,6 @@ public abstract class AbstractMacro implements IMacro {
 					return getConstantType((AbstractConstantPoolEntry)ref);
 				}
 			} else {
-				emitError(arg.getSourceLocation(),"unknown name");
 				return null;
 			}
 		} else if (arg instanceof MacroCall) {
@@ -327,19 +331,14 @@ public abstract class AbstractMacro implements IMacro {
 	
 	protected void pushConstantArgument(IMacroArgument arg, List<AbstractInstruction> result) {
 		SymbolReference ref = (SymbolReference)arg;
-		AbstractConstantPoolEntry cp = (AbstractConstantPoolEntry)resolveSymbolReference(arg);
-		if (cp == null) {
-			throw new IllegalArgumentException("unknown constant: "+ref.getSymbolName());
-		}
+		AbstractConstantPoolEntry cp = (AbstractConstantPoolEntry)resolveSymbolReference(arg, false);
 		result.add(createLdcInstruction(cp));
 	}
 	
 	protected void pushVariableArgument(IMacroArgument arg, List<AbstractInstruction> result) {
 		SymbolReference ref = (SymbolReference)arg;
-		LocalVariable var = (LocalVariable)resolveSymbolReference(arg);
-		if (var == null) {
-			throw new IllegalArgumentException("unknown var name: "+ref.getSymbolName());
-		}
+		LocalVariable var = (LocalVariable)resolveSymbolReference(arg, false);
+		
 		if (var.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS) {
 			throw new IllegalArgumentException("return adress push!");
 		}

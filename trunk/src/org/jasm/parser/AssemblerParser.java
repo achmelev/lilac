@@ -152,6 +152,7 @@ import org.jasm.parser.JavaAssemblerParser.ChopStackmapFrameContext;
 import org.jasm.parser.JavaAssemblerParser.ClassAttributeSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassInnerClassContext;
 import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
+import org.jasm.parser.JavaAssemblerParser.ClassidmacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.ClassinfoContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierAbstractContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierAnnotationContext;
@@ -303,6 +304,7 @@ import org.jasm.parser.JavaAssemblerParser.UnknownattributeContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
 import org.jasm.parser.literals.Base64Literal;
+import org.jasm.parser.literals.ClassReference;
 import org.jasm.parser.literals.DoubleLiteral;
 import org.jasm.parser.literals.FieldReference;
 import org.jasm.parser.literals.FloatLiteral;
@@ -1355,6 +1357,14 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		call.addArgument(createDoubleLiteral(ctx.FloatingPointLiteral()));
 	}
 	
+	
+	
+	@Override
+	public void enterClassidmacroargument(ClassidmacroargumentContext ctx) {
+		MacroCall call = (MacroCall)stack.peek();
+		call.addArgument(createClassReference(ctx.BinaryIdentifier()));
+	}
+
 	@Override
 	public void enterFieldidmacroargument(FieldidmacroargumentContext ctx) {
 		MacroCall call = (MacroCall)stack.peek();
@@ -2670,6 +2680,10 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private NullLiteral createNullLiteral(TerminalNode node) {
 		return new NullLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private ClassReference createClassReference(TerminalNode node) {
+		return new ClassReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
 	}
 	
 	private FieldReference createFieldReference(TerminalNode node) {

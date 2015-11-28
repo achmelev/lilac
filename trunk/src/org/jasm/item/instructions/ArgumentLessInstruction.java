@@ -13,6 +13,9 @@ public class ArgumentLessInstruction extends AbstractInstruction  {
 	
 	public ArgumentLessInstruction(short opCode) {
 		super(opCode);
+		if (!OpCodes.isArgumentLessInstruction(opCode)) {
+			throw new IllegalArgumentException("Unknown opcode: "+Integer.toHexString(opCode));
+		}
 	}
 	
 	@Override
