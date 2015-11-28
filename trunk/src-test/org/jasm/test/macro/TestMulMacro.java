@@ -17,8 +17,8 @@ public class TestMulMacro extends AbstractMacro {
 		boolean result = true;
 		if (getNumberOfArguments() >=2) {
 			for (int i=0;i<getNumberOfArguments(); i++) {
-				TypeDescriptor type = getArgumentType(i);
 				IMacroArgument arg = getArgument(i);
+				TypeDescriptor type = getArgumentType(arg);
 				if (type == null || !type.isInteger()) {
 					emitError(arg.getSourceLocation(), "wrong argument type");
 				}
@@ -35,7 +35,7 @@ public class TestMulMacro extends AbstractMacro {
 		List<AbstractInstruction> result = new ArrayList<AbstractInstruction>();
 		
 		for (int i=0;i<getNumberOfArguments(); i++) {
-			pushArgument(i, result);
+			pushArgument(getArgument(i), result);
 		}
 		
 		for (int i=0;i<getNumberOfArguments()-1; i++) {
