@@ -55,6 +55,12 @@ public class FieldReference extends AbstractLiteral implements IMacroArgument {
 	public String getInvalidErrorMessage() {
 		return null;
 	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+	
+	
 	
 	
 

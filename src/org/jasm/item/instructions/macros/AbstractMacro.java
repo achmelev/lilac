@@ -5,16 +5,21 @@ import java.util.List;
 import java.util.Map;
 
 import org.jasm.JasmConsts;
+import org.jasm.item.clazz.Clazz;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.DoubleInfo;
+import org.jasm.item.constantpool.FieldrefInfo;
 import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IntegerInfo;
+import org.jasm.item.constantpool.InterfaceMethodrefInfo;
 import org.jasm.item.constantpool.LongInfo;
+import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;
 import org.jasm.item.instructions.BipushInstruction;
+import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.LdcInstruction;
 import org.jasm.item.instructions.LocalVariable;
@@ -32,6 +37,7 @@ import org.jasm.parser.literals.MethodReference;
 import org.jasm.parser.literals.NullLiteral;
 import org.jasm.parser.literals.StringLiteral;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
 
 public abstract class AbstractMacro implements IMacro {
@@ -40,6 +46,7 @@ public abstract class AbstractMacro implements IMacro {
 	private	Map<IMacroArgument, TypeDescriptor> argumentTypes;
 	private	Map<IMacroArgument, AbstractConstantPoolEntry> constantArguments;
 	private	Map<IMacroArgument, LocalVariable> variableArguments;
+
 	private Instructions instructions;
 	private MacroCall call;
 	
@@ -83,7 +90,6 @@ public abstract class AbstractMacro implements IMacro {
 		}
 	}
 	
-	
 	protected AbstractInstruction createLoadLocalVariableInstruction(LocalVariable var) {
 		if (var.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS) {
 			throw new IllegalArgumentException("return adress!");
@@ -98,8 +104,24 @@ public abstract class AbstractMacro implements IMacro {
 		return createLocalVariableInstruction(OpCodes.getOpcodeForName(var.getType()+"store"), var);
 	}
 	
+	protected AbstractInstruction createConstantPoolInstruction(short opCode, AbstractConstantPoolEntry constant) {
+		return new ConstantPoolInstruction(opCode, constant);
+	}
+	
 	protected ClassInfo getClassInfo(String className) {
 		return instructions.getConstantPool().getOrAddClassInfo(className);
+	}
+	
+	protected FieldrefInfo getFieldRefInfo(String className, String name, TypeDescriptor type) {
+		return instructions.getConstantPool().getOrAddFieldrefInfo(className, name, type.getValue());
+	}
+	
+	protected MethodrefInfo getMethodRefInfo(String className, String name, MethodDescriptor type) {
+		return instructions.getConstantPool().getOrAddMethofdrefInfo(className, className, type.getValue());
+	}
+	
+	protected InterfaceMethodrefInfo getIterfaceM(String className, String name, MethodDescriptor type) {
+		return instructions.getConstantPool().getOrAddInterfaceMethofdrefInfo(className, className, type.getValue());
 	}
 	
 	protected DoubleInfo getDoubleInfo(double value) {
@@ -151,12 +173,41 @@ public abstract class AbstractMacro implements IMacro {
 						variableArguments.put(arg, (LocalVariable)ref);
 					}
 				}
+			} else if (arg instanceof FieldReference) {
+				FieldReference ref = (FieldReference)arg;
+				String className = resolveClassName(ref.getClassName());
+				if (className != null) {
+					ref.setClassName(className);
+				} else {
+					hasError = true;
+				}
+			
+			} else if (arg instanceof MethodReference) {
+				MethodReference ref = (MethodReference)arg;
+				String className = resolveClassName(ref.getClassName());
+				if (className != null) {
+					ref.setClassName(className);
+				} else {
+					hasError = true;
+				}
 			}
 		}
 		if (hasError) {
 			return false;
 		} else {
 			return doResolve();
+		}
+	}
+	
+	private String resolveClassName(String className) {
+		if (!className.equals("")) {
+			return className;
+		} else {
+			if (instructions.getAncestor(Clazz.class).getThisClass() !=null) {
+				return instructions.getAncestor(Clazz.class).getThisClass().getClassName();
+			} else {
+				return null;
+			}
 		}
 	}
 	
@@ -398,6 +449,21 @@ public abstract class AbstractMacro implements IMacro {
 			pushMacroCallArgument(arg, result);
 		} else {
 			throw new IllegalArgumentException("Unknown combination: "+arg+"; "+type);
+		}
+	}
+	
+	protected void pushValueFromField(IMacroArgument object, IMacroArgument field, List<AbstractInstruction> result) {
+		if (object != null) {
+			pushArgument(object, result);
+		}
+		short opCode = (object == null)?OpCodes.getstatic:OpCodes.getfield;
+		if (isConstantReference(field)) {
+			result.add(createConstantPoolInstruction(opCode, constantArguments.get(field)));
+		} else if (isFieldReference(field)) {
+			FieldReference ref = (FieldReference)field;
+			result.add(createConstantPoolInstruction(opCode, getFieldRefInfo(ref.getClassName(), ref.getFieldName(), ref.getDescriptor())));
+		} else {
+			throw new IllegalArgumentException("field: "+field);
 		}
 	}
 	
