@@ -206,6 +206,7 @@ macroargument: IntegerLiteral #intmacroargument
 			   |StringLiteral #stringmacroargument
 			   |NULL #nullmacroargument
 			   |Identifier #idmacroargument
+			   |BinaryIdentifier #classidmacroargument
 			   |FieldIdentifier #fieldidmacroargument
 			   |MethodIdentifier #methodidmacroargument
 			   |macrocall #macrocallmacroargument
@@ -896,12 +897,14 @@ RROUNDBRACE     : ')';
 
 Identifier: SimpleIdentifier ('.' SimpleIdentifier)*;
 
+BinaryIdentifier:  SimpleIdentifier? ('/' SimpleIdentifier) ('/' SimpleIdentifier)*;
+
 SimpleIdentifier
     :   JavaLetter JavaLetterOrDigit*
     ;
 
-FieldIdentifier: Identifier '@' TypeDescriptor;
-MethodIdentifier: Identifier '@' MethodDescriptor;
+FieldIdentifier: (BinaryIdentifier|SimpleIdentifier) '@' TypeDescriptor;
+MethodIdentifier: (BinaryIdentifier|SimpleIdentifier) '@' MethodDescriptor;
 
 
 fragment

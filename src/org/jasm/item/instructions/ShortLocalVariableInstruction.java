@@ -13,6 +13,9 @@ public class ShortLocalVariableInstruction extends AbstractInstruction implement
 	public ShortLocalVariableInstruction(short opCode) {
 		super(opCode);
 		this.localVariableIndex = getVariableIndex();
+		if (!OpCodes.isShortLocalVariableInstruction(opCode)) {
+			throw new IllegalArgumentException("Unknown opcode: "+Integer.toHexString(opCode));
+		}
 		
 	}
 

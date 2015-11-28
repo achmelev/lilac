@@ -18,6 +18,9 @@ public class LocalVariableInstruction extends AbstractInstruction implements ILo
 	public LocalVariableInstruction(short opCode, LocalVariable var) {
 		super(opCode, var.getIndex()>255);
 		localVariable = var;
+		if (!OpCodes.isLocalVariableInstruction(opCode)) {
+			throw new IllegalArgumentException("Unknown opcode: "+Integer.toHexString(opCode));
+		}
 	}
 	
 	

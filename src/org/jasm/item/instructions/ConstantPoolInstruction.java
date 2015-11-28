@@ -59,6 +59,26 @@ public class ConstantPoolInstruction extends AbstractInstruction implements ICon
 	public ConstantPoolInstruction(short opCode, AbstractConstantPoolEntry entry) {
 		super(opCode);
 		this.cpEntry = entry;
+		if (!(OpCodes.isConstantPoolInstruction(opCode) 
+				||(opCode ==OpCodes.multianewarray)
+				||(opCode == OpCodes.invokedynamic)
+				||(opCode == OpCodes.invokeinterface)
+			)) {
+			throw new IllegalArgumentException("Unknown opcode: "+Integer.toHexString(opCode));
+		}
+		if (cpEntry != null) {
+			Class[] classes = allowedTypes.get(getOpCode());
+			if (classes == null) {
+				throw new IllegalArgumentException("No allowed classes registered for "+Integer.toHexString(getOpCode()));
+			}
+			boolean found = false;
+			for (Class cl: classes) {
+				found = found || cl.equals(entry.getClass());
+			}
+			if (!found) {
+				throw new IllegalArgumentException("class "+ entry.getClass().getName()+" isn't allowed for " + Integer.toHexString(opCode));
+			}
+		}	
 	}
 
 	@Override

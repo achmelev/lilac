@@ -7,7 +7,6 @@ import org.jasm.type.descriptor.TypeDescriptor;
 
 public class MethodReference extends AbstractLiteral implements IMacroArgument {
 	
-	private boolean isValid = false;
 	private String className = null;
 	private String methodName = null;
 	private MethodDescriptor descriptor = null;
@@ -21,13 +20,19 @@ public class MethodReference extends AbstractLiteral implements IMacroArgument {
 		String content = getContent();
 		String prefix = getContent().substring(0, content.indexOf('@'));
 		String postfix = getContent().substring(content.indexOf('@')+1, content.length());
-		if (prefix.indexOf('.')<0) {
-			isValid = false;
-		} else {
-			methodName = prefix.substring(prefix.lastIndexOf('.')+1, prefix.length());
-			className = prefix.substring(0, prefix.lastIndexOf('.'));
+		
+		if (prefix.startsWith("/")) {
+			prefix = prefix.substring(1, prefix.length());
+		}
+		
+		if (prefix.indexOf('/')<0) {
+			methodName = prefix;
+			className = "";
 			descriptor = new MethodDescriptor(postfix);
-			isValid = true;
+		} else {
+			methodName = prefix.substring(prefix.lastIndexOf('/')+1, prefix.length());
+			className = prefix.substring(0, prefix.lastIndexOf('/'));
+			descriptor = new MethodDescriptor(postfix);
 		}
 	}
 
@@ -45,12 +50,12 @@ public class MethodReference extends AbstractLiteral implements IMacroArgument {
 
 	@Override
 	public boolean isValid() {
-		return isValid;
+		return true;
 	}
 
 	@Override
 	public String getInvalidErrorMessage() {
-		return "malformed method reference";
+		return null;
 	}
 	
 	
