@@ -14,6 +14,8 @@ import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IntegerInfo;
 import org.jasm.item.constantpool.InterfaceMethodrefInfo;
 import org.jasm.item.constantpool.LongInfo;
+import org.jasm.item.constantpool.MethodHandleInfo;
+import org.jasm.item.constantpool.MethodTypeInfo;
 import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.instructions.AbstractInstruction;
@@ -120,7 +122,7 @@ public abstract class AbstractMacro implements IMacro {
 		return instructions.getConstantPool().getOrAddMethofdrefInfo(className, className, type.getValue());
 	}
 	
-	protected InterfaceMethodrefInfo getIterfaceM(String className, String name, MethodDescriptor type) {
+	protected InterfaceMethodrefInfo getInterfaceMethodRefInfo(String className, String name, MethodDescriptor type) {
 		return instructions.getConstantPool().getOrAddInterfaceMethofdrefInfo(className, className, type.getValue());
 	}
 	
@@ -243,11 +245,31 @@ public abstract class AbstractMacro implements IMacro {
 		return arg instanceof SymbolReference;
 	}
 	
-	protected boolean isConstantReference(IMacroArgument arg) {
+	protected boolean isArrayType(IMacroArgument arg) {
+		return arg instanceof SymbolReference;
+	}
+	
+	protected boolean isConstantSymbolReference(IMacroArgument arg) {
 		return constantArguments.containsKey(arg);		
 	}
 	
-	protected boolean isVariableReference(IMacroArgument arg) {
+	protected boolean isPushableConstantSymbolReference(IMacroArgument arg) {
+		return constantArguments.containsKey(arg)
+				&& isPushableConstant(constantArguments.get(arg));
+	}
+	
+	protected boolean isPushableConstant(AbstractConstantPoolEntry entry) {
+		return ((entry instanceof DoubleInfo) ||
+				(entry instanceof FloatInfo) ||
+				(entry instanceof IntegerInfo) ||
+				(entry instanceof LongInfo) ||
+				(entry instanceof StringInfo) ||
+				(entry instanceof ClassInfo) ||
+				(entry instanceof MethodTypeInfo) ||
+				(entry instanceof MethodHandleInfo));
+	}
+	
+	protected boolean isVariableSymbolReference(IMacroArgument arg) {
 		return variableArguments.containsKey(arg);
 	}
 	
@@ -289,6 +311,8 @@ public abstract class AbstractMacro implements IMacro {
 			}
 		} else if (arg instanceof MacroCall) {
 			return ((MacroCall)arg).getMacro().getReturnType();
+		} else if (arg instanceof ClassReference) {
+			return new TypeDescriptor("Ljava/lang/Class;");	
 		} else {
 			return null;
 		}
@@ -349,13 +373,23 @@ public abstract class AbstractMacro implements IMacro {
 			return new TypeDescriptor("J");
 		} else if (arg instanceof StringInfo) {
 			return new TypeDescriptor("Ljava/lang/String;");
+		} else if (arg instanceof ClassInfo) {
+			return new TypeDescriptor("Ljava/lang/Class;");
+		} else if (arg instanceof MethodHandleInfo) {
+			return new TypeDescriptor("Ljava/lang/invoke/MethodHandle;");
+		} else if (arg instanceof MethodTypeInfo) {
+			return new TypeDescriptor("Ljava/lang/invoke/Method;");
 		} else {
 			return null;
 		}
 	}
 	
-	protected void pushIntArgument(IMacroArgument arg, List<AbstractInstruction> result) {
+	protected List<AbstractInstruction> pushIntArgument(IMacroArgument arg, List<AbstractInstruction> result) {
 		long value = ((LongLiteral)arg).getValue();
+		return pushIntValue((int)value, result);
+	}
+	
+	protected List<AbstractInstruction>  pushIntValue(int value, List<AbstractInstruction> result) {
 		if (value<=Byte.MAX_VALUE && value<=Byte.MIN_VALUE) {
 			result.add(createBipushInstruction((byte)value));
 		} else if (value<=Short.MAX_VALUE && value<=Short.MIN_VALUE) {
@@ -364,52 +398,101 @@ public abstract class AbstractMacro implements IMacro {
 			IntegerInfo ii = getIntegerInfo((int)value);
 			result.add(createLdcInstruction(ii));
 		}
+		return result;
 	}
 	
-	protected void pushLongArgument(IMacroArgument arg, List<AbstractInstruction> result) {
+	protected List<AbstractInstruction> pushLongArgument(IMacroArgument arg, List<AbstractInstruction> result) {
 		long value = ((LongLiteral)arg).getValue();
+		return pushLongValue(value, result);
+	}
+	
+	protected List<AbstractInstruction> pushLongValue(long value, List<AbstractInstruction> result) {
 		LongInfo ii = getLongInfo(value);
 		result.add(createLdcInstruction(ii));
+		return result;
 	}
 	
-	protected void pushDoubleArgument(IMacroArgument arg, List<AbstractInstruction> result) {
+	protected List<AbstractInstruction> pushDoubleArgument(IMacroArgument arg, List<AbstractInstruction> result) {
 		double value = ((DoubleLiteral)arg).getValue();
+		return pushDoubleValue(value, result);
+	}
+	
+	protected List<AbstractInstruction> pushDoubleValue(double value, List<AbstractInstruction> result) {
 		DoubleInfo ii = getDoubleInfo(value);
 		result.add(createLdcInstruction(ii));
+		return result;
 	}
 	
-	protected void pushFloatArgument(IMacroArgument arg, List<AbstractInstruction> result) {
+	protected List<AbstractInstruction> pushFloatArgument(IMacroArgument arg, List<AbstractInstruction> result) {
 		FloatLiteral f = new FloatLiteral(0, 0, ((DoubleLiteral)arg).getContent());
 		float value = f.getValue();
+		return pushFloatValue(value, result);
+	}
+	
+	protected List<AbstractInstruction> pushFloatValue(float value, List<AbstractInstruction> result) {
 		FloatInfo ii = getFloatInfo(value);
 		result.add(createLdcInstruction(ii));
+		return result;
 	}
 	
-	protected void pushStringArgument(IMacroArgument arg, List<AbstractInstruction> result) {
+	protected List<AbstractInstruction> pushStringArgument(IMacroArgument arg, List<AbstractInstruction> result) {
 		String value = ((StringLiteral)arg).getContent();
+		pushStringValue(value, result);
+		return result;
+	}
+	
+	protected List<AbstractInstruction> pushStringValue(String value, List<AbstractInstruction> result) {
+		if (value == null) {
+			throw new IllegalArgumentException(value);
+		}
 		StringInfo ii = getStringInfo(value);
 		result.add(createLdcInstruction(ii));
+		return result;
 	}
 	
-	protected AbstractConstantPoolEntry getConstantArgumentValue(IMacroArgument arg) {
+	protected AbstractConstantPoolEntry getConstantSymbolReferenceValue(IMacroArgument arg) {
+		if (!constantArguments.containsKey(arg)) {
+			throw new IllegalArgumentException("unknown constant"+arg);
+		}
 		return constantArguments.get(arg);
 	}
 	
-	protected LocalVariable getVariableArgumentValue(IMacroArgument arg) {
+	protected LocalVariable getVariableSymbolReferenceValue(IMacroArgument arg) {
+		if (!variableArguments.containsKey(arg)) {
+			throw new IllegalArgumentException("unknown constant"+arg);
+		}
 		return variableArguments.get(arg);
 	}
 	
-	protected void pushConstantArgument(IMacroArgument arg, List<AbstractInstruction> result) {
-		AbstractConstantPoolEntry cp = (AbstractConstantPoolEntry)constantArguments.get(arg);
-		result.add(createLdcInstruction(cp));
+	protected List<AbstractInstruction> pushConstantSymbolReferenceArgument(IMacroArgument arg, List<AbstractInstruction> result) {
+		if (!isPushableConstantSymbolReference(arg)) {
+			throw new IllegalArgumentException("isn't pushable: "+arg);
+		}
+		return pushConstantValue(constantArguments.get(arg), result);
 	}
 	
-	protected void pushVariableArgument(IMacroArgument arg, List<AbstractInstruction> result) {
+	protected List<AbstractInstruction> pushConstantValue(AbstractConstantPoolEntry entry, List<AbstractInstruction> result) {
+		if (!isPushableConstant(entry)) {
+			throw new IllegalArgumentException("isn't pushable: "+entry);
+		}
+		result.add(createLdcInstruction(entry));
+		return result;
+	}
+	
+	protected List<AbstractInstruction> pushVariableSymbolReferenceArgument(IMacroArgument arg, List<AbstractInstruction> result) {
+		if (!isVariableSymbolReference(arg)) {
+			throw new IllegalArgumentException(""+arg);
+		}
 		LocalVariable var = variableArguments.get(arg);
+		return pushVariable(var, result);
+	}
+	
+	protected List<AbstractInstruction> pushVariable(LocalVariable var, List<AbstractInstruction> result) {
 		if (var.getType() == JasmConsts.LOCAL_VARIABLE_TYPE_RETURNADRESS) {
 			throw new IllegalArgumentException("return adress push!");
 		}
 		result.add(createLoadLocalVariableInstruction(var));
+		return result;
 	}
 	
 	protected void pushMacroCallArgument(IMacroArgument arg, List<AbstractInstruction> result) {
@@ -420,11 +503,16 @@ public abstract class AbstractMacro implements IMacro {
 		result.addAll(instrs);
 	}
 	
-	protected void pushNullArgument(IMacroArgument arg, List<AbstractInstruction> result) {
+	protected List<AbstractInstruction> pushNullArgument(IMacroArgument arg, List<AbstractInstruction> result) {
 		if (!(arg instanceof NullLiteral)) {
 			throw new IllegalArgumentException(arg.getClass().getName());
 		}
+		return pushNullValue(result);
+	}
+	
+	protected List<AbstractInstruction> pushNullValue(List<AbstractInstruction> result) {
 		result.add(createArgumentLessInstruction(OpCodes.aconst_null));
+		return result;
 	}
 	
 	protected void pushArgument(IMacroArgument arg,   List<AbstractInstruction> result) {
@@ -441,23 +529,27 @@ public abstract class AbstractMacro implements IMacro {
 			pushStringArgument(arg, result);
 		} else if (arg instanceof NullLiteral) {
 			pushNullArgument(arg, result);
-		} else if (isConstantReference(arg)) {
-			pushConstantArgument(arg, result);
-		} else if (isVariableReference(arg)) {
-			pushVariableArgument(arg, result);
+		} else if (isConstantSymbolReference(arg)) {
+			pushConstantSymbolReferenceArgument(arg, result);
+		} else if (isVariableSymbolReference(arg)) {
+			pushVariableSymbolReferenceArgument(arg, result);
 		} else if (arg instanceof MacroCall) {
 			pushMacroCallArgument(arg, result);
+		} else if (arg instanceof ClassReference) {
+			ClassInfo value = getClassInfo(((ClassInfo)arg).getClassName());
+			pushConstantValue(value, result);
 		} else {
 			throw new IllegalArgumentException("Unknown combination: "+arg+"; "+type);
 		}
 	}
 	
 	protected void pushValueFromField(IMacroArgument object, IMacroArgument field, List<AbstractInstruction> result) {
+		
 		if (object != null) {
 			pushArgument(object, result);
 		}
 		short opCode = (object == null)?OpCodes.getstatic:OpCodes.getfield;
-		if (isConstantReference(field)) {
+		if (isConstantSymbolReference(field)) {
 			result.add(createConstantPoolInstruction(opCode, constantArguments.get(field)));
 		} else if (isFieldReference(field)) {
 			FieldReference ref = (FieldReference)field;
