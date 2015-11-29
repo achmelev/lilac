@@ -209,6 +209,7 @@ macroargument: IntegerLiteral #intmacroargument
 			   |BinaryIdentifier #classidmacroargument
 			   |FieldIdentifier #fieldidmacroargument
 			   |MethodIdentifier #methodidmacroargument
+			   |ArrayTypeDescriptor #arraymacroargument
 			   |macrocall #macrocallmacroargument
 			   ;
 
@@ -904,8 +905,9 @@ SimpleIdentifier
     ;
 
 FieldIdentifier: (BinaryIdentifier|SimpleIdentifier) '@' TypeDescriptor;
-MethodIdentifier: (BinaryIdentifier|SimpleIdentifier) '@' MethodDescriptor;
+MethodIdentifier: ((BinaryIdentifier ('/' ConstructorIdentifier )?)|SimpleIdentifier|ConstructorIdentifier) '@' MethodDescriptor;
 
+ConstructorIdentifier: '<init>';
 
 fragment
 JavaLetter
@@ -934,7 +936,7 @@ fragment TypeDescriptor : BaseTypeDescriptor | ObjectTypeDescriptor | ArrayTypeD
 fragment BaseTypeDescriptor: 'B' | 'C' | 'D' | 'F' | 'I' | 'J' | 'S' | 'Z';
 fragment InternalClassName: SimpleIdentifier ('/' SimpleIdentifier)*;
 fragment ObjectTypeDescriptor: 'L' InternalClassName ';';
-fragment ArrayTypeDescriptor: '[' TypeDescriptor;
+ArrayTypeDescriptor: '[' TypeDescriptor;
 
 fragment MethodDescriptor: '(' TypeDescriptor? ')' ReturnDescriptor;
 fragment ReturnDescriptor: TypeDescriptor | 'V';
