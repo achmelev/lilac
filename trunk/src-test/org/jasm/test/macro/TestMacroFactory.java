@@ -11,6 +11,8 @@ public class TestMacroFactory implements IMacroFactory {
 			return new TestArgumentLessMulMacro();
 		} else if (name.equals("test.imul")) {
 			return new TestMulMacro();
+		} else if (name.equals("test.push")) {
+			return new TestPushMacro();
 		} else {
 			return null;
 		}

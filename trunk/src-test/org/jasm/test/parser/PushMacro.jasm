@@ -1,0 +1,79 @@
+public super class {
+  version 52.0;
+  name ThisClass; // org/jasm/test/testclass/PushArrayCreator
+  extends Object; // java/lang/Object
+  implements IArrayCreator; // org/jasm/test/testclass/IArrayCreator
+   //Constants
+  const classref ThisClass ThisClass_name; // org/jasm/test/testclass/PushArrayCreator
+  const utf8 ThisClass_name "org/jasm/test/testclass/PushArrayCreator";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const classref IArrayCreator IArrayCreator_name; // org/jasm/test/testclass/IArrayCreator
+  const utf8 IArrayCreator_name "org/jasm/test/testclass/IArrayCreator";
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref Object.init0 Object, Object.init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype Object.init0_nat init0_name, init0_desc; // name=<init> type=()V
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/testclass/PushArrayCreator;";
+  const utf8 createArray_name "createArray";
+  const utf8 createArray_desc "()[Ljava/lang/Object;";
+  const utf8 result_name "result";
+  const utf8 result_desc "[Ljava/lang/Object;";
+  const utf8 i_name "i";
+  const utf8 i_desc "I";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "PushArrayCreator.java";
+  source file source_file_name; // PushArrayCreator.java
+   //Fields
+   //Methods
+
+  public method {
+    name init0_name; // <init>
+    descriptor init0_desc; // ()V
+   
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    aload this;
+    invokespecial Object.init0;
+    return;
+  }
+
+  public method {
+    name createArray_name; // createArray
+    descriptor createArray_desc; // ()[Ljava/lang/Object;
+
+    //Variables
+    var object this;
+    var object result;
+    var object obj;
+    
+    //Instructions
+    
+    bipush 2;
+    anewarray Object;
+    astore result;
+    
+    aconst_null;
+    astore obj;
+    
+    aload result;
+    bipush 0;
+    test.push(null);
+    aastore;
+    
+    aload result;
+    bipush 1;
+    test.push(obj);
+    aastore;
+    
+    
+    aload result;
+    areturn;
+  }
+}

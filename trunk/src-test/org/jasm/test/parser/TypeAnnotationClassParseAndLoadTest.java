@@ -1,6 +1,7 @@
 package org.jasm.test.parser;
 
 
+import org.jasm.item.clazz.Clazz;
 import org.junit.Test;
 
 
@@ -25,6 +26,12 @@ public class TypeAnnotationClassParseAndLoadTest extends AbstractParseAndLoadTes
 	@Override
 	protected void testClass(Class cl) {
 		
+		
+	}
+
+	@Override
+	protected void testReadAraginClass(Clazz cl) {
+		// TODO Auto-generated method stub
 		
 	}
 

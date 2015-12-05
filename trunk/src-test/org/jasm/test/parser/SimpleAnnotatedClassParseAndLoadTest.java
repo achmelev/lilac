@@ -2,6 +2,7 @@ package org.jasm.test.parser;
 
 import java.lang.annotation.Annotation;
 
+import org.jasm.item.clazz.Clazz;
 import org.junit.Test;
 
 public class SimpleAnnotatedClassParseAndLoadTest extends
@@ -30,6 +31,12 @@ public class SimpleAnnotatedClassParseAndLoadTest extends
 	@Test
 	public void test() {
 		doTest();
+	}
+
+	@Override
+	protected void testReadAraginClass(Clazz cl) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

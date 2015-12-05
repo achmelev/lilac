@@ -3,13 +3,14 @@ package org.jasm.test.parser;
 import junit.framework.Assert;
 
 import org.jasm.item.clazz.Clazz;
+import org.jasm.test.testclass.IArrayCreator;
 import org.jasm.test.testclass.ICalculator;
 import org.jasm.test.testclass.IMethodHandle2;
 import org.junit.Ignore;
 import org.junit.Test;
 
 //@Ignore
-public class ImulMacroParseAndLoadTest extends AbstractParseAndLoadTestCase {
+public class PushMacroParseAndLoadTest extends AbstractParseAndLoadTestCase {
 	
 	@Test
 	public void test() {
@@ -18,19 +19,24 @@ public class ImulMacroParseAndLoadTest extends AbstractParseAndLoadTestCase {
 
 	@Override
 	protected String getDateiName() {
-		return "Imulmacro.jasm";
+		return "PushMacro.jasm";
 	}
 
 	@Override
 	protected String getClassName() {
-		return "org.jasm.test.testclass.ImulMacro";
+		return "org.jasm.test.testclass.PushArrayCreator";
 	}
 
 	@Override
 	protected void testClass(Class cl) {
 		try {
-			ICalculator calc = (ICalculator)cl.newInstance();
-			Assert.assertEquals(80000000, calc.calculate());
+			IArrayCreator calc = (IArrayCreator)cl.newInstance();
+			Object[] result = calc.createArray();
+			
+			Assert.assertEquals(2, result.length);
+			Assert.assertNull(result[0]);
+			Assert.assertNull(result[1]);
+			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} 
@@ -39,6 +45,11 @@ public class ImulMacroParseAndLoadTest extends AbstractParseAndLoadTestCase {
 
 	@Override
 	protected boolean readAgain() {
+		return true;
+	}
+	
+	@Override
+	protected boolean verify() {
 		return false;
 	}
 
@@ -47,7 +58,6 @@ public class ImulMacroParseAndLoadTest extends AbstractParseAndLoadTestCase {
 		// TODO Auto-generated method stub
 		
 	}
-	
 	
 
 }
