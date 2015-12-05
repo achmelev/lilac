@@ -140,6 +140,12 @@ public class InvokeDynamicInfo extends AbstractConstantPoolEntry implements INam
 	public String[] getReferencedDescriptors() {
 		return nameAndType.getReferencedDescriptors();
 	}
+
+	@Override
+	public void completeGeneratedEntry() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

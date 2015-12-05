@@ -13,12 +13,14 @@ import org.jasm.type.descriptor.TypeDescriptor;
 public class TestPushMacro extends AbstractMacro {
 	
 	private TypeDescriptor returnType = null;
+	private boolean toBox = false;
+	private String boxType = null;
 
 	@Override
 	public List<AbstractInstruction> createInstructions() {
 		List<AbstractInstruction> result = new ArrayList<AbstractInstruction>();
 		IMacroArgument arg = getArgument(0);
-		if (returnType.isObject() || returnType.isArray()) {
+		if (!toBox) {
 			pushArgument(arg, result);
 		} else {//primitive
 			createInstructions(arg, returnType, result);
@@ -28,32 +30,13 @@ public class TestPushMacro extends AbstractMacro {
 	}
 	
 	private List<AbstractInstruction> createInstructions(IMacroArgument arg, TypeDescriptor desc, List<AbstractInstruction> result) {
-		String clazz = null;
-		if (desc.isBoolean()) {
-			clazz = "java/lang/Boolean";
-		} else if (desc.isByte()) {
-			clazz = "java/lang/Byte";
-		} else if (desc.isCharacter()) {
-			clazz = "java/lang/Character";
-		} else if (desc.isDouble()) {
-			clazz = "java/lang/Double";
-		} else if (desc.isFloat()) {
-			clazz = "java/lang/Float";
-		} else if (desc.isInteger()) {
-			clazz = "java/lang/Integer";
-		} else if (desc.isLong()) {
-			clazz = "java/lang/Long";
-		} else if (desc.isShort()) {
-			clazz = "java/lang/Short";
-		} else {
-			throw new IllegalArgumentException(desc.getValue());
-		}
 		
+		String clazz = returnType.getClassName();
 		result.add(createConstantPoolInstruction(OpCodes.new_, getClassInfo(clazz)));
 		result.add(createArgumentLessInstruction(OpCodes.dup));
 		pushArgument(arg, result);
 		result.add(createConstantPoolInstruction(OpCodes.invokespecial, getMethodRefInfo(clazz, "<init>", 
-				new MethodDescriptor("("+desc.getValue()+")V"))));
+				new MethodDescriptor("("+boxType+")V"))));
 		
 		return result;
 	}
@@ -79,7 +62,35 @@ public class TestPushMacro extends AbstractMacro {
 			if (type == null) {
 				emitError(null, "wrong argument type");
 			} else {
-				returnType = type;
+				if (!type.isPrimitive()) {
+					returnType = type;
+				} else {
+					toBox = true;
+					TypeDescriptor desc = type;
+					boxType = desc.getValue();
+					String clazz = null;
+					if (desc.isBoolean()) {
+						clazz = "java/lang/Boolean";
+					} else if (desc.isByte()) {
+						clazz = "java/lang/Byte";
+					} else if (desc.isCharacter()) {
+						clazz = "java/lang/Character";
+					} else if (desc.isDouble()) {
+						clazz = "java/lang/Double";
+					} else if (desc.isFloat()) {
+						clazz = "java/lang/Float";
+					} else if (desc.isInteger()) {
+						clazz = "java/lang/Integer";
+					} else if (desc.isLong()) {
+						clazz = "java/lang/Long";
+					} else if (desc.isShort()) {
+						clazz = "java/lang/Short";
+					} else {
+						throw new IllegalArgumentException(desc.getValue());
+					}
+					returnType = new TypeDescriptor("L"+clazz+";");
+				}
+				
 				result = true;
 			}
 		}

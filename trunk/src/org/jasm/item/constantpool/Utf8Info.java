@@ -154,6 +154,12 @@ public class Utf8Info extends AbstractConstantPoolEntry {
 		
 		return null;
 	}
+
+	@Override
+	public void completeGeneratedEntry() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

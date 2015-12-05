@@ -95,5 +95,9 @@ public abstract class AbstractConstantPoolEntry extends AbstractTaggedBytecodeIt
 
 	public abstract String getConstTypeLabel();
 	protected abstract String doGetDisassemblerLabel();
+	
+	public abstract void completeGeneratedEntry();
+	
+	
 
 }

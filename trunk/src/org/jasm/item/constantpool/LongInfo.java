@@ -90,6 +90,12 @@ public class LongInfo extends AbstractConstantPoolEntry implements IPrimitiveVal
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void completeGeneratedEntry() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

@@ -88,6 +88,13 @@ public class MethodTypeInfo extends AbstractReferenceEntry implements IDescripto
 	public MethodDescriptor getMethodDescriptor() {
 		return methodDescriptor;
 	}
+
+
+	@Override
+	public void completeGeneratedEntry() {
+		String valueStr = getDescriptor();
+		methodDescriptor = new MethodDescriptor(valueStr);
+	}
 	
 	
 

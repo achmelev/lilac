@@ -83,6 +83,12 @@ public class IntegerInfo extends AbstractConstantPoolEntry implements IPrimitive
 	@Override
 	protected String doGetDisassemblerLabel() {
 		return null;
+	}
+
+	@Override
+	public void completeGeneratedEntry() {
+		// TODO Auto-generated method stub
+		
 	}	
 
 }

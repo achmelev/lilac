@@ -465,6 +465,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 					instr.setParent(this);
 					instr.setResolved(true);
 					instr.setGenerated(true);
+					instr.setSourceLocation(call.getSourceLocation());
 					items.add(offset+call.getIndex(), instr);
 					offset++;
 				}
