@@ -28,6 +28,12 @@ public super class {
   const utf8 SourceFile_utf8 "SourceFile";
   const utf8 source_file_name "PushArrayCreator.java";
   source file source_file_name; // PushArrayCreator.java
+  
+  const int IVAL 123456;
+  const long LVAL 4000000001;
+  const float FVAL 5.55;
+  const double DVAL 6.66;
+  
    //Fields
    //Methods
 
@@ -52,10 +58,14 @@ public super class {
     var object this;
     var object result;
     var object obj;
+    var int iVal;
+    var long lVal;
+    var float fVal;
+    var double dVal;
     
     //Instructions
     
-    bipush 2;
+    bipush 17;
     anewarray Object;
     astore result;
     
@@ -72,6 +82,92 @@ public super class {
     test.push(obj);
     aastore;
     
+    aload result;
+    bipush 2;
+    test.push(10);
+    aastore;
+    
+    sipush -300;
+    istore iVal;
+    
+    aload result;
+    bipush 3;
+    test.push(iVal);
+    aastore;
+    
+    aload result;
+    bipush 4;
+    test.push(IVAL);
+    aastore;
+    
+    aload result;
+    bipush 5;
+    test.push(3000000000);
+    aastore;
+    
+    ldc2_w LVAL;
+    lstore lVal;
+    
+    aload result;
+    bipush 6;
+    test.push(lVal);
+    aastore;
+    
+    aload result;
+    bipush 7;
+    test.push(LVAL);
+    aastore;
+    
+    aload result;
+    bipush 8;
+    test.push(4.4);
+    aastore;
+    
+    ldc    FVAL;
+    fstore fVal;
+    
+    aload result;
+    bipush 9;
+    test.push(fVal);
+    aastore;
+    
+    aload result;
+    bipush 10;
+    test.push(FVAL);
+    aastore;
+    
+    ldc2_w    DVAL;
+    dstore dVal;
+    
+    aload result;
+    bipush 11;
+    test.push(dVal);
+    aastore;
+    
+    aload result;
+    bipush 12;
+    test.push(DVAL);
+    aastore;
+    
+    aload result;
+    bipush 13;
+    test.push(test.push(IVAL));
+    aastore;
+    
+    aload result;
+    bipush 14;
+    test.push(test.push(LVAL));
+    aastore;
+    
+    aload result;
+    bipush 15;
+    test.push(test.push(FVAL));
+    aastore;
+    
+    aload result;
+    bipush 16;
+    test.push(test.push(DVAL));
+    aastore;
     
     aload result;
     areturn;

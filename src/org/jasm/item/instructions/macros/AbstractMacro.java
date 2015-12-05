@@ -119,11 +119,11 @@ public abstract class AbstractMacro implements IMacro {
 	}
 	
 	protected MethodrefInfo getMethodRefInfo(String className, String name, MethodDescriptor type) {
-		return instructions.getConstantPool().getOrAddMethofdrefInfo(className, className, type.getValue());
+		return instructions.getConstantPool().getOrAddMethofdrefInfo(className, name, type.getValue());
 	}
 	
 	protected InterfaceMethodrefInfo getInterfaceMethodRefInfo(String className, String name, MethodDescriptor type) {
-		return instructions.getConstantPool().getOrAddInterfaceMethofdrefInfo(className, className, type.getValue());
+		return instructions.getConstantPool().getOrAddInterfaceMethofdrefInfo(className, name, type.getValue());
 	}
 	
 	protected DoubleInfo getDoubleInfo(double value) {
@@ -408,7 +408,7 @@ public abstract class AbstractMacro implements IMacro {
 	
 	protected List<AbstractInstruction> pushLongValue(long value, List<AbstractInstruction> result) {
 		LongInfo ii = getLongInfo(value);
-		result.add(createLdcInstruction(ii));
+		result.add(createConstantPoolInstruction(OpCodes.ldc2_w, ii));
 		return result;
 	}
 	
@@ -419,7 +419,7 @@ public abstract class AbstractMacro implements IMacro {
 	
 	protected List<AbstractInstruction> pushDoubleValue(double value, List<AbstractInstruction> result) {
 		DoubleInfo ii = getDoubleInfo(value);
-		result.add(createLdcInstruction(ii));
+		result.add(createConstantPoolInstruction(OpCodes.ldc2_w, ii));
 		return result;
 	}
 	
@@ -475,7 +475,11 @@ public abstract class AbstractMacro implements IMacro {
 		if (!isPushableConstant(entry)) {
 			throw new IllegalArgumentException("isn't pushable: "+entry);
 		}
-		result.add(createLdcInstruction(entry));
+		if (entry instanceof LongInfo || entry instanceof DoubleInfo) {
+			result.add(createConstantPoolInstruction(OpCodes.ldc2_w, entry));
+		} else {
+			result.add(createLdcInstruction(entry));
+		}
 		return result;
 	}
 	

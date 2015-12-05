@@ -30,4 +30,10 @@ public class InterfaceMethodrefInfo extends AbstractRefInfo {
 
 	}
 
+	@Override
+	public void completeGeneratedEntry() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

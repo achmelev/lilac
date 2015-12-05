@@ -53,6 +53,13 @@ public class StringInfo extends AbstractReferenceEntry implements ITextReferenci
 	protected String doGetDisassemblerLabel() {
 		return null;
 	}
+
+
+	@Override
+	public void completeGeneratedEntry() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

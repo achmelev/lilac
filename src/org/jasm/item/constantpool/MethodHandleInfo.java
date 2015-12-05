@@ -205,6 +205,12 @@ public class MethodHandleInfo extends AbstractConstantPoolEntry implements IName
 		}
 	}
 
+	@Override
+	public void completeGeneratedEntry() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 

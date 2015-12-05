@@ -31,6 +31,12 @@ public class FieldrefInfo extends AbstractRefInfo {
 	protected void doVerify() {
 		
 	}
+
+	@Override
+	public void completeGeneratedEntry() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 	

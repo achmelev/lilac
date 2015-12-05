@@ -112,6 +112,12 @@ public class DoubleInfo extends AbstractConstantPoolEntry implements IPrimitiveV
 	protected String doGetDisassemblerLabel() {
 		return null;
 	}
+
+	@Override
+	public void completeGeneratedEntry() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

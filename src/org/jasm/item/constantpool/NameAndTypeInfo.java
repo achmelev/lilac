@@ -154,6 +154,17 @@ public class NameAndTypeInfo extends AbstractReferenceEntry implements INameRefe
 	protected void doVerify() {
 		
 	}
+
+
+	@Override
+	public void completeGeneratedEntry() {
+		String valueStr = getDescriptor();
+		try {
+			methodDescriptor = new MethodDescriptor(valueStr);
+		} catch (IllegalDescriptorException e) {
+			typeDescriptor = new TypeDescriptor(valueStr);
+		}
+	}
 	
 	
 	

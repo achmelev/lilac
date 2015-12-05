@@ -108,6 +108,12 @@ public class FloatInfo extends AbstractConstantPoolEntry implements IPrimitiveVa
 	protected String doGetDisassemblerLabel() {
 		return null;
 	}
+
+	@Override
+	public void completeGeneratedEntry() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

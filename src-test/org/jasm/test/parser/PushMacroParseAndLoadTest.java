@@ -33,9 +33,25 @@ public class PushMacroParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			IArrayCreator calc = (IArrayCreator)cl.newInstance();
 			Object[] result = calc.createArray();
 			
-			Assert.assertEquals(2, result.length);
+			Assert.assertEquals(17, result.length);
 			Assert.assertNull(result[0]);
 			Assert.assertNull(result[1]);
+			Assert.assertEquals(new Integer(10), result[2]);
+			Assert.assertEquals(new Integer(-300), result[3]);
+			Assert.assertEquals(new Integer(123456), result[4]);
+			Assert.assertEquals(new Long(3000000000L), result[5]);
+			Assert.assertEquals(new Long(4000000001L), result[6]);
+			Assert.assertEquals(new Long(4000000001L), result[7]);
+			Assert.assertEquals(new Float(4.4), result[8]);
+			Assert.assertEquals(new Float(5.55), result[9]);
+			Assert.assertEquals(new Float(5.55), result[10]);
+			Assert.assertEquals(new Double(6.66), result[11]);
+			Assert.assertEquals(new Double(6.66), result[12]);
+			Assert.assertEquals(new Integer(123456), result[13]);
+			Assert.assertEquals(new Long(4000000001L), result[14]);
+			Assert.assertEquals(new Float(5.55), result[15]);
+			Assert.assertEquals(new Double(6.66), result[16]);
+			
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -50,7 +66,7 @@ public class PushMacroParseAndLoadTest extends AbstractParseAndLoadTestCase {
 	
 	@Override
 	protected boolean verify() {
-		return false;
+		return true;
 	}
 
 	@Override

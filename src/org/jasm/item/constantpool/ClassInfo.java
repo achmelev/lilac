@@ -70,6 +70,8 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 		}
 		return true;
 	}
+	
+	
 
 	@Override
 	protected AbstractConstantPoolEntry[] getExpectedReferenceTypes() {
@@ -112,6 +114,25 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 	public TypeDescriptor getDescriptor() {
 		return descriptor;
 	}
+
+
+	@Override
+	public void completeGeneratedEntry() {
+		String className = getClassName();
+		if (!IdentifierUtils.isValidJasmClassName(className)) {
+			TypeDescriptor desc = null; 
+			desc = new TypeDescriptor(className);
+			if (!desc.isArray()) { 
+				throw new IllegalStateException("malformed class name or array type");
+			} else {
+				descriptor = desc;
+			}
+		} else {
+			descriptor = new TypeDescriptor("L"+className+";");
+		}
+	}
+	
+	
 
 	
 }
