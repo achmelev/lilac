@@ -1,5 +1,8 @@
 package org.jasm.test.parser;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodType;
+
 import junit.framework.Assert;
 
 import org.jasm.item.clazz.Clazz;
@@ -8,6 +11,8 @@ import org.jasm.test.testclass.ICalculator;
 import org.jasm.test.testclass.IMethodHandle2;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import sun.net.NetHooks;
 
 //@Ignore
 public class PushMacroParseAndLoadTest extends AbstractParseAndLoadTestCase {
@@ -33,7 +38,7 @@ public class PushMacroParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			IArrayCreator calc = (IArrayCreator)cl.newInstance();
 			Object[] result = calc.createArray();
 			
-			Assert.assertEquals(17, result.length);
+			Assert.assertEquals(24, result.length);
 			Assert.assertNull(result[0]);
 			Assert.assertNull(result[1]);
 			Assert.assertEquals(new Integer(10), result[2]);
@@ -51,6 +56,13 @@ public class PushMacroParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			Assert.assertEquals(new Long(4000000001L), result[14]);
 			Assert.assertEquals(new Float(5.55), result[15]);
 			Assert.assertEquals(new Double(6.66), result[16]);
+			Assert.assertEquals("HelloWorld", result[17]);
+			Assert.assertEquals("HelloWorld", result[18]);
+			Assert.assertEquals("HelloWorld", result[19]);
+			Assert.assertEquals("HelloWorld", result[20]);
+			Assert.assertEquals(Object.class, result[21]);
+			Assert.assertTrue(result[22] instanceof MethodHandle);
+			Assert.assertTrue(((MethodType)result[23]).toMethodDescriptorString().equals("()V"));
 			
 			
 		} catch (Exception e) {

@@ -1,22 +1,21 @@
 package org.jasm.item.instructions.verify;
 
-import java.lang.invoke.MethodHandleInfo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javassist.bytecode.Descriptor;
+
 
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.AbstractRefInfo;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.DoubleInfo;
-import org.jasm.item.constantpool.FieldrefInfo;
 import org.jasm.item.constantpool.FloatInfo;
 import org.jasm.item.constantpool.IntegerInfo;
 import org.jasm.item.constantpool.InterfaceMethodrefInfo;
 import org.jasm.item.constantpool.InvokeDynamicInfo;
 import org.jasm.item.constantpool.LongInfo;
+import org.jasm.item.constantpool.MethodHandleInfo;
 import org.jasm.item.constantpool.MethodTypeInfo;
 import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.constantpool.StringInfo;

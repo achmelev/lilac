@@ -436,7 +436,7 @@ public abstract class AbstractMacro implements IMacro {
 	}
 	
 	protected List<AbstractInstruction> pushStringArgument(IMacroArgument arg, List<AbstractInstruction> result) {
-		String value = ((StringLiteral)arg).getContent();
+		String value = ((StringLiteral)arg).getStringValue();
 		pushStringValue(value, result);
 		return result;
 	}

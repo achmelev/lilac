@@ -33,6 +33,10 @@ public super class {
   const long LVAL 4000000001;
   const float FVAL 5.55;
   const double DVAL 6.66;
+  const utf8 SVAL_content "HelloWorld";
+  const string SVAL SVAL_content;
+  const newinvokespecial methodhandle mhandle Object.init0;
+  const methodtype mtype init0_desc;
   
    //Fields
    //Methods
@@ -65,7 +69,7 @@ public super class {
     
     //Instructions
     
-    bipush 17;
+    bipush 24;
     anewarray Object;
     astore result;
     
@@ -167,6 +171,44 @@ public super class {
     aload result;
     bipush 16;
     test.push(test.push(DVAL));
+    aastore;
+    
+    aload result;
+    bipush 17;
+    test.push("HelloWorld");
+    aastore;
+    
+    ldc SVAL;
+    astore obj;
+    
+    aload result;
+    bipush 18;
+    test.push(obj);
+    aastore;
+    
+    aload result;
+    bipush 19;
+    test.push(SVAL);
+    aastore;
+    
+    aload result;
+    bipush 20;
+    test.push(test.push(SVAL));
+    aastore;
+    
+    aload result;
+    bipush 21;
+    test.push(Object);
+    aastore;
+    
+    aload result;
+    bipush 22;
+    test.push(mhandle);
+    aastore;
+    
+    aload result;
+    bipush 23;
+    test.push(mtype);
     aastore;
     
     aload result;
