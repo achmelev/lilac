@@ -9,8 +9,12 @@ import java.io.StringWriter;
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.bytebuffer.print.PrettyPrinter;
 import org.jasm.item.clazz.Clazz;
+import org.jasm.loader.AssemblerClassLoaderException;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.parser.SimpleParserErrorListener;
+import org.jasm.resolver.ClassInfoResolver;
+import org.jasm.resolver.ClassLoaderClasspathEntry;
+import org.jasm.resolver.ClazzClassPathEntry;
 import org.jasm.test.macro.TestMacroFactory;
 import org.junit.Assert;
 import org.slf4j.Logger;
@@ -30,7 +34,19 @@ public abstract class AbstractParseAndLoadTestCase {
 		if (parser.getErrorCounter() > 0) {
 			parser.flushErrors();
 			Assert.fail("Parsing failed!");
-		}
+		} else {
+		
+			if (verify()) {
+				ClassInfoResolver clp = new ClassInfoResolver();
+				clp.add(new ClassLoaderClasspathEntry(Thread.currentThread().getContextClassLoader()));
+				clazz.setResolver(clp);
+				clazz.verify();
+				if (parser.getErrorCounter()>0) {
+					parser.flushErrors();;
+					Assert.fail("class verifying failed!");
+				}
+			}
+		}	
 		return clazz;
 	}
 	
@@ -42,15 +58,33 @@ public abstract class AbstractParseAndLoadTestCase {
 		if (parser.getErrorCounter() > 0) {
 			parser.flushErrors();;
 			Assert.fail("Parsing disassembled failed!");
-		}
+		} else {
+		
+			if (verify()) {
+				ClassInfoResolver clp = new ClassInfoResolver();
+				clp.add(new ClassLoaderClasspathEntry(Thread.currentThread().getContextClassLoader()));
+				clazz.setResolver(clp);
+				clazz.verify();
+				if (parser.getErrorCounter()>0) {
+					parser.flushErrors();;
+					Assert.fail("class verifying failed!");
+				}
+			}
+		}	
+		
 		return clazz;
 	}
 	
 	protected abstract String getDateiName();
 	protected abstract String getClassName();
 	protected abstract void testClass(Class cl);
+	protected abstract void testReadAraginClass(Clazz cl);
 	
 	protected boolean readAgain() {
+		return false;
+	}
+	
+	protected boolean verify() {
 		return false;
 	}
 	
@@ -65,7 +99,7 @@ public abstract class AbstractParseAndLoadTestCase {
 			clazz.read(bbuf2, 0L);
 			clazz.resolve();
 			clazz.updateMetadata();
-			
+			testReadAraginClass(clazz);
 			
 			StringWriter sw = new StringWriter();
 			PrintWriter writer = new PrintWriter(sw);

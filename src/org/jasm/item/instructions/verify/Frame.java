@@ -32,6 +32,7 @@ public class Frame {
 	private Stack<VerificationType> stack;
 	
 	private int currentStackSize = 0;
+	private int maxRecordedStackSize = 0;
 	
 	private int activeLocals = 0;
 	
@@ -56,17 +57,22 @@ public class Frame {
 		for (VerificationType t: stack) {
 			this.currentStackSize+=t.getSize();
 		}
+		maxRecordedStackSize = currentStackSize;
 		if (currentStackSize>maxStackSize) {
 			throw new IllegalArgumentException(currentStackSize+">"+maxStackSize);
 		}
 	}
 	
+	private void updateMaxRecordedStackSize() {
+		maxRecordedStackSize = Math.max(maxRecordedStackSize, currentStackSize);
+	}
 
 	public void push(VerificationType type) {
 		if (currentStackSize+type.getSize() > maxStackSize) {
 			throw new StackOverflowException(-1);
 		}
 		currentStackSize+=type.getSize();
+		updateMaxRecordedStackSize();
 		stack.push(type);
 	}
 	
@@ -596,6 +602,10 @@ public class Frame {
 	@Override
 	public String toString() {
 		return "Frame [locals=" + locals + ", stack=" + stack + "]";
+	}
+
+	public int getMaxRecordedStackSize() {
+		return maxRecordedStackSize;
 	}
 	
 	

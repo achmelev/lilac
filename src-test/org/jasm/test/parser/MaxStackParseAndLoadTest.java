@@ -2,6 +2,9 @@ package org.jasm.test.parser;
 
 import junit.framework.Assert;
 
+import org.jasm.item.attribute.CodeAttributeContent;
+import org.jasm.item.clazz.Clazz;
+import org.jasm.item.clazz.Method;
 import org.jasm.test.testclass.ICalculator;
 import org.jasm.test.testclass.IMethodHandle2;
 import org.junit.Ignore;
@@ -38,8 +41,22 @@ public class MaxStackParseAndLoadTest extends AbstractParseAndLoadTestCase {
 
 	@Override
 	protected boolean readAgain() {
-		return false;
+		return true;
 	}
+	
+
+	@Override
+	protected boolean verify() {
+		return true;
+	}
+
+	@Override
+	protected void testReadAraginClass(Clazz cl) {
+		Method m = cl.getMethods().getMethod("calculate", "()I");
+		Assert.assertEquals(2, ((CodeAttributeContent)m.getAttributes().
+				getAttributesByContentType(CodeAttributeContent.class).get(0).getContent()).getMaxStack());
+	}
+	
 	
 	
 

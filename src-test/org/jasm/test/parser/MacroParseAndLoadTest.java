@@ -2,6 +2,7 @@ package org.jasm.test.parser;
 
 import junit.framework.Assert;
 
+import org.jasm.item.clazz.Clazz;
 import org.jasm.test.testclass.ICalculator;
 import org.jasm.test.testclass.IMethodHandle2;
 import org.junit.Ignore;
@@ -39,6 +40,17 @@ public class MacroParseAndLoadTest extends AbstractParseAndLoadTestCase {
 	@Override
 	protected boolean readAgain() {
 		return false;
+	}
+
+	@Override
+	protected boolean verify() {
+		return true;
+	}
+
+	@Override
+	protected void testReadAraginClass(Clazz cl) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

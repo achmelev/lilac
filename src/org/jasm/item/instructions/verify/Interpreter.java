@@ -46,6 +46,7 @@ public class Interpreter {
 	public Frame execute(AbstractInstruction instr, Frame inputFrame) {
 		Frame result = doExecute(instr, inputFrame);
 		result.updateQuery(parent);
+		parent.updateMaxRecordedStackSize(inputFrame.getMaxRecordedStackSize());
 		return result;
 	}
 	
@@ -2080,7 +2081,6 @@ public class Interpreter {
 		  } else {
 			  throw new IllegalStateException(t.getClass().getName());
 		  }
-		  parent.updateMaxRecordedStackSize(inputFrame.getCurrentStackSize());
 		  return inputFrame;
 	}
 	
