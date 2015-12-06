@@ -50,11 +50,11 @@ public super class {
     name calculate_name; 
     descriptor calculate_desc; 
     
-
+	stackmap;
     //Variables
     var object this;
     //Instructions
-	nop;
+    goto macro;
 	macro:
     test.imul(10, i200, 40000, 
     				test.imul(1,1));
