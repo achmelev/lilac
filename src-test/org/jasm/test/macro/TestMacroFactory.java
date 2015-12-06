@@ -15,6 +15,8 @@ public class TestMacroFactory implements IMacroFactory {
 			return new TestPushMacro();
 		} else if (name.equals("test.condpush")) {
 			return new TestConditionalPushMacro();
+		} else if (name.equals("test.switch")) {
+			return new TestSwitchMacro();	
 		} else {
 			return null;
 		}
