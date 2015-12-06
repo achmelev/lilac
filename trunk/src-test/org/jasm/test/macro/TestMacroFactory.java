@@ -13,6 +13,8 @@ public class TestMacroFactory implements IMacroFactory {
 			return new TestMulMacro();
 		} else if (name.equals("test.push")) {
 			return new TestPushMacro();
+		} else if (name.equals("test.condpush")) {
+			return new TestConditionalPushMacro();
 		} else {
 			return null;
 		}

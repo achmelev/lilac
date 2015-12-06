@@ -21,6 +21,7 @@ import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.ArgumentLessInstruction;
 import org.jasm.item.instructions.BipushInstruction;
+import org.jasm.item.instructions.BranchInstruction;
 import org.jasm.item.instructions.ConstantPoolInstruction;
 import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.LdcInstruction;
@@ -48,6 +49,7 @@ public abstract class AbstractMacro implements IMacro {
 	private	Map<IMacroArgument, TypeDescriptor> argumentTypes;
 	private	Map<IMacroArgument, AbstractConstantPoolEntry> constantArguments;
 	private	Map<IMacroArgument, LocalVariable> variableArguments;
+	private	Map<IMacroArgument, SymbolReference> instructionReferences;
 
 	private Instructions instructions;
 	private MacroCall call;
@@ -67,29 +69,40 @@ public abstract class AbstractMacro implements IMacro {
 	}
 	
 	protected AbstractInstruction createArgumentLessInstruction(short opCode) {
-		return new ArgumentLessInstruction(opCode);
+		AbstractInstruction result =  new ArgumentLessInstruction(opCode);
+		result.setResolved(true);
+		return result;
 	}
 	
 	protected AbstractInstruction createBipushInstruction(byte value) {
-		return new BipushInstruction(value);
+		AbstractInstruction result = new BipushInstruction(value);
+		result.setResolved(true);
+		return result;
 	}
 	
 	protected AbstractInstruction createSipushInstruction(short value) {
-		return new SipushInstruction(value);
+		AbstractInstruction result = new SipushInstruction(value);
+		result.setResolved(true);
+		return result;
 	}
 	
 	protected AbstractInstruction createLdcInstruction(AbstractConstantPoolEntry cp) {
-		return new LdcInstruction(cp);
+		AbstractInstruction result = new LdcInstruction(cp);
+		result.setResolved(true);
+		return result;
 	}
 	
 	protected AbstractInstruction createLocalVariableInstruction(short opCode, LocalVariable var) {
 		LocalVariableInstruction instr = new LocalVariableInstruction(opCode, var);
 		ShortLocalVariableInstruction shortVar = instr.createShortReplacement();
+		AbstractInstruction result = null;
 		if (shortVar == null) {
-			return instr;
+			result =  instr;
 		} else {
-			return shortVar;
+			result =  shortVar;
 		}
+		result.setResolved(true);
+		return result;
 	}
 	
 	protected AbstractInstruction createLoadLocalVariableInstruction(LocalVariable var) {
@@ -107,7 +120,27 @@ public abstract class AbstractMacro implements IMacro {
 	}
 	
 	protected AbstractInstruction createConstantPoolInstruction(short opCode, AbstractConstantPoolEntry constant) {
-		return new ConstantPoolInstruction(opCode, constant);
+		AbstractInstruction result =  new ConstantPoolInstruction(opCode, constant);
+		result.setResolved(true);
+		return result;
+	}
+	
+	protected AbstractInstruction createBranchInstruction(short opCode, SymbolReference ref) {
+		AbstractInstruction result =  new BranchInstruction(opCode, ref);
+		result.setResolved(false);
+		return result;
+	}
+	
+	
+	protected AbstractInstruction createBranchInstruction(short opCode, AbstractInstruction instr, boolean afterTarget) {
+		BranchInstruction result = new BranchInstruction(opCode,  instr);
+		result.setResolved(!afterTarget);
+		result.setAfterTarget(afterTarget);
+		return result;
+	}
+	
+	protected AbstractInstruction createBranchInstruction(short opCode, AbstractInstruction instr) {
+		return createBranchInstruction(opCode, instr, false);
 	}
 	
 	protected ClassInfo getClassInfo(String className) {
@@ -163,6 +196,7 @@ public abstract class AbstractMacro implements IMacro {
 		argumentTypes = new HashMap<IMacroArgument, TypeDescriptor>();
 		constantArguments = new HashMap<IMacroArgument, AbstractConstantPoolEntry>();
 		variableArguments = new HashMap<IMacroArgument, LocalVariable>();
+		instructionReferences = new HashMap<IMacroArgument, SymbolReference>();
 		for (int i=0;i<arguments.size(); i++) {
 			IMacroArgument arg = arguments.get(i);
 			argumentTypes.put(arg, resolveArgumentType(arg));
@@ -171,8 +205,10 @@ public abstract class AbstractMacro implements IMacro {
 				if (ref !=null) {
 					if (ref instanceof AbstractConstantPoolEntry) {
 						constantArguments.put(arg, (AbstractConstantPoolEntry)ref);
-					} else {
+					} else if (ref instanceof LocalVariable) {
 						variableArguments.put(arg, (LocalVariable)ref);
+					} else {
+						instructionReferences.put(arg, (SymbolReference)ref);
 					}
 				}
 			} else if (arg instanceof FieldReference) {
@@ -273,6 +309,10 @@ public abstract class AbstractMacro implements IMacro {
 		return variableArguments.containsKey(arg);
 	}
 	
+	protected boolean isInstructionSymbolReference(IMacroArgument arg) {
+		return instructionReferences.containsKey(arg);
+	}
+	
 	private Object resolveSymbolReference(IMacroArgument arg, boolean emitError) {
 		Object result = null;
 		SymbolReference sym = (SymbolReference)arg;
@@ -281,6 +321,12 @@ public abstract class AbstractMacro implements IMacro {
 			result =  var;
 		} else {
 			result =  instructions.getConstantPool().getSymbolTable().get(sym.getSymbolName());
+			if (result == null) {
+				result = instructions.getSymbolTable().get(sym.getSymbolName());
+				if (result != null) {
+					result = sym;
+				}
+			}
 		}
 		
 		if (result == null && emitError) {
@@ -303,8 +349,10 @@ public abstract class AbstractMacro implements IMacro {
 			if (ref != null) {
 				if (ref instanceof LocalVariable) {
 					return getVariableType((LocalVariable)ref);
-				} else {
+				} else if (ref instanceof AbstractConstantPoolEntry){
 					return getConstantType((AbstractConstantPoolEntry)ref);
+				} else {
+					return null;
 				}
 			} else {
 				return null;
