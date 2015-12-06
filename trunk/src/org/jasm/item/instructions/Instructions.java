@@ -432,8 +432,36 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	@Override
 	protected void doResolveAfterParse() {
 		variablesPool.resolveAfterParse();
+		
+		//Inserting instructions from MacroCalls
+		int offset = 0;
+		for (MacroCall call: macrocalls) {
+			
+			IMacro macro = resolveMacroCall(call);
+			if (macro != null) {
+				List<AbstractInstruction> instructions = macro.createInstructions();
+				if (call.getLabel() != null) {
+					if (instructions.size() == 0) {
+						emitErrorOnLocation(call.getSourceLocation(), "labels not allowed on empty macros");
+					} else {
+						symbolTable.replace(call, instructions.get(0));
+					}
+				}
+				for (AbstractInstruction instr: instructions) {
+					instr.setParent(this);
+					instr.setResolved(true);
+					instr.setGenerated(true);
+					instr.setSourceLocation(call.getSourceLocation());
+					items.add(offset+call.getIndex(), instr);
+					offset++;
+				}
+			}	
+		}
+		
 		for (AbstractInstruction instr: items) {
-			instr.resolve();
+			if (!instr.isGenerated()) {
+				instr.resolve();
+			}	
 		}
 		
 		//Replacing local var instructions with short versions
@@ -454,23 +482,6 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			}
 		}
 		
-		//Inserting instructions from MacroCalls
-		int offset = 0;
-		for (MacroCall call: macrocalls) {
-			
-			IMacro macro = resolveMacroCall(call);
-			if (macro != null) {
-				List<AbstractInstruction> instructions = macro.createInstructions();
-				for (AbstractInstruction instr: instructions) {
-					instr.setParent(this);
-					instr.setResolved(true);
-					instr.setGenerated(true);
-					instr.setSourceLocation(call.getSourceLocation());
-					items.add(offset+call.getIndex(), instr);
-					offset++;
-				}
-			}	
-		}
 		
 		setOffsets();
 	}

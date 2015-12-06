@@ -39,13 +39,18 @@ public class ImulMacroParseAndLoadTest extends AbstractParseAndLoadTestCase {
 
 	@Override
 	protected boolean readAgain() {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected void testReadAraginClass(Clazz cl) {
-		// TODO Auto-generated method stub
 		
+		
+	}
+
+	@Override
+	protected boolean verify() {
+		return true;
 	}
 	
 	
