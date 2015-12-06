@@ -449,7 +449,6 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 				}
 				for (AbstractInstruction instr: instructions) {
 					instr.setParent(this);
-					instr.setResolved(true);
 					instr.setGenerated(true);
 					instr.setSourceLocation(call.getSourceLocation());
 					items.add(offset+call.getIndex(), instr);
@@ -459,7 +458,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 		}
 		
 		for (AbstractInstruction instr: items) {
-			if (!instr.isGenerated()) {
+			if (!instr.isResolved()) {
 				instr.resolve();
 			}	
 		}

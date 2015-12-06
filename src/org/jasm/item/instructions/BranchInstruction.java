@@ -12,16 +12,39 @@ public class BranchInstruction extends AbstractInstruction implements IReferenci
 	private int targetOffset = -1;
 	private SymbolReference targetReference;
 	private AbstractInstruction targetInst = null;
-	
-	
+
 	private boolean isWide;
 	
-	
+	private boolean afterTarget;
+		
 	public BranchInstruction(short opCode, AbstractInstruction inst, boolean wide) {
 		super(opCode, false);
 		this.targetInst = inst;
 		this.isWide = wide;
-		
+	}
+	
+	public BranchInstruction(short opCode, AbstractInstruction inst) {
+		super(opCode, false);
+		if (OpCodes.isBranchInstruction(opCode)) {
+			isWide = false;
+		} else if (OpCodes.isWideBranchInstruction(opCode)) {
+			isWide = true;
+		} else {
+			throw new IllegalArgumentException(Integer.toHexString(opCode));
+		}
+		targetInst = inst;
+	}
+	
+	public BranchInstruction(short opCode, SymbolReference targetReference) {
+		super(opCode, false);
+		if (OpCodes.isBranchInstruction(opCode)) {
+			isWide = false;
+		} else if (OpCodes.isWideBranchInstruction(opCode)) {
+			isWide = true;
+		} else {
+			throw new IllegalArgumentException(Integer.toHexString(opCode));
+		}
+		this.targetReference = targetReference;
 	}
 
 	@Override
@@ -85,7 +108,17 @@ public class BranchInstruction extends AbstractInstruction implements IReferenci
 	@Override
 	protected void doResolveAfterParse() {
 		Instructions instrs = (Instructions)getParent();
-		this.targetInst = instrs.checkAndLoadFromSymbolTable(this, targetReference);
+		if (targetReference != null) {
+			this.targetInst = instrs.checkAndLoadFromSymbolTable(this, targetReference);
+		} 
+		if (afterTarget) {
+			int index = instrs.indexOf(targetInst);
+			if (index == instrs.getSize()-1) {
+				emitError(null, "no instruction after the target");
+			} else {
+				targetInst = instrs.get(index+1);
+			}
+		}
 		
 	}
 
@@ -113,6 +146,10 @@ public class BranchInstruction extends AbstractInstruction implements IReferenci
 		if (!isWide() && (offset>Short.MAX_VALUE || offset<Short.MIN_VALUE)) {
 			emitError(targetReference, "The target too far. Consider to use the wide modifier");
 		}
+	}
+
+	public void setAfterTarget(boolean afterTarget) {
+		this.afterTarget = afterTarget;
 	}
 	
 	

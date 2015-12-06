@@ -20,8 +20,8 @@ public class TestArgumentLessMulMacro extends AbstractMacro {
 	@Override
 	public List<AbstractInstruction> createInstructions() {
 		List<AbstractInstruction> result = new ArrayList<AbstractInstruction>();
-		result.add(new SipushInstruction((short)10));
-		result.add(new SipushInstruction((short)15));
+		result.add(createSipushInstruction((short)10));
+		result.add(createSipushInstruction((short)15));
 		result.add(new ArgumentLessInstruction(OpCodes.imul));
 		return result;
 	}

@@ -96,7 +96,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 		return false;
 	}
 	
-	protected boolean isResolved() {
+	public boolean isResolved() {
 		return resolved;
 	}
 	
@@ -321,6 +321,7 @@ public abstract class AbstractByteCodeItem implements IBytecodeItem, IPrintable,
 	public boolean toOmit() {
 		return false;
 	}
+	
 	
 	
 }
