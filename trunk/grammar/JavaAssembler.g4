@@ -209,7 +209,6 @@ macroargument: IntegerLiteral #intmacroargument
 			   |BinaryIdentifier #classidmacroargument
 			   |FieldIdentifier #fieldidmacroargument
 			   |MethodIdentifier #methodidmacroargument
-			   |ArrayTypeDescriptor #arraymacroargument
 			   |macrocall #macrocallmacroargument
 			   ;
 
@@ -936,7 +935,7 @@ fragment TypeDescriptor : BaseTypeDescriptor | ObjectTypeDescriptor | ArrayTypeD
 fragment BaseTypeDescriptor: 'B' | 'C' | 'D' | 'F' | 'I' | 'J' | 'S' | 'Z';
 fragment InternalClassName: SimpleIdentifier ('/' SimpleIdentifier)*;
 fragment ObjectTypeDescriptor: 'L' InternalClassName ';';
-ArrayTypeDescriptor: '[' TypeDescriptor;
+fragment ArrayTypeDescriptor: '[' TypeDescriptor;
 
 fragment MethodDescriptor: '(' TypeDescriptor? ')' ReturnDescriptor;
 fragment ReturnDescriptor: TypeDescriptor | 'V';

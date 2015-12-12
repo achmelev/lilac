@@ -144,7 +144,6 @@ import org.jasm.parser.JavaAssemblerParser.AnnotationtypeContext;
 import org.jasm.parser.JavaAssemblerParser.AppendStackmapFrameContext;
 import org.jasm.parser.JavaAssemblerParser.ArgumentlessopContext;
 import org.jasm.parser.JavaAssemblerParser.ArrayannotationelementvalueContext;
-import org.jasm.parser.JavaAssemblerParser.ArraymacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.BootstrapmethodContext;
 import org.jasm.parser.JavaAssemblerParser.BranchopContext;
 import org.jasm.parser.JavaAssemblerParser.CasttypeTargetTypeContext;
@@ -304,7 +303,6 @@ import org.jasm.parser.JavaAssemblerParser.UninitializedThisStackmapvarinfoConte
 import org.jasm.parser.JavaAssemblerParser.UnknownattributeContext;
 import org.jasm.parser.JavaAssemblerParser.Utf8infoContext;
 import org.jasm.parser.JavaAssemblerParser.VersionContext;
-import org.jasm.parser.literals.ArrayType;
 import org.jasm.parser.literals.Base64Literal;
 import org.jasm.parser.literals.ClassReference;
 import org.jasm.parser.literals.DoubleLiteral;
@@ -1385,11 +1383,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		call.addArgument(createNullLiteral(ctx.NULL()));
 	}
 	
-	@Override
-	public void enterArraymacroargument(ArraymacroargumentContext ctx) {
-		MacroCall call = (MacroCall)stack.peek();
-		call.addArgument(createArrayType(ctx.ArrayTypeDescriptor()));
-	}
 
 	private void setMacroLabel(ParserRuleContext context, MacroCall call) {
 		if (context.getParent() instanceof MethodinstructionContext) {
@@ -2688,10 +2681,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private NullLiteral createNullLiteral(TerminalNode node) {
 		return new NullLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
-	}
-	
-	private ArrayType createArrayType(TerminalNode node) {
-		return new ArrayType(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
 	}
 	
 	private ClassReference createClassReference(TerminalNode node) {
