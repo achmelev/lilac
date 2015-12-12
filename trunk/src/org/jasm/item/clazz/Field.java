@@ -3,6 +3,7 @@ package org.jasm.item.clazz;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.FieldModifier;
 import org.jasm.item.utils.IdentifierUtils;
+import org.jasm.parser.literals.JavaTypeLiteral;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.TypeDescriptor;
@@ -10,6 +11,7 @@ import org.jasm.type.descriptor.TypeDescriptor;
 public class Field extends AbstractClassMember<FieldModifier> {
 	
 	private TypeDescriptor typeDescriptor;
+	private JavaTypeLiteral javaType;
 	
 	public Field() {
 		
@@ -96,6 +98,18 @@ public class Field extends AbstractClassMember<FieldModifier> {
 		}
 		super.doVerify();
 	}
+
+
+	public void setJavaType(JavaTypeLiteral javaType) {
+		this.javaType = javaType;
+	}
+
+
+	@Override
+	protected Utf8Info createHighLevelDescriptor() {
+		return getConstantPool().getOrAddUtf8nfo(javaType.getDescriptor().getValue());
+	}
+	
 	
 	
 

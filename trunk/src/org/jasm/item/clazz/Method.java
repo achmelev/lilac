@@ -1,5 +1,6 @@
 package org.jasm.item.clazz;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.MethodModifier;
 import org.jasm.item.utils.IdentifierUtils;
@@ -170,6 +171,11 @@ public class Method extends AbstractClassMember<MethodModifier> {
 
 	public boolean isGenerateStackMap() {
 		return generateStackMap;
+	}
+
+	@Override
+	protected Utf8Info createHighLevelDescriptor() {
+		throw new NotImplementedException("");
 	}
 	
 	

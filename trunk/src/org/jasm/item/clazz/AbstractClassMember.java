@@ -14,7 +14,9 @@ import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.IUtf8ConstantPoolReference;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.AbstractClassMemberModifier;
+import org.jasm.parser.literals.JavaTypeLiteral;
 import org.jasm.parser.literals.Keyword;
+import org.jasm.parser.literals.StringLiteral;
 import org.jasm.parser.literals.SymbolReference;
 
 public abstract class AbstractClassMember<T extends AbstractClassMemberModifier> extends AbstractByteCodeItem implements IContainerBytecodeItem<Attributes>, IUtf8ConstantPoolReference, IAttributesContainer {
@@ -28,6 +30,10 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	protected SymbolReference descriptorReference;
 	private int descriptorIndex = -1;
 	private Attributes attributes = null;
+	
+	private boolean highLevelSyntax = false;
+	private JavaTypeLiteral javaType;
+	private StringLiteral nameLiteral;
 	
 	public AbstractClassMember() {
 		initChildren();
@@ -103,20 +109,32 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	@Override
 	protected void doResolveAfterParse() {
 		if (this.nameReference != null) {
-			this.name = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, nameReference);
-			if (this.name != null) {
-				verifyName(nameReference, name);
-			}
+			if (this.highLevelSyntax) {
+				emitError(nameReference, "unexpected name statement");
+			} else {
+				this.name = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, nameReference);
+				if (this.name != null) {
+					verifyName(nameReference, name);
+				}
+			}	
 		} else {
-			emitError(null, "missing name statement");
+			if (!this.highLevelSyntax) {
+				emitError(null, "missing name statement");
+			}	
 		}
 		if (this.descriptorReference != null) {
-			this.descriptor = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, descriptorReference);
-			if (this.descriptor != null) {
-				verifyDescriptor(descriptorReference,descriptor.getValue());
-			}
+			if (this.highLevelSyntax) {
+				emitError(nameReference, "unexpected descriptor statement");
+			} else {
+				this.descriptor = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, descriptorReference);
+				if (this.descriptor != null) {
+					verifyDescriptor(descriptorReference,descriptor.getValue());
+				}
+			}	
 		} else {
-			emitError(null, "missing descriptor statement");
+			if (!this.highLevelSyntax) {
+				emitError(null, "missing descriptor statement");
+			}	
 		}
 		if (!this.hasErrors()) {
 			modifier = createModifier(0);
@@ -127,6 +145,16 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 			if (!hasErrors()) {
 				attributes.resolve();
 			}
+		}
+		
+		if (!this.hasErrors() && this.highLevelSyntax) {
+			if (nameLiteral.getContent().indexOf('.')>=0) {
+				emitError(nameLiteral, "malformed field or method name");
+			} else {
+				this.name = getConstantPool().getOrAddUtf8nfo(nameLiteral.getContent());
+				this.descriptor = createHighLevelDescriptor();
+			}	
+			
 		}
 		
 	}
@@ -219,6 +247,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	protected abstract void verifyName(SymbolReference ref, Utf8Info name);
 	protected abstract void verifyDescriptor(SymbolReference ref, String descriptor);
 	protected abstract void checkModifiers();
+	protected abstract Utf8Info createHighLevelDescriptor();
 	
 	@Override
 	public String generateName(Utf8Info utf8) {
@@ -230,6 +259,22 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 			return null;
 		}
 	}
+
+
+	public void setHighLevelSyntax(boolean highLevelSyntax) {
+		this.highLevelSyntax = highLevelSyntax;
+	}
+
+
+	public void setJavaType(JavaTypeLiteral javaType) {
+		this.javaType = javaType;
+	}
+
+
+	public void setNameLiteral(StringLiteral nameLiteral) {
+		this.nameLiteral = nameLiteral;
+	}
+	
 	
 	
 	
