@@ -3,6 +3,14 @@ grammar JavaAssembler;
 
 //Parser
 
+javatype: primitive_javatype 
+		  | class_javatype
+		  | array_javatype;
+
+primitive_javatype: BYTE|BOOLEAN|CHAR|DOUBLE|FLOAT|INT|LONG|SHORT;
+class_javatype: BinaryIdentifier;
+array_javatype: (primitive_javatype|class_javatype) (LSQUAREBRACE  RSQUAREBRACE)+;
+
 clazz:
 	 classmodifier? CLASS LBRACE 
 	 	classmember*
@@ -215,7 +223,13 @@ macroargument: IntegerLiteral #intmacroargument
 methodmaxstack: MAXSTACK IntegerLiteral SEMI;
 methodmaxlocals: MAXLOCALS IntegerLiteral SEMI;
 
-field  : fieldmodifier? FIELD  LBRACE
+field: field_lowlevel | field_highlevel;
+
+field_highlevel: fieldmodifier? javatype Identifier  ((LBRACE
+					fieldmember*
+				  RBRACE)|(SEMI));
+
+field_lowlevel  : fieldmodifier? FIELD  LBRACE
 					fieldmember*
 				  RBRACE;
 
@@ -892,6 +906,8 @@ COMMA           : ',';
 COLON           : ':';
 LROUNDBRACE     : '(';
 RROUNDBRACE     : ')';
+LSQUAREBRACE     : '[';
+RSQUAREBRACE     : ']';
 
 // Identifiers
 
@@ -899,7 +915,7 @@ Identifier: SimpleIdentifier ('.' SimpleIdentifier)*;
 
 BinaryIdentifier:  SimpleIdentifier? ('/' SimpleIdentifier) ('/' SimpleIdentifier)*;
 
-SimpleIdentifier
+fragment SimpleIdentifier
     :   JavaLetter JavaLetterOrDigit*
     ;
 

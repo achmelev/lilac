@@ -182,6 +182,8 @@ import org.jasm.parser.JavaAssemblerParser.EnumannotationelementvalueContext;
 import org.jasm.parser.JavaAssemblerParser.ExceptionsattributeContext;
 import org.jasm.parser.JavaAssemblerParser.ExtendedStackmapAttributeContext;
 import org.jasm.parser.JavaAssemblerParser.FieldContext;
+import org.jasm.parser.JavaAssemblerParser.Field_highlevelContext;
+import org.jasm.parser.JavaAssemblerParser.Field_lowlevelContext;
 import org.jasm.parser.JavaAssemblerParser.FieldattributeConstantValueContext;
 import org.jasm.parser.JavaAssemblerParser.FielddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.FieldidmacroargumentContext;
@@ -223,6 +225,7 @@ import org.jasm.parser.JavaAssemblerParser.IntegerinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacemethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.InterfacesContext;
 import org.jasm.parser.JavaAssemblerParser.IntmacroargumentContext;
+import org.jasm.parser.JavaAssemblerParser.JavatypeContext;
 import org.jasm.parser.JavaAssemblerParser.LabeledIdentifierContext;
 import org.jasm.parser.JavaAssemblerParser.LdcopContext;
 import org.jasm.parser.JavaAssemblerParser.LinenumberContext;
@@ -309,6 +312,7 @@ import org.jasm.parser.literals.DoubleLiteral;
 import org.jasm.parser.literals.FieldReference;
 import org.jasm.parser.literals.FloatLiteral;
 import org.jasm.parser.literals.IntegerLiteral;
+import org.jasm.parser.literals.JavaTypeLiteral;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.Label;
 import org.jasm.parser.literals.LongLiteral;
@@ -1480,12 +1484,8 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		stack.pop();
 	}
 	
-	
-	
-
-
 	@Override
-	public void enterField(FieldContext ctx) {
+	public void enterField_lowlevel(Field_lowlevelContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
 		Field f = new Field();
 		f.setSourceLocation(createSourceLocation(ctx.FIELD()));
@@ -1495,6 +1495,18 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	
 	
+	@Override
+	public void enterField_highlevel(Field_highlevelContext ctx) {
+		Clazz clazz = (Clazz)stack.peek();
+		Field f = new Field();
+		f.setHighLevelSyntax(true);
+		f.setNameLiteral(createStringLiteral(ctx.Identifier()));
+		f.setJavaType(createJavaTypeLiteral(ctx.javatype()));
+		f.setSourceLocation(createSourceLocation(ctx.Identifier()));
+		clazz.getFields().add(f);
+		stack.push(f);
+	}
+
 	@Override
 	public void enterFieldattributeConstantValue(
 			FieldattributeConstantValueContext ctx) {
@@ -2695,6 +2707,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		return new MethodReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
 	}
 	
+	private JavaTypeLiteral createJavaTypeLiteral(JavatypeContext context) {
+		return new JavaTypeLiteral(context.getStart().getLine(), context.getStart().getCharPositionInLine(), context.getText());
+	}
 	
 	
 	private Attribute addAttribute(IAttributeContent content, TerminalNode node) {
