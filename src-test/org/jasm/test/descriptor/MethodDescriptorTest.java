@@ -17,17 +17,20 @@ public class MethodDescriptorTest {
 		
 		Assert.assertNull(desc.getReturnType());
 		Assert.assertEquals(0, desc.getParameters().size());
+		testConstructor(desc);
 		
 		s = "()I";
 		desc = new MethodDescriptor(s);
 		Assert.assertTrue(desc.getReturnType().isInteger());
 		Assert.assertEquals(0, desc.getParameters().size());
+		testConstructor(desc);
 		
 		s = "()Ljava/lang/Object;";
 		desc = new MethodDescriptor(s);
 		Assert.assertTrue(desc.getReturnType().isObject());
 		Assert.assertEquals("java/lang/Object",desc.getReturnType().getClassName());
 		Assert.assertEquals(0, desc.getParameters().size());
+		testConstructor(desc);
 		
 		s = "(Ljava/lang/String;IZ[J)Ljava/lang/Object;";
 		desc = new MethodDescriptor(s);
@@ -40,6 +43,12 @@ public class MethodDescriptorTest {
 		Assert.assertTrue(desc.getParameters().get(2).isBoolean());
 		Assert.assertTrue(desc.getParameters().get(3).isArray());
 		Assert.assertTrue(desc.getParameters().get(3).getComponentType().isLong());
+		testConstructor(desc);
+	}
+	
+	private void testConstructor(MethodDescriptor desc) {
+		MethodDescriptor desc1 = new MethodDescriptor(desc.getParameters(), desc.getReturnType());
+		Assert.assertEquals(desc.getValue(), desc1.getValue());
 	}
 
 }

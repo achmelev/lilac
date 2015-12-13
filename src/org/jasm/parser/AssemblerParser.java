@@ -16,6 +16,7 @@ import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -236,6 +237,10 @@ import org.jasm.parser.JavaAssemblerParser.LongStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MacrocallContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
+import org.jasm.parser.JavaAssemblerParser.Method_highlevelContext;
+import org.jasm.parser.JavaAssemblerParser.Method_highlevel_parameterContext;
+import org.jasm.parser.JavaAssemblerParser.Method_highlevel_returntypeContext;
+import org.jasm.parser.JavaAssemblerParser.Method_lowlevelContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.MethodexceptionhandlerContext;
 import org.jasm.parser.JavaAssemblerParser.MethodhandleinfoContext;
@@ -324,7 +329,6 @@ import org.jasm.parser.literals.VersionLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -398,7 +402,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		return doParse(input);
 		
 	}
-	
 	
 	private  Clazz doParse(ANTLRInputStream input) {
 		
@@ -589,6 +592,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		if (ctx.label() != null) {
 			entry.setLabel(createLabel(ctx.label().Identifier()));
 		}
+		
 		entry.setSourceLocation(createSourceLocation(ctx.CLASSINFO()));
 		entry.setReferenceLabels(new SymbolReference[]{createSymbolReference(ctx.Identifier())});
 		addConstantPoolEntry(entry);
@@ -1465,19 +1469,47 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		
 		content.getInstructions().addMacroCall(call);
 	}
-
+	
+	
+	
 
 	@Override
-	public void enterMethod(MethodContext ctx) {
+	public void enterMethod_lowlevel(Method_lowlevelContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
 		Method m = new Method();
 		m.setSourceLocation(createSourceLocation(ctx.METHOD()));
 		clazz.getMethods().add(m);
 		stack.push(m);
-		
+	}
+
+	@Override
+	public void enterMethod_highlevel(Method_highlevelContext ctx) {
+		Clazz clazz = (Clazz)stack.peek();
+		Method m = new Method();
+		m.setHighLevelSyntax(true);
+		m.setHighLevelNameReference(createSymbolReference(ctx.method_highlevel_name()));
+		m.setSourceLocation(createSourceLocation(ctx.method_highlevel_name()));
+		clazz.getMethods().add(m);
+		stack.push(m);
 	}
 	
 	
+
+	@Override
+	public void enterMethod_highlevel_returntype(
+			Method_highlevel_returntypeContext ctx) {
+		Method m = (Method)stack.peek();
+		if (ctx.javatype() != null) {
+			m.setReturnTypeLiteral(createJavaTypeLiteral(ctx.javatype(), m));
+		}
+	}
+
+	@Override
+	public void enterMethod_highlevel_parameter(
+			Method_highlevel_parameterContext ctx) {
+		Method m = (Method)stack.peek();
+		m.addParameter(createSymbolReference(ctx.Identifier()), createJavaTypeLiteral(ctx.javatype(), m));
+	}
 
 	@Override
 	public void exitMethod(MethodContext ctx) {
@@ -1500,8 +1532,8 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		Clazz clazz = (Clazz)stack.peek();
 		Field f = new Field();
 		f.setHighLevelSyntax(true);
-		f.setNameLiteral(createStringLiteral(ctx.Identifier()));
-		f.setJavaType(createJavaTypeLiteral(ctx.javatype()));
+		f.setHighLevelNameReference(createSymbolReference(ctx.Identifier()));
+		f.setJavaType(createJavaTypeLiteral(ctx.javatype(), f));
 		f.setSourceLocation(createSourceLocation(ctx.Identifier()));
 		clazz.getFields().add(f);
 		stack.push(f);
@@ -2642,8 +2674,16 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		return new SourceLocation(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine());
 	}
 	
+	private SourceLocation createSourceLocation(ParserRuleContext context) {
+		return new SourceLocation(context.start.getLine(), context.start.getCharPositionInLine());
+	}
+	
 	private SymbolReference createSymbolReference(TerminalNode node) {
 		return new SymbolReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
+	
+	private SymbolReference createSymbolReference(ParserRuleContext context) {
+		return new SymbolReference(context.start.getLine(), context.start.getCharPositionInLine(), context.start.getText());
 	}
 	
 	private SymbolReference createSymbolReference(LabeledIdentifierContext lic) {
@@ -2707,8 +2747,10 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		return new MethodReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
 	}
 	
-	private JavaTypeLiteral createJavaTypeLiteral(JavatypeContext context) {
-		return new JavaTypeLiteral(context.getStart().getLine(), context.getStart().getCharPositionInLine(), context.getText());
+	private JavaTypeLiteral createJavaTypeLiteral(JavatypeContext context, AbstractByteCodeItem parent) {
+		JavaTypeLiteral result = new JavaTypeLiteral(context.getStart().getLine(), context.getStart().getCharPositionInLine(), context.getText());
+		result.setParent(parent);
+		return result;
 	}
 	
 	

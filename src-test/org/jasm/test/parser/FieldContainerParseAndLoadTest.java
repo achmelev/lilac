@@ -49,6 +49,7 @@ public class FieldContainerParseAndLoadTest extends AbstractParseAndLoadTestCase
 			Assert.assertEquals(Double.TYPE, fields.get("double_field").getType());
 			Assert.assertEquals(Short.TYPE, fields.get("short_field").getType());
 			Assert.assertEquals(String.class, fields.get("string_field").getType());
+			Assert.assertEquals(String.class, fields.get("string_field2").getType());
 			
 			Assert.assertEquals(Byte.TYPE, fields.get("byte_array_field").getType().getComponentType());
 			Assert.assertEquals(Boolean.TYPE, fields.get("boolean_array_field").getType().getComponentType());
@@ -59,6 +60,7 @@ public class FieldContainerParseAndLoadTest extends AbstractParseAndLoadTestCase
 			Assert.assertEquals(Double.TYPE, fields.get("double_array_field").getType().getComponentType());
 			Assert.assertEquals(Short.TYPE, fields.get("short_array_field").getType().getComponentType());
 			Assert.assertEquals(String.class, fields.get("string_array_field").getType().getComponentType());
+			Assert.assertEquals(String.class, fields.get("string_array_field2").getType().getComponentType());
 			
 			Assert.assertTrue(Modifier.isPublic(fields.get("byte_field").getModifiers()));
 			Assert.assertTrue(Modifier.isStatic(fields.get("byte_field").getModifiers()));

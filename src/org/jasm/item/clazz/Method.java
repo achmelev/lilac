@@ -1,14 +1,22 @@
 package org.jasm.item.clazz;
 
-import org.apache.commons.lang3.NotImplementedException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.modifier.MethodModifier;
 import org.jasm.item.utils.IdentifierUtils;
+import org.jasm.parser.literals.JavaTypeLiteral;
 import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.IllegalDescriptorException;
 import org.jasm.type.descriptor.MethodDescriptor;
+import org.jasm.type.descriptor.TypeDescriptor;
 
 public class Method extends AbstractClassMember<MethodModifier> {
+	
+	private JavaTypeLiteral returnTypeLiteral;
+	private List<JavaTypeLiteral> parameterTypes;
+	private List<SymbolReference> paramNames;
 	
 	private MethodDescriptor methodDescriptor =null;
 	
@@ -27,8 +35,6 @@ public class Method extends AbstractClassMember<MethodModifier> {
 		}
 	}
 	
-	
-
 	@Override
 	public String getPrintComment() {
 		if (modifier.isAbstract() || modifier.isNative()) {
@@ -175,10 +181,51 @@ public class Method extends AbstractClassMember<MethodModifier> {
 
 	@Override
 	protected Utf8Info createHighLevelDescriptor() {
-		throw new NotImplementedException("");
+		TypeDescriptor returnType = (returnTypeLiteral == null)?null:returnTypeLiteral.getDescriptor();
+		List<TypeDescriptor> paramTypes = new ArrayList<TypeDescriptor>();
+		if (parameterTypes != null) {
+			for (JavaTypeLiteral jtl: parameterTypes) {
+				TypeDescriptor desc = jtl.getDescriptor();
+				if (desc != null) {
+					paramTypes.add(desc);
+				}	
+			}
+		}
+		if (this.hasErrors()) {
+			return null;
+		}
+		methodDescriptor = new MethodDescriptor(paramTypes, returnType);
+		return getConstantPool().getOrAddUtf8nfo(methodDescriptor.getValue());
+	}
+
+	public void setReturnTypeLiteral(JavaTypeLiteral returnTypeLiteral) {
+		this.returnTypeLiteral = returnTypeLiteral;
+	}
+	
+	public void addParameter(SymbolReference name, JavaTypeLiteral literal) {
+		if (parameterTypes == null) {
+			parameterTypes = new ArrayList<JavaTypeLiteral>();
+		}
+		if (paramNames == null) {
+			paramNames = new ArrayList<SymbolReference>();
+		}
+		paramNames.add(name);
+		parameterTypes.add(literal);
+	}
+
+	public List<JavaTypeLiteral> getParameterTypes() {
+		if (!this.highLevelSyntax) {
+			throw new IllegalStateException("not highlevel");
+		}
+		return parameterTypes;
+	}
+
+	public List<SymbolReference> getParamNames() {
+		if (!this.highLevelSyntax) {
+			throw new IllegalStateException("not highlevel");
+		}
+		return paramNames;
 	}
 	
 	
-	
-
 }
