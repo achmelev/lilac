@@ -94,7 +94,7 @@ public class Field extends AbstractClassMember<FieldModifier> {
 	@Override
 	protected void doVerify() {
 		if (typeDescriptor != null) {
-			getRoot().checkAndLoadTypeDescriptor(this, descriptorReference, typeDescriptor);
+			getRoot().checkAndLoadTypeDescriptor(this, highLevelSyntax?javaType:descriptorReference, typeDescriptor);
 		}
 		super.doVerify();
 	}
@@ -107,7 +107,13 @@ public class Field extends AbstractClassMember<FieldModifier> {
 
 	@Override
 	protected Utf8Info createHighLevelDescriptor() {
-		return getConstantPool().getOrAddUtf8nfo(javaType.getDescriptor().getValue());
+		TypeDescriptor desc = javaType.getDescriptor();
+		Utf8Info result = null;
+		if (desc != null) {
+			result =  getConstantPool().getOrAddUtf8nfo(javaType.getDescriptor().getValue());
+			typeDescriptor = new TypeDescriptor(result.getValue());
+		}
+		return result;
 	}
 	
 	

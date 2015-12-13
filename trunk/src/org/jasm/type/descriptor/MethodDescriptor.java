@@ -31,6 +31,25 @@ public class MethodDescriptor {
 		}
 	}
 	
+	public MethodDescriptor(List<TypeDescriptor> params, TypeDescriptor returnType) {
+		if (params != null) {
+			parameters.addAll(params);
+		}
+		this.returnType = returnType;
+		StringBuffer buf = new StringBuffer();
+		buf.append("(");
+		for (TypeDescriptor t: parameters) {
+			buf.append(t.getValue());
+		}
+		buf.append(")");
+		if (returnType != null) {
+			buf.append(returnType.getValue());
+		} else {
+			buf.append("V");
+		}
+		value = buf.toString();
+	}
+	
 	private void parseParameters(String s) throws IllegalDescriptorException {
 		String s1 = s;
 		while (s1.length()>0) {

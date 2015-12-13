@@ -8,7 +8,7 @@ javatype: primitive_javatype
 		  | array_javatype;
 
 primitive_javatype: BYTE|BOOLEAN|CHAR|DOUBLE|FLOAT|INT|LONG|SHORT;
-class_javatype: BinaryIdentifier;
+class_javatype: BinaryIdentifier|Identifier;
 array_javatype: (primitive_javatype|class_javatype) (LSQUAREBRACE  RSQUAREBRACE)+;
 
 clazz:
@@ -107,9 +107,15 @@ innerclassmodifierlabel: PUBLIC #innerclassmodifierPublic
 enclosingmethod: ENCLOSING METHOD Identifier (COMMA Identifier)? SEMI;
 bootstrapmethod: BOOTSTRAP METHOD Identifier Identifier (COMMA Identifier)* SEMI;
 
-method  : methodmodifier? METHOD  LBRACE
+method: method_lowlevel | method_highlevel;
+
+method_lowlevel  : methodmodifier? METHOD  LBRACE
 			 methodmember*
 		 RBRACE;
+
+method_highlevel: methodmodifier? method_highlevel_returntype method_highlevel_name LROUNDBRACE method_highlevel_parameters? RROUNDBRACE ((LBRACE
+					methodmember*
+				  RBRACE)|(SEMI));
 
 methodmember: methodname SEMI
 			  | methoddescriptor SEMI
@@ -128,8 +134,14 @@ methodname: NAME Identifier;
 methoddescriptor: DESCRIPTOR Identifier;
 
 methodmodifier: methodmodifierlabel (methodmodifierlabel)*;
-				  
 
+method_highlevel_returntype: VOID|javatype;
+method_highlevel_name: INIT|CLINIT|Identifier;
+
+method_highlevel_parameters: method_highlevel_parameter (COMMA method_highlevel_parameter)*;
+
+method_highlevel_parameter: javatype Identifier;
+				  
 methodmodifierlabel:  PUBLIC 		# methodmodifierPublic
 					| PRIVATE  		# methodmodifierPrivate
 					| PROTECTED  	# methodmodifierProtected
@@ -505,6 +517,8 @@ LOCALS        : 'locals';
 EXTENDED      : 'extended';
 FULL          : 'full';
 CHOP          : 'chop';
+INIT          : '<init>';
+CLINIT          : '<clinit>';
 
 
 //stopKeywords
@@ -536,6 +550,7 @@ UNINITIALIZEDTHIS: 'uninitializedthis';
 METHODHANDLE  :  'methodhandle';
 METHODTYPE    :  'methodtype';
 NULL          : 'null';
+VOID          : 'void';
 
 
 //stopKeywords

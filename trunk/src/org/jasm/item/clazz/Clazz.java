@@ -74,7 +74,6 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	private Map<String, Integer> interfaceIndexesLabelTable =  new HashMap<String, Integer>();
 	
 	private ClassInfoResolver resolver;
-	private ClassInfoResolver meResolver;
 	private org.jasm.resolver.ExternalClassInfo me;
 	
 	public Clazz() {
@@ -279,9 +278,6 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 				for (int i=0;i<interfaces.size(); i++) {
 					verifyInterface(interfaceSymbols.get(i), interfaces.get(i), me);
 				}
-				ClazzClassPathEntry entry = new ClazzClassPathEntry();
-				meResolver = new ClassInfoResolver();
-				meResolver.add(entry);
 				resolvedMyself = getParser().getErrorCounter() == 0;
 			}
 			return resolvedMyself;
@@ -295,6 +291,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		
 		if (resolveMyselfAndSuperclasses()) {
 			pool.verify();
+			fields.verify();
 			methods.verify();
 			attributes.verify();
 			
@@ -686,13 +683,11 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 	
 	
 	
-	public ExternalClassInfo checkAndLoadClassInfo(IErrorEmitter caller, SymbolReference symbol, String className, boolean checkAccess) {
+	public ExternalClassInfo checkAndLoadClassInfo(IErrorEmitter caller, AbstractLiteral symbol, String className, boolean checkAccess) {
 		
 		ExternalClassInfo result = null;
 		try {
-			if (meResolver != null) {
-				result = meResolver.resolve(this,  className, checkAccess);
-			}
+	
 			
 			if (result == null) {
 				result =  getResolver().resolve(this, className, checkAccess);
@@ -707,7 +702,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		return null;
 	}
 	
-	public void checkAndLoadTypeDescriptor(AbstractByteCodeItem caller, SymbolReference symbol, TypeDescriptor desc) {
+	public void checkAndLoadTypeDescriptor(AbstractByteCodeItem caller, AbstractLiteral symbol, TypeDescriptor desc) {
 		if (desc.isArray() || desc.isObject()) {
 			ExternalClassInfo info = checkAndLoadClassInfo(caller, symbol, desc.getClassName(), false);
 			desc.setExternalInfo(info);
@@ -715,7 +710,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		
 	}
 	
-	public void checkAndLoadMethodDescriptor(AbstractByteCodeItem caller, SymbolReference symbol, MethodDescriptor desc) {
+	public void checkAndLoadMethodDescriptor(AbstractByteCodeItem caller, AbstractLiteral symbol, MethodDescriptor desc) {
 		if (desc.getReturnType() != null) {
 			checkAndLoadTypeDescriptor(caller, symbol, desc.getReturnType());
 		}
@@ -729,13 +724,6 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		org.jasm.resolver.MethodInfo result = null;
 		String methodKey = className+"."+methodName+"@"+desc; 
 		try {
-			if (meResolver != null) {
-				try {
-					result = meResolver.resolveMethod(this,  className, methodName, desc, checkAccess);
-				} catch (ResolveClassNotFoundException e) {
-					//ignore
-				}
-			}
 			
 			if (result == null) {
 				result =  getResolver().resolveMethod(this, className, methodName, desc, checkAccess);
@@ -758,13 +746,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		org.jasm.resolver.MethodInfo result = null;
 		String methodKey = className+"."+methodName+"@"+desc; 
 		try {
-			if (meResolver != null) {
-				try {
-					result = meResolver.resolveInterfaceMethod(this,  className, methodName, desc, checkAccess);
-				} catch (ResolveClassNotFoundException e) {
-					//ignore
-				}
-			}
+			
 			
 			if (result == null) {
 				result =  getResolver().resolveInterfaceMethod(this, className, methodName, desc, checkAccess);
@@ -787,13 +769,6 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		org.jasm.resolver.FieldInfo result = null;
 		String fieldKey = className+"."+fieldName+"@"+desc; 
 		try {
-			if (meResolver != null) {
-				try {
-					result = meResolver.resolveField(this,  className, fieldName, desc, checkAccess);
-				} catch (ResolveClassNotFoundException e) {
-					//ignore
-				}
-			}
 			
 			if (result == null) {
 				result =  getResolver().resolveField(this, className, fieldName, desc, checkAccess);
@@ -810,7 +785,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		return null;
 	}
 	
-	private void emitResolveError(IErrorEmitter caller, SymbolReference symbol, String name, String message) {
+	private void emitResolveError(IErrorEmitter caller, AbstractLiteral symbol, String name, String message) {
 		caller.emitError(symbol, message);
 	}
 

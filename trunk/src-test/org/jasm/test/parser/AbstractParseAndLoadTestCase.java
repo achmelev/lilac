@@ -38,6 +38,7 @@ public abstract class AbstractParseAndLoadTestCase {
 		
 			if (verify()) {
 				ClassInfoResolver clp = new ClassInfoResolver();
+				clp.add(new ClazzClassPathEntry(clazz));
 				clp.add(new ClassLoaderClasspathEntry(Thread.currentThread().getContextClassLoader()));
 				clazz.setResolver(clp);
 				clazz.verify();
@@ -62,6 +63,7 @@ public abstract class AbstractParseAndLoadTestCase {
 		
 			if (verify()) {
 				ClassInfoResolver clp = new ClassInfoResolver();
+				clp.add(new ClazzClassPathEntry(clazz));
 				clp.add(new ClassLoaderClasspathEntry(Thread.currentThread().getContextClassLoader()));
 				clazz.setResolver(clp);
 				clazz.verify();

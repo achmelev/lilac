@@ -31,9 +31,8 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	private int descriptorIndex = -1;
 	private Attributes attributes = null;
 	
-	private boolean highLevelSyntax = false;
-	private JavaTypeLiteral javaType;
-	private StringLiteral nameLiteral;
+	protected boolean highLevelSyntax = false;
+	private SymbolReference highLevelNameReference;
 	
 	public AbstractClassMember() {
 		initChildren();
@@ -136,6 +135,17 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 				emitError(null, "missing descriptor statement");
 			}	
 		}
+		
+		if (!this.hasErrors() && this.highLevelSyntax) {
+			if (highLevelNameReference.getContent().indexOf('.')>=0) {
+				emitError(highLevelNameReference, "malformed field or method name");
+			} else {
+				this.name = getConstantPool().getOrAddUtf8nfo(highLevelNameReference.getContent());
+				this.descriptor = createHighLevelDescriptor();
+			}	
+			
+		}
+		
 		if (!this.hasErrors()) {
 			modifier = createModifier(0);
 			for (Keyword kw: modifierLiterals) {
@@ -145,16 +155,6 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 			if (!hasErrors()) {
 				attributes.resolve();
 			}
-		}
-		
-		if (!this.hasErrors() && this.highLevelSyntax) {
-			if (nameLiteral.getContent().indexOf('.')>=0) {
-				emitError(nameLiteral, "malformed field or method name");
-			} else {
-				this.name = getConstantPool().getOrAddUtf8nfo(nameLiteral.getContent());
-				this.descriptor = createHighLevelDescriptor();
-			}	
-			
 		}
 		
 	}
@@ -264,18 +264,14 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 	public void setHighLevelSyntax(boolean highLevelSyntax) {
 		this.highLevelSyntax = highLevelSyntax;
 	}
-
-
-	public void setJavaType(JavaTypeLiteral javaType) {
-		this.javaType = javaType;
+	
+	public boolean isHighLevelSyntax() {
+		return highLevelSyntax;
 	}
 
-
-	public void setNameLiteral(StringLiteral nameLiteral) {
-		this.nameLiteral = nameLiteral;
-	}
-	
-	
+	public void setHighLevelNameReference(SymbolReference highLevelNameReference) {
+		this.highLevelNameReference = highLevelNameReference;
+	}	
 	
 	
 

@@ -20,6 +20,10 @@ public super class {
   const utf8 this_desc "Lorg/jasm/test/playground/FieldContainer;";
   const utf8 SourceFile_utf8 "SourceFile";
   const utf8 source_file_name "FieldContainer.java";
+  
+  const utf8 String_name "java/lang/String";
+  const classref String String_name;
+  
   source file source_file_name; // FieldContainer.java
    //Fields
   public static final byte byte_field;
@@ -42,6 +46,8 @@ public super class {
   public short [] short_array_field;
   public java/lang/String string_field;
   public java/lang/String [] string_array_field;
+  public String string_field2;
+  public String [] string_array_field2;
   
   
    //Methods

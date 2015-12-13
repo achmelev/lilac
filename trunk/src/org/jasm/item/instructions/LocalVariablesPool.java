@@ -9,7 +9,10 @@ import java.util.Map;
 
 import org.jasm.JasmConsts;
 import org.jasm.item.AbstractByteCodeItem;
+import org.jasm.item.clazz.Method;
+import org.jasm.parser.literals.JavaTypeLiteral;
 import org.jasm.parser.literals.SymbolReference;
+import org.jasm.type.descriptor.TypeDescriptor;
 
 public class LocalVariablesPool {
 	
@@ -28,6 +31,44 @@ public class LocalVariablesPool {
 	
 	public void resolveAfterParse() {
 		List<LocalVariable> vars = new ArrayList<LocalVariable>();
+		
+		//Addding param vars
+		if (parent != null) {
+			Method m = parent.getAncestor(Method.class);
+			if (m.isHighLevelSyntax() && !m.hasErrors()) {
+				List<LocalVariable> implicitVars = new ArrayList<LocalVariable>();
+				//Adding this
+				if (!m.getModifier().isStatic()) {
+					LocalVariable thisVar = new LocalVariable(LocalVariable.getTypeCode(JasmConsts.TYPENAME_OBJECT));
+					thisVar.setName(new SymbolReference(m.getSourceLocation().getLine(), m.getSourceLocation().getCharPosition(), "this"));
+					implicitVars.add(thisVar);
+				}
+				//Adding params
+				if (m.getParameterTypes() != null && m.getParameterTypes().size()>0) {
+					for (int i=0;i<m.getParameterTypes().size(); i++) {
+						JavaTypeLiteral type = m.getParameterTypes().get(i);
+						TypeDescriptor desc = type.getDescriptor();
+						SymbolReference name = m.getParamNames().get(i);
+						String varType = null;
+						if (desc.isLong()) {
+							varType = JasmConsts.TYPENAME_LONG;
+						} else if (desc.isFloat()) {
+							varType = JasmConsts.TYPENAME_FLOAT;
+						} else if (desc.isDouble()) {
+							varType = JasmConsts.TYPENAME_DOUBLE;
+						} else if (desc.isObject() || desc.isArray()) {
+							varType = JasmConsts.TYPENAME_OBJECT;
+						} else {
+							varType = JasmConsts.TYPENAME_INT;
+						}
+						LocalVariable parVar = new LocalVariable(LocalVariable.getTypeCode(varType));
+						parVar.setName(name);
+						implicitVars.add(parVar);
+					}
+				}
+				variables.addAll(0, implicitVars);
+			}
+		}	
 		//Building maps
 		for (LocalVariable var: variables) {
 			if (nameToVar.containsKey(var.getName().getSymbolName())) {
