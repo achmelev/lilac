@@ -31,12 +31,9 @@ import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.ShortLocalVariableInstruction;
 import org.jasm.item.instructions.SipushInstruction;
 import org.jasm.parser.SourceLocation;
-import org.jasm.parser.literals.ClassReference;
 import org.jasm.parser.literals.DoubleLiteral;
-import org.jasm.parser.literals.FieldReference;
 import org.jasm.parser.literals.FloatLiteral;
 import org.jasm.parser.literals.LongLiteral;
-import org.jasm.parser.literals.MethodReference;
 import org.jasm.parser.literals.NullLiteral;
 import org.jasm.parser.literals.StringLiteral;
 import org.jasm.parser.literals.SymbolReference;
@@ -211,24 +208,7 @@ public abstract class AbstractMacro implements IMacro {
 						instructionReferences.put(arg, (SymbolReference)ref);
 					}
 				}
-			} else if (arg instanceof FieldReference) {
-				FieldReference ref = (FieldReference)arg;
-				String className = resolveClassName(ref.getClassName());
-				if (className != null) {
-					ref.setClassName(className);
-				} else {
-					hasError = true;
-				}
-			
-			} else if (arg instanceof MethodReference) {
-				MethodReference ref = (MethodReference)arg;
-				String className = resolveClassName(ref.getClassName());
-				if (className != null) {
-					ref.setClassName(className);
-				} else {
-					hasError = true;
-				}
-			}
+			} 
 		}
 		if (hasError) {
 			return false;
@@ -258,25 +238,10 @@ public abstract class AbstractMacro implements IMacro {
 	}
 	
 	protected boolean isReference(IMacroArgument arg) {
-		return (arg instanceof SymbolReference) ||
-				(arg instanceof FieldReference) ||
-				(arg instanceof MethodReference) ||
-				(arg instanceof ClassReference);
+		return (arg instanceof SymbolReference);
 				
 	}
-	
-	protected boolean isClassReference(IMacroArgument arg) {
-		return (arg instanceof ClassReference);			
-	}
-	
-	protected boolean isFieldReference(IMacroArgument arg) {
-		return (arg instanceof FieldReference);			
-	}
-	
-	protected boolean isMethodReference(IMacroArgument arg) {
-		return (arg instanceof MethodReference);			
-	}
-	
+		
 	protected boolean isSymbolReference(IMacroArgument arg) {
 		return arg instanceof SymbolReference;
 	}
@@ -359,8 +324,6 @@ public abstract class AbstractMacro implements IMacro {
 			}
 		} else if (arg instanceof MacroCall) {
 			return ((MacroCall)arg).getMacro().getReturnType();
-		} else if (arg instanceof ClassReference) {
-			return new TypeDescriptor("Ljava/lang/Class;");	
 		} else {
 			return null;
 		}
@@ -587,9 +550,6 @@ public abstract class AbstractMacro implements IMacro {
 			pushVariableSymbolReferenceArgument(arg, result);
 		} else if (arg instanceof MacroCall) {
 			pushMacroCallArgument(arg, result);
-		} else if (arg instanceof ClassReference) {
-			ClassInfo value = getClassInfo(((ClassInfo)arg).getClassName());
-			pushConstantValue(value, result);
 		} else {
 			throw new IllegalArgumentException("Unknown combination: "+arg+"; "+type);
 		}
@@ -603,9 +563,6 @@ public abstract class AbstractMacro implements IMacro {
 		short opCode = (object == null)?OpCodes.getstatic:OpCodes.getfield;
 		if (isConstantSymbolReference(field)) {
 			result.add(createConstantPoolInstruction(opCode, constantArguments.get(field)));
-		} else if (isFieldReference(field)) {
-			FieldReference ref = (FieldReference)field;
-			result.add(createConstantPoolInstruction(opCode, getFieldRefInfo(ref.getClassName(), ref.getFieldName(), ref.getDescriptor())));
 		} else {
 			throw new IllegalArgumentException("field: "+field);
 		}

@@ -55,7 +55,7 @@ public super class {
     //Instructions
 	nop;
 	macro:
-    test.argumentlessmul (10, 15.0, "20", i30, null, org/jasm/test/testclass/Macro/counter@I, org/jasm/test/testclass/Macro/calculate@()I, java/lang/String);
+    test.argumentlessmul (10, 15.0, "20", i30, null);
     ireturn;
   }
 }

@@ -8,9 +8,7 @@ import org.jasm.item.instructions.Instructions;
 import org.jasm.item.instructions.macros.MacroCall;
 import org.jasm.parser.literals.ClassReference;
 import org.jasm.parser.literals.DoubleLiteral;
-import org.jasm.parser.literals.FieldReference;
 import org.jasm.parser.literals.LongLiteral;
-import org.jasm.parser.literals.MethodReference;
 import org.jasm.parser.literals.NullLiteral;
 import org.jasm.parser.literals.StringLiteral;
 import org.jasm.parser.literals.SymbolReference;
@@ -46,20 +44,13 @@ public class MacroParserTest extends AbstractParserTestCase {
 		Assert.assertEquals("test.argumentlessmul", call.getNameReference().getSymbolName());
 		Assert.assertEquals("macro", call.getSymbolName());
 		Assert.assertEquals(1, call.getIndex());
-		Assert.assertEquals(8, call.getArguments().size());
+		Assert.assertEquals(5, call.getArguments().size());
 		Assert.assertEquals(10L,((LongLiteral)call.getArguments().get(0)).getValue());
 		Assert.assertEquals(15.0,((DoubleLiteral)call.getArguments().get(1)).getValue());
 		Assert.assertEquals("20",((StringLiteral)call.getArguments().get(2)).getStringValue());
 		Assert.assertEquals("i30",((SymbolReference)call.getArguments().get(3)).getSymbolName());
 		Assert.assertTrue(call.getArguments().get(4) instanceof NullLiteral);
-		Assert.assertEquals("org/jasm/test/testclass/Macro", ((FieldReference)call.getArguments().get(5)).getClassName());
-		Assert.assertEquals("counter", ((FieldReference)call.getArguments().get(5)).getFieldName());
-		Assert.assertEquals(true, ((FieldReference)call.getArguments().get(5)).getDescriptor().isInteger());
-		Assert.assertEquals("org/jasm/test/testclass/Macro", ((MethodReference)call.getArguments().get(6)).getClassName());
-		Assert.assertEquals("calculate", ((MethodReference)call.getArguments().get(6)).getMethodName());
-		Assert.assertEquals(0, ((MethodReference)call.getArguments().get(6)).getDescriptor().getParameters().size());
-		Assert.assertEquals(true, ((MethodReference)call.getArguments().get(6)).getDescriptor().getReturnType().isInteger());
-		Assert.assertEquals("java/lang/String", ((ClassReference)call.getArguments().get(7)).getClassName());
+
 		
 		
 		Assert.assertEquals(5, instrs.getSize());

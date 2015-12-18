@@ -1,6 +1,5 @@
 package org.jasm.item.constantpool;
 
-import org.jasm.resolver.MethodInfo;
 
 public class InterfaceMethodrefInfo extends AbstractRefInfo {
 	
@@ -32,7 +31,6 @@ public class InterfaceMethodrefInfo extends AbstractRefInfo {
 
 	@Override
 	public void completeGeneratedEntry() {
-		// TODO Auto-generated method stub
 		
 	}
 
