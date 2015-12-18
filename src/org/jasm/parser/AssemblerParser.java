@@ -153,7 +153,6 @@ import org.jasm.parser.JavaAssemblerParser.ChopStackmapFrameContext;
 import org.jasm.parser.JavaAssemblerParser.ClassAttributeSynteticContext;
 import org.jasm.parser.JavaAssemblerParser.ClassInnerClassContext;
 import org.jasm.parser.JavaAssemblerParser.ClassattributeSourceFileContext;
-import org.jasm.parser.JavaAssemblerParser.ClassidmacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.ClassinfoContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierAbstractContext;
 import org.jasm.parser.JavaAssemblerParser.ClassmodifierAnnotationContext;
@@ -187,7 +186,6 @@ import org.jasm.parser.JavaAssemblerParser.Field_highlevelContext;
 import org.jasm.parser.JavaAssemblerParser.Field_lowlevelContext;
 import org.jasm.parser.JavaAssemblerParser.FieldattributeConstantValueContext;
 import org.jasm.parser.JavaAssemblerParser.FielddescriptorContext;
-import org.jasm.parser.JavaAssemblerParser.FieldidmacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.FieldmodifierEnumContext;
 import org.jasm.parser.JavaAssemblerParser.FieldmodifierFinalContext;
 import org.jasm.parser.JavaAssemblerParser.FieldmodifierPrivateContext;
@@ -244,7 +242,6 @@ import org.jasm.parser.JavaAssemblerParser.Method_lowlevelContext;
 import org.jasm.parser.JavaAssemblerParser.MethoddescriptorContext;
 import org.jasm.parser.JavaAssemblerParser.MethodexceptionhandlerContext;
 import org.jasm.parser.JavaAssemblerParser.MethodhandleinfoContext;
-import org.jasm.parser.JavaAssemblerParser.MethodidmacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.MethodinstructionContext;
 import org.jasm.parser.JavaAssemblerParser.MethodlinenumbertableContext;
 import org.jasm.parser.JavaAssemblerParser.MethodmaxlocalsContext;
@@ -314,14 +311,12 @@ import org.jasm.parser.JavaAssemblerParser.VersionContext;
 import org.jasm.parser.literals.Base64Literal;
 import org.jasm.parser.literals.ClassReference;
 import org.jasm.parser.literals.DoubleLiteral;
-import org.jasm.parser.literals.FieldReference;
 import org.jasm.parser.literals.FloatLiteral;
 import org.jasm.parser.literals.IntegerLiteral;
 import org.jasm.parser.literals.JavaTypeLiteral;
 import org.jasm.parser.literals.Keyword;
 import org.jasm.parser.literals.Label;
 import org.jasm.parser.literals.LongLiteral;
-import org.jasm.parser.literals.MethodReference;
 import org.jasm.parser.literals.NullLiteral;
 import org.jasm.parser.literals.StringLiteral;
 import org.jasm.parser.literals.SymbolReference;
@@ -1366,25 +1361,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 	
 	
-	
-	@Override
-	public void enterClassidmacroargument(ClassidmacroargumentContext ctx) {
-		MacroCall call = (MacroCall)stack.peek();
-		call.addArgument(createClassReference(ctx.BinaryIdentifier()));
-	}
-
-	@Override
-	public void enterFieldidmacroargument(FieldidmacroargumentContext ctx) {
-		MacroCall call = (MacroCall)stack.peek();
-		call.addArgument(createFieldReference(ctx.FieldIdentifier()));
-	}
-
-	@Override
-	public void enterMethodidmacroargument(MethodidmacroargumentContext ctx) {
-		MacroCall call = (MacroCall)stack.peek();
-		call.addArgument(createMethodReference(ctx.MethodIdentifier()));
-	}
-
 	@Override
 	public void enterNullmacroargument(NullmacroargumentContext ctx) {
 		MacroCall call = (MacroCall)stack.peek();
@@ -2733,18 +2709,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private NullLiteral createNullLiteral(TerminalNode node) {
 		return new NullLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
-	}
-	
-	private ClassReference createClassReference(TerminalNode node) {
-		return new ClassReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
-	}
-	
-	private FieldReference createFieldReference(TerminalNode node) {
-		return new FieldReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
-	}
-	
-	private MethodReference createMethodReference(TerminalNode node) {
-		return new MethodReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
 	}
 	
 	private JavaTypeLiteral createJavaTypeLiteral(JavatypeContext context, AbstractByteCodeItem parent) {

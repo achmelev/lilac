@@ -20,7 +20,6 @@ public class StringLiteral extends AbstractLiteral implements IMacroArgument {
 
 	@Override
 	public String getInvalidErrorMessage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

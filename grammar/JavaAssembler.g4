@@ -226,9 +226,6 @@ macroargument: IntegerLiteral #intmacroargument
 			   |StringLiteral #stringmacroargument
 			   |NULL #nullmacroargument
 			   |Identifier #idmacroargument
-			   |BinaryIdentifier #classidmacroargument
-			   |FieldIdentifier #fieldidmacroargument
-			   |MethodIdentifier #methodidmacroargument
 			   |macrocall #macrocallmacroargument
 			   ;
 
@@ -933,9 +930,6 @@ BinaryIdentifier:  SimpleIdentifier? ('/' SimpleIdentifier) ('/' SimpleIdentifie
 fragment SimpleIdentifier
     :   JavaLetter JavaLetterOrDigit*
     ;
-
-FieldIdentifier: (BinaryIdentifier|SimpleIdentifier) '@' TypeDescriptor;
-MethodIdentifier: ((BinaryIdentifier ('/' ConstructorIdentifier )?)|SimpleIdentifier|ConstructorIdentifier) '@' MethodDescriptor;
 
 ConstructorIdentifier: '<init>';
 
