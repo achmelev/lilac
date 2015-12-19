@@ -51,6 +51,7 @@ classmodifierlabel: PUBLIC 		# classmodifierPublic
 
 constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 				 | CONST CLASSINFO  label Identifier #classinfo
+				 | CONST CLASSINFO  BinaryIdentifier (AS label)? #macroclassinfo
 				 | CONST STRING label Identifier #stringinfo
 				 | CONST FIELDREFINFO label Identifier COMMA  Identifier #fieldrefinfo
 				 | CONST INT label IntegerLiteral  #integerinfo
@@ -516,6 +517,7 @@ FULL          : 'full';
 CHOP          : 'chop';
 INIT          : '<init>';
 CLINIT          : '<clinit>';
+AS          : 'as';
 
 
 //stopKeywords

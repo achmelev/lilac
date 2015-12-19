@@ -110,6 +110,8 @@ import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.constantpool.NameAndTypeInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
+import org.jasm.item.constantpool.macros.AbstractConstantMacro;
+import org.jasm.item.constantpool.macros.ClassInfoConstantMacro;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.AbstractPushInstruction;
 import org.jasm.item.instructions.AbstractSwitchInstruction;
@@ -234,6 +236,7 @@ import org.jasm.parser.JavaAssemblerParser.LocalvartypememberContext;
 import org.jasm.parser.JavaAssemblerParser.LongStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MacrocallContext;
+import org.jasm.parser.JavaAssemblerParser.MacroclassinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.Method_highlevelContext;
 import org.jasm.parser.JavaAssemblerParser.Method_highlevel_parameterContext;
@@ -593,7 +596,16 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		addConstantPoolEntry(entry);
 	}
 	
-	
+	@Override
+	public void enterMacroclassinfo(MacroclassinfoContext ctx) {
+		ClassInfoConstantMacro macro = new ClassInfoConstantMacro(createClassReference(ctx.BinaryIdentifier()));
+		if (ctx.label() != null) {
+			macro.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		macro.setSourceLocation(createSourceLocation(ctx.BinaryIdentifier()));
+		addConstantMacro(macro);
+		
+	}
 
 	@Override
 	public void enterStringinfo(StringinfoContext ctx) {
@@ -2635,6 +2647,12 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 	}
 	
+	private void addConstantMacro(AbstractConstantMacro macro) {
+		ConstantPool pool = ((Clazz)stack.peek()).getConstantPool();
+		pool.addMacro(macro);
+		
+	}
+	
 	private void addBootstrapMethod(BootstrapMethod entry) {
 		BootstrapMethodsAttributeContent pool = getAttributeContentCreatingIfNecessary(BootstrapMethodsAttributeContent.class);
 		pool.add(entry);
@@ -2717,6 +2735,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		return result;
 	}
 	
+	private ClassReference createClassReference(TerminalNode node) {
+		return new ClassReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+	}
 	
 	private Attribute addAttribute(IAttributeContent content, TerminalNode node) {
 		IAttributesContainer container = (IAttributesContainer)stack.peek();

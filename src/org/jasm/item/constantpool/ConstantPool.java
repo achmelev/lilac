@@ -10,6 +10,7 @@ import org.jasm.disassembler.NameGenerator;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.AbstractTaggedBytecodeItemList;
 import org.jasm.item.IBytecodeItem;
+import org.jasm.item.constantpool.macros.AbstractConstantMacro;
 import org.jasm.map.KeyToListMap;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.SymbolTable;
@@ -31,8 +32,16 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	private NameGenerator constNameGenerator = new NameGenerator();
 	private ClassNameGenerator classNameGenerator = new ClassNameGenerator();
 	
+	private List<AbstractConstantMacro> macros = new ArrayList<AbstractConstantMacro>();
+	
 	public ConstantPool() {
 		super(AbstractConstantPoolEntry.class, "org.jasm.item.constantpool");
+	}
+	
+	public void addMacro(AbstractConstantMacro macro) {
+		macro.setParent(this);
+		macro.resolve();
+		macros.add(macro);
 	}
 
 
@@ -374,7 +383,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	@Override
 	protected void doResolve() {
 		for (IBytecodeItem item: getItems()) {
-			if (item != null && !(item instanceof InvokeDynamicInfo)) {
+			if (item != null && !(item instanceof InvokeDynamicInfo) && !isGenerated()) {
 				item.setParent(this);
 				item.resolve();
 			}
@@ -423,10 +432,12 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	protected void doResolveAfterParse() {
 		doResolve();
 		for (AbstractConstantPoolEntry item: getItems()) {
-			if ((item instanceof AbstractReferenceEntry) && !item.hasErrors()) {
+			if ((item instanceof AbstractReferenceEntry) && !item.hasErrors() && !item.isGenerated()) {
 				((AbstractReferenceEntry)item).verifyReferences();
 			}
 		}
+		
+		
 	}
 
 

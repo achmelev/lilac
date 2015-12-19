@@ -27,7 +27,11 @@ public class JavaTypeLiteral extends AbstractLiteral {
 	private TypeDescriptor createTypeDescriptor() {
 		String content = StringUtils.deleteWhitespace(getContent());
 		String descriptorString = convertToDescriptorString(content);
-		return new TypeDescriptor(descriptorString);
+		if (!resolveError) {
+			return new TypeDescriptor(descriptorString);
+		} else {
+			return null;
+		}
 	}
 	
 	private String convertToDescriptorString(String content) {

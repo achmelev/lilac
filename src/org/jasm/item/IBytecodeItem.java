@@ -14,6 +14,7 @@ public interface IBytecodeItem {
 	public boolean hasErrors();
 	public void updateMetadata();
 	public int getLength();
+	public boolean isGenerated();;
 	
 	
 	//Tree

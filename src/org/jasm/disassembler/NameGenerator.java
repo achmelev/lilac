@@ -17,6 +17,8 @@ public class NameGenerator {
 	private static Set<String> keywords = new HashSet<String>(); 
 	
 	static {
+		keywords.add("<clinit>");
+		keywords.add("<init>");
 		keywords.add("aaload");
 		keywords.add("aastore");
 		keywords.add("abstract");
@@ -30,6 +32,7 @@ public class NameGenerator {
 		keywords.add("argument");
 		keywords.add("array");
 		keywords.add("arraylength");
+		keywords.add("as");
 		keywords.add("astore");
 		keywords.add("at");
 		keywords.add("athrow");
@@ -194,8 +197,8 @@ public class NameGenerator {
 		keywords.add("lconst_0");
 		keywords.add("lconst_1");
 		keywords.add("ldc");
+		keywords.add("ldc2");
 		keywords.add("ldc2_w");
-		keywords.add("ldc_w");
 		keywords.add("ldiv");
 		keywords.add("line");
 		keywords.add("lload");
@@ -286,6 +289,7 @@ public class NameGenerator {
 		keywords.add("varargs");
 		keywords.add("vars");
 		keywords.add("version");
+		keywords.add("void");
 		keywords.add("volatile");
 		keywords.add("wide");
 	}
