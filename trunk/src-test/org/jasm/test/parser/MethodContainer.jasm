@@ -21,8 +21,10 @@ public super class {
   const utf8 SourceFile_utf8 "SourceFile";
   const utf8 source_file_name "FieldContainer.java";
   
-  const utf8 String_name "java/lang/String";
-  const classref String String_name;
+  const classref java/lang/String;
+  const classref java/lang/String;
+  const classref java/lang/String as MyString;
+  
   const utf8 iValue_name "iValue";
   const utf8 iValue_type "I";
   const nameandtype iValue_nt iValue_name, iValue_type;
@@ -61,7 +63,7 @@ public super class {
   
   protected abstract void method1 (byte bValue, boolean zValue, float fValue, double dValue, short shValue, int iValue, long lValue, int[] iaValue, java/lang/String sValue);
   
-  public ThisClass method2 (byte bValue, boolean zValue, float fValue, double dValue, short shValue, int iValue, long lValue, int[] iaValue, java/lang/String sValue) {
+  public ThisClass method2 (byte bValue, boolean zValue, float fValue, double dValue, short shValue, int iValue, long lValue, int[] iaValue, String sValue) {
   	 aload this;
   	 iload bValue;
   	 iload zValue;
@@ -85,7 +87,7 @@ public super class {
   	 
   }
   
-  public static String [] method3 (byte bValue, boolean zValue, float fValue, double dValue, short shValue, int iValue, long lValue, String[] saValue, java/lang/String sValue) {
+  public static MyString [] method3 (byte bValue, boolean zValue, float fValue, double dValue, short shValue, int iValue, long lValue, String[] saValue, java.lang.String sValue) {
   	 aload saValue;
 	 iload bValue;
   	 iload zValue;
