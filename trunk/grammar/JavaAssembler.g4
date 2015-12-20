@@ -54,6 +54,7 @@ constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 				 | CONST CLASSINFO  BinaryIdentifier (AS label)? #macroclassinfo
 				 | CONST STRING label Identifier #stringinfo
 				 | CONST FIELDREFINFO label Identifier COMMA  Identifier #fieldrefinfo
+				 | CONST FIELDREFINFO javatype label FROM (Identifier|BinaryIdentifier) (AS label)? #macrofieldrefinfo
 				 | CONST INT label IntegerLiteral  #integerinfo
 				 | CONST LONG label IntegerLiteral  #longinfo
 				 | CONST FLOAT   label FloatingPointLiteral  #floatinfo
@@ -518,6 +519,7 @@ CHOP          : 'chop';
 INIT          : '<init>';
 CLINIT          : '<clinit>';
 AS          : 'as';
+FROM          : 'from';
 
 
 //stopKeywords

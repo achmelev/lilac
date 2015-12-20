@@ -116,6 +116,7 @@ public class NameGenerator {
 		keywords.add("formal");
 		keywords.add("frem");
 		keywords.add("freturn");
+		keywords.add("from");
 		keywords.add("fstore");
 		keywords.add("fsub");
 		keywords.add("full");
