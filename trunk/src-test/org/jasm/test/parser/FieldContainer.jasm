@@ -3,10 +3,8 @@ public super class {
   name ThisClass; 
   extends Object;
    //Constants
-  const classref ThisClass ThisClass_name; // org/jasm/test/playground/FieldContainer
-  const utf8 ThisClass_name "org/jasm/test/playground/FieldContainer2";
-  const classref Object Object_name; // java/lang/Object
-  const utf8 Object_name "java/lang/Object";
+  const classref org/jasm/test/playground/FieldContainer2 as ThisClass;
+  const classref java/lang/Object;
   const utf8 text_name "text";
   const utf8 text_desc "Ljava/lang/String;";
   const utf8 init0_name "<init>";
@@ -21,8 +19,7 @@ public super class {
   const utf8 SourceFile_utf8 "SourceFile";
   const utf8 source_file_name "FieldContainer.java";
   
-  const utf8 String_name "java/lang/String";
-  const classref String String_name;
+  const classref java/lang/String;
   
   source file source_file_name; // FieldContainer.java
    //Fields

@@ -2639,12 +2639,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	
 	private void addConstantPoolEntry(AbstractConstantPoolEntry entry) {
 		ConstantPool pool = ((Clazz)stack.peek()).getConstantPool();
-		pool.add(entry);
-		if (!pool.getSymbolTable().contains(entry.getSymbolName())) {
-			pool.getSymbolTable().add(entry);
-		} else {
-			emitError(entry.getSourceLocation().getLine(), entry.getSourceLocation().getCharPosition(), "dublicate constant declaration "+entry.getSymbolName());
-		}
+		pool.addParsedEntry(entry);
 	}
 	
 	private void addConstantMacro(AbstractConstantMacro macro) {

@@ -459,7 +459,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 			//Methods
 			methods.resolve();
 			//invokeDynamics
-			pool.resolveInvokeDynamics();
+			pool.resolveInvokeDynamicsAfterParse();
 			pool.updateInvokeDynamicIndexes();
 		}
 		

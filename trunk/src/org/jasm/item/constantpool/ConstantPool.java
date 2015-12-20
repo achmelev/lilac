@@ -2,15 +2,17 @@ package org.jasm.item.constantpool;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-import org.jasm.bytebuffer.IByteBuffer;
 import org.jasm.disassembler.ClassNameGenerator;
 import org.jasm.disassembler.NameGenerator;
 import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.AbstractTaggedBytecodeItemList;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.constantpool.macros.AbstractConstantMacro;
+import org.jasm.item.constantpool.macros.ClassInfoConstantMacro;
 import org.jasm.map.KeyToListMap;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.SymbolTable;
@@ -32,7 +34,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	private NameGenerator constNameGenerator = new NameGenerator();
 	private ClassNameGenerator classNameGenerator = new ClassNameGenerator();
 	
-	private List<AbstractConstantMacro> macros = new ArrayList<AbstractConstantMacro>();
+	private List<Object> toResolve = new ArrayList<Object>();
 	
 	public ConstantPool() {
 		super(AbstractConstantPoolEntry.class, "org.jasm.item.constantpool");
@@ -40,8 +42,14 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	
 	public void addMacro(AbstractConstantMacro macro) {
 		macro.setParent(this);
-		macro.resolve();
-		macros.add(macro);
+		toResolve.add(macro);
+	}
+	
+	public void addParsedEntry(AbstractConstantPoolEntry entry) {
+		entry.setParent(this);
+		add(entry);
+		toResolve.add(entry);
+		
 	}
 
 
@@ -426,18 +434,94 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 			}
 		}
 	}
+	
+	public void resolveInvokeDynamicsAfterParse() {
+		for (IBytecodeItem item: getItems()) {
+			if (item != null && (item instanceof InvokeDynamicInfo)) {
+				item.resolve();
+			}
+		}
+	}
 
 
 	@Override
 	protected void doResolveAfterParse() {
-		doResolve();
-		for (AbstractConstantPoolEntry item: getItems()) {
-			if ((item instanceof AbstractReferenceEntry) && !item.hasErrors() && !item.isGenerated()) {
-				((AbstractReferenceEntry)item).verifyReferences();
+		
+		List<Integer> index = new ArrayList<Integer>();
+		List<Class> classOrder = new ArrayList<Class>();
+		
+		for (int i=0;i<toResolve.size(); i++) {
+			index.add(i);
+		}
+		
+		classOrder.add(Utf8Info.class);
+		classOrder.add(StringInfo.class);
+		classOrder.add(IntegerInfo.class);
+		classOrder.add(LongInfo.class);
+		classOrder.add(FloatInfo.class);
+		classOrder.add(DoubleInfo.class);
+		classOrder.add(ClassInfo.class);
+		classOrder.add(ClassInfoConstantMacro.class);
+		classOrder.add(NameAndTypeInfo.class);
+		classOrder.add(MethodTypeInfo.class);
+		classOrder.add(FieldrefInfo.class);
+		classOrder.add(MethodrefInfo.class);
+		classOrder.add(InterfaceMethodrefInfo.class);
+		classOrder.add(MethodHandleInfo.class);
+		classOrder.add(InvokeDynamicInfo.class);
+
+		Collections.sort(index, new Comparator<Integer>() {
+
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				Object entry1 = toResolve.get(o1);
+				Object entry2 = toResolve.get(o2);
+				int result = ((Integer)classOrder.indexOf(entry1.getClass())).
+						compareTo((Integer)classOrder.indexOf(entry2.getClass()));
+				if (result != 0) {
+					return result;
+				} else {
+					return o1.compareTo(o2);
+				}
+			}
+		});
+		
+		for (Integer i: index) {
+			Object o = toResolve.get(i);
+			if (o instanceof AbstractConstantPoolEntry) {
+				AbstractConstantPoolEntry entry = (AbstractConstantPoolEntry)o;
+				if (!(entry instanceof InvokeDynamicInfo)) {
+					resolveParsedEntry(entry);
+				} else {
+					if (getSymbolTable().contains(entry.getSymbolName())) {
+						emitErrorOnLocation(entry.getSourceLocation(), "dublicate constant declaration "+entry.getSymbolName());
+					} else {
+						getSymbolTable().add(entry);
+					}
+				}
+			} else if (o instanceof AbstractConstantMacro) {
+				AbstractConstantMacro macro = (AbstractConstantMacro)o;
+				macro.resolve();
+			} else {
+				throw new IllegalStateException("");
 			}
 		}
 		
+		toResolve.clear();
 		
+		
+	}
+	
+	private void resolveParsedEntry(AbstractConstantPoolEntry entry) {
+		if (getSymbolTable().contains(entry.getSymbolName())) {
+			emitErrorOnLocation(entry.getSourceLocation(), "dublicate constant declaration "+entry.getSymbolName());
+		} else {
+			getSymbolTable().add(entry);
+			entry.resolve();
+			if (!entry.hasErrors()) {
+				addToIndex(entry);
+			}
+		}
 	}
 
 
