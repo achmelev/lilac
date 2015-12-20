@@ -38,12 +38,13 @@ public abstract class AbstractConstantMacro {
 		}
 	}
 	
-	protected void registerConstant(String name, AbstractConstantPoolEntry entry) {
+	protected void registerConstant(String name, AbstractConstantPoolEntry entry, Label label) {
 		SourceLocation location = this.sourceLocation;
 		if (label != null) {
-			location = label.getSourceLocation();
-		}
-		entry.setLabel(new Label(location.getLine(), location.getCharPosition(), name));
+			entry.setLabel(label);
+		} else {
+			entry.setLabel(new Label(location.getLine(), location.getCharPosition(), name));
+		}	
 		if (!parent.getSymbolTable().contains(entry.getSymbolName())) {
 			parent.getSymbolTable().add(entry);
 		} else if (parent.getSymbolTable().get(entry.getSymbolName()) == entry) { 
@@ -55,18 +56,20 @@ public abstract class AbstractConstantMacro {
 	protected String registerClassConstant(String className, String label) {
 		ClassInfo constant = parent.getOrAddClassInfo(className);
 		if (label != null) {
-			registerConstant(label, constant);
+			registerConstant(label, constant, null);
 			return label;
 		} else {
 			String shortName = (className.lastIndexOf('/')>0)?className.substring(className.lastIndexOf('/')+1, className.length()):className;
 			String longName = className.replace('/', '.');
 			if (!parent.getSymbolTable().contains(shortName)) {
-				registerConstant(shortName, constant);
+				registerConstant(shortName, constant, null);
 				return shortName;
 			} else  {
-				registerConstant(longName, constant);
+				registerConstant(longName, constant, null);
 				return longName;
 			} 
 		}
 	}
+	
+	
 }

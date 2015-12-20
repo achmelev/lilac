@@ -112,6 +112,7 @@ import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.constantpool.macros.AbstractConstantMacro;
 import org.jasm.item.constantpool.macros.ClassInfoConstantMacro;
+import org.jasm.item.constantpool.macros.FieldInfoConstantMacro;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.AbstractPushInstruction;
 import org.jasm.item.instructions.AbstractSwitchInstruction;
@@ -237,6 +238,7 @@ import org.jasm.parser.JavaAssemblerParser.LongStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MacrocallContext;
 import org.jasm.parser.JavaAssemblerParser.MacroclassinfoContext;
+import org.jasm.parser.JavaAssemblerParser.MacrofieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.Method_highlevelContext;
 import org.jasm.parser.JavaAssemblerParser.Method_highlevel_parameterContext;
@@ -707,7 +709,23 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 	
 	
-
+	@Override
+	public void enterMacrofieldrefinfo(MacrofieldrefinfoContext ctx) {
+		ConstantPool pool = ((Clazz)stack.peek()).getConstantPool();
+		FieldInfoConstantMacro macro = new FieldInfoConstantMacro();
+		macro.setSourceLocation(createSourceLocation(ctx.label(0)));
+		macro.setName(createSymbolReference(ctx.label(0).Identifier()));
+		macro.setType(createJavaTypeLiteral(ctx.javatype(), pool));
+		if (ctx.Identifier() != null) {
+			macro.setClazz(createSymbolReference(ctx.Identifier()));
+		} else {
+			macro.setClazz(createClassReference(ctx.BinaryIdentifier()));
+		}
+		if (ctx.label().size() == 2) {
+			macro.setLabel(createLabel(ctx.label(1).Identifier()));
+		}
+		addConstantMacro(macro);
+	}
 
 	@Override
 	public void enterIntegerinfo(IntegerinfoContext ctx) {

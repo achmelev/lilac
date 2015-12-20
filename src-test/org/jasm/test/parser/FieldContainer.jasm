@@ -20,6 +20,9 @@ public super class {
   const utf8 source_file_name "FieldContainer.java";
   
   const classref java/lang/String;
+  const fieldref byte byte_field from ThisClass;
+  const fieldref byte[] byte_array_field from org/jasm/test/playground/FieldContainer2;
+  const fieldref char char_field from org/jasm/test/playground/FieldContainer2 as char_field;
   
   source file source_file_name; // FieldContainer.java
    //Fields
@@ -59,5 +62,17 @@ public super class {
     ir0: aload this;
     invokespecial Object.init0;
     return;
+  }
+  
+  public void fieldGetter() {
+    aload this;
+  	getstatic ThisClass.byte_field;
+  	pop;
+  	aload this;
+  	getfield FieldContainer2.byte_array_field;
+  	pop;
+  	aload this;
+  	getfield char_field;
+  	return;
   }
 }
