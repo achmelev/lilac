@@ -1,6 +1,7 @@
 package org.jasm.item.constantpool.macros;
 
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
+import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.ConstantPool;
 import org.jasm.parser.SourceLocation;
 import org.jasm.parser.literals.AbstractLiteral;
@@ -45,8 +46,27 @@ public abstract class AbstractConstantMacro {
 		entry.setLabel(new Label(location.getLine(), location.getCharPosition(), name));
 		if (!parent.getSymbolTable().contains(entry.getSymbolName())) {
 			parent.getSymbolTable().add(entry);
+		} else if (parent.getSymbolTable().get(entry.getSymbolName()) == entry) { 
 		} else {
 			emitError(null, "dublicate constant declaration "+entry.getSymbolName());
+		}
+	}
+	
+	protected String registerClassConstant(String className, String label) {
+		ClassInfo constant = parent.getOrAddClassInfo(className);
+		if (label != null) {
+			registerConstant(label, constant);
+			return label;
+		} else {
+			String shortName = (className.lastIndexOf('/')>0)?className.substring(className.lastIndexOf('/')+1, className.length()):className;
+			String longName = className.replace('/', '.');
+			if (!parent.getSymbolTable().contains(shortName)) {
+				registerConstant(shortName, constant);
+				return shortName;
+			} else  {
+				registerConstant(longName, constant);
+				return longName;
+			} 
 		}
 	}
 }

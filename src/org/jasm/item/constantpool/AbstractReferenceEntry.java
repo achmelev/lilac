@@ -67,6 +67,10 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 				emitError(ref, "unknown constant "+ref.getSymbolName());
 			}
 		}
+		
+		if (!hasErrors()) {
+			verifyReferences();
+		}
 	}
 	
 	
@@ -123,7 +127,10 @@ public abstract class AbstractReferenceEntry extends AbstractConstantPoolEntry i
 	
 	
 	
-	public void verifyReferences() {
+	private void verifyReferences() {
+		if (this.isGenerated()) {
+			return;
+		}
 		AbstractConstantPoolEntry[] expectedTypes = getExpectedReferenceTypes();
 		if (expectedTypes.length != referenceLabels.length) {
 			throw new IllegalStateException(expectedTypes.length+"!="+referenceLabels.length);
