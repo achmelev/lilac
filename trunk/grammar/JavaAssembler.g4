@@ -59,6 +59,7 @@ constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 				 | CONST LONG label IntegerLiteral  #longinfo
 				 | CONST FLOAT   label FloatingPointLiteral  #floatinfo
 				 | CONST DOUBLE  label FloatingPointLiteral  #doubleinfo
+				 | CONST (METHODREFINFO|INTERFACEMETHODREFINFO) method_highlevel_returntype method_highlevel_name LROUNDBRACE method_highlevel_parameters? RROUNDBRACE FROM (Identifier|BinaryIdentifier) (AS label)? #macromethodrefinfo
 				 | CONST METHODREFINFO label Identifier COMMA  Identifier #methodrefinfo
 				 | CONST DYNREFINFO label Identifier COMMA  Identifier #dynrefinfo
 				 | CONST INTERFACEMETHODREFINFO label Identifier COMMA  Identifier #interfacemethodrefinfo
@@ -66,8 +67,6 @@ constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 				 | CONST METHODTYPE label Identifier #methodtypeinfo
 				 | CONST (GETFIELD|GETSTATIC|PUTFIELD|PUTSTATIC|INVOKESPECIAL|INVOKEVIRTUAL|INVOKEINTERFACE|INVOKESTATIC|NEWINVOKESPECIAL) METHODHANDLE label Identifier #methodhandleinfo
 				 ;
-
-
 
 classattribute : SOURCE FILE Identifier SEMI #classattributeSourceFile
 			   | signatureattribute #classattributeSignature

@@ -113,6 +113,7 @@ import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.constantpool.macros.AbstractConstantMacro;
 import org.jasm.item.constantpool.macros.ClassInfoConstantMacro;
 import org.jasm.item.constantpool.macros.FieldrefInfoConstantMacro;
+import org.jasm.item.constantpool.macros.MethodrefInfoConstantMacro;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.AbstractPushInstruction;
 import org.jasm.item.instructions.AbstractSwitchInstruction;
@@ -239,6 +240,7 @@ import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MacrocallContext;
 import org.jasm.parser.JavaAssemblerParser.MacroclassinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MacrofieldrefinfoContext;
+import org.jasm.parser.JavaAssemblerParser.MacromethodrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.Method_highlevelContext;
 import org.jasm.parser.JavaAssemblerParser.Method_highlevel_parameterContext;
@@ -645,8 +647,39 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		addConstantPoolEntry(entry);
 	}
 	
+
+	@Override
+	public void enterMacromethodrefinfo(MacromethodrefinfoContext ctx) {
+		MethodrefInfoConstantMacro macro = new MethodrefInfoConstantMacro();
+		macro.setSourceLocation(createSourceLocation(ctx.CONST()));
+		if (ctx.label() != null) {
+			macro.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		TerminalNode name = null;
+		if (ctx.method_highlevel_name().CLINIT() !=null) {
+			name = ctx.method_highlevel_name().CLINIT();
+		} else if (ctx.method_highlevel_name().INIT() != null) {
+			name = ctx.method_highlevel_name().INIT();
+		} else {
+			name = ctx.method_highlevel_name().Identifier();
+		}
+		macro.setName(createSymbolReference(name));
+		macro.setInterfaceMethod(ctx.INTERFACEMETHODREFINFO() != null);
+		if (ctx.Identifier() != null) {
+			macro.setClazz(createSymbolReference(ctx.Identifier()));
+		} else {
+			macro.setClazz(createClassReference(ctx.BinaryIdentifier()));
+		}
+		addConstantMacro(macro);
+		stack.push(macro);
+	}
+	
 	
 
+	@Override
+	public void exitMacromethodrefinfo(MacromethodrefinfoContext ctx) {
+		stack.pop();
+	}
 
 	@Override
 	public void enterMethodtypeinfo(MethodtypeinfoContext ctx) {
@@ -1504,17 +1537,28 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterMethod_highlevel_returntype(
 			Method_highlevel_returntypeContext ctx) {
-		Method m = (Method)stack.peek();
 		if (ctx.javatype() != null) {
-			m.setReturnTypeLiteral(createJavaTypeLiteral(ctx.javatype(), m));
+			if (stack.peek() instanceof Method) {
+				Method m = (Method)stack.peek();
+				m.setReturnTypeLiteral(createJavaTypeLiteral(ctx.javatype(), m));
+			} else {
+				MethodrefInfoConstantMacro m = (MethodrefInfoConstantMacro)stack.peek();
+				m.setReturnType(createJavaTypeLiteral(ctx.javatype(), m.getParent()));
+			}
 		}
 	}
 
 	@Override
 	public void enterMethod_highlevel_parameter(
 			Method_highlevel_parameterContext ctx) {
-		Method m = (Method)stack.peek();
-		m.addParameter(createSymbolReference(ctx.Identifier()), createJavaTypeLiteral(ctx.javatype(), m));
+		if (stack.peek() instanceof Method) {
+			Method m = (Method)stack.peek();
+			m.addParameter(createSymbolReference(ctx.Identifier()), createJavaTypeLiteral(ctx.javatype(), m));
+		} else {
+			MethodrefInfoConstantMacro m = (MethodrefInfoConstantMacro)stack.peek();
+			m.addParameterType(createJavaTypeLiteral(ctx.javatype(), m.getParent()));
+		}
+
 	}
 
 	@Override
