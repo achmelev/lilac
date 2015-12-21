@@ -7,7 +7,7 @@ import org.jasm.parser.literals.ClassReference;
 import org.jasm.parser.literals.JavaTypeLiteral;
 import org.jasm.parser.literals.SymbolReference;
 
-public class FieldInfoConstantMacro extends AbstractConstantMacro {
+public class FieldrefInfoConstantMacro extends AbstractConstantMacro {
 	
 	private JavaTypeLiteral type;
 	private SymbolReference name;

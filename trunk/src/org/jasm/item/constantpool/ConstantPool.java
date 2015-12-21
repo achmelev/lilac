@@ -13,7 +13,7 @@ import org.jasm.item.AbstractTaggedBytecodeItemList;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.constantpool.macros.AbstractConstantMacro;
 import org.jasm.item.constantpool.macros.ClassInfoConstantMacro;
-import org.jasm.item.constantpool.macros.FieldInfoConstantMacro;
+import org.jasm.item.constantpool.macros.FieldrefInfoConstantMacro;
 import org.jasm.map.KeyToListMap;
 import org.jasm.parser.ISymbolTableEntry;
 import org.jasm.parser.SymbolTable;
@@ -466,7 +466,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		classOrder.add(NameAndTypeInfo.class);
 		classOrder.add(MethodTypeInfo.class);
 		classOrder.add(FieldrefInfo.class);
-		classOrder.add(FieldInfoConstantMacro.class);
+		classOrder.add(FieldrefInfoConstantMacro.class);
 		classOrder.add(MethodrefInfo.class);
 		classOrder.add(InterfaceMethodrefInfo.class);
 		classOrder.add(MethodHandleInfo.class);

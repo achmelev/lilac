@@ -112,7 +112,7 @@ import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.constantpool.macros.AbstractConstantMacro;
 import org.jasm.item.constantpool.macros.ClassInfoConstantMacro;
-import org.jasm.item.constantpool.macros.FieldInfoConstantMacro;
+import org.jasm.item.constantpool.macros.FieldrefInfoConstantMacro;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.AbstractPushInstruction;
 import org.jasm.item.instructions.AbstractSwitchInstruction;
@@ -712,7 +712,7 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterMacrofieldrefinfo(MacrofieldrefinfoContext ctx) {
 		ConstantPool pool = ((Clazz)stack.peek()).getConstantPool();
-		FieldInfoConstantMacro macro = new FieldInfoConstantMacro();
+		FieldrefInfoConstantMacro macro = new FieldrefInfoConstantMacro();
 		macro.setSourceLocation(createSourceLocation(ctx.label(0)));
 		macro.setName(createSymbolReference(ctx.label(0).Identifier()));
 		macro.setType(createJavaTypeLiteral(ctx.javatype(), pool));
