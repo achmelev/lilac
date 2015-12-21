@@ -2,18 +2,16 @@ public super class {
   version 52.0;
   name ThisClass; 
   extends Object;
+  implements Runnable;
    //Constants
+  const classref java/lang/Runnable;
   const classref ThisClass ThisClass_name; // org/jasm/test/playground/FieldContainer
   const utf8 ThisClass_name "org/jasm/test/playground/MethodContainer2";
   const classref Object Object_name; // java/lang/Object
   const utf8 Object_name "java/lang/Object";
   const utf8 text_name "text";
   const utf8 text_desc "Ljava/lang/String;";
-  const utf8 init0_name "<init>";
-  const utf8 init0_desc "()V";
   const utf8 Code_utf8 "Code";
-  const methodref Object.init0 Object, Object.init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
-  const nameandtype Object.init0_nat init0_name, init0_desc; // name=<init> type=()V
   const utf8 LineNumberTable_utf8 "LineNumberTable";
   const utf8 LocalVariableTable_utf8 "LocalVariableTable";
   const utf8 this_name "this";
@@ -33,7 +31,13 @@ public super class {
   
   source file source_file_name; // FieldContainer.java
   public static int iValue;
-
+  
+  
+  const methodref void <init>() from Object as Object.init;
+  const methodref void <init>(String s) from ThisClass as ThisClass.init1;
+  const intfmethodref void run() from Runnable;
+  const methodref String returnString(java/lang/String s) from ThisClass;
+  const string hello_world source_file_name;
   
    //Methods
    
@@ -47,7 +51,8 @@ public super class {
 
     //Instructions
     aload this;
-    invokespecial Object.init0;
+    ldc hello_world;
+    invokespecial ThisClass.init1;
     return;
   }
 
@@ -55,9 +60,12 @@ public super class {
 
     //Instructions
     aload this;
-    invokespecial Object.init0;
+    invokespecial Object.init;
     aload n;
+    invokestatic ThisClass.returnString;
     pop;
+    aload this;
+    invokeinterface Runnable.run;
     return;
   }
   
@@ -106,6 +114,19 @@ public super class {
   	 pop;
   	 pop;
   	 areturn;
+  }
+  
+  public void run() {
+  	return;
+  }
+  
+  public void run2() {
+  	return;
+  }
+  
+  private static String returnString(String s) {
+  	aload s;
+  	areturn;
   }
   
 }

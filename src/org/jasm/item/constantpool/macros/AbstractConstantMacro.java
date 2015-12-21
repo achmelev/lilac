@@ -70,6 +70,11 @@ public abstract class AbstractConstantMacro {
 			} 
 		}
 	}
+
+	public ConstantPool getParent() {
+		return parent;
+	}
+	
 	
 	
 }
