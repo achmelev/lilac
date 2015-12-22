@@ -2,11 +2,16 @@ package org.jasm.test.macro;
 
 import org.jasm.item.instructions.macros.IMacro;
 import org.jasm.item.instructions.macros.IMacroFactory;
+import org.jasm.item.instructions.macros.builtin.BuiltinMacroFactory;
 
-public class TestMacroFactory implements IMacroFactory {
+public class TestMacroFactory extends BuiltinMacroFactory {
 
 	@Override
 	public IMacro createMacroByName(String name) {
+		IMacro result = super.createMacroByName(name);
+		if (result != null) {
+			return result;
+		}
 		if (name.equals("test.argumentlessmul")) {
 			return new TestArgumentLessMulMacro();
 		} else if (name.equals("test.imul")) {
