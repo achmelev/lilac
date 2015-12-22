@@ -23,19 +23,19 @@ public abstract class AbstractClassMemberList<T extends AbstractClassMember> ext
 			if (item != null) {
 				T member = (T)item;
 				if (member != null && !member.hasErrors()) {
-					addToIndex(member);
+					addToIndex(member, false);
 				}
 			}
 		}
 	}
 
-	private void addToIndex(T member) {
+	public void addToIndex(T member, boolean emitError) {
 		T member1 = getMember(member.getName().getValue(), member.getDescriptor().getValue());
 		if (member1 == null) {
 			nameToMember.addToList(member.getName().getValue(), member);
 			descriptorToMember.addToList(member.getDescriptor().getValue(), member);
 		} else {
-			if (isAfterParse()) {
+			if (emitError) {
 				String[] tokens = member.getPrintName().split(" ");
 				emitError(null, "multiple "+tokens[tokens.length-1]+"s with signature "+member.getName().getValue()+"@"+member.getDescriptor().getValue()+" found");
 			}
@@ -82,5 +82,27 @@ public abstract class AbstractClassMemberList<T extends AbstractClassMember> ext
 			return entry;
 		}
 	}
+	
+	protected List<T> getMembers(String name) {
+		return nameToMember.get(name);
+	}
+
+	@Override
+	public String getPrintName() {
+		return null;
+	}
+
+	@Override
+	protected void doResolveAfterParse() {
+		for (IBytecodeItem item: getItems()) {
+			if (item != null) {
+				item.setParent(this);
+				item.resolve();
+				((AbstractClassMember)item).resolveAttributes();
+			}
+		}
+	}
+	
+	
 
 }

@@ -8,6 +8,7 @@ import org.jasm.item.instructions.ArgumentLessInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.SipushInstruction;
 import org.jasm.item.instructions.macros.AbstractMacro;
+import org.jasm.item.instructions.macros.IMacroArgument;
 import org.jasm.type.descriptor.TypeDescriptor;
 
 public class TestArgumentLessMulMacro extends AbstractMacro {
@@ -34,6 +35,11 @@ public class TestArgumentLessMulMacro extends AbstractMacro {
 	@Override
 	public TypeDescriptor getReturnType() {
 		return new TypeDescriptor("I");
+	}
+
+	@Override
+	protected boolean validateSpecialArgumentType(int index, IMacroArgument arg) {
+		return false;
 	}
 
 }

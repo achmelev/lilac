@@ -12,7 +12,7 @@ public class BootstrapMethodsAttributeContent extends
 	AbstractBytecodeItemList<BootstrapMethod> implements IAttributeContent {
 	
 	private NameGenerator bootstrapNameGenerator = new NameGenerator();
-	private SymbolTable symbolTable = new SymbolTable(null);
+	private SymbolTable symbolTable = new SymbolTable();
 	
 	@Override
 	public String getPrintName() {

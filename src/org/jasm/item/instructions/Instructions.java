@@ -58,7 +58,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	
 	private LocalVariablesPool variablesPool;
 	
-	private SymbolTable symbolTable = new SymbolTable(null);
+	private SymbolTable symbolTable = new SymbolTable();
 	
 	private int calculatedMaxLocals = -1;
 	

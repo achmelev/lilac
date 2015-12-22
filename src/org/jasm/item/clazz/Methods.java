@@ -1,5 +1,7 @@
 package org.jasm.item.clazz;
 
+import java.util.List;
+
 import org.jasm.bytebuffer.IByteBuffer;
 
 public class Methods extends AbstractClassMemberList<Method> {
@@ -9,13 +11,11 @@ public class Methods extends AbstractClassMemberList<Method> {
 		return null;
 	}
 	
-	
 	@Override
 	public String getPrintComment() {
 		return "Methods";
 	}
 	
-
 	@Override
 	protected Method createEmptyItem(IByteBuffer source, long offset) {
 		return new Method();
@@ -23,6 +23,10 @@ public class Methods extends AbstractClassMemberList<Method> {
 	
 	public Method getMethod(String name, String descriptor) {
 		return getMember(name, descriptor);
+	}
+	
+	public List<Method> getMethodsByName(String name) {
+		return getMembers(name);
 	}
 
 }

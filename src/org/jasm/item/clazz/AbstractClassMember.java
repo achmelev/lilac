@@ -146,17 +146,24 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 			
 		}
 		
+		if (this.name != null && this.descriptor != null) {
+			((AbstractClassMemberList)getParent()).addToIndex(this, true);
+		}
+		
 		if (!this.hasErrors()) {
 			modifier = createModifier(0);
 			for (Keyword kw: modifierLiterals) {
 				modifier.setFlag(kw.getKeyword());
 			}
 			checkModifiers();
-			if (!hasErrors()) {
-				attributes.resolve();
-			}
 		}
 		
+	}
+	
+	public void resolveAttributes() {
+		if (!hasErrors()) {
+			attributes.resolve();
+		}
 	}
 	
 	public Attributes getAttributes() {
