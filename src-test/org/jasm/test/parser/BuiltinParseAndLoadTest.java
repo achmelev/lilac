@@ -32,7 +32,7 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 		try {
 			IBuiltinMacros instance = (IBuiltinMacros)cl.newInstance();
 			String result = instance.concat("Anfang", (byte)1, true, 'X', 1.0, 1.5f, 10, (long)100, (short)25);
-			System.out.println(result);
+			Assert.assertEquals("Anfang MyString: 1, 1, 88, 1.0, 1.5, 10, 100, 25", result);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} 
