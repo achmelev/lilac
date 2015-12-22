@@ -16,7 +16,6 @@ import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -114,6 +113,7 @@ import org.jasm.item.constantpool.macros.AbstractConstantMacro;
 import org.jasm.item.constantpool.macros.ClassInfoConstantMacro;
 import org.jasm.item.constantpool.macros.FieldrefInfoConstantMacro;
 import org.jasm.item.constantpool.macros.MethodrefInfoConstantMacro;
+import org.jasm.item.constantpool.macros.StringInfoConstantMacro;
 import org.jasm.item.instructions.AbstractInstruction;
 import org.jasm.item.instructions.AbstractPushInstruction;
 import org.jasm.item.instructions.AbstractSwitchInstruction;
@@ -241,6 +241,7 @@ import org.jasm.parser.JavaAssemblerParser.MacrocallContext;
 import org.jasm.parser.JavaAssemblerParser.MacroclassinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MacrofieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MacromethodrefinfoContext;
+import org.jasm.parser.JavaAssemblerParser.MacrostringinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MethodContext;
 import org.jasm.parser.JavaAssemblerParser.Method_highlevelContext;
 import org.jasm.parser.JavaAssemblerParser.Method_highlevel_parameterContext;
@@ -391,7 +392,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			throw new RuntimeException("Error creating antlr stream",e);
 		}
 		return doParse(input);
-		
 	}
 	
 	public Clazz parse(Reader inp) {
@@ -609,6 +609,18 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		macro.setSourceLocation(createSourceLocation(ctx.BinaryIdentifier()));
 		addConstantMacro(macro);
 		
+	}
+	
+	@Override
+	public void enterMacrostringinfo(MacrostringinfoContext ctx) {
+		StringInfoConstantMacro macro = new StringInfoConstantMacro();
+		macro.setName(createSymbolReference(ctx.label(0)));
+		macro.setValue(createStringLiteral(ctx.StringLiteral()));
+		if (ctx.label().size() > 1) {
+			macro.setLabel(createLabel(ctx.label(1).Identifier()));
+		}
+		macro.setSourceLocation(createSourceLocation(ctx.label(0).Identifier()));
+		addConstantMacro(macro);
 	}
 
 	@Override

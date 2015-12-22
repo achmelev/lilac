@@ -44,7 +44,7 @@ classmodifierlabel: PUBLIC 		# classmodifierPublic
 					| INTERFACE  	# classmodifierInterface
 					| ABSTRACT   	# classmodifierAbstract
 					| SYNTETIC 		# classmodifierSyntetic
-					| ANNOTATION     # classmodifierAnnotation
+					| ANNOTATION    # classmodifierAnnotation
 					| ENUM			# classmodifierEnum
 					;
 					
@@ -53,6 +53,7 @@ constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 				 | CONST CLASSINFO  label Identifier #classinfo
 				 | CONST CLASSINFO  BinaryIdentifier (AS label)? #macroclassinfo
 				 | CONST STRING label Identifier #stringinfo
+				 | CONST STRING label StringLiteral (AS label)? #macrostringinfo
 				 | CONST FIELDREFINFO label Identifier COMMA  Identifier #fieldrefinfo
 				 | CONST FIELDREFINFO javatype label FROM (Identifier|BinaryIdentifier) (AS label)? #macrofieldrefinfo
 				 | CONST INT label IntegerLiteral  #integerinfo

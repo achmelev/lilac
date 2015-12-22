@@ -44,7 +44,9 @@ public abstract class AbstractParseAndLoadTestCase {
 				clazz.verify();
 				if (parser.getErrorCounter()>0) {
 					parser.flushErrors();;
-					Assert.fail("class verifying failed!");
+					if (!readAgain()) {
+						Assert.fail("class verifying failed!");
+					}	
 				}
 			}
 		}	
