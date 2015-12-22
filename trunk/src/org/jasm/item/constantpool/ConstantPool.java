@@ -31,7 +31,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 	
 	private KeyToListMap<AbstractConstantPoolEntry, IBytecodeItem> entryReferences = new KeyToListMap<>();
 	
-	private SymbolTable symbolTable = new SymbolTable(null);
+	private SymbolTable symbolTable = new SymbolTable();
 	
 	private NameGenerator constNameGenerator = new NameGenerator();
 	private ClassNameGenerator classNameGenerator = new ClassNameGenerator();

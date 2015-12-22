@@ -55,6 +55,11 @@ public class TestMulMacro extends AbstractMacro {
 	public TypeDescriptor getReturnType() {
 		return new TypeDescriptor("I");
 	}
+
+	@Override
+	protected boolean validateSpecialArgumentType(int index, IMacroArgument arg) {
+		return false;
+	}
 	
 	
 

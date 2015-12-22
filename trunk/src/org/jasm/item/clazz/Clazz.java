@@ -375,9 +375,7 @@ public class Clazz extends AbstractByteCodeItem implements IContainerBytecodeIte
 		if (version != null) {
 			if (!version.isValid()) {
 				emitError(version, "illegal illegal version number");
-			} else {
-				
-			}
+			} 
 			try {
 				String versionStr = version.getValue()+"";
 				majorVersion = Integer.parseInt(versionStr.substring(0, versionStr.indexOf('.')));

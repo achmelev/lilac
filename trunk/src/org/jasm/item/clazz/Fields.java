@@ -1,5 +1,6 @@
 package org.jasm.item.clazz;
 
+import java.util.List;
 import org.jasm.bytebuffer.IByteBuffer;
 
 public class Fields extends AbstractClassMemberList<Field> {
@@ -23,6 +24,10 @@ public class Fields extends AbstractClassMemberList<Field> {
 	
 	public Field getField(String name, String descriptor) {
 		return getMember(name, descriptor);
+	}
+	
+	public List<Field> getFieldsByName(String name) {
+		return getMembers(name);
 	}
 
 }

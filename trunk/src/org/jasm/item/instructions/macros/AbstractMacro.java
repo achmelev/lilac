@@ -1,11 +1,14 @@
 package org.jasm.item.instructions.macros;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.jasm.JasmConsts;
 import org.jasm.item.clazz.Clazz;
+import org.jasm.item.clazz.Field;
+import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.AbstractConstantPoolEntry;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.DoubleInfo;
@@ -46,7 +49,9 @@ public abstract class AbstractMacro implements IMacro {
 	private	Map<IMacroArgument, TypeDescriptor> argumentTypes;
 	private	Map<IMacroArgument, AbstractConstantPoolEntry> constantArguments;
 	private	Map<IMacroArgument, LocalVariable> variableArguments;
-	private	Map<IMacroArgument, SymbolReference> instructionReferences;
+	private	Map<IMacroArgument, AbstractInstruction> instructionReferences;
+	private	Map<IMacroArgument, Field> localFieldReferences;
+	private	Map<IMacroArgument, Method> localMethodReferences;
 
 	private Instructions instructions;
 	private MacroCall call;
@@ -193,7 +198,9 @@ public abstract class AbstractMacro implements IMacro {
 		argumentTypes = new HashMap<IMacroArgument, TypeDescriptor>();
 		constantArguments = new HashMap<IMacroArgument, AbstractConstantPoolEntry>();
 		variableArguments = new HashMap<IMacroArgument, LocalVariable>();
-		instructionReferences = new HashMap<IMacroArgument, SymbolReference>();
+		instructionReferences = new HashMap<IMacroArgument, AbstractInstruction>();
+		localFieldReferences = new HashMap<IMacroArgument, Field>();
+		localMethodReferences = new HashMap<IMacroArgument, Method>();
 		for (int i=0;i<arguments.size(); i++) {
 			IMacroArgument arg = arguments.get(i);
 			argumentTypes.put(arg, resolveArgumentType(arg));
@@ -204,11 +211,23 @@ public abstract class AbstractMacro implements IMacro {
 						constantArguments.put(arg, (AbstractConstantPoolEntry)ref);
 					} else if (ref instanceof LocalVariable) {
 						variableArguments.put(arg, (LocalVariable)ref);
+					} else if (ref instanceof Field) {
+						localFieldReferences.put(arg, (Field)ref);
+					} else if (ref instanceof Method) {
+						localMethodReferences.put(arg, (Method)ref);	
 					} else {
-						instructionReferences.put(arg, (SymbolReference)ref);
+						instructionReferences.put(arg, (AbstractInstruction)ref);
 					}
 				}
 			} 
+		}
+		if (!hasError) {
+			for (int i=0;i<arguments.size(); i++) {
+				IMacroArgument arg = arguments.get(i);
+				if (!argumentTypes.containsKey(arg) && !validateSpecialArgumentType(i, arg)) {
+					emitError(arg.getSourceLocation(), "wrong argument type");
+				}
+			}
 		}
 		if (hasError) {
 			return false;
@@ -217,17 +236,6 @@ public abstract class AbstractMacro implements IMacro {
 		}
 	}
 	
-	private String resolveClassName(String className) {
-		if (!className.equals("")) {
-			return className;
-		} else {
-			if (instructions.getAncestor(Clazz.class).getThisClass() !=null) {
-				return instructions.getAncestor(Clazz.class).getThisClass().getClassName();
-			} else {
-				return null;
-			}
-		}
-	}
 	
 	protected boolean isLiteral(IMacroArgument arg) {
 		return (arg instanceof DoubleLiteral) ||
@@ -237,10 +245,6 @@ public abstract class AbstractMacro implements IMacro {
 				
 	}
 	
-	protected boolean isReference(IMacroArgument arg) {
-		return (arg instanceof SymbolReference);
-				
-	}
 		
 	protected boolean isSymbolReference(IMacroArgument arg) {
 		return arg instanceof SymbolReference;
@@ -278,32 +282,82 @@ public abstract class AbstractMacro implements IMacro {
 		return instructionReferences.containsKey(arg);
 	}
 	
+	protected boolean isLocalFieldSymbolReference(IMacroArgument arg) {
+		return localFieldReferences.containsKey(arg);
+	}
+	
+	protected boolean isLocalMethodSymbolReference(IMacroArgument arg) {
+		return localMethodReferences.containsKey(arg);
+	}
+	
+	protected boolean isFieldReference(IMacroArgument arg) {
+		return isLocalFieldSymbolReference(arg) ||
+				(isConstantSymbolReference(arg) && constantArguments.get(arg) instanceof FieldrefInfo);
+	}
+	
+	protected boolean isMethodReference(IMacroArgument arg) {
+		return isLocalMethodSymbolReference(arg) ||
+				(isConstantSymbolReference(arg) && (
+						(constantArguments.get(arg) instanceof MethodrefInfo) || (constantArguments.get(arg) instanceof InterfaceMethodrefInfo)));
+	}
+	
+	protected Field getLocalFieldSymbolRefferenceValue(IMacroArgument arg) {
+		if (!localFieldReferences.containsKey(arg)) {
+			throw new IllegalArgumentException("unknown field "+arg);
+		}
+		return localFieldReferences.get(arg);
+	}
+	
+	protected Method getLocalMethodSymbolRefferenceValue(IMacroArgument arg) {
+		if (!localMethodReferences.containsKey(arg)) {
+			throw new IllegalArgumentException("unknown method "+arg);
+		}
+		return localMethodReferences.get(arg);
+	}
+	
 	private Object resolveSymbolReference(IMacroArgument arg, boolean emitError) {
-		Object result = null;
+		List<Object> results = new ArrayList<Object>();
 		SymbolReference sym = (SymbolReference)arg;
 		LocalVariable var = instructions.getVariablesPool().getByName(sym.getSymbolName());
-		if (var != null) {
-			result =  var;
+		AbstractInstruction instr = (AbstractInstruction)instructions.getSymbolTable().get(sym.getSymbolName());
+		if (var !=null) {
+			results.add(var);
+		}
+		if (instr != null) {
+			results.add(instr);
+		}
+		if (results.size()>0) {
+			
 		} else {
-			result =  instructions.getConstantPool().getSymbolTable().get(sym.getSymbolName());
-			if (result == null) {
-				result = instructions.getSymbolTable().get(sym.getSymbolName());
-				if (result != null) {
-					result = sym;
-				}
+			Clazz clazz = instructions.getAncestor(Clazz.class);
+			if (clazz.getMethods().getMethodsByName(sym.getSymbolName()).size()>0) {
+				results.addAll(clazz.getMethods().getMethodsByName(sym.getSymbolName()));
+			}
+			if (clazz.getFields().getFieldsByName(sym.getSymbolName()) != null) {
+				results.addAll(clazz.getFields().getFieldsByName(sym.getSymbolName()));
+			}
+			
+			AbstractConstantPoolEntry entry = (AbstractConstantPoolEntry)  instructions.getConstantPool().getSymbolTable().get(sym.getSymbolName());
+			if (entry != null) {
+				results.add(entry);
 			}
 		}
 		
-		if (result == null && emitError) {
+		if (results.size() == 0) {
 			if (emitError) {
-				emitError(arg.getSourceLocation(), "unknown name");
+				emitError(arg.getSourceLocation(), "unknown name "+sym.getSymbolName());
 			} else {
 				throw new RuntimeException("unknown name: "+sym.getSymbolName());
 			}
 			
+		} else if (results.size()>1) {
+			if (emitError) {
+				emitError(arg.getSourceLocation(), "ambiguous name "+sym.getSymbolName());
+			} else {
+				throw new RuntimeException("ambiguous name: "+sym.getSymbolName());
+			}
 		} 
-		
-		return result;
+		return results.get(0);
 	}
 	
 	private TypeDescriptor resolveArgumentType(IMacroArgument arg) {
@@ -568,6 +622,7 @@ public abstract class AbstractMacro implements IMacro {
 		}
 	}
 	
+	protected abstract boolean validateSpecialArgumentType(int index, IMacroArgument arg);
 	protected abstract boolean doResolve();
 
 	public boolean hasError() {

@@ -1,17 +1,14 @@
 package org.jasm.parser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class SymbolTable {
-	private SymbolTable parent = null;
 	private Map<String, ISymbolTableEntry> symbols = new HashMap<>();
+	private Map<ISymbolTableEntry, List<String>> entries = new HashMap<>();
 	
-	public SymbolTable(SymbolTable parent) {
-		this.parent = parent;
-	}
 	
 	public void add(ISymbolTableEntry entry) {
 		if (symbols.containsKey(entry.getSymbolName())) {
@@ -19,17 +16,24 @@ public class SymbolTable {
 		}
 		
 		symbols.put(entry.getSymbolName(), entry);
+		List<String> names = entries.get(entry);
+		if (names == null) {
+			names = new ArrayList<String>();
+			entries.put(entry, names);
+		}
+		names.add(entry.getSymbolName());
+	
 	}
 	
 	public void replace(ISymbolTableEntry old, ISymbolTableEntry new_) {
-		Set<String> keys = new HashSet<String>();
-		keys.addAll(symbols.keySet());
-		for (String key:keys) {
-			if (symbols.get(key) == old) {
-				symbols.put(key, new_);
-				break;
-			}
+		if (!contains(old)) {
+			return;
 		}
+		List<String> keys = entries.remove(old);
+		for (String key:keys) {
+			symbols.put(key, new_);
+		}
+		entries.put(new_, keys);
 		
 	}
 	
@@ -42,13 +46,10 @@ public class SymbolTable {
 		}
 	}
 	
-	public boolean containsWithRecursion(String name) {
-		boolean result =  symbols.containsKey(name);
-		if (!result && parent != null) {
-			result = parent.containsWithRecursion(name);
-		}
-		return result;
+	public boolean contains(ISymbolTableEntry entry) {
+		return entries.containsKey(entry);
 	}
+	
 	
 	public ISymbolTableEntry get(String name) {
 		if (!contains(name)) {
@@ -57,11 +58,11 @@ public class SymbolTable {
 		return symbols.get(name);
 	}
 	
-	public ISymbolTableEntry getWithRecursion(String name) {
-		ISymbolTableEntry result =  get(name);
-		if (result == null && parent != null) {
-			result = parent.getWithRecursion(name);
+	public List<String> getNames(ISymbolTableEntry entry) {
+		if (!contains(entry)) {
+			return new ArrayList<String>();
 		}
-		return result;
+		return entries.get(entry);
 	}
+	
 }

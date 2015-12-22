@@ -13,8 +13,6 @@ import org.jasm.type.descriptor.TypeDescriptor;
 
 public class TestSwitchMacro extends AbstractMacro {
 	
-
-
 	@Override
 	public List<AbstractInstruction> createInstructions() {
 		List<AbstractInstruction> result = new ArrayList<AbstractInstruction>();
@@ -60,6 +58,11 @@ public class TestSwitchMacro extends AbstractMacro {
 		
 		
 		return result;
+	}
+
+	@Override
+	protected boolean validateSpecialArgumentType(int index, IMacroArgument arg) {
+		return (index == 1 && isMethodReference(arg));
 	}
 
 }

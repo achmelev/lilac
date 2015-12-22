@@ -98,4 +98,9 @@ public class TestPushMacro extends AbstractMacro {
 		return result;
 	}
 
+	@Override
+	protected boolean validateSpecialArgumentType(int index, IMacroArgument arg) {
+		return false;
+	}
+
 }

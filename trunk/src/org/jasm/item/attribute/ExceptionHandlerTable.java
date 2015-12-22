@@ -17,7 +17,7 @@ public class ExceptionHandlerTable extends AbstractBytecodeItemList<ExceptionHan
 	
 	private Set<ExceptionHandler> referencedExceptionHandlers = new HashSet<>();
 	
-	private SymbolTable symbolTable = new SymbolTable(null);
+	private SymbolTable symbolTable = new SymbolTable();
 	
 	@Override
 	public String getPrintName() {
