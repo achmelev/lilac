@@ -134,6 +134,7 @@ import org.jasm.item.instructions.NewarrayInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.SipushInstruction;
 import org.jasm.item.instructions.TableSwitchInstruction;
+import org.jasm.item.instructions.macros.IMacroArgument;
 import org.jasm.item.instructions.macros.IMacroFactory;
 import org.jasm.item.instructions.macros.MacroCall;
 import org.jasm.item.modifier.ClassModifier;
@@ -237,7 +238,9 @@ import org.jasm.parser.JavaAssemblerParser.LocalvartypeTargetTypeContext;
 import org.jasm.parser.JavaAssemblerParser.LocalvartypememberContext;
 import org.jasm.parser.JavaAssemblerParser.LongStackmapvarinfoContext;
 import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
+import org.jasm.parser.JavaAssemblerParser.MacroargumentcastContext;
 import org.jasm.parser.JavaAssemblerParser.MacrocallContext;
+import org.jasm.parser.JavaAssemblerParser.MacrocallmacroargumentContext;
 import org.jasm.parser.JavaAssemblerParser.MacroclassinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MacrofieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MacromethodrefinfoContext;
@@ -1397,51 +1400,84 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		setMacroLabel(ctx, call);
 		call.setSourceLocation(createSourceLocation(ctx.Identifier()));
 		call.setNameReference(createSymbolReference(ctx.Identifier()));
+		if (stack.peek() instanceof MacroCall) {
+			call.setParent(((MacroCall)stack.peek()).getParent());
+		} else {
+			addMacroCall(call);
+		}
 		stack.push(call);
 	}
 	
+	
+	
+	@Override
+	public void exitMacrocallmacroargument(MacrocallmacroargumentContext ctx) {
+		MacroCall call = (MacroCall)stack.pop();
+		MacroCall parentCall = (MacroCall)stack.peek();
+		parentCall.addArgument(call);
+		if (ctx.macroargumentcast() != null) {
+			parentCall.cast(call, createJavaTypeLiteral(ctx.macroargumentcast().javatype(), call.getParent()));
+		}
+	}
+
 	@Override
 	public void exitMacrocall(MacrocallContext ctx) {
 		MacroCall call = (MacroCall)stack.pop();
 		if (stack.peek() instanceof MacroCall) {
-			((MacroCall)stack.peek()).addArgument(call);
-		} else {
-			addMacroCall(call);
+			stack.push(call);
 		}
-		
 	}
+	
 
 	@Override
 	public void enterIdmacroargument(IdmacroargumentContext ctx) {
 		MacroCall call = (MacroCall)stack.peek();
 		call.addArgument(createSymbolReference(ctx.Identifier()));
+		if (ctx.macroargumentcast() != null) {
+			IMacroArgument lastArg = call.getArguments().get(call.getArguments().size()-1);
+			call.cast(lastArg, createJavaTypeLiteral(ctx.macroargumentcast().javatype(), call.getParent()));
+		}
 	}
 
 	@Override
 	public void enterStringmacroargument(StringmacroargumentContext ctx) {
 		MacroCall call = (MacroCall)stack.peek();
 		call.addArgument(createStringLiteral(ctx.StringLiteral()));
+		if (ctx.macroargumentcast() != null) {
+			IMacroArgument lastArg = call.getArguments().get(call.getArguments().size()-1);
+			call.cast(lastArg, createJavaTypeLiteral(ctx.macroargumentcast().javatype(), call.getParent()));
+		}
 	}
 
 	@Override
 	public void enterIntmacroargument(IntmacroargumentContext ctx) {
 		MacroCall call = (MacroCall)stack.peek();
 		call.addArgument(createLongLiteral(ctx.IntegerLiteral()));
+		if (ctx.macroargumentcast() != null) {
+			IMacroArgument lastArg = call.getArguments().get(call.getArguments().size()-1);
+			call.cast(lastArg, createJavaTypeLiteral(ctx.macroargumentcast().javatype(), call.getParent()));
+		}
 	}
 
 	@Override
 	public void enterFloatmacroargument(FloatmacroargumentContext ctx) {
 		MacroCall call = (MacroCall)stack.peek();
 		call.addArgument(createDoubleLiteral(ctx.FloatingPointLiteral()));
+		if (ctx.macroargumentcast() != null) {
+			IMacroArgument lastArg = call.getArguments().get(call.getArguments().size()-1);
+			call.cast(lastArg, createJavaTypeLiteral(ctx.macroargumentcast().javatype(), getCallInstructions()));
+		}
 	}
-	
 	
 	@Override
 	public void enterNullmacroargument(NullmacroargumentContext ctx) {
 		MacroCall call = (MacroCall)stack.peek();
 		call.addArgument(createNullLiteral(ctx.NULL()));
+		if (ctx.macroargumentcast() != null) {
+			IMacroArgument lastArg = call.getArguments().get(call.getArguments().size()-1);
+			call.cast(lastArg, createJavaTypeLiteral(ctx.macroargumentcast().javatype(), getCallInstructions()));
+		}
 	}
-	
 
 	private void setMacroLabel(ParserRuleContext context, MacroCall call) {
 		if (context.getParent() instanceof MethodinstructionContext) {
@@ -1519,11 +1555,15 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		}
 		
 		content.getInstructions().addMacroCall(call);
+		call.setParent(instrs);
 	}
 	
+	private Instructions getCallInstructions() {
+		CodeAttributeContent content = getAttributeContentCreatingIfNecessary(CodeAttributeContent.class);
+		Instructions instrs = content.getInstructions();
+		return instrs;
+	}
 	
-	
-
 	@Override
 	public void enterMethod_lowlevel(Method_lowlevelContext ctx) {
 		Clazz clazz = (Clazz)stack.peek();
