@@ -223,13 +223,14 @@ instruction: argumentlessop_keyword #argumentlessop
 
 macrocall: Identifier LROUNDBRACE macroarguments? RROUNDBRACE;
 macroarguments: macroargument (COMMA macroargument)*;
-macroargument: IntegerLiteral #intmacroargument
-			   |FloatingPointLiteral #floatmacroargument
-			   |StringLiteral #stringmacroargument
-			   |NULL #nullmacroargument
-			   |Identifier #idmacroargument
-			   |macrocall #macrocallmacroargument
+macroargument: macroargumentcast? IntegerLiteral #intmacroargument
+			   |macroargumentcast? FloatingPointLiteral #floatmacroargument
+			   |macroargumentcast? StringLiteral #stringmacroargument
+			   |macroargumentcast? NULL #nullmacroargument
+			   |macroargumentcast? Identifier #idmacroargument
+			   |macroargumentcast? macrocall #macrocallmacroargument
 			   ;
+macroargumentcast: LROUNDBRACE javatype RROUNDBRACE;			   
 
 methodmaxstack: MAXSTACK IntegerLiteral SEMI;
 methodmaxlocals: MAXLOCALS IntegerLiteral SEMI;
