@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.jasm.JasmConsts;
 import org.jasm.item.clazz.Clazz;
 import org.jasm.item.clazz.Field;
@@ -36,6 +38,7 @@ import org.jasm.item.instructions.SipushInstruction;
 import org.jasm.parser.SourceLocation;
 import org.jasm.parser.literals.DoubleLiteral;
 import org.jasm.parser.literals.FloatLiteral;
+import org.jasm.parser.literals.JavaTypeLiteral;
 import org.jasm.parser.literals.LongLiteral;
 import org.jasm.parser.literals.NullLiteral;
 import org.jasm.parser.literals.StringLiteral;
@@ -43,20 +46,97 @@ import org.jasm.parser.literals.SymbolReference;
 import org.jasm.type.descriptor.MethodDescriptor;
 import org.jasm.type.descriptor.TypeDescriptor;
 
+
 public abstract class AbstractMacro implements IMacro {
 	
 	private List<IMacroArgument> arguments;
 	private	Map<IMacroArgument, TypeDescriptor> argumentTypes;
+	private	Map<IMacroArgument, TypeDescriptor> castTypes;
 	private	Map<IMacroArgument, AbstractConstantPoolEntry> constantArguments;
 	private	Map<IMacroArgument, LocalVariable> variableArguments;
 	private	Map<IMacroArgument, AbstractInstruction> instructionReferences;
 	private	Map<IMacroArgument, Field> localFieldReferences;
 	private	Map<IMacroArgument, Method> localMethodReferences;
+	
+	//Cast Maps
+	
+	private static Map<String, short[]> primitiveCastInstructions;
+	private static Map<String, String> primitiveToBox;
+	private static Map<String, String> boxToPrimitive;
 
 	private Instructions instructions;
 	private MacroCall call;
 	
 	private boolean hasError = false;
+	
+	static {
+		//B,C,D,F,I,J,S,Z
+		primitiveCastInstructions = new HashMap<String, short[]>();
+		primitiveCastInstructions.put("B2C", new short[]{OpCodes.i2c});
+		primitiveCastInstructions.put("B2D", new short[]{OpCodes.i2d});
+		primitiveCastInstructions.put("B2F", new short[]{OpCodes.i2f});
+		primitiveCastInstructions.put("B2J", new short[]{OpCodes.i2l});
+		primitiveCastInstructions.put("B2S", new short[]{OpCodes.i2s});
+		primitiveCastInstructions.put("C2B", new short[]{OpCodes.i2b});
+		primitiveCastInstructions.put("C2D", new short[]{OpCodes.i2d});
+		primitiveCastInstructions.put("C2F", new short[]{OpCodes.i2f});
+		primitiveCastInstructions.put("C2J", new short[]{OpCodes.i2l});
+		primitiveCastInstructions.put("C2J", new short[]{OpCodes.i2l});
+		primitiveCastInstructions.put("D2B", new short[]{OpCodes.d2i, OpCodes.i2b});
+		primitiveCastInstructions.put("D2C", new short[]{OpCodes.d2i, OpCodes.i2c});
+		primitiveCastInstructions.put("D2F", new short[]{OpCodes.d2f});
+		primitiveCastInstructions.put("D2I", new short[]{OpCodes.d2i});
+		primitiveCastInstructions.put("D2J", new short[]{OpCodes.d2l});
+		primitiveCastInstructions.put("D2S", new short[]{OpCodes.d2i, OpCodes.i2s});
+		primitiveCastInstructions.put("D2Z", new short[]{OpCodes.d2i});
+		primitiveCastInstructions.put("F2B", new short[]{OpCodes.f2i, OpCodes.i2b});
+		primitiveCastInstructions.put("F2C", new short[]{OpCodes.f2i, OpCodes.i2c});
+		primitiveCastInstructions.put("F2D", new short[]{OpCodes.f2d});
+		primitiveCastInstructions.put("F2J", new short[]{OpCodes.f2l});
+		primitiveCastInstructions.put("F2S", new short[]{OpCodes.f2i, OpCodes.i2s});
+		primitiveCastInstructions.put("F2Z", new short[]{OpCodes.f2i});
+		primitiveCastInstructions.put("F2Z", new short[]{OpCodes.f2i});
+		primitiveCastInstructions.put("I2B", new short[]{OpCodes.i2b});
+		primitiveCastInstructions.put("I2C", new short[]{OpCodes.i2c});
+		primitiveCastInstructions.put("I2D", new short[]{OpCodes.i2d});
+		primitiveCastInstructions.put("I2F", new short[]{OpCodes.i2f});
+		primitiveCastInstructions.put("I2J", new short[]{OpCodes.i2l});
+		primitiveCastInstructions.put("I2S", new short[]{OpCodes.i2s});
+		primitiveCastInstructions.put("J2B", new short[]{OpCodes.l2i, OpCodes.i2b});
+		primitiveCastInstructions.put("J2C", new short[]{OpCodes.l2i, OpCodes.i2c});
+		primitiveCastInstructions.put("J2D", new short[]{OpCodes.l2d});
+		primitiveCastInstructions.put("J2F", new short[]{OpCodes.l2f});
+		primitiveCastInstructions.put("J2I", new short[]{OpCodes.l2i});
+		primitiveCastInstructions.put("J2S", new short[]{OpCodes.l2i, OpCodes.i2s});
+		primitiveCastInstructions.put("J2Z", new short[]{OpCodes.l2i});
+		primitiveCastInstructions.put("S2B", new short[]{OpCodes.i2b});
+		primitiveCastInstructions.put("S2C", new short[]{OpCodes.i2c});
+		primitiveCastInstructions.put("S2D", new short[]{OpCodes.i2d});
+		primitiveCastInstructions.put("S2F", new short[]{OpCodes.i2f});
+		primitiveCastInstructions.put("S2J", new short[]{OpCodes.i2l});
+		primitiveCastInstructions.put("Z2B", new short[]{OpCodes.i2b});
+		primitiveCastInstructions.put("Z2C", new short[]{OpCodes.i2c});
+		primitiveCastInstructions.put("Z2D", new short[]{OpCodes.i2d});
+		primitiveCastInstructions.put("Z2F", new short[]{OpCodes.i2f});
+		primitiveCastInstructions.put("Z2J", new short[]{OpCodes.i2l});
+		
+		primitiveToBox = new HashMap<String, String>();
+		primitiveToBox.put("B", "java/lang/Byte");
+		primitiveToBox.put("C", "java/lang/Character");
+		primitiveToBox.put("D", "java/lang/Double");
+		primitiveToBox.put("F", "java/lang/Float");
+		primitiveToBox.put("I", "java/lang/Integer");
+		primitiveToBox.put("J", "java/lang/Long");
+		primitiveToBox.put("S", "java/lang/Short");
+		primitiveToBox.put("Z", "java/lang/Boolean");
+		
+		boxToPrimitive = new HashMap<String, String>();
+		
+		for (Entry<String, String> e: primitiveToBox.entrySet()) {
+			boxToPrimitive.put(e.getValue(), e.getKey());
+		}
+		
+	}
 
 	@Override
 	public void init(MacroCall call, Instructions instrs) {
@@ -186,7 +266,17 @@ public abstract class AbstractMacro implements IMacro {
 	}
 	
 	protected TypeDescriptor getArgumentType(IMacroArgument arg) {
-		return argumentTypes.get(arg);
+		TypeDescriptor type =  argumentTypes.get(arg);
+		if (type == null) {
+			return null;
+		} else {
+			TypeDescriptor castType = castTypes.get(arg);
+			if (castType != null) {
+				return castType;
+			} else {
+				return type;
+			}
+		}
 	}
 	
 	protected int getNumberOfArguments() {
@@ -196,6 +286,7 @@ public abstract class AbstractMacro implements IMacro {
 	@Override
 	public boolean resolve() {
 		argumentTypes = new HashMap<IMacroArgument, TypeDescriptor>();
+		castTypes = new HashMap<IMacroArgument, TypeDescriptor>();
 		constantArguments = new HashMap<IMacroArgument, AbstractConstantPoolEntry>();
 		variableArguments = new HashMap<IMacroArgument, LocalVariable>();
 		instructionReferences = new HashMap<IMacroArgument, AbstractInstruction>();
@@ -203,7 +294,21 @@ public abstract class AbstractMacro implements IMacro {
 		localMethodReferences = new HashMap<IMacroArgument, Method>();
 		for (int i=0;i<arguments.size(); i++) {
 			IMacroArgument arg = arguments.get(i);
-			argumentTypes.put(arg, resolveArgumentType(arg));
+			TypeDescriptor type = resolveArgumentType(arg);
+			argumentTypes.put(arg, type);
+			if (type != null) {
+				JavaTypeLiteral castTypeLiteral = call.getCasttypes().get(arg);
+				if (castTypeLiteral != null && castTypeLiteral.getDescriptor() != null) {
+					TypeDescriptor castType = castTypeLiteral.getDescriptor();
+					if (castType != null) {
+						if (canCast(type, castType)) {
+							castTypes.put(arg, castTypeLiteral.getDescriptor());
+						} else {
+							emitError(castTypeLiteral.getSourceLocation(), "can not cast "+type.getValue()+" to "+castType.getValue());
+						}
+					}
+				}
+			}	
 			if (arg instanceof SymbolReference) {
 				Object ref = resolveSymbolReference(arg, true);
 				if (ref !=null) {
@@ -607,6 +712,11 @@ public abstract class AbstractMacro implements IMacro {
 		} else {
 			throw new IllegalArgumentException("Unknown combination: "+arg+"; "+type);
 		}
+		
+		TypeDescriptor castType = castTypes.get(arg);
+		if (castType != null) {
+			cast(type, castType, result);
+		}
 	}
 	
 	protected void pushValueFromField(IMacroArgument object, IMacroArgument field, List<AbstractInstruction> result) {
@@ -629,7 +739,42 @@ public abstract class AbstractMacro implements IMacro {
 		return hasError;
 	}
 	
+	//Cast Methods
 	
+	private boolean isBoxType(TypeDescriptor desc) {
+		return desc.isObject() && boxToPrimitive.containsKey(desc.getClassName());
+	}
+	
+	protected boolean canCast(TypeDescriptor t1, TypeDescriptor t2) {
+		if (t1.isPrimitive() && t2.isPrimitive()) {
+			return true;
+		} else if (t1.isPrimitive() && !t2.isPrimitive()) {
+			return isBoxType(t2) || (t2.isObject() && t2.getClassName().equals("java/lang/Number"));
+		} else if (t2.isPrimitive() && !t1.isPrimitive()) {
+			return isBoxType(t1) || (t1.isObject() && t1.getClassName().equals("java/lang/Number"));
+		} else {
+			return true;
+		}
+	}
+	
+	protected List<AbstractInstruction> cast(TypeDescriptor t1, TypeDescriptor t2, List<AbstractInstruction> result) {
+		if (t1.isPrimitive() && t2.isPrimitive()) {
+			short[] opCodes = primitiveCastInstructions.get(t1.getValue()+"2"+t2.getValue());
+			if (opCodes != null) {
+				for (short code: opCodes) {
+					result.add(createArgumentLessInstruction(code));
+				}
+			}
+		} else if (t1.isPrimitive() && !t2.isPrimitive()) {
+			throw new NotImplementedException("");
+		} else if (t2.isPrimitive() && !t1.isPrimitive()) {
+			throw new NotImplementedException("");
+		} else {
+			throw new NotImplementedException("");
+		}
+		
+		return result;
+	}
 	
 
 }

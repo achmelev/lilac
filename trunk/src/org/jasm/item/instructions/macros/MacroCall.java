@@ -107,6 +107,12 @@ public class MacroCall implements ISymbolTableEntry, IMacroArgument {
 	public void setParent(Instructions parent) {
 		this.parent = parent;
 	}
+
+	public Map<IMacroArgument, JavaTypeLiteral> getCasttypes() {
+		return casttypes;
+	}
+	
+	
 	
 	
 }

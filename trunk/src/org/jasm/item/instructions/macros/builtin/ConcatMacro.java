@@ -31,6 +31,9 @@ public class ConcatMacro extends AbstractMacro {
 					
 				) {
 				desc = type.getValue();
+				if (desc.equals("B") ||desc.equals("S")) {
+					desc = "I";
+				}
 			} else {
 				desc = "Ljava/lang/Object;";
 			}
