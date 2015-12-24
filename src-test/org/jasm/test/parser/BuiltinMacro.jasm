@@ -6,6 +6,7 @@ public class {
 	const classref java/lang/String;
 	const classref org/jasm/test/testclass/IBuiltinMacros;
 	const string mystring "MyString";
+	const classref java/lang/Boolean;
 	
 	version 52.0;
 	name BuiltinMacros;
@@ -22,6 +23,11 @@ public class {
 		concat(prefix, " ",this,": ", (byte)arg1, ", ", (boolean)arg2, ", ", (char)arg3, ", ", arg4, ", ", arg5, ", ", arg6, ", ", arg7, ", ", (short)arg8);
 		areturn;
 	}
+	
+	public Object box(boolean a) {
+		test.return((Boolean)a);
+	}
+	
 	
 	public String toString(){
 		ldc mystring;
