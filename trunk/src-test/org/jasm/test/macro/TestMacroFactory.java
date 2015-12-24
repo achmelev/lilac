@@ -22,6 +22,8 @@ public class TestMacroFactory extends BuiltinMacroFactory {
 			return new TestConditionalPushMacro();
 		} else if (name.equals("test.switch")) {
 			return new TestSwitchMacro();	
+		} else if (name.equals("test.return")) {
+			return new TestReturnMacro();	
 		} else {
 			return null;
 		}

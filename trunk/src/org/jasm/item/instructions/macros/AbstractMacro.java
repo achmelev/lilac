@@ -63,6 +63,7 @@ public abstract class AbstractMacro implements IMacro {
 	private static Map<String, short[]> primitiveCastInstructions;
 	private static Map<String, String> primitiveToBox;
 	private static Map<String, String> boxToPrimitive;
+	private static List<String> numericalPrimitiveTypes;
 
 	private Instructions instructions;
 	private MacroCall call;
@@ -135,6 +136,15 @@ public abstract class AbstractMacro implements IMacro {
 		for (Entry<String, String> e: primitiveToBox.entrySet()) {
 			boxToPrimitive.put(e.getValue(), e.getKey());
 		}
+		
+		 numericalPrimitiveTypes = new ArrayList<String>();
+		 numericalPrimitiveTypes.add("B");
+		 numericalPrimitiveTypes.add("D");
+		 numericalPrimitiveTypes.add("F");
+		 numericalPrimitiveTypes.add("I");
+		 numericalPrimitiveTypes.add("J");
+		 numericalPrimitiveTypes.add("S");
+		 
 		
 	}
 
@@ -749,7 +759,7 @@ public abstract class AbstractMacro implements IMacro {
 		if (t1.isPrimitive() && t2.isPrimitive()) {
 			return true;
 		} else if (t1.isPrimitive() && !t2.isPrimitive()) {
-			return isBoxType(t2) || (t2.isObject() && t2.getClassName().equals("java/lang/Number"));
+			return isBoxType(t2) || (t2.isObject() && (t2.getClassName().equals("java/lang/Number") || t2.getClassName().equals("java/lang/Object")));
 		} else if (t2.isPrimitive() && !t1.isPrimitive()) {
 			return isBoxType(t1) || (t1.isObject() && t1.getClassName().equals("java/lang/Number"));
 		} else {
@@ -758,6 +768,12 @@ public abstract class AbstractMacro implements IMacro {
 	}
 	
 	protected List<AbstractInstruction> cast(TypeDescriptor t1, TypeDescriptor t2, List<AbstractInstruction> result) {
+		if (!canCast(t1, t2)) {
+			throw new IllegalArgumentException(t1.getValue()+"->"+t2.getValue());
+		}
+		if (t1.equals(t2)) {
+			return result;
+		}
 		if (t1.isPrimitive() && t2.isPrimitive()) {
 			short[] opCodes = primitiveCastInstructions.get(t1.getValue()+"2"+t2.getValue());
 			if (opCodes != null) {
@@ -766,13 +782,35 @@ public abstract class AbstractMacro implements IMacro {
 				}
 			}
 		} else if (t1.isPrimitive() && !t2.isPrimitive()) {
-			throw new NotImplementedException("");
+			if (isBoxType(t2)) {
+				TypeDescriptor boxedType = new TypeDescriptor(boxToPrimitive.get(t2.getClassName()));
+				cast(t1, boxedType, result);
+				box(boxedType,result);
+			} else if (t2.getClassName().equals("java/lang/Object")) {
+				box(t1,result);
+			} else if (t2.getClassName().equals("java/lang/Number")){
+				if (numericalPrimitiveTypes.contains(t1.getValue())) {
+					box(t1,result);
+				} else {
+					cast(t1, new TypeDescriptor("I"), result);
+					box(new TypeDescriptor("I"), result);
+				}	
+			} else {
+				throw new IllegalStateException(t2.getValue());
+			}
 		} else if (t2.isPrimitive() && !t1.isPrimitive()) {
 			throw new NotImplementedException("");
 		} else {
 			throw new NotImplementedException("");
 		}
 		
+		return result;
+	}
+	
+	private List<AbstractInstruction> box(TypeDescriptor primitiveType, List<AbstractInstruction> result) {
+		String boxedTypeClass = primitiveToBox.get(primitiveType.getValue());
+		MethodrefInfo mi = getMethodRefInfo(boxedTypeClass, "valueOf", new MethodDescriptor("("+primitiveType.getValue()+")L"+boxedTypeClass+";"));
+		result.add(createConstantPoolInstruction(OpCodes.invokestatic, mi));
 		return result;
 	}
 	
