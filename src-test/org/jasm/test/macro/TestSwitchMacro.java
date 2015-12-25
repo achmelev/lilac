@@ -62,7 +62,7 @@ public class TestSwitchMacro extends AbstractMacro {
 
 	@Override
 	protected boolean validateSpecialArgumentType(int index, IMacroArgument arg) {
-		return (index == 1 && isMethodReference(arg));
+		return (index == 1 && isInstructionSymbolReference(arg));
 	}
 
 }

@@ -3,6 +3,7 @@ package org.jasm.test.macro;
 import org.jasm.item.instructions.macros.IMacro;
 import org.jasm.item.instructions.macros.IMacroFactory;
 import org.jasm.item.instructions.macros.builtin.BuiltinMacroFactory;
+import org.jasm.item.instructions.macros.builtin.GetFieldMacro;
 
 public class TestMacroFactory extends BuiltinMacroFactory {
 
@@ -23,7 +24,9 @@ public class TestMacroFactory extends BuiltinMacroFactory {
 		} else if (name.equals("test.switch")) {
 			return new TestSwitchMacro();	
 		} else if (name.equals("test.return")) {
-			return new TestReturnMacro();	
+			return new TestReturnMacro();
+		} else if (name.equals("_getfield")) {
+			return new  GetFieldMacro();
 		} else {
 			return null;
 		}
