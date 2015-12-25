@@ -7,11 +7,15 @@ public class {
 	const classref org/jasm/test/testclass/IBuiltinMacros;
 	const string mystring "MyString";
 	const classref java/lang/Boolean;
+	const classref java/lang/Integer;
+	const fieldref Boolean boolField from BuiltinMacros;
 	
 	version 52.0;
 	name BuiltinMacros;
 	extends Object;
 	implements IBuiltinMacros;
+	
+	private Boolean boolField;
 	
 	public void <init>() {
 		aload this;
@@ -24,8 +28,23 @@ public class {
 		areturn;
 	}
 	
-	public Object box(boolean a) {
+	public Boolean box(boolean a) {
 		test.return((Boolean)a);
+	}
+	
+	public Integer boxZ2I(boolean a) {
+		test.return((Integer)a);
+	}
+	
+	public boolean unbox(Boolean a) {
+		test.return((boolean)a);
+	}
+	
+	public int unboxZ2I(Boolean a) {
+	    aload this;
+		aload a;
+		putfield BuiltinMacros.boolField;
+		test.return((int)_getfield(this, boolField));
 	}
 	
 	

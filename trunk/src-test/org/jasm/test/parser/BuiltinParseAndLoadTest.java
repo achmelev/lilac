@@ -34,6 +34,9 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			String result = instance.concat("Anfang", (byte)1, true, 'X', 1.0, 1.5f, 10, (long)100, (short)25);
 			Assert.assertEquals("Anfang MyString: 1, true, X, 1.0, 1.5, 10, 100, 25", result);
 			Assert.assertEquals(new Boolean(true), instance.box(true));
+			Assert.assertEquals(new Integer(1), instance.boxZ2I(true));
+			Assert.assertEquals(true, instance.unbox(Boolean.TRUE));
+			Assert.assertEquals(1, instance.unboxZ2I(Boolean.TRUE));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} 
