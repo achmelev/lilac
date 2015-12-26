@@ -24,7 +24,7 @@ public class {
 	}
 	
 	public String concat(String prefix, byte arg1, boolean arg2, char arg3, double arg4, float arg5, int arg6, long arg7, short arg8) {
-		concat(prefix, " ",this,": ", (byte)arg1, ", ", (boolean)arg2, ", ", (char)arg3, ", ", arg4, ", ", arg5, ", ", arg6, ", ", arg7, ", ", (short)arg8);
+		.concat(prefix, " ",this,": ", (byte)arg1, ", ", (boolean)arg2, ", ", (char)arg3, ", ", arg4, ", ", arg5, ", ", arg6, ", ", arg7, ", ", (short)arg8);
 		areturn;
 	}
 	
@@ -44,7 +44,7 @@ public class {
 	    aload this;
 		aload a;
 		putfield BuiltinMacros.boolField;
-		test.return((int)_getfield(this, boolField));
+		test.return((int).getfield(this, boolField));
 	}
 	
 	

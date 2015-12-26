@@ -7,8 +7,10 @@ public class BuiltinMacroFactory implements IMacroFactory {
 
 	@Override
 	public IMacro createMacroByName(String name) {
-		if (name.equals("concat")) {
+		if (name.equals(".concat")) {
 			return new ConcatMacro();
+		} else if (name.equals(".getfield")) {
+			return new GetFieldMacro();
 		} else {
 			return null;
 		}

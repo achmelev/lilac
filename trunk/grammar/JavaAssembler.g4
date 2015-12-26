@@ -221,7 +221,7 @@ instruction: argumentlessop_keyword #argumentlessop
 			 | branchop_keyword Identifier #branchop
 			 ;
 
-macrocall: Identifier LROUNDBRACE macroarguments? RROUNDBRACE;
+macrocall: (Identifier|BuiltInMacroIdentifier) LROUNDBRACE macroarguments? RROUNDBRACE;
 macroarguments: macroargument (COMMA macroargument)*;
 macroargument: macroargumentcast? IntegerLiteral #intmacroargument
 			   |macroargumentcast? FloatingPointLiteral #floatmacroargument
@@ -929,6 +929,8 @@ RSQUAREBRACE     : ']';
 // Identifiers
 
 Identifier: SimpleIdentifier ('.' SimpleIdentifier)*;
+
+BuiltInMacroIdentifier: '.' SimpleIdentifier;
 
 BinaryIdentifier:  SimpleIdentifier? ('/' SimpleIdentifier) ('/' SimpleIdentifier)*;
 
