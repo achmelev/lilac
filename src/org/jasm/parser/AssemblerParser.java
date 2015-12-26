@@ -1398,8 +1398,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	public void enterMacrocall(MacrocallContext ctx) {
 		MacroCall call = new MacroCall();
 		setMacroLabel(ctx, call);
-		call.setSourceLocation(createSourceLocation(ctx.Identifier()));
-		call.setNameReference(createSymbolReference(ctx.Identifier()));
+		TerminalNode id = (ctx.Identifier() != null)?ctx.Identifier():ctx.BuiltInMacroIdentifier();
+		call.setSourceLocation(createSourceLocation(id));
+		call.setNameReference(createSymbolReference(id));
 		if (stack.peek() instanceof MacroCall) {
 			call.setParent(((MacroCall)stack.peek()).getParent());
 		} else {
