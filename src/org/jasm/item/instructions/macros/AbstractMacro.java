@@ -94,6 +94,7 @@ public abstract class AbstractMacro implements IMacro {
 		primitiveCastInstructions.put("F2B", new short[]{OpCodes.f2i, OpCodes.i2b});
 		primitiveCastInstructions.put("F2C", new short[]{OpCodes.f2i, OpCodes.i2c});
 		primitiveCastInstructions.put("F2D", new short[]{OpCodes.f2d});
+		primitiveCastInstructions.put("F2I", new short[]{OpCodes.f2i});
 		primitiveCastInstructions.put("F2J", new short[]{OpCodes.f2l});
 		primitiveCastInstructions.put("F2S", new short[]{OpCodes.f2i, OpCodes.i2s});
 		primitiveCastInstructions.put("F2Z", new short[]{OpCodes.f2i});

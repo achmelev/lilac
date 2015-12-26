@@ -28,6 +28,235 @@ public class {
 		areturn;
 	}
 	
+	/* PRIMITIVE CASTS */ 
+	
+	//byte, boolean, char,double, float, int, long, short
+	
+	public byte pconvert1(boolean p) {
+		test.return((byte)p);
+	}
+	
+	public byte pconvert2(char p) {
+		test.return((byte)p);
+	}
+	
+	public byte pconvert3(double p) {
+		test.return((byte)p);
+	}
+	
+	public byte pconvert4(float p) {
+		test.return((byte)p);
+	}
+	
+	public byte pconvert5(int p) {
+		test.return((byte)p);
+	}
+	
+	public byte pconvert6(long p) {
+		test.return((byte)p);
+	}
+	
+	public byte pconvert7(short p) {
+		test.return((byte)p);
+	}
+	
+	public boolean pconvert8(byte p) {
+		test.return((boolean)p);
+	}
+	
+	public boolean pconvert9(char p) {
+		test.return((boolean)p);
+	}
+	
+	public boolean pconvert10(double p) {
+		test.return((boolean)p);
+	}
+	
+	public boolean pconvert11(float p) {
+		test.return((boolean)p);
+	}
+	
+	public boolean pconvert12(int p) {
+		test.return((boolean)p);
+	}
+	
+	public boolean pconvert13(long p) {
+		test.return((boolean)p);
+	}
+	
+	public boolean pconvert14(short p) {
+		test.return((boolean)p);
+	}
+	
+	public char pconvert15(byte p) {
+		test.return((char)p);
+	}
+	
+	public char pconvert16(boolean p) {
+		test.return((char)p);
+	}
+	
+	public char pconvert17(double p) {
+		test.return((char)p);
+	}
+	
+	public char pconvert18(float p) {
+		test.return((char)p);
+	}
+	
+	public char pconvert19(int p) {
+		test.return((char)p);
+	}
+	
+	public char pconvert20(long p) {
+		test.return((char)p);
+	}
+	
+	public char pconvert21(short p) {
+		test.return((char)p);
+	}
+	
+	public double pconvert22(byte p) {
+		test.return((double)p);
+	}
+	
+	public double pconvert23(boolean p) {
+		test.return((double)p);
+	}
+	
+	public double pconvert24(char p) {
+		test.return((double)p);
+	}
+	
+	public double pconvert25(float p) {
+		test.return((double)p);
+	}
+	
+	public double pconvert26(int p) {
+		test.return((double)p);
+	}
+	
+	public double pconvert27(long p) {
+		test.return((double)p);
+	}
+	
+	public double pconvert28(short p) {
+		test.return((double)p);
+	}
+	
+	public float pconvert29(byte p) {
+		test.return((float)p);
+	}
+	
+	public float pconvert30(boolean p) {
+		test.return((float)p);
+	}
+	
+	public float pconvert31(char p) {
+		test.return((float)p);
+	}
+	
+	public float pconvert32(double p) {
+		test.return((float)p);
+	}
+	
+	public float pconvert33(int p) {
+		test.return((float)p);
+	}
+	
+	public float pconvert34(long p) {
+		test.return((float)p);
+	}
+	
+	public float pconvert35(short p) {
+		test.return((float)p);
+	}
+	
+	public int pconvert36(byte p) {
+		test.return((int)p);
+	}
+	
+	public int pconvert37(boolean p) {
+		test.return((int)p);
+	}
+	
+	public int pconvert38(char p) {
+		test.return((int)p);
+	}
+	
+	public int pconvert39(double p) {
+		test.return((int)p);
+	}
+	
+	public int pconvert40(float p) {
+		test.return((int)p);
+	}
+	
+	public int pconvert41(long p) {
+		test.return((int)p);
+	}
+	
+	public int pconvert42(short p) {
+		test.return((int)p);
+	}
+	
+	public long pconvert43(byte p) {
+		test.return((long)p);
+	}
+	
+	public long pconvert44(boolean p) {
+		test.return((long)p);
+	}
+	
+	public long pconvert45(char p) {
+		test.return((long)p);
+	}
+	
+	
+	public long pconvert46(double p) {
+		test.return((long)p);
+	}
+	
+	public long pconvert47(float p) {
+		test.return((long)p);
+	}
+	
+	public long pconvert48(int p) {
+		test.return((long)p);
+	}
+	
+	public long pconvert49(short p) {
+		test.return((long)p);
+	}
+	
+	public short pconvert50(byte p) {
+		test.return((short)p);
+	}
+	
+	public short pconvert51(boolean p) {
+		test.return((short)p);
+	}
+	
+	public short pconvert52(char p) {
+		test.return((short)p);
+	}
+	
+	public short pconvert53(double p) {
+		test.return((short)p);
+	}
+	
+	public short pconvert54(float p) {
+		test.return((short)p);
+	}
+	
+	public short pconvert55(int p) {
+		test.return((short)p);
+	}
+	
+	public short pconvert56(long p) {
+		test.return((short)p);
+	}
+	
 	public Boolean box(boolean a) {
 		test.return((Boolean)a);
 	}
