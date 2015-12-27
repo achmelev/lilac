@@ -836,6 +836,7 @@ public abstract class AbstractMacro implements IMacro {
 				unboxedType = "I";
 			} else if (t1.getClassName().equals("java/lang/Object")) {
 				String className = primitiveToBox.get(t2.getValue());
+				cast(new TypeDescriptor("Ljava/lang/Object;"), new TypeDescriptor("L"+className+";"), result);
 				unbox(new TypeDescriptor("L"+className+";"), result);
 				unboxedType = t2.getValue();
 			} else{

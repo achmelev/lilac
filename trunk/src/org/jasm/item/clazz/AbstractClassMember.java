@@ -146,9 +146,6 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 			
 		}
 		
-		if (this.name != null && this.descriptor != null) {
-			((AbstractClassMemberList)getParent()).addToIndex(this, true);
-		}
 		
 		if (!this.hasErrors()) {
 			modifier = createModifier(0);
@@ -156,6 +153,10 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 				modifier.setFlag(kw.getKeyword());
 			}
 			checkModifiers();
+		}
+		
+		if (this.name != null && this.descriptor != null && modifier != null) {
+			((AbstractClassMemberList)getParent()).addToIndex(this, true);
 		}
 		
 	}
