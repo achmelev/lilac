@@ -3,11 +3,7 @@ package org.jasm.test.testclass;
 public interface IBuiltinMacros {
 	
 	public String concat(String prefix, byte arg1, boolean arg2, char arg3, double arg4, float arg5, int arg6, long arg7, short arg8);
-	public Boolean box(boolean a);
 	
-	public Integer boxZ2I(boolean a);
-	
-	public int unboxZ2I(Boolean a);
 	
 	/* PRIMITIVE CASTS */ 
 	
@@ -271,4 +267,152 @@ public interface IBuiltinMacros {
 	public long nunbox7(Number p); 
 	
 	public short nunbox8(Number p); 
+	
+	/* PRIMITIVE TO OBJECT CASTS */ 
+	
+	
+	public Byte poconvert1(boolean p);
+	
+	public Byte poconvert2(char p);
+	
+	public Byte poconvert3(double p); 
+	
+	public Byte poconvert4(float p); 
+	
+	public Byte poconvert5(int p);
+
+	
+	public Byte poconvert6(long p);
+	
+	public Byte poconvert7(short p); 
+	
+	public Boolean poconvert8(byte p); 
+	
+	public Boolean poconvert9(char p); 
+	
+	public Boolean poconvert10(double p);
+	
+	public Boolean poconvert11(float p); 
+	
+	public Boolean poconvert12(int p);
+	
+	public Boolean poconvert13(long p);
+	
+	public Boolean poconvert14(short p); 
+	
+	public Character poconvert15(byte p); 
+	
+	public Character poconvert16(boolean p); 
+	
+	public Character poconvert17(double p);
+	
+	public Character poconvert18(float p); 
+	
+	public Character poconvert19(int p);
+	
+	public Character poconvert20(long p); 
+	
+	public Character poconvert21(short p); 
+	
+	public Double poconvert22(byte p); 
+	
+	public Double poconvert23(boolean p);
+	
+	public Double poconvert24(char p); 
+	
+	public Double poconvert25(float p);
+	
+	public Double poconvert26(int p); 
+	
+	public Double poconvert27(long p);
+	
+	public Double poconvert28(short p);
+	
+	public Float poconvert29(byte p);
+	
+	public Float poconvert30(boolean p);
+	
+	public Float poconvert31(char p);
+	
+	public Float poconvert32(double p); 
+	
+	public Float poconvert33(int p);
+	
+	public Float poconvert34(long p);
+	
+	public Float poconvert35(short p);
+	
+	public Integer poconvert36(byte p); 
+	
+	public Integer poconvert37(boolean p);
+	
+	public Integer poconvert38(char p);
+	
+	public Integer poconvert39(double p); 
+	
+	public Integer poconvert40(float p); 
+	
+	public Integer poconvert41(long p); 
+	
+	public Integer poconvert42(short p); 
+	
+	public Long poconvert43(byte p);
+	
+	public Long poconvert44(boolean p); 
+	
+	public Long poconvert45(char p); 
+	
+	public Long poconvert46(double p); 
+	
+	public Long poconvert47(float p);
+	
+	public Long poconvert48(int p);
+	
+	public Long poconvert49(short p);
+	
+	public Short poconvert50(byte p); 
+	
+	public Short poconvert51(boolean p);
+	
+	public Short poconvert52(char p); 
+	
+	public Short poconvert53(double p); 
+	
+	public Short poconvert54(float p);
+	
+	public Short poconvert55(int p);
+	
+	public Short poconvert56(long p);
+	
+	public Object box(byte a);
+	
+	public Object box(boolean a);
+	
+	public Object box(char a);
+	
+	public Object box(double a);
+	
+	public Object box(float a);
+	
+	public Object box(int a);
+	
+	public Object box(long a);
+	
+	public Object box(short a);
+	
+	public Number nbox(byte a);
+	
+	public Number nbox(boolean a);
+	
+	public Number nbox(char a);
+	
+	public Number nbox(double a);
+	
+	public Number nbox(float a);
+	
+	public Number nbox(int a);
+	
+	public Number nbox(long a);
+	
+	public Number nbox(short a);
 }
