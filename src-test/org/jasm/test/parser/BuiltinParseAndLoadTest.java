@@ -30,12 +30,11 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 	@Override
 	protected void testClass(Class cl) {
 		try {
+			
+			//Concat
 			IBuiltinMacros instance = (IBuiltinMacros)cl.newInstance();
 			String result = instance.concat("Anfang", (byte)1, true, 'X', 1.0, 1.5f, 10, (long)100, (short)25);
-			Assert.assertEquals("Anfang MyString: 1, true, X, 1.0, 1.5, 10, 100, 25", result);
-			Assert.assertEquals(new Boolean(true), instance.box(true));
-			Assert.assertEquals(new Integer(1), instance.boxZ2I(true));
-			Assert.assertEquals(1, instance.unboxZ2I(Boolean.TRUE));
+
 			
 			//Primitive casts
 			Assert.assertEquals(1, instance.pconvert1(true));
@@ -185,14 +184,89 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			Assert.assertEquals(10000L, instance.nunbox7(10000));
 			Assert.assertEquals((short)123, instance.nunbox8(123));
 			
+			//Primitive to object casts
+			Assert.assertEquals(new Byte((byte)1), instance.poconvert1(true));
+			Assert.assertEquals(new Byte((byte)1), instance.poconvert2((char)1));
+			Assert.assertEquals(new Byte((byte)1), instance.poconvert3(1.0));
+			Assert.assertEquals(new Byte((byte)1), instance.poconvert4(1.0f));
+			Assert.assertEquals(new Byte((byte)1), instance.poconvert5(1));
+			Assert.assertEquals(new Byte((byte)1), instance.poconvert6(1L));
+			Assert.assertEquals(new Byte((byte)1), instance.poconvert7((short)1));
 			
+			Assert.assertEquals(Boolean.FALSE, instance.poconvert8((byte)0));
+			Assert.assertEquals(Boolean.TRUE, instance.poconvert9((' ')));
+			Assert.assertEquals(Boolean.TRUE, instance.poconvert10(1.0));
+			Assert.assertEquals(Boolean.TRUE, instance.poconvert11(1.0f));
+			Assert.assertEquals(Boolean.FALSE, instance.poconvert12(0));
+			Assert.assertEquals(Boolean.FALSE, instance.poconvert13(0L));
+			Assert.assertEquals(Boolean.FALSE, instance.poconvert14((short)0));
 			
+			Assert.assertEquals(new Character(' '), instance.poconvert15((byte)32));
+			Assert.assertEquals(new Character((char)1), instance.poconvert16(true));
+			Assert.assertEquals(new Character(' '), instance.poconvert17(32.0));
+			Assert.assertEquals(new Character(' '), instance.poconvert18(32.0f));
+			Assert.assertEquals(new Character(' '), instance.poconvert19(32));
+			Assert.assertEquals(new Character(' '), instance.poconvert20(32L));
+			Assert.assertEquals(new Character(' '), instance.poconvert21((short)32));
 			
+			Assert.assertEquals(5.0, instance.poconvert22((byte)5));
+			Assert.assertEquals(1.0, instance.poconvert23(true));
+			Assert.assertEquals(32.0, instance.poconvert24(' '));
+			Assert.assertEquals(10.0, instance.poconvert25(10.0f));
+			Assert.assertEquals(10.0, instance.poconvert26(10));
+			Assert.assertEquals(10.0, instance.poconvert27(10L));
+			Assert.assertEquals(10.0, instance.poconvert28((short)10));
 			
+			Assert.assertEquals(5.0f, instance.poconvert29((byte)5));
+			Assert.assertEquals(1.0f, instance.poconvert30(true));
+			Assert.assertEquals(32.0f, instance.poconvert31(' '));
+			Assert.assertEquals(10.0f, instance.poconvert32(10.0));
+			Assert.assertEquals(10.0f, instance.poconvert33(10));
+			Assert.assertEquals(10.0f, instance.poconvert34(10L));
+			Assert.assertEquals(10.0f, instance.poconvert35((short)10));
 			
+			Assert.assertEquals(new Integer(5), instance.poconvert36((byte)5));
+			Assert.assertEquals(new Integer(1), instance.poconvert37(true));
+			Assert.assertEquals(new Integer(32), instance.poconvert38(' '));
+			Assert.assertEquals(new Integer(10), instance.poconvert39(10.1));
+			Assert.assertEquals(new Integer(10), instance.poconvert40(10.3f));
+			Assert.assertEquals(new Integer(10), instance.poconvert41(10L));
+			Assert.assertEquals(new Integer(10), instance.poconvert42((short)10));
 			
+			Assert.assertEquals(new Long(5L), instance.poconvert43((byte)5));
+			Assert.assertEquals(new Long(1L), instance.poconvert44(true));
+			Assert.assertEquals(new Long(32L), instance.poconvert45(' '));
+			Assert.assertEquals(new Long(10L), instance.poconvert46(10.1));
+			Assert.assertEquals(new Long(10L), instance.poconvert47(10.3f));
+			Assert.assertEquals(new Long(10L), instance.poconvert48(10));
+			Assert.assertEquals(new Long(10L), instance.poconvert49((short)10));
 			
+			Assert.assertEquals(new Short((short)5), instance.poconvert50((byte)5));
+			Assert.assertEquals(new Short((short)1), instance.poconvert51(true));
+			Assert.assertEquals(new Short((short)32), instance.poconvert52(' '));
+			Assert.assertEquals(new Short((short)10), instance.poconvert53(10.1));
+			Assert.assertEquals(new Short((short)10), instance.poconvert54(10.3f));
+			Assert.assertEquals(new Short((short)10), instance.poconvert55(10));
+			Assert.assertEquals(new Short((short)10), instance.poconvert56(10L));
 			
+			Assert.assertEquals(new Byte((byte)1), instance.box((byte)1));
+			Assert.assertEquals(Boolean.TRUE, instance.box(true));
+			Assert.assertEquals(new Character('Y'), instance.box('Y'));
+			Assert.assertEquals(new Double(1.1), instance.box(1.1));
+			Assert.assertEquals(new Float(1.1f), instance.box(1.1f));
+			Assert.assertEquals(new Integer(10), instance.box(10));
+			Assert.assertEquals(new Long(10000L), instance.box(10000L));
+			Assert.assertEquals(new Short((short)100), instance.box((short)100));
+			
+			Assert.assertEquals(new Byte((byte)1), instance.nbox((byte)1));
+			Assert.assertEquals(new Integer(1), instance.nbox(true));
+			Assert.assertEquals(new Integer(32), instance.nbox(' '));
+			Assert.assertEquals(new Double(1.1), instance.nbox(1.1));
+			Assert.assertEquals(new Float(1.1f), instance.nbox(1.1f));
+			Assert.assertEquals(new Integer(10), instance.nbox(10));
+			Assert.assertEquals(new Long(10000L), instance.nbox(10000L));
+			Assert.assertEquals(new Short((short)100), instance.nbox((short)100));
+					
 		} catch (Exception e) {
 			
 			throw new RuntimeException(e);

@@ -662,22 +662,331 @@ public class {
 		test.return((short).getfield(NumberField));
 	}
 	
+	//primitive to Object
 	
-	
-	public Boolean box(boolean a) {
-		test.return((Boolean)a);
+	public Byte poconvert1(boolean p) {
+		.putfield(this, boolField, p);
+		test.return((Byte).getfield(this, boolField));
 	}
 	
-	public Int boxZ2I(boolean a) {
-		test.return((Int)a);
+	public Byte poconvert2(char p) {
+		.putfield(charField,p);
+		test.return((Byte).getfield(charField));
 	}
 	
-	
-	public int unboxZ2I(Boolean a) {
-		.putfield(this,BuiltinMacros.BoolField,a);
-		test.return((int).getfield(this, BuiltinMacros.BoolField));
+	public Byte poconvert3(double p) {
+		test.return((Byte)p);
 	}
 	
+	public Byte poconvert4(float p) {
+		test.return((Byte)p);
+	}
+	
+	public Byte poconvert5(int p) {
+		test.return((Byte)p);
+	}
+	
+	public Byte poconvert6(long p) {
+		test.return((Byte)p);
+	}
+	
+	public Byte poconvert7(short p) {
+		.putfield(this, shortField,p);
+		test.return((Byte).getfield(this, shortField));
+	}
+	
+	public Boolean poconvert8(byte p) {
+		.putfield(byteField, p);
+		test.return((Boolean).getfield(byteField));
+	}
+	
+	public Boolean poconvert9(char p) {
+		.putfield(charField, p);
+		test.return((Boolean).getfield(charField));
+	}
+	
+	public Boolean poconvert10(double p) {
+		test.return((Boolean)p);
+	}
+	
+	public Boolean poconvert11(float p) {
+		test.return((Boolean)p);
+	}
+	
+	public Boolean poconvert12(int p) {
+		test.return((Boolean)p);
+	}
+	
+	public Boolean poconvert13(long p) {
+		test.return((Boolean)p);
+	}
+	
+	public Boolean poconvert14(short p) {
+		.putfield(this, shortField, p);
+		test.return((Boolean).getfield(this, shortField));
+	}
+	
+	public Char poconvert15(byte p) {
+		.putfield(byteField, p);
+		test.return((Char).getfield(byteField));
+	}
+	
+	public Char poconvert16(boolean p) {
+		.putfield(this, boolField, p);
+		test.return((Char).getfield(this, boolField));
+	}
+	
+	public Char poconvert17(double p) {
+		test.return((Char)p);
+	}
+	
+	public Char poconvert18(float p) {
+		test.return((Char)p);
+	}
+	
+	public Char poconvert19(int p) {
+		test.return((Char)p);
+	}
+	
+	public Char poconvert20(long p) {
+		test.return((Char)p);
+	}
+	
+	public Char poconvert21(short p) {
+		.putfield(this, shortField, p);
+		test.return((Char).getfield(this, shortField));
+	}
+	
+	public Double poconvert22(byte p) {
+		.putfield(byteField, p);
+		test.return((Double).getfield(byteField));
+	}
+	
+	public Double poconvert23(boolean p) {
+		.putfield(this, boolField, p);
+		test.return((Double).getfield(this, boolField));
+	}
+	
+	public Double poconvert24(char p) {
+		.putfield(charField, p);
+		test.return((Double).getfield(charField));
+	}
+	
+	public Double poconvert25(float p) {
+		test.return((Double)p);
+	}
+	
+	public Double poconvert26(int p) {
+		test.return((Double)p);
+	}
+	
+	public Double poconvert27(long p) {
+		test.return((Double)p);
+	}
+	
+	public Double poconvert28(short p) {
+		.putfield(this, shortField, p);
+		test.return((Double).getfield(this, shortField));
+	}
+	
+	public Float poconvert29(byte p) {
+		.putfield(byteField, p);
+		test.return((Float).getfield(byteField));
+	}
+	
+	public Float poconvert30(boolean p) {
+		.putfield(this, boolField, p);
+		test.return((Float).getfield(this, boolField));
+	}
+	
+	public Float poconvert31(char p) {
+		.putfield(charField, p);
+		test.return((Float).getfield(charField));
+	}
+	
+	public Float poconvert32(double p) {
+		test.return((Float)p);
+	}
+	
+	public Float poconvert33(int p) {
+		test.return((Float)p);
+	}
+	
+	public Float poconvert34(long p) {
+		test.return((Float)p);
+	}
+	
+	public Float poconvert35(short p) {
+		.putfield(this, shortField, p);
+		test.return((Float).getfield(this, shortField));
+	}
+	
+	public Int poconvert36(byte p) {
+		.putfield(byteField, p);
+		test.return((Int).getfield(byteField));
+	}
+	
+	public Int poconvert37(boolean p) {
+		.putfield(this, boolField, p);
+		test.return((Int).getfield(this, boolField));
+	}
+	
+	public Int poconvert38(char p) {
+		.putfield(charField, p);
+		test.return((Int).getfield(charField));
+	}
+	
+	public Int poconvert39(double p) {
+		test.return((Int)p);
+	}
+	
+	public Int poconvert40(float p) {
+		test.return((Int)p);
+	}
+	
+	public Int poconvert41(long p) {
+		test.return((Int)p);
+	}
+	
+	public Int poconvert42(short p) {
+		.putfield(this, shortField, p);
+		test.return((Int).getfield(this, shortField));
+	}
+	
+	public Long poconvert43(byte p) {
+		.putfield(byteField, p);
+		test.return((Long).getfield(byteField));
+	}
+	
+	public Long poconvert44(boolean p) {
+		.putfield(this, boolField, p);
+		test.return((Long).getfield(this, boolField));
+	}
+	
+	public Long poconvert45(char p) {
+		.putfield(charField, p);
+		test.return((Long).getfield(charField));
+	}
+	
+	public Long poconvert46(double p) {
+		test.return((Long)p);
+	}
+	
+	public Long poconvert47(float p) {
+		test.return((Long)p);
+	}
+	
+	public Long poconvert48(int p) {
+		test.return((Long)p);
+	}
+	
+	public Long poconvert49(short p) {
+		.putfield(this,shortField, p);
+		test.return((Long).getfield(this,shortField));
+	}
+	
+	public Short poconvert50(byte p) {
+		.putfield(byteField, p);
+		test.return((Short).getfield(byteField));
+	}
+	
+	public Short poconvert51(boolean p) {
+		.putfield(this,boolField, p);
+		test.return((Short).getfield(this,boolField));
+	}
+	
+	public Short poconvert52(char p) {
+		.putfield(charField, p);
+		test.return((Short).getfield(charField));
+	}
+	
+	public Short poconvert53(double p) {
+		test.return((Short)p);
+	}
+	
+	public Short poconvert54(float p) {
+		test.return((Short)p);
+	}
+	
+	public Short poconvert55(int p) {
+		test.return((Short)p);
+	}
+	
+	public Short poconvert56(long p) {
+		test.return((Short)p);
+	}
+	
+	public Object box(byte a) {
+		.putfield(byteField, a);
+		test.return((Object).getfield(byteField));
+	}
+	
+	public Object box(boolean a) {
+		.putfield(this, boolField, a);
+		test.return((Object).getfield(this, boolField));
+	}
+	
+	public Object box(char a) {
+		.putfield(charField, a);
+		test.return((Object).getfield(charField));
+	}
+	
+	public Object box(double a) {
+		test.return((Object)a);
+	}
+	
+	public Object box(float a) {
+		test.return((Object)a);
+	}
+	
+	public Object box(int a) {
+		test.return((Object)a);
+	}
+	
+	public Object box(long a) {
+		test.return((Object)a);
+	}
+	
+	public Object box(short a) {
+		.putfield(this, shortField, a);
+		test.return((Object).getfield(this, shortField));
+	}
+	
+	public Number nbox(byte a) {
+		.putfield(byteField, a);
+		test.return((Number).getfield(byteField));
+	}
+	
+	public Number nbox(boolean a) {
+		.putfield(this, boolField, a);
+		test.return((Number).getfield(this, boolField));
+	}
+	
+	public Number nbox(char a) {
+		.putfield(charField, a);
+		test.return((Number).getfield(charField));
+	}
+	
+	public Number nbox(double a) {
+		test.return((Number)a);
+	}
+	
+	public Number nbox(float a) {
+		test.return((Number)a);
+	}
+	
+	public Number nbox(int a) {
+		test.return((Number)a);
+	}
+	
+	public Number nbox(long a) {
+		test.return((Number)a);
+	}
+	
+	public Number nbox(short a) {
+		.putfield(this, shortField, a);
+		test.return((Number).getfield(this, shortField));
+	}
 	
 	public String toString(){
 		ldc mystring;
