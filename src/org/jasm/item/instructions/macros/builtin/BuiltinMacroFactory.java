@@ -11,6 +11,8 @@ public class BuiltinMacroFactory implements IMacroFactory {
 			return new ConcatMacro();
 		} else if (name.equals(".getfield")) {
 			return new GetFieldMacro();
+		} else if (name.equals(".putfield")) {
+			return new PutFieldMacro();
 		} else {
 			return null;
 		}

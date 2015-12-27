@@ -117,7 +117,7 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 
 	@Override
 	protected boolean readAgain() {
-		return false;
+		return true;
 	}
 
 	@Override

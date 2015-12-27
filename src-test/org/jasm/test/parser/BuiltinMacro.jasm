@@ -8,14 +8,20 @@ public class {
 	const string mystring "MyString";
 	const classref java/lang/Boolean;
 	const classref java/lang/Integer;
-	const fieldref Boolean boolField from BuiltinMacros;
+	const fieldref Boolean BoolField from BuiltinMacros;
 	
 	version 52.0;
 	name BuiltinMacros;
 	extends Object;
 	implements IBuiltinMacros;
 	
-	private Boolean boolField;
+	private static byte byteField;
+	private boolean boolField;
+	private static char charField;
+	private short shortField;
+	
+	private Boolean BoolField;
+	
 	
 	public void <init>() {
 		aload this;
@@ -33,11 +39,13 @@ public class {
 	//byte, boolean, char,double, float, int, long, short
 	
 	public byte pconvert1(boolean p) {
-		test.return((byte)p);
+		.putfield(this, boolField, p);
+		test.return((byte).getfield(this, boolField));
 	}
 	
 	public byte pconvert2(char p) {
-		test.return((byte)p);
+		.putfield(charField,p);
+		test.return((byte).getfield(charField));
 	}
 	
 	public byte pconvert3(double p) {
@@ -57,15 +65,18 @@ public class {
 	}
 	
 	public byte pconvert7(short p) {
-		test.return((byte)p);
+		.putfield(this, shortField,p);
+		test.return((byte).getfield(this, shortField));
 	}
 	
 	public boolean pconvert8(byte p) {
-		test.return((boolean)p);
+		.putfield(byteField, p);
+		test.return((boolean).getfield(byteField));
 	}
 	
 	public boolean pconvert9(char p) {
-		test.return((boolean)p);
+		.putfield(charField, p);
+		test.return((boolean).getfield(charField));
 	}
 	
 	public boolean pconvert10(double p) {
@@ -85,15 +96,18 @@ public class {
 	}
 	
 	public boolean pconvert14(short p) {
-		test.return((boolean)p);
+		.putfield(this, shortField, p);
+		test.return((boolean).getfield(this, shortField));
 	}
 	
 	public char pconvert15(byte p) {
-		test.return((char)p);
+		.putfield(byteField, p);
+		test.return((char).getfield(byteField));
 	}
 	
 	public char pconvert16(boolean p) {
-		test.return((char)p);
+		.putfield(this, boolField, p);
+		test.return((char).getfield(this, boolField));
 	}
 	
 	public char pconvert17(double p) {
@@ -113,19 +127,23 @@ public class {
 	}
 	
 	public char pconvert21(short p) {
-		test.return((char)p);
+		.putfield(this, shortField, p);
+		test.return((char).getfield(this, shortField));
 	}
 	
 	public double pconvert22(byte p) {
-		test.return((double)p);
+		.putfield(byteField, p);
+		test.return((double).getfield(byteField));
 	}
 	
 	public double pconvert23(boolean p) {
-		test.return((double)p);
+		.putfield(this, boolField, p);
+		test.return((double).getfield(this, boolField));
 	}
 	
 	public double pconvert24(char p) {
-		test.return((double)p);
+		.putfield(charField, p);
+		test.return((double).getfield(charField));
 	}
 	
 	public double pconvert25(float p) {
@@ -141,19 +159,23 @@ public class {
 	}
 	
 	public double pconvert28(short p) {
-		test.return((double)p);
+		.putfield(this, shortField, p);
+		test.return((double).getfield(this, shortField));
 	}
 	
 	public float pconvert29(byte p) {
-		test.return((float)p);
+		.putfield(byteField, p);
+		test.return((float).getfield(byteField));
 	}
 	
 	public float pconvert30(boolean p) {
-		test.return((float)p);
+		.putfield(this, boolField, p);
+		test.return((float).getfield(this, boolField));
 	}
 	
 	public float pconvert31(char p) {
-		test.return((float)p);
+		.putfield(charField, p);
+		test.return((float).getfield(charField));
 	}
 	
 	public float pconvert32(double p) {
@@ -169,19 +191,23 @@ public class {
 	}
 	
 	public float pconvert35(short p) {
-		test.return((float)p);
+		.putfield(this, shortField, p);
+		test.return((float).getfield(this, shortField));
 	}
 	
 	public int pconvert36(byte p) {
-		test.return((int)p);
+		.putfield(byteField, p);
+		test.return((int).getfield(byteField));
 	}
 	
 	public int pconvert37(boolean p) {
-		test.return((int)p);
+		.putfield(this, boolField, p);
+		test.return((int).getfield(this, boolField));
 	}
 	
 	public int pconvert38(char p) {
-		test.return((int)p);
+		.putfield(charField, p);
+		test.return((int).getfield(charField));
 	}
 	
 	public int pconvert39(double p) {
@@ -197,21 +223,24 @@ public class {
 	}
 	
 	public int pconvert42(short p) {
-		test.return((int)p);
+		.putfield(this, shortField, p);
+		test.return((int).getfield(this, shortField));
 	}
 	
 	public long pconvert43(byte p) {
-		test.return((long)p);
+		.putfield(byteField, p);
+		test.return((long).getfield(byteField));
 	}
 	
 	public long pconvert44(boolean p) {
-		test.return((long)p);
+		.putfield(this, boolField, p);
+		test.return((long).getfield(this, boolField));
 	}
 	
 	public long pconvert45(char p) {
-		test.return((long)p);
+		.putfield(charField, p);
+		test.return((long).getfield(charField));
 	}
-	
 	
 	public long pconvert46(double p) {
 		test.return((long)p);
@@ -226,19 +255,23 @@ public class {
 	}
 	
 	public long pconvert49(short p) {
-		test.return((long)p);
+		.putfield(this,shortField, p);
+		test.return((long).getfield(this,shortField));
 	}
 	
 	public short pconvert50(byte p) {
-		test.return((short)p);
+		.putfield(byteField, p);
+		test.return((short).getfield(byteField));
 	}
 	
 	public short pconvert51(boolean p) {
-		test.return((short)p);
+		.putfield(this,boolField, p);
+		test.return((short).getfield(this,boolField));
 	}
 	
 	public short pconvert52(char p) {
-		test.return((short)p);
+		.putfield(charField, p);
+		test.return((short).getfield(charField));
 	}
 	
 	public short pconvert53(double p) {
@@ -270,10 +303,8 @@ public class {
 	}
 	
 	public int unboxZ2I(Boolean a) {
-	    aload this;
-		aload a;
-		putfield BuiltinMacros.boolField;
-		test.return((int).getfield(this, boolField));
+		.putfield(this,BuiltinMacros.BoolField,a);
+		test.return((int).getfield(this, BuiltinMacros.BoolField));
 	}
 	
 	
