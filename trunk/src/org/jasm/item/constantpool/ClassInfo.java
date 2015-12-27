@@ -123,7 +123,7 @@ public class ClassInfo extends AbstractReferenceEntry implements INameReferencin
 			TypeDescriptor desc = null; 
 			desc = new TypeDescriptor(className);
 			if (!desc.isArray()) { 
-				throw new IllegalStateException("malformed class name or array type");
+				throw new IllegalStateException("malformed class name or array type: "+desc.getValue());
 			} else {
 				descriptor = desc;
 			}

@@ -787,6 +787,8 @@ public abstract class AbstractMacro implements IMacro {
 				return true;
 			} else if (t2.isArray() && t2.isArray() && t1.getArrayDimension()==t2.getArrayDimension() && canCast(t1.getComponentType(), t2.getComponentType())) {
 				return true;
+			} else if (t1.isObject() && t2.isObject()){
+				return true;
 			} else {
 				return false;
 			}
@@ -841,7 +843,8 @@ public abstract class AbstractMacro implements IMacro {
 			}
 			cast(new TypeDescriptor(unboxedType),t2, result);
 		} else {
-			throw new NotImplementedException("");
+			ClassInfo cli = getClassInfo(t2.isObject()?t2.getClassName():t2.getValue());
+			result.add(createConstantPoolInstruction(OpCodes.checkcast, cli));
 		}
 		
 		return result;
