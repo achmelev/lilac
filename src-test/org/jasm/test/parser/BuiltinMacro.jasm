@@ -14,6 +14,7 @@ public class {
 	const classref java/lang/Integer as Int;
 	const classref java/lang/Long;
 	const classref java/lang/Short;
+	const classref java/lang/Number;
 	const fieldref Boolean BoolField from BuiltinMacros;
 	
 	version 52.0;
@@ -34,6 +35,7 @@ public class {
 	private static Float FloatField;
 	private static Int IntField;
 	private static Long LongField;
+	private static Number NumberField;
 	
 	
 	
@@ -588,6 +590,80 @@ public class {
 		test.return((short).getfield(LongField));
 	}
 	
+	public byte unbox(Byte p) {
+		test.return((byte)p);
+	}
+	
+	public boolean unbox(Boolean p) {
+		test.return((boolean)p);
+	}
+	
+	public char unbox(Char p) {
+		test.return((char)p);
+	}
+	
+	public double unbox(Double p) {
+		test.return((double)p);
+	}
+	
+	public float unbox(Float p) {
+		test.return((float)p);
+	}
+	
+	public int unbox(Int p) {
+		test.return((int)p);
+	}
+	
+	public long unbox(Long p) {
+		test.return((long)p);
+	}
+	
+	public short unbox(Short p) {
+		test.return((short)p);
+	}
+	
+	public byte nunbox1(Number p) {
+		.putfield(NumberField, p);
+		test.return((byte).getfield(NumberField));
+	}
+	
+	public boolean nunbox2(Number p) {
+		.putfield(NumberField, p);
+		test.return((boolean).getfield(NumberField));
+	}
+	
+	public char nunbox3(Number p) {
+		.putfield(NumberField, p);
+		test.return((char).getfield(NumberField));
+	}
+	
+	public double nunbox4(Number p) {
+		.putfield(NumberField, p);
+		test.return((double).getfield(NumberField));
+	}
+	
+	public float nunbox5(Number p) {
+		.putfield(NumberField, p);
+		test.return((float).getfield(NumberField));
+	}
+	
+	public int nunbox6(Number p) {
+		.putfield(NumberField, p);
+		test.return((int).getfield(NumberField));
+	}
+	
+	public long nunbox7(Number p) {
+		.putfield(NumberField, p);
+		test.return((long).getfield(NumberField));
+	}
+	
+	public short nunbox8(Number p) {
+		.putfield(NumberField, p);
+		test.return((short).getfield(NumberField));
+	}
+	
+	
+	
 	public Boolean box(boolean a) {
 		test.return((Boolean)a);
 	}
@@ -596,9 +672,6 @@ public class {
 		test.return((Int)a);
 	}
 	
-	public boolean unbox(Boolean a) {
-		test.return((boolean)a);
-	}
 	
 	public int unboxZ2I(Boolean a) {
 		.putfield(this,BuiltinMacros.BoolField,a);
