@@ -7,8 +7,6 @@ public interface IBuiltinMacros {
 	
 	public Integer boxZ2I(boolean a);
 	
-	public boolean unbox(Boolean a);
-	
 	public int unboxZ2I(Boolean a);
 	
 	/* PRIMITIVE CASTS */ 
@@ -140,7 +138,6 @@ public interface IBuiltinMacros {
 	
 	public byte opconvert5(Integer p);
 
-	
 	public byte opconvert6(Long p);
 	
 	public byte opconvert7(Short p); 
@@ -242,4 +239,36 @@ public interface IBuiltinMacros {
 	public short opconvert55(Integer p);
 	
 	public short opconvert56(Long p);
+	
+	public byte unbox(Byte p);
+	
+	public boolean unbox(Boolean p);
+	
+	public char unbox(Character p);
+	
+	public double unbox(Double p);
+	
+	public float unbox(Float p);
+	
+	public int unbox(Integer p);
+	
+	public long unbox(Long p);
+	
+	public short unbox(Short p);
+	
+	public byte nunbox1(Number p);
+	
+	public boolean nunbox2(Number p);
+	
+	public char nunbox3(Number p);
+	
+	public double nunbox4(Number p); 
+	
+	public float nunbox5(Number p); 
+	
+	public int nunbox6(Number p); 
+	
+	public long nunbox7(Number p); 
+	
+	public short nunbox8(Number p); 
 }

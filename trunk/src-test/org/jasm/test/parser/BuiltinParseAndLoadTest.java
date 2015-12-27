@@ -35,7 +35,6 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			Assert.assertEquals("Anfang MyString: 1, true, X, 1.0, 1.5, 10, 100, 25", result);
 			Assert.assertEquals(new Boolean(true), instance.box(true));
 			Assert.assertEquals(new Integer(1), instance.boxZ2I(true));
-			Assert.assertEquals(true, instance.unbox(Boolean.TRUE));
 			Assert.assertEquals(1, instance.unboxZ2I(Boolean.TRUE));
 			
 			//Primitive casts
@@ -167,6 +166,25 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			Assert.assertEquals((short)10, instance.opconvert54(10.3f));
 			Assert.assertEquals((short)10, instance.opconvert55(10));
 			Assert.assertEquals((short)10, instance.opconvert56(10L));
+			
+			Assert.assertEquals(10, instance.unbox((byte)10));
+			Assert.assertEquals(true, instance.unbox(Boolean.TRUE));
+			Assert.assertEquals('X', instance.unbox('X'));
+			Assert.assertEquals(-1.0, instance.unbox(-1.0));
+			Assert.assertEquals(-1.05f, instance.unbox(-1.05f));
+			Assert.assertEquals(55, instance.unbox(55));
+			Assert.assertEquals(-100000L, instance.unbox(-100000L));
+			Assert.assertEquals(-33, instance.unbox((short)-33));
+			
+			Assert.assertEquals((byte)1, instance.nunbox1(1));
+			Assert.assertEquals(false, instance.nunbox2(0));
+			Assert.assertEquals(' ', instance.nunbox3(32));
+			Assert.assertEquals(-5.0, instance.nunbox4(-5));
+			Assert.assertEquals(-5.5f, instance.nunbox5(-5.5));
+			Assert.assertEquals(10, instance.nunbox6(10));
+			Assert.assertEquals(10000L, instance.nunbox7(10000));
+			Assert.assertEquals((short)123, instance.nunbox8(123));
+			
 			
 			
 			

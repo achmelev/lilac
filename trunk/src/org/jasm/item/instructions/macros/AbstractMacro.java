@@ -832,8 +832,13 @@ public abstract class AbstractMacro implements IMacro {
 				unbox(t1, result);
 				unboxedType = boxToPrimitive.get(t1.getClassName());
 			} else if (t1.getClassName().equals("java/lang/Number")) {
-				unbox(new TypeDescriptor("Ljava/lang/Integer;"), result);
-				unboxedType = "I";
+				if (numericalPrimitiveTypes.contains(t2.getValue())) {
+					unboxNumber(t2.getValue(), result);
+					unboxedType = t2.getValue();
+				} else {
+					unboxNumber("I", result);
+					unboxedType = "I";
+				}
 			} else if (t1.getClassName().equals("java/lang/Object")) {
 				String className = primitiveToBox.get(t2.getValue());
 				cast(new TypeDescriptor("Ljava/lang/Object;"), new TypeDescriptor("L"+className+";"), result);
@@ -862,6 +867,13 @@ public abstract class AbstractMacro implements IMacro {
 		String boxedType = boxToPrimitive.get(classType.getClassName());
 		String methodName = primitiveToJavaTypes.get(boxedType)+"Value";
 		MethodrefInfo mi = getMethodRefInfo(classType.getClassName(), methodName, new MethodDescriptor("()"+boxedType));
+		result.add(createConstantPoolInstruction(OpCodes.invokevirtual, mi));
+		return result;
+	}
+	
+	private List<AbstractInstruction> unboxNumber(String primitiveType, List<AbstractInstruction> result) {
+		String methodName = primitiveToJavaTypes.get(primitiveType)+"Value";
+		MethodrefInfo mi = getMethodRefInfo("java/lang/Number", methodName, new MethodDescriptor("()"+primitiveType));
 		result.add(createConstantPoolInstruction(OpCodes.invokevirtual, mi));
 		return result;
 	}
