@@ -22,9 +22,10 @@ public class GetFieldMacro extends AbstractMacro {
 	public List<AbstractInstruction> createInstructions() {
 		List<AbstractInstruction> result = new ArrayList<AbstractInstruction>();
 		if (getNumberOfArguments() == 2) {
+			TypeDescriptor t = getArgumentType(getArgument(0));
 			pushArgument(getArgument(0), result);
+			cast(t, new TypeDescriptor("L"+fieldref.getClassName()+";"), result);
 		}
-		IMacroArgument arg = (getNumberOfArguments() == 1)?getArgument(0):getArgument(1);
 		result.add(createConstantPoolInstruction(isStatic?OpCodes.getstatic:OpCodes.getfield, fieldref));
 		return result;
 	}
