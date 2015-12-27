@@ -38,7 +38,7 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			Assert.assertEquals(true, instance.unbox(Boolean.TRUE));
 			Assert.assertEquals(1, instance.unboxZ2I(Boolean.TRUE));
 			
-			//Promitive casts
+			//Primitive casts
 			Assert.assertEquals(1, instance.pconvert1(true));
 			Assert.assertEquals(1, instance.pconvert2((char)1));
 			Assert.assertEquals(1, instance.pconvert3(1.0));
@@ -102,6 +102,73 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			Assert.assertEquals((short)10, instance.pconvert54(10.3f));
 			Assert.assertEquals((short)10, instance.pconvert55(10));
 			Assert.assertEquals((short)10, instance.pconvert56(10L));
+			
+			//Object to Primitive casts
+			Assert.assertEquals(1, instance.opconvert1(true));
+			Assert.assertEquals(1, instance.opconvert2((char)1));
+			Assert.assertEquals(1, instance.opconvert3(1.0));
+			Assert.assertEquals(1, instance.opconvert4(1.0f));
+			Assert.assertEquals(1, instance.opconvert5(1));
+			Assert.assertEquals(1, instance.opconvert6(1L));
+			Assert.assertEquals(1, instance.opconvert7((short)1));
+			
+			Assert.assertEquals(false, instance.opconvert8((byte)0));
+			Assert.assertEquals(true, instance.opconvert9((' ')));
+			Assert.assertEquals(true, instance.opconvert10(1.0));
+			Assert.assertEquals(true, instance.opconvert11(1.0f));
+			Assert.assertEquals(false, instance.opconvert12(0));
+			Assert.assertEquals(false, instance.opconvert13(0L));
+			Assert.assertEquals(false, instance.opconvert14((short)0));
+			
+			Assert.assertEquals(' ', instance.opconvert15((byte)32));
+			Assert.assertEquals((char)1, instance.opconvert16(true));
+			Assert.assertEquals(' ', instance.opconvert17(32.0));
+			Assert.assertEquals(' ', instance.opconvert18(32.0f));
+			Assert.assertEquals(' ', instance.opconvert19(32));
+			Assert.assertEquals(' ', instance.opconvert20(32L));
+			Assert.assertEquals(' ', instance.opconvert21((short)32));
+			
+			Assert.assertEquals(5.0, instance.opconvert22((byte)5));
+			Assert.assertEquals(1.0, instance.opconvert23(true));
+			Assert.assertEquals(32.0, instance.opconvert24(' '));
+			Assert.assertEquals(10.0, instance.opconvert25(10.0f));
+			Assert.assertEquals(10.0, instance.opconvert26(10));
+			Assert.assertEquals(10.0, instance.opconvert27(10L));
+			Assert.assertEquals(10.0, instance.opconvert28((short)10));
+			
+			Assert.assertEquals(5.0f, instance.opconvert29((byte)5));
+			Assert.assertEquals(1.0f, instance.opconvert30(true));
+			Assert.assertEquals(32.0f, instance.opconvert31(' '));
+			Assert.assertEquals(10.0f, instance.opconvert32(10.0));
+			Assert.assertEquals(10.0f, instance.opconvert33(10));
+			Assert.assertEquals(10.0f, instance.opconvert34(10L));
+			Assert.assertEquals(10.0f, instance.opconvert35((short)10));
+			
+			Assert.assertEquals(5, instance.opconvert36((byte)5));
+			Assert.assertEquals(1, instance.opconvert37(true));
+			Assert.assertEquals(32, instance.opconvert38(' '));
+			Assert.assertEquals(10, instance.opconvert39(10.1));
+			Assert.assertEquals(10, instance.opconvert40(10.3f));
+			Assert.assertEquals(10, instance.opconvert41(10L));
+			Assert.assertEquals(10, instance.opconvert42((short)10));
+			
+			Assert.assertEquals(5L, instance.opconvert43((byte)5));
+			Assert.assertEquals(1L, instance.opconvert44(true));
+			Assert.assertEquals(32L, instance.opconvert45(' '));
+			Assert.assertEquals(10L, instance.opconvert46(10.1));
+			Assert.assertEquals(10L, instance.opconvert47(10.3f));
+			Assert.assertEquals(10L, instance.opconvert48(10));
+			Assert.assertEquals(10L, instance.opconvert49((short)10));
+			
+			Assert.assertEquals((short)5, instance.opconvert50((byte)5));
+			Assert.assertEquals((short)1, instance.opconvert51(true));
+			Assert.assertEquals((short)32, instance.opconvert52(' '));
+			Assert.assertEquals((short)10, instance.opconvert53(10.1));
+			Assert.assertEquals((short)10, instance.opconvert54(10.3f));
+			Assert.assertEquals((short)10, instance.opconvert55(10));
+			Assert.assertEquals((short)10, instance.opconvert56(10L));
+			
+			
 			
 			
 			

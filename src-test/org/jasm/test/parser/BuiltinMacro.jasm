@@ -6,8 +6,14 @@ public class {
 	const classref java/lang/String;
 	const classref org/jasm/test/testclass/IBuiltinMacros;
 	const string mystring "MyString";
+	const classref java/lang/Byte;
 	const classref java/lang/Boolean;
-	const classref java/lang/Integer;
+	const classref java/lang/Character as Char;
+	const classref java/lang/Double;
+	const classref java/lang/Float;
+	const classref java/lang/Integer as Int;
+	const classref java/lang/Long;
+	const classref java/lang/Short;
 	const fieldref Boolean BoolField from BuiltinMacros;
 	
 	version 52.0;
@@ -20,7 +26,17 @@ public class {
 	private static char charField;
 	private short shortField;
 	
+	private static Byte ByteField;
 	private Boolean BoolField;
+	private static Char CharField;
+	private Short ShortField;
+	private static Double DoubleField;
+	private static Float FloatField;
+	private static Int IntField;
+	private static Long LongField;
+	
+	
+	
 	
 	
 	public void <init>() {
@@ -290,12 +306,294 @@ public class {
 		test.return((short)p);
 	}
 	
+	//Object to primitive
+	
+	public byte opconvert1(Boolean p) {
+		.putfield(this, BoolField, p);
+		test.return((byte).getfield(this, BoolField));
+	}
+	
+	public byte opconvert2(Char p) {
+		.putfield(CharField,p);
+		test.return((byte).getfield(CharField));
+	}
+	
+	public byte opconvert3(Double p) {
+		.putfield(DoubleField, p);
+		test.return((byte).getfield(DoubleField));
+	}
+	
+	public byte opconvert4(Float p) {
+		.putfield(FloatField, p);
+		test.return((byte).getfield(FloatField));
+	}
+	
+	public byte opconvert5(Int p) {
+		.putfield(IntField, p);
+		test.return((byte).getfield(IntField));
+	}
+	
+	public byte opconvert6(Long p) {
+		.putfield(LongField, p);
+		test.return((byte).getfield(LongField));
+	}
+	
+	public byte opconvert7(Short p) {
+		.putfield(this, ShortField,p);
+		test.return((byte).getfield(this, ShortField));
+	}
+	
+	public boolean opconvert8(Byte p) {
+		.putfield(ByteField, p);
+		test.return((boolean).getfield(ByteField));
+	}
+	
+	public boolean opconvert9(Char p) {
+		.putfield(CharField, p);
+		test.return((boolean).getfield(CharField));
+	}
+	
+	public boolean opconvert10(Double p) {
+		.putfield(DoubleField, p);
+		test.return((boolean).getfield(DoubleField));
+	}
+	
+	public boolean opconvert11(Float p) {
+		.putfield(FloatField, p);
+		test.return((boolean).getfield(FloatField));
+	}
+	
+	public boolean opconvert12(Int p) {
+		.putfield(IntField, p);
+		test.return((boolean).getfield(IntField));
+	}
+	
+	public boolean opconvert13(Long p) {
+		.putfield(LongField, p);
+		test.return((boolean).getfield(LongField));
+	}
+	
+	public boolean opconvert14(Short p) {
+		.putfield(this, ShortField, p);
+		test.return((boolean).getfield(this, ShortField));
+	}
+	
+	public char opconvert15(Byte p) {
+		.putfield(ByteField, p);
+		test.return((char).getfield(ByteField));
+	}
+	
+	public char opconvert16(Boolean p) {
+		.putfield(this, BoolField, p);
+		test.return((char).getfield(this, BoolField));
+	}
+	
+	public char opconvert17(Double p) {
+		.putfield(DoubleField, p);
+		test.return((char).getfield(DoubleField));
+	}
+	
+	public char opconvert18(Float p) {
+		.putfield(FloatField, p);
+		test.return((char).getfield(FloatField));
+	}
+	
+	public char opconvert19(Int p) {
+		.putfield(IntField, p);
+		test.return((char).getfield(IntField));
+	}
+	
+	public char opconvert20(Long p) {
+		.putfield(LongField, p);
+		test.return((char).getfield(LongField));
+	}
+	
+	public char opconvert21(Short p) {
+		.putfield(this, ShortField, p);
+		test.return((char).getfield(this, ShortField));
+	}
+	
+	public double opconvert22(Byte p) {
+		.putfield(ByteField, p);
+		test.return((double).getfield(ByteField));
+	}
+	
+	public double opconvert23(Boolean p) {
+		.putfield(this, BoolField, p);
+		test.return((double).getfield(this, BoolField));
+	}
+	
+	public double opconvert24(Char p) {
+		.putfield(CharField, p);
+		test.return((double).getfield(CharField));
+	}
+	
+	public double opconvert25(Float p) {
+		.putfield(FloatField, p);
+		test.return((double).getfield(FloatField));
+	}
+	
+	public double opconvert26(Int p) {
+		.putfield(IntField, p);
+		test.return((double).getfield(IntField));
+	}
+	
+	public double opconvert27(Long p) {
+		.putfield(LongField, p);
+		test.return((double).getfield(LongField));
+	}
+	
+	public double opconvert28(Short p) {
+		.putfield(this, ShortField, p);
+		test.return((double).getfield(this, ShortField));
+	}
+	
+	public float opconvert29(Byte p) {
+		.putfield(ByteField, p);
+		test.return((float).getfield(ByteField));
+	}
+	
+	public float opconvert30(Boolean p) {
+		.putfield(this, BoolField, p);
+		test.return((float).getfield(this, BoolField));
+	}
+	
+	public float opconvert31(Char p) {
+		.putfield(CharField, p);
+		test.return((float).getfield(CharField));
+	}
+	
+	public float opconvert32(Double p) {
+		.putfield(DoubleField, p);
+		test.return((float).getfield(DoubleField));
+	}
+	
+	public float opconvert33(Int p) {
+		.putfield(IntField, p);
+		test.return((float).getfield(IntField));
+	}
+	
+	public float opconvert34(Long p) {
+		.putfield(LongField, p);
+		test.return((float).getfield(LongField));
+	}
+	
+	public float opconvert35(Short p) {
+		.putfield(this, ShortField, p);
+		test.return((float).getfield(this, ShortField));
+	}
+	
+	public int opconvert36(Byte p) {
+		.putfield(ByteField, p);
+		test.return((int).getfield(ByteField));
+	}
+	
+	public int opconvert37(Boolean p) {
+		.putfield(this, BoolField, p);
+		test.return((int).getfield(this, BoolField));
+	}
+	
+	public int opconvert38(Char p) {
+		.putfield(CharField, p);
+		test.return((int).getfield(CharField));
+	}
+	
+	public int opconvert39(Double p) {
+		.putfield(DoubleField, p);
+		test.return((int).getfield(DoubleField));
+	}
+	
+	public int opconvert40(Float p) {
+		.putfield(FloatField, p);
+		test.return((int).getfield(FloatField));
+	}
+	
+	public int opconvert41(Long p) {
+		.putfield(LongField, p);
+		test.return((int).getfield(LongField));
+	}
+	
+	public int opconvert42(Short p) {
+		.putfield(this, ShortField, p);
+		test.return((int).getfield(this, ShortField));
+	}
+	
+	public long opconvert43(Byte p) {
+		.putfield(ByteField, p);
+		test.return((long).getfield(ByteField));
+	}
+	
+	public long opconvert44(Boolean p) {
+		.putfield(this, BoolField, p);
+		test.return((long).getfield(this, BoolField));
+	}
+	
+	public long opconvert45(Char p) {
+		.putfield(CharField, p);
+		test.return((long).getfield(CharField));
+	}
+	
+	public long opconvert46(Double p) {
+		.putfield(DoubleField, p);
+		test.return((long).getfield(DoubleField));
+	}
+	
+	public long opconvert47(Float p) {
+		.putfield(FloatField, p);
+		test.return((long).getfield(FloatField));
+	}
+	
+	public long opconvert48(Int p) {
+		.putfield(IntField, p);
+		test.return((long).getfield(IntField));
+	}
+	
+	public long opconvert49(Short p) {
+		.putfield(this,shortField, p);
+		test.return((long).getfield(this,shortField));
+	}
+	
+	public short opconvert50(Byte p) {
+		.putfield(byteField, p);
+		test.return((short).getfield(byteField));
+	}
+	
+	public short opconvert51(Boolean p) {
+		.putfield(this,boolField, p);
+		test.return((short).getfield(this,boolField));
+	}
+	
+	public short opconvert52(Char p) {
+		.putfield(charField, p);
+		test.return((short).getfield(charField));
+	}
+	
+	public short opconvert53(Double p) {
+		.putfield(DoubleField, p);
+		test.return((short).getfield(DoubleField));
+	}
+	
+	public short opconvert54(Float p) {
+		.putfield(FloatField, p);
+		test.return((short).getfield(FloatField));
+	}
+	
+	public short opconvert55(Int p) {
+		.putfield(IntField, p);
+		test.return((short).getfield(IntField));
+	}
+	
+	public short opconvert56(Long p) {
+		.putfield(LongField, p);
+		test.return((short).getfield(LongField));
+	}
+	
 	public Boolean box(boolean a) {
 		test.return((Boolean)a);
 	}
 	
-	public Integer boxZ2I(boolean a) {
-		test.return((Integer)a);
+	public Int boxZ2I(boolean a) {
+		test.return((Int)a);
 	}
 	
 	public boolean unbox(Boolean a) {
