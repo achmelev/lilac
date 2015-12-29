@@ -52,6 +52,7 @@ classmodifierlabel: PUBLIC 		# classmodifierPublic
 constpoolentry:  CONST UTF8INFO label StringLiteral #utf8info
 				 | CONST CLASSINFO  label Identifier #classinfo
 				 | CONST CLASSINFO  BinaryIdentifier (AS label)? #macroclassinfo
+				 | CONST CLASSINFO  array_javatype AS label #macroclassarrayinfo
 				 | CONST STRING label Identifier #stringinfo
 				 | CONST STRING label StringLiteral (AS label)? #macrostringinfo
 				 | CONST FIELDREFINFO label Identifier COMMA  Identifier #fieldrefinfo

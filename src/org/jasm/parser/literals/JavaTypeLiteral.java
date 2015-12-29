@@ -83,7 +83,11 @@ public class JavaTypeLiteral extends AbstractLiteral {
 				SymbolReference ref = new SymbolReference(this.getLine(), this.getCharPosition(), type);
 				ClassInfo info = parent.getConstantPool().checkAndLoadFromSymbolTable(parent, ClassInfo.class, ref);
 				if (info != null) {
-					return "L"+info.getClassName()+";";
+					if (info.getDescriptor().isArray()) {
+						return info.getClassName();
+					} else {
+						return "L"+info.getClassName()+";";
+					}
 				} else {
 					resolveError = true;
 					return null;
