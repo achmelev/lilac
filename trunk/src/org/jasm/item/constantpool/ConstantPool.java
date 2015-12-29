@@ -12,6 +12,7 @@ import org.jasm.item.AbstractByteCodeItem;
 import org.jasm.item.AbstractTaggedBytecodeItemList;
 import org.jasm.item.IBytecodeItem;
 import org.jasm.item.constantpool.macros.AbstractConstantMacro;
+import org.jasm.item.constantpool.macros.ClassArrayInfoConstantMacro;
 import org.jasm.item.constantpool.macros.ClassInfoConstantMacro;
 import org.jasm.item.constantpool.macros.FieldrefInfoConstantMacro;
 import org.jasm.item.constantpool.macros.MethodrefInfoConstantMacro;
@@ -464,6 +465,7 @@ public class ConstantPool extends AbstractTaggedBytecodeItemList<AbstractConstan
 		classOrder.add(DoubleInfo.class);
 		classOrder.add(ClassInfo.class);
 		classOrder.add(ClassInfoConstantMacro.class);
+		classOrder.add(ClassArrayInfoConstantMacro.class);
 		classOrder.add(NameAndTypeInfo.class);
 		classOrder.add(MethodTypeInfo.class);
 		classOrder.add(FieldrefInfo.class);

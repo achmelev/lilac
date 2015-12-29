@@ -6,6 +6,7 @@ import org.jasm.item.clazz.Clazz;
 import org.jasm.test.testclass.IBuiltinMacros;
 import org.jasm.test.testclass.ICalculator;
 import org.jasm.test.testclass.IMethodHandle2;
+import org.jasm.test.testclass.MyRunnable;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -266,6 +267,15 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			Assert.assertEquals(new Integer(10), instance.nbox(10));
 			Assert.assertEquals(new Long(10000L), instance.nbox(10000L));
 			Assert.assertEquals(new Short((short)100), instance.nbox((short)100));
+			
+			int [] [] intArray = new int [10] [6];
+			instance.setIntArray(intArray);
+			Assert.assertSame(instance.getIntArray(), intArray);
+			
+			MyRunnable r = new MyRunnable();
+			instance.setObject(r);
+			Assert.assertSame(instance.getObject(), r);
+			
 					
 		} catch (Exception e) {
 			

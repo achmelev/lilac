@@ -415,4 +415,12 @@ public interface IBuiltinMacros {
 	public Number nbox(long a);
 	
 	public Number nbox(short a);
+	
+	//Object to Object casts
+	public int [] [] getIntArray();
+	public void setIntArray(int [] [] v);
+	
+	public MyRunnable getObject();
+	
+	public void setObject(MyRunnable runnable);
 }

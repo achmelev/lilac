@@ -12,7 +12,9 @@ public class ClassArrayInfoConstantMacro extends AbstractConstantMacro {
 
 	@Override
 	public void resolve() {
-		registerClassConstant(arrayType.getDescriptor().getValue(), label.getLabel());
+		if (arrayType.getDescriptor() != null) {
+			registerClassConstant(arrayType.getDescriptor().getValue(), label.getLabel());
+		}	
 	}
 
 }

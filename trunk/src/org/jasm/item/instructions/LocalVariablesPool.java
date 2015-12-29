@@ -48,22 +48,24 @@ public class LocalVariablesPool {
 					for (int i=0;i<m.getParameterTypes().size(); i++) {
 						JavaTypeLiteral type = m.getParameterTypes().get(i);
 						TypeDescriptor desc = type.getDescriptor();
-						SymbolReference name = m.getParamNames().get(i);
-						String varType = null;
-						if (desc.isLong()) {
-							varType = JasmConsts.TYPENAME_LONG;
-						} else if (desc.isFloat()) {
-							varType = JasmConsts.TYPENAME_FLOAT;
-						} else if (desc.isDouble()) {
-							varType = JasmConsts.TYPENAME_DOUBLE;
-						} else if (desc.isObject() || desc.isArray()) {
-							varType = JasmConsts.TYPENAME_OBJECT;
-						} else {
-							varType = JasmConsts.TYPENAME_INT;
-						}
-						LocalVariable parVar = new LocalVariable(LocalVariable.getTypeCode(varType));
-						parVar.setName(name);
-						implicitVars.add(parVar);
+						if (desc != null) {
+							SymbolReference name = m.getParamNames().get(i);
+							String varType = null;
+							if (desc.isLong()) {
+								varType = JasmConsts.TYPENAME_LONG;
+							} else if (desc.isFloat()) {
+								varType = JasmConsts.TYPENAME_FLOAT;
+							} else if (desc.isDouble()) {
+								varType = JasmConsts.TYPENAME_DOUBLE;
+							} else if (desc.isObject() || desc.isArray()) {
+								varType = JasmConsts.TYPENAME_OBJECT;
+							} else {
+								varType = JasmConsts.TYPENAME_INT;
+							}
+							LocalVariable parVar = new LocalVariable(LocalVariable.getTypeCode(varType));
+							parVar.setName(name);
+							implicitVars.add(parVar);
+						}	
 					}
 				}
 				variables.addAll(0, implicitVars);

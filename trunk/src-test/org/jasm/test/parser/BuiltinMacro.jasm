@@ -16,7 +16,13 @@ public class {
 	const classref java/lang/Short;
 	const classref java/lang/Number;
 	const classref int [] as IntArray;
+	const classref java/lang/Runnable;
+	const classref org/jasm/test/testclass/MyRunnable;
+	const classref Runnable[] as RunnableArray;
+	const classref Object[] as ObjectArray;
 	const fieldref Boolean BoolField from BuiltinMacros;
+	
+	
 	
 	version 52.0;
 	name BuiltinMacros;
@@ -39,6 +45,11 @@ public class {
 	private static Number NumberField;
 	
 	private IntArray [] intArray;
+	private Object objectValue;
+	private Object[] objectArray;
+	private RunnableArray runnableArray;
+	private Runnable runnableValue;
+	private MyRunnable myRunnableValue;
 	
 	public void <init>() {
 		aload this;
@@ -995,6 +1006,17 @@ public class {
 	
 	public void setIntArray(int [] [] v) {
 		.putfield(this, intArray, v);
+		return;
+	}
+	
+	public MyRunnable getObject() {
+		.putfield(this, myRunnableValue, (MyRunnable).getfield(this, objectValue));
+		.getfield(this,myRunnableValue);
+		areturn;
+	}
+	
+	public void setObject(MyRunnable runnable) {
+		.putfield(this, objectValue, (Runnable)runnable);
 		return;
 	}
 	
