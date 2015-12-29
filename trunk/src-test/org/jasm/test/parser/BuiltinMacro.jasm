@@ -15,6 +15,7 @@ public class {
 	const classref java/lang/Long;
 	const classref java/lang/Short;
 	const classref java/lang/Number;
+	const classref int [] as IntArray;
 	const fieldref Boolean BoolField from BuiltinMacros;
 	
 	version 52.0;
@@ -37,9 +38,7 @@ public class {
 	private static Long LongField;
 	private static Number NumberField;
 	
-	
-	
-	
+	private IntArray [] intArray;
 	
 	public void <init>() {
 		aload this;
@@ -987,6 +986,18 @@ public class {
 		.putfield(this, shortField, a);
 		test.return((Number).getfield(this, shortField));
 	}
+	
+	public int [] [] getIntArray() {
+		.getfield(this, intArray);
+		areturn;
+	}
+	
+	
+	public void setIntArray(int [] [] v) {
+		.putfield(this, intArray, v);
+		return;
+	}
+	
 	
 	public String toString(){
 		ldc mystring;

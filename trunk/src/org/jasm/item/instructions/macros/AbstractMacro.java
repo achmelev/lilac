@@ -483,8 +483,10 @@ public abstract class AbstractMacro implements IMacro {
 			} else {
 				throw new RuntimeException("ambiguous name: "+sym.getSymbolName());
 			}
-		} 
-		return results.get(0);
+		} else {
+			return results.get(0);
+		}
+		return null;
 	}
 	
 	private TypeDescriptor resolveArgumentType(IMacroArgument arg) {
@@ -785,7 +787,7 @@ public abstract class AbstractMacro implements IMacro {
 		} else {
 			if (t1.isObject() && t1.getClassName().equals("java/lang/Object")) {
 				return true;
-			} else if (t2.isArray() && t2.isArray() && t1.getArrayDimension()==t2.getArrayDimension() && canCast(t1.getComponentType(), t2.getComponentType())) {
+			} else if (t2.isArray() && t2.isArray() && t1.getArrayDimension()==t2.getArrayDimension() && t1.getComponentType().isObject() && t2.getComponentType().isObject()) {
 				return true;
 			} else if (t1.isObject() && t2.isObject()){
 				return true;

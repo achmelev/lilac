@@ -110,6 +110,7 @@ import org.jasm.item.constantpool.NameAndTypeInfo;
 import org.jasm.item.constantpool.StringInfo;
 import org.jasm.item.constantpool.Utf8Info;
 import org.jasm.item.constantpool.macros.AbstractConstantMacro;
+import org.jasm.item.constantpool.macros.ClassArrayInfoConstantMacro;
 import org.jasm.item.constantpool.macros.ClassInfoConstantMacro;
 import org.jasm.item.constantpool.macros.FieldrefInfoConstantMacro;
 import org.jasm.item.constantpool.macros.MethodrefInfoConstantMacro;
@@ -241,6 +242,7 @@ import org.jasm.parser.JavaAssemblerParser.LonginfoContext;
 import org.jasm.parser.JavaAssemblerParser.MacroargumentcastContext;
 import org.jasm.parser.JavaAssemblerParser.MacrocallContext;
 import org.jasm.parser.JavaAssemblerParser.MacrocallmacroargumentContext;
+import org.jasm.parser.JavaAssemblerParser.MacroclassarrayinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MacroclassinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MacrofieldrefinfoContext;
 import org.jasm.parser.JavaAssemblerParser.MacromethodrefinfoContext;
@@ -439,7 +441,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		
 		//log.debug("tree: "+tree.toStringTree());
 		
-		
 		if (errorCounter == 0) {
 			//Walk tree an create class
 			ParseTreeWalker walker = new ParseTreeWalker();
@@ -455,7 +456,6 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 				result = null;
 			}
 		}
-		
 		
 		
 		return result;
@@ -610,10 +610,20 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 			macro.setLabel(createLabel(ctx.label().Identifier()));
 		}
 		macro.setSourceLocation(createSourceLocation(ctx.BinaryIdentifier()));
-		addConstantMacro(macro);
-		
+		addConstantMacro(macro);	
 	}
 	
+	@Override
+	public void enterMacroclassarrayinfo(MacroclassarrayinfoContext ctx) {
+		ConstantPool pool = ((Clazz)stack.peek()).getConstantPool();
+		ClassArrayInfoConstantMacro macro = new ClassArrayInfoConstantMacro(createJavaTypeLiteral(ctx.array_javatype(), pool));
+		if (ctx.label() != null) {
+			macro.setLabel(createLabel(ctx.label().Identifier()));
+		}
+		macro.setSourceLocation(createSourceLocation(ctx.array_javatype()));
+		addConstantMacro(macro);
+	}
+
 	@Override
 	public void enterMacrostringinfo(MacrostringinfoContext ctx) {
 		StringInfoConstantMacro macro = new StringInfoConstantMacro();
@@ -2839,11 +2849,12 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		return new NullLiteral(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
 	}
 	
-	private JavaTypeLiteral createJavaTypeLiteral(JavatypeContext context, AbstractByteCodeItem parent) {
+	private JavaTypeLiteral createJavaTypeLiteral(ParserRuleContext context, AbstractByteCodeItem parent) {
 		JavaTypeLiteral result = new JavaTypeLiteral(context.getStart().getLine(), context.getStart().getCharPositionInLine(), context.getText());
 		result.setParent(parent);
 		return result;
 	}
+	
 	
 	private ClassReference createClassReference(TerminalNode node) {
 		return new ClassReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
