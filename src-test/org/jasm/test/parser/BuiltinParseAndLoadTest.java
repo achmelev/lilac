@@ -276,6 +276,11 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			instance.setObject(r);
 			Assert.assertSame(instance.getObject(), r);
 			
+			MyRunnable [] ar = new MyRunnable[10];
+			instance.setObjectArray(ar);
+			Assert.assertSame(instance.getObjectArray(), ar);
+			
+			
 					
 		} catch (Exception e) {
 			

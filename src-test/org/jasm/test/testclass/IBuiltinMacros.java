@@ -423,4 +423,8 @@ public interface IBuiltinMacros {
 	public MyRunnable getObject();
 	
 	public void setObject(MyRunnable runnable);
+	
+	public MyRunnable [] getObjectArray();
+	
+	public void setObjectArray(MyRunnable[] runnableArray);
 }
