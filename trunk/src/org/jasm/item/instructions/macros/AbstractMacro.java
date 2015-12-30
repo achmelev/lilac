@@ -785,9 +785,9 @@ public abstract class AbstractMacro implements IMacro {
 		} else if (t2.isPrimitive() && !t1.isPrimitive()) {
 			return isBoxType(t1) || (t1.isObject() && (t1.getClassName().equals("java/lang/Number") || t1.getClassName().equals("java/lang/Object")));
 		} else {
-			if (t1.isObject() && t1.getClassName().equals("java/lang/Object")) {
+			if ((t1.isObject() && t1.getClassName().equals("java/lang/Object")) || (t2.isObject() && t2.getClassName().equals("java/lang/Object"))) {
 				return true;
-			} else if (t2.isArray() && t2.isArray() && t1.getArrayDimension()==t2.getArrayDimension() && t1.getComponentType().isObject() && t2.getComponentType().isObject()) {
+			} else if (t1.isArray() && t2.isArray() && t1.getArrayDimension()==t2.getArrayDimension() && t1.getComponentType().isObject() && t2.getComponentType().isObject()) {
 				return true;
 			} else if (t1.isObject() && t2.isObject()){
 				return true;
@@ -852,7 +852,9 @@ public abstract class AbstractMacro implements IMacro {
 			cast(new TypeDescriptor(unboxedType),t2, result);
 		} else {
 			ClassInfo cli = getClassInfo(t2.isObject()?t2.getClassName():t2.getValue());
-			result.add(createConstantPoolInstruction(OpCodes.checkcast, cli));
+			if (!cli.getClassName().equals("java/lang/Object")) {
+				result.add(createConstantPoolInstruction(OpCodes.checkcast, cli));
+			}	
 		}
 		
 		return result;

@@ -47,9 +47,10 @@ public class {
 	private IntArray [] intArray;
 	private Object objectValue;
 	private Object[] objectArray;
-	private RunnableArray runnableArray;
+	private Runnable [] runnableArray;
 	private Runnable runnableValue;
 	private MyRunnable myRunnableValue;
+	private MyRunnable [] myRunnableArray;
 	
 	public void <init>() {
 		aload this;
@@ -1017,6 +1018,17 @@ public class {
 	
 	public void setObject(MyRunnable runnable) {
 		.putfield(this, objectValue, (Runnable)runnable);
+		return;
+	}
+	
+	public MyRunnable [] getObjectArray() {
+		.putfield(this, myRunnableArray, (MyRunnable []).getfield(this, objectValue));
+		.getfield(this,myRunnableArray);
+		areturn;
+	}
+	
+	public void setObjectArray(MyRunnable[] runnableArray) {
+		.putfield(this, objectValue, (Runnable[])runnableArray);
 		return;
 	}
 	

@@ -126,7 +126,7 @@ public class TypeDescriptor {
 	
 	public int getArrayDimension() {
 		if (!isArray()) {
-			throw new IllegalStateException("isn't an array!");
+			throw new IllegalStateException(descriptor+"isn't an array!");
 		}
 		if (componentType.isArray()) {
 			return 1+componentType.getArrayDimension();
