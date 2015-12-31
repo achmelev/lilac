@@ -429,4 +429,10 @@ public interface IBuiltinMacros {
 	public void setObjectArray(MyRunnable[] runnableArray);
 	
 	public TestBean createTestBean(int intValue, boolean booleanValue, String stringValue, MyRunnable runnable);
+	
+	public boolean [] createBooleanArray(Double length);
+	
+	public Runnable [] createRunnableArray(long length);
+	
+	public boolean [] [] createBooleanArray2(Double length, long length2);
 }

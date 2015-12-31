@@ -4,7 +4,7 @@ public class MyRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		boolean [] [] arr = new boolean[10] [10];
 		
 	}
 

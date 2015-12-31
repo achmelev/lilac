@@ -13,6 +13,11 @@ public class MultianewarrayInstruction extends ConstantPoolInstruction {
 	public MultianewarrayInstruction() {
 		super(OpCodes.multianewarray, null);
 	}
+	
+	public MultianewarrayInstruction(short dimensions, ClassInfo cli) {
+		super(OpCodes.multianewarray, cli);
+		this.dimensions = dimensions;
+	}
 
 	@Override
 	public String getPrintArgs() {

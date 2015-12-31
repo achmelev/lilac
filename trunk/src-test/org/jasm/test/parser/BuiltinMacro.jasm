@@ -24,6 +24,8 @@ public class {
 	const classref org/jasm/test/testclass/TestBean;
 	const methodref void <init> (short intValue, boolean booleanValue, String stringValue, Runnable runnableValue) from TestBean as TestBean.init;
 	const methodref void <init>(int v) from Int as Int.init;
+	const classref boolean [] as Bool1Array;
+	const classref boolean [] [] as Bool2Array;
 	
 	
 	version 52.0;
@@ -1036,6 +1038,21 @@ public class {
 	
 	public TestBean createTestBean(int intValue, boolean booleanValue, String stringValue, MyRunnable runnable) {
 		.new(TestBean, TestBean.init,.new(Int,Int.init,intValue),booleanValue,stringValue,runnable);
+		areturn;
+	}
+	
+	public boolean [] createBooleanArray(Double length) {
+		.new(Bool1Array, (Double)length);
+		areturn;
+	}
+	
+	public Runnable [] createRunnableArray(long length) {
+		.new(RunnableArray, length);
+		areturn;
+	}
+	
+	public boolean [] [] createBooleanArray2(Double length, long length2) {
+		.new(Bool2Array, (Double)length, length2);
 		areturn;
 	}
 	
