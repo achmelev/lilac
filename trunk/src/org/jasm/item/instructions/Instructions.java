@@ -648,7 +648,11 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 	}
 	
 	public void verifyByteCodeStage1() {
-		verifier.verifyStage1();
+		if (this.getSize() > 0) {
+			verifier.verifyStage1();
+		} else {
+			emitError(null, "no instructions found");
+		}
 	}
 	
 	public void verifyByteCode() {

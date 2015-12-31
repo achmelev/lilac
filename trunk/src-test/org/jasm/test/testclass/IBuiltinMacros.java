@@ -427,4 +427,6 @@ public interface IBuiltinMacros {
 	public MyRunnable [] getObjectArray();
 	
 	public void setObjectArray(MyRunnable[] runnableArray);
+	
+	public TestBean createTestBean(int intValue, boolean booleanValue, String stringValue, MyRunnable runnable);
 }
