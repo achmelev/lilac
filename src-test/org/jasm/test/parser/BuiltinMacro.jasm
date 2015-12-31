@@ -67,6 +67,11 @@ public class {
 		areturn;
 	}
 	
+	public String concat2(String prefix, Byte arg1, Boolean arg2, Char arg3, Double arg4, Float arg5, Int arg6, Long arg7, Short arg8) {
+		.invokevirtual(concat,this,.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8);
+		areturn;
+	}
+	
 	/* PRIMITIVE CASTS */ 
 	
 	//byte, boolean, char,double, float, int, long, short
@@ -1054,8 +1059,7 @@ public class {
 	public boolean [] [] createBooleanArray2(Double length, long length2) {
 		.new(Bool2Array, (Double)length, length2);
 		areturn;
-	}
-	
+	}	
 	
 	public String toString(){
 		ldc mystring;

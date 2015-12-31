@@ -98,6 +98,10 @@ public abstract class AbstractClassMemberList<T extends AbstractClassMember> ext
 			if (item != null) {
 				item.setParent(this);
 				item.resolve();
+			}
+		}
+		for (IBytecodeItem item: getItems()) {
+			if (item != null) {
 				((AbstractClassMember)item).resolveAttributes();
 			}
 		}
