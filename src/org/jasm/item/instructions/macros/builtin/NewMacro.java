@@ -3,10 +3,13 @@ package org.jasm.item.instructions.macros.builtin;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jasm.JasmConsts;
 import org.jasm.item.clazz.Method;
 import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.MultianewarrayInstruction;
+import org.jasm.item.instructions.NewarrayInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.macros.AbstractMacro;
 import org.jasm.item.instructions.macros.IMacroArgument;
@@ -34,7 +37,46 @@ public class NewMacro extends AbstractMacro {
 			result.add(createConstantPoolInstruction(OpCodes.invokespecial, constructor));
 			
 		} else {
-			throw new IllegalStateException("");
+			TypeDescriptor arrayType = clazz.getDescriptor();
+			if (arrayType.getArrayDimension() == 1) {
+				pushArgument(getArgument(1), result);
+				cast(getArgumentType(getArgument(1)), new TypeDescriptor("I"), result);
+				if (arrayType.getComponentType().isPrimitive()) {
+					short type = -1;
+					TypeDescriptor componentType = arrayType.getComponentType();
+					if (componentType.isBoolean()) {
+						type = JasmConsts.ARRAY_TYPE_BOOLEAN;
+					} else if (componentType.isByte()) {
+						type = JasmConsts.ARRAY_TYPE_BYTE;
+					} else if (componentType.isCharacter()) {
+						type = JasmConsts.ARRAY_TYPE_CHAR;
+					} else if (componentType.isDouble()) {
+						type = JasmConsts.ARRAY_TYPE_DOUBLE;
+					} else if (componentType.isFloat()) {
+						type = JasmConsts.ARRAY_TYPE_FLOAT;
+					} else if (componentType.isInteger()) {
+						type = JasmConsts.ARRAY_TYPE_INT;
+					} else if (componentType.isLong()) {
+						type = JasmConsts.ARRAY_TYPE_LONG;
+					} else if (componentType.isShort()) {
+						type = JasmConsts.ARRAY_TYPE_SHORT;
+					} else {
+						throw new IllegalStateException(arrayType.getValue());
+					}
+					result.add(new NewarrayInstruction(type));
+				} else {
+					ClassInfo componentClass = getClassInfo(arrayType.getComponentType().getClassName());
+					result.add(createConstantPoolInstruction(OpCodes.anewarray, componentClass));
+				}
+			} else {
+				for (int i=1; i<getNumberOfArguments(); i++) {
+					pushArgument(getArgument(i), result);
+					cast(getArgumentType(getArgument(i)), new TypeDescriptor("I"), result);
+				}
+				MultianewarrayInstruction instr = new MultianewarrayInstruction((short)arrayType.getArrayDimension(), clazz);
+				instr.setResolved(true);
+				result.add(instr);
+			}
 		}
 		
 		return result;
@@ -102,7 +144,19 @@ public class NewMacro extends AbstractMacro {
 						}
 					}
 				} else {
-					emitError(firstArg.getSourceLocation(), "arrays not supported");
+					TypeDescriptor arrayType = clazz.getDescriptor();
+					if (getNumberOfArguments() == arrayType.getArrayDimension()+1) {
+						for (int i=1; i<getNumberOfArguments(); i++) {
+							TypeDescriptor t1 = getArgumentType(getArgument(i));
+							TypeDescriptor t2 = new TypeDescriptor("I");
+							if (t1 != null && canCast(t1, t2))  {
+							} else {
+								emitError(getArgument(i).getSourceLocation(), "wrong argument type");
+							}
+						}
+					} else {
+						emitError(null, "wrong number of arguments");
+					}
 				}
 			} else {
 				emitError(firstArg.getSourceLocation(), "wrong argument type");
