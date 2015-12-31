@@ -332,7 +332,7 @@ public abstract class AbstractMacro implements IMacro {
 				}
 			}	
 			if (arg instanceof SymbolReference) {
-				Object ref = resolveSymbolReference(arg, true);
+				Object ref = resolveSymbolReference(arg, false);
 				if (ref !=null) {
 					if (ref instanceof AbstractConstantPoolEntry) {
 						constantArguments.put(arg, (AbstractConstantPoolEntry)ref);
@@ -473,15 +473,10 @@ public abstract class AbstractMacro implements IMacro {
 		if (results.size() == 0) {
 			if (emitError) {
 				emitError(arg.getSourceLocation(), "unknown name "+sym.getSymbolName());
-			} else {
-				throw new RuntimeException("unknown name: "+sym.getSymbolName());
 			}
-			
 		} else if (results.size()>1) {
 			if (emitError) {
 				emitError(arg.getSourceLocation(), "ambiguous name "+sym.getSymbolName());
-			} else {
-				throw new RuntimeException("ambiguous name: "+sym.getSymbolName());
 			}
 		} else {
 			return results.get(0);
