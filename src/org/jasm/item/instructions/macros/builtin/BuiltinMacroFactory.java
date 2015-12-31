@@ -13,6 +13,8 @@ public class BuiltinMacroFactory implements IMacroFactory {
 			return new GetFieldMacro();
 		} else if (name.equals(".putfield")) {
 			return new PutFieldMacro();
+		} else if (name.equals(".new")) {
+			return new NewMacro();	
 		} else {
 			return null;
 		}

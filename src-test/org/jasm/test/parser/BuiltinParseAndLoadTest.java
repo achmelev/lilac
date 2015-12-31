@@ -7,6 +7,7 @@ import org.jasm.test.testclass.IBuiltinMacros;
 import org.jasm.test.testclass.ICalculator;
 import org.jasm.test.testclass.IMethodHandle2;
 import org.jasm.test.testclass.MyRunnable;
+import org.jasm.test.testclass.TestBean;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -280,6 +281,11 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			instance.setObjectArray(ar);
 			Assert.assertSame(instance.getObjectArray(), ar);
 			
+			TestBean bean = instance.createTestBean(5, false, "Hello", r);
+			Assert.assertEquals((short)5, bean.getIntValue());
+			Assert.assertEquals(false, bean.isBooleanValue());
+			Assert.assertEquals("Hello", bean.getStringValue());
+			Assert.assertSame(r, bean.getRunnable());
 			
 					
 		} catch (Exception e) {

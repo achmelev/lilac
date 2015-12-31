@@ -21,7 +21,9 @@ public class {
 	const classref Runnable[] as RunnableArray;
 	const classref Object[] as ObjectArray;
 	const fieldref Boolean BoolField from BuiltinMacros;
-	
+	const classref org/jasm/test/testclass/TestBean;
+	const methodref void <init> (short intValue, boolean booleanValue, String stringValue, Runnable runnableValue) from TestBean as TestBean.init;
+	const methodref void <init>(int v) from Int as Int.init;
 	
 	
 	version 52.0;
@@ -1030,6 +1032,11 @@ public class {
 	public void setObjectArray(MyRunnable[] runnableArray) {
 		.putfield(this, objectValue, (Runnable[])runnableArray);
 		return;
+	}
+	
+	public TestBean createTestBean(int intValue, boolean booleanValue, String stringValue, MyRunnable runnable) {
+		.new(TestBean, TestBean.init,.new(Int,Int.init,intValue),booleanValue,stringValue,runnable);
+		areturn;
 	}
 	
 	
