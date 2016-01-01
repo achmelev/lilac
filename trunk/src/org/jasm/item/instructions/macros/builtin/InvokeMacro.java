@@ -100,14 +100,14 @@ public class InvokeMacro extends AbstractMacro {
 							TypeDescriptor t1 = getArgumentType(getArgument(1));
 							TypeDescriptor t2 = clazz.getDescriptor();
 							if (!canCast(t1, t2)) {
-								emitError(getArgument(1).getSourceLocation(), "wrong argument type");
+								emitError(getArgument(1).getSourceLocation(), "can not cast "+t1.getValue()+" to "+t2.getValue());
 							}
 						}
 						for (int i=startParametersIndex; i<getNumberOfArguments(); i++) {
 							TypeDescriptor t1 = getArgumentType(getArgument(i));
 							TypeDescriptor t2 = methodDescriptor.getParameters().get(i-startParametersIndex);
 							if (!canCast(t1, t2)) {
-								emitError(getArgument(1).getSourceLocation(), "wrong argument type");
+								emitError(getArgument(i).getSourceLocation(), "can not cast "+t1.getValue()+" to "+t2.getValue());
 							}
 						}
 					} else {

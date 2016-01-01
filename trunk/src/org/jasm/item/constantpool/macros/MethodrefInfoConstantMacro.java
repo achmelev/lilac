@@ -80,9 +80,6 @@ public class MethodrefInfoConstantMacro extends AbstractConstantMacro {
 				}	
 			}
 		}
-		if (parent.hasErrors()) {
-			return null;
-		}
 		return  new MethodDescriptor(paramTypes, returnTypeDesc);
 	}
 

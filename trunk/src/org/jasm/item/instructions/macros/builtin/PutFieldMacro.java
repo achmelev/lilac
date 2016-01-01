@@ -98,7 +98,7 @@ public class PutFieldMacro extends AbstractMacro {
 			
 			IMacroArgument valuearg = (getNumberOfArguments() == 2)?getArgument(1):getArgument(2);
 			if (!canCast(getArgumentType(valuearg), fieldref.getNameAndTypeReference().getTypeDescriptor())) {
-				emitError(valuearg.getSourceLocation(), "wrong argument type");
+				emitError(valuearg.getSourceLocation(), "can not cast "+getArgumentType(valuearg)+" to "+fieldref.getNameAndTypeReference().getTypeDescriptor());
 				return false;
 			}
 			

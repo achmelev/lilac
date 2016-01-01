@@ -20,7 +20,6 @@ public super class {
   const utf8 source_file_name "FieldContainer.java";
   
   const classref java/lang/String;
-  const classref java/lang/String;
   const classref java/lang/String as MyString;
   
   const utf8 iValue_name "iValue";
@@ -95,7 +94,7 @@ public super class {
   	 
   }
   
-  public static MyString [] method3 (byte bValue, boolean zValue, float fValue, double dValue, short shValue, int iValue, long lValue, String[] saValue, java.lang.String sValue) {
+  public static MyString [] method3 (byte bValue, boolean zValue, float fValue, double dValue, short shValue, int iValue, long lValue, String[] saValue, String sValue) {
   	 aload saValue;
 	 iload bValue;
   	 iload zValue;

@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.jasm.parser.IParserErrorListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestErrorsListener implements IParserErrorListener {
 	
 	private Map<Integer, List<String>> messages = new HashMap<Integer, List<String>>();
+	private Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@Override
 	public void clear() {
@@ -24,6 +27,7 @@ public class TestErrorsListener implements IParserErrorListener {
 			messages.put(line, lMessages);
 		}
 		lMessages.add(msg);
+		log.debug(line+":"+charPos+" "+msg);
 	}
 
 	@Override

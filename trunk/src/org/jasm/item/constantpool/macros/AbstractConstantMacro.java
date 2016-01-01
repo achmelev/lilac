@@ -60,14 +60,8 @@ public abstract class AbstractConstantMacro {
 			return label;
 		} else {
 			String shortName = (className.lastIndexOf('/')>0)?className.substring(className.lastIndexOf('/')+1, className.length()):className;
-			String longName = className.replace('/', '.');
-			if (!parent.getSymbolTable().contains(shortName)) {
-				registerConstant(shortName, constant, null);
-				return shortName;
-			} else  {
-				registerConstant(longName, constant, null);
-				return longName;
-			} 
+			registerConstant(shortName, constant, null);
+			return shortName; 
 		}
 	}
 

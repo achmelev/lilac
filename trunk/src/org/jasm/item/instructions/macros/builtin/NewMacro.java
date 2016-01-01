@@ -128,8 +128,8 @@ public class NewMacro extends AbstractMacro {
 									for (int i=2; i<getNumberOfArguments(); i++) {
 										TypeDescriptor t1 = getArgumentType(getArgument(i));
 										TypeDescriptor t2 = md.getParameters().get(i-2);
-										if (!canCast(t1, t2))  {
-											emitError(getArgument(i).getSourceLocation(), "wrong argument type");
+										if (!canCast(t1, t2)) {
+											emitError(getArgument(i).getSourceLocation(), "can not cast "+t1.getValue()+" to "+t2.getValue());
 										}
 									}
 								} else {
@@ -149,10 +149,11 @@ public class NewMacro extends AbstractMacro {
 						for (int i=1; i<getNumberOfArguments(); i++) {
 							TypeDescriptor t1 = getArgumentType(getArgument(i));
 							TypeDescriptor t2 = new TypeDescriptor("I");
-							if (t1 != null && canCast(t1, t2))  {
-							} else {
+							if (t1 == null)  {
 								emitError(getArgument(i).getSourceLocation(), "wrong argument type");
-							}
+							} else if (!canCast(t1, t2)) {
+								emitError(getArgument(1).getSourceLocation(), "can not cast "+t1.getValue()+" to "+t2.getValue());
+							} 
 						}
 					} else {
 						emitError(null, "wrong number of arguments");
