@@ -4,6 +4,12 @@ public interface IBuiltinMacros {
 	
 	public String concat(String prefix, byte arg1, boolean arg2, char arg3, double arg4, float arg5, int arg6, long arg7, short arg8);
 	
+	public String concat2(String prefix, Byte arg1, Boolean arg2, Character arg3, Double arg4, Float arg5, Integer arg6, Long arg7, Short arg8);
+	
+	public String concat4(String prefix, Byte arg1, Boolean arg2, Character arg3, Double arg4, Float arg5, Integer arg6, Long arg7, Short arg8);
+	
+	public String concat5(String prefix, Byte arg1, Boolean arg2, Character arg3, Double arg4, Float arg5, Integer arg6, Long arg7, Short arg8);
+	
 	
 	/* PRIMITIVE CASTS */ 
 	

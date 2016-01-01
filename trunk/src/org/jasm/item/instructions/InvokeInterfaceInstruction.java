@@ -11,6 +11,9 @@ public class InvokeInterfaceInstruction extends ConstantPoolInstruction {
 
 	public InvokeInterfaceInstruction(short opCode, InterfaceMethodrefInfo entry) {
 		super(opCode, entry);
+		if (entry !=null) {
+			calculateCount(entry);
+		}
 	}
 
 	@Override

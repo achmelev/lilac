@@ -9,6 +9,7 @@ import org.jasm.item.constantpool.ClassInfo;
 import org.jasm.item.constantpool.InterfaceMethodrefInfo;
 import org.jasm.item.constantpool.MethodrefInfo;
 import org.jasm.item.instructions.AbstractInstruction;
+import org.jasm.item.instructions.InvokeInterfaceInstruction;
 import org.jasm.item.instructions.OpCodes;
 import org.jasm.item.instructions.macros.AbstractMacro;
 import org.jasm.item.instructions.macros.IMacroArgument;
@@ -42,7 +43,13 @@ public class InvokeMacro extends AbstractMacro {
 			pushArgument(getArgument(i), result);
 			cast(t1, t2, result);
 		}
-		result.add(createConstantPoolInstruction(opCode, method));
+		if (opCode == OpCodes.invokeinterface) {
+			InvokeInterfaceInstruction instr = new InvokeInterfaceInstruction(opCode, (InterfaceMethodrefInfo)method);
+			instr.setResolved(true);
+			result.add(instr);
+		} else {
+			result.add(createConstantPoolInstruction(opCode, method));
+		}
 		return result;
 	}
 
@@ -77,6 +84,9 @@ public class InvokeMacro extends AbstractMacro {
 					method = getConstantSymbolReferenceValue(methodArg);
 				}
 				if (method instanceof InterfaceMethodrefInfo && opCode != OpCodes.invokeinterface) {
+					emitError(methodArg.getSourceLocation(), "wrong method type");
+				}
+				if (!(method instanceof InterfaceMethodrefInfo) && opCode == OpCodes.invokeinterface) {
 					emitError(methodArg.getSourceLocation(), "wrong method type");
 				}
 				if (!hasError()) {
