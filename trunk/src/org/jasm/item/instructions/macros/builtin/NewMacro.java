@@ -136,7 +136,7 @@ public class NewMacro extends AbstractMacro {
 									emitError(null, "wrong number of arguments");
 								}
 							} else {
-								emitError(secondArg.getSourceLocation(), "wrong method fo an instance initialization");
+								emitError(secondArg.getSourceLocation(), "wrong method type");
 							}
 							
 						} else {
