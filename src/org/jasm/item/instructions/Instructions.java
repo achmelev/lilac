@@ -201,8 +201,9 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			log.debug("Reading instructions,offset="+currentOffset+" codeLength = "+codeLength);
 		}
 		currentOffset+=4;
+		AbstractInstruction instr = null;
 		while (currentOffset<(offset+codeLength+4)) {
-			AbstractInstruction instr = createEmptyItem(source, currentOffset);
+			instr = createEmptyItem(source, currentOffset);
 			instr.setParent(this);
 			items.add(instr);
 			offsets.put(instr.getOffsetInCode(), instr);
@@ -221,7 +222,7 @@ public class Instructions extends AbstractByteCodeItem implements IContainerByte
 			currentOffset+=instr.getLength();
 		}
 		if (currentOffset!=(offset+codeLength+4)) {
-			throw new IllegalStateException("last instruction out of code bound: "+currentOffset+"!="+(offset+codeLength+4));
+			throw new IllegalStateException("last instruction + ("+Integer.toHexString(instr.getOpCode())+") out of code bound: "+currentOffset+"!="+(offset+codeLength+4));
 		}
 		
 	}

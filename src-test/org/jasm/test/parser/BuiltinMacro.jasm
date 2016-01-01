@@ -26,6 +26,9 @@ public class {
 	const methodref void <init>(int v) from Int as Int.init;
 	const classref boolean [] as Bool1Array;
 	const classref boolean [] [] as Bool2Array;
+	const methodref void <init>() from BuiltinMacros as BuiltinMacros.init;
+	const intfmethodref String concat(String prefix, byte arg1, boolean arg2, char arg3, double arg4, float arg5, int arg6, long arg7, short arg8) from IBuiltinMacros 
+									as IBuiltinMacros.concat;
 	
 	
 	version 52.0;
@@ -69,6 +72,27 @@ public class {
 	
 	public String concat2(String prefix, Byte arg1, Boolean arg2, Char arg3, Double arg4, Float arg5, Int arg6, Long arg7, Short arg8) {
 		.invokevirtual(concat,this,.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8);
+		areturn;
+	}
+	
+	public static String concat3(String prefix, Byte arg1, Boolean arg2, Char arg3, Double arg4, Float arg5, Int arg6, Long arg7, Short arg8) {
+		.invokevirtual(concat,.new(BuiltinMacros, BuiltinMacros.init),
+		.invokevirtual(toString, .new(BuiltinMacros, BuiltinMacros.init)),
+		(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8);
+		areturn;
+	}
+	
+	public String concat4(String prefix, Byte arg1, Boolean arg2, Char arg3, Double arg4, Float arg5, Int arg6, Long arg7, Short arg8) {
+		.invokestatic(concat3,
+		.invokevirtual(toString, .new(BuiltinMacros, BuiltinMacros.init)),
+		(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8);
+		areturn;
+	}
+	
+	public String concat5(String prefix, Byte arg1, Boolean arg2, Char arg3, Double arg4, Float arg5, Int arg6, Long arg7, Short arg8) {
+		.invokeinterface(IBuiltinMacros.concat,.new(BuiltinMacros, BuiltinMacros.init),
+		.invokespecial(toString2, .new(BuiltinMacros, BuiltinMacros.init)),
+		(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8);
 		areturn;
 	}
 	
@@ -1062,6 +1086,11 @@ public class {
 	}	
 	
 	public String toString(){
+		ldc mystring;
+		areturn;
+	}
+	
+	private String toString2(){
 		ldc mystring;
 		areturn;
 	}

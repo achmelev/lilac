@@ -224,6 +224,9 @@ public abstract class AbstractMacro implements IMacro {
 	}
 	
 	protected AbstractInstruction createConstantPoolInstruction(short opCode, AbstractConstantPoolEntry constant) {
+		if (opCode == OpCodes.multianewarray || opCode == OpCodes.invokedynamic || opCode == OpCodes.invokeinterface) {
+			throw new IllegalArgumentException("Illegal opCode: "+Integer.toHexString(opCode));
+		}
 		AbstractInstruction result =  new ConstantPoolInstruction(opCode, constant);
 		result.setResolved(true);
 		return result;

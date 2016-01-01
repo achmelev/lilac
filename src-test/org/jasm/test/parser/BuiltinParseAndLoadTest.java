@@ -34,6 +34,12 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			IBuiltinMacros instance = (IBuiltinMacros)cl.newInstance();
 			String result = instance.concat("Anfang", (byte)1, true, 'X', 1.0, 1.5f, 10, (long)100, (short)25);
 			Assert.assertEquals("Anfang MyString: 1, true, X, 1.0, 1.5, 10, 100, 25", result);
+			result = instance.concat2("Anfang", (byte)1, true, 'X', 1.0, 1.5f, 10, (long)100, (short)25);
+			Assert.assertEquals("MyString MyString: 1, true, X, 1.0, 1.5, 10, 100, 25", result);
+			result = instance.concat4("Anfang", (byte)1, true, 'X', 1.0, 1.5f, 10, (long)100, (short)25);
+			Assert.assertEquals("MyString MyString: 1, true, X, 1.0, 1.5, 10, 100, 25", result);
+			result = instance.concat5("Anfang", (byte)1, true, 'X', 1.0, 1.5f, 10, (long)100, (short)25);
+			Assert.assertEquals("MyString MyString: 1, true, X, 1.0, 1.5, 10, 100, 25", result);
 
 			
 			//Primitive casts
@@ -309,7 +315,7 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 
 	@Override
 	protected boolean verify() {
-		return true;
+		return false;
 	}
 
 	@Override
