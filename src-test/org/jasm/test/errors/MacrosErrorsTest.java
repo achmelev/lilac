@@ -113,6 +113,87 @@ public class MacrosErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 85,"wrong number"));
 		
+		code = patch(originalCode, 373, ".getfield(FloatField)", ".getfield(FloatField, this, this)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 373,"wrong number"));
+		
+		code = patch(originalCode, 373, ".getfield(FloatField)", ".getfield(5)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 373,"wrong argument type"));
+		
+		code = patch(originalCode, 373, ".getfield(FloatField)", ".getfield(this, FloatField)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 373,"wrong number"));
+		
+		code = patch(originalCode, 373, ".getfield(FloatField)", ".getfield(5, FloatField)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 373,"wrong argument type"));
+		
+		code = patch(originalCode, 358, ".getfield(this, BoolField)", ".getfield(BoolField)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 358,"wrong number of arguments"));
+		
+		code = patch(originalCode, 1052, "putfield(this, objectValue, (Runnable)runnable)", "putfield(this)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1052,"wrong number of arguments"));
+		
+		code = patch(originalCode, 1052, "putfield(this, objectValue, (Runnable)runnable)", "putfield(this, objectValue)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1052,"wrong argument type"));
+		
+		code = patch(originalCode, 1052, "putfield(this, objectValue, (Runnable)runnable)", "putfield(this, objectValue, (Runnable)runnable, 5)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1052,"wrong number of arguments"));
+		
+		code = patch(originalCode, 1052, "putfield(this, objectValue, (Runnable)runnable)", "putfield(this, runnableValue, 5)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1052,"can not cast"));
+		
+		code = patch(originalCode, 1052, "putfield(this, objectValue, (Runnable)runnable)", "putfield(this, objectValue, (Runnablee)runnable)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1052,"unknown"));
+		
+		code = patch(originalCode, 1068, ".new(TestBean, TestBean.init,.new(Int,Int.init,intValue),booleanValue,stringValue,runnable)", ".new(TestBean)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1068,"wrong number of arguments"));
+		
+		code = patch(originalCode, 1068, ".new(TestBean, TestBean.init,.new(Int,Int.init,intValue),booleanValue,stringValue,runnable)", ".new(this)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1068,"wrong argument type"));
+		
+		code = patch(originalCode, 1068, ".new(TestBean, TestBean.init,.new(Int,Int.init,intValue),booleanValue,stringValue,runnable)", ".new(TestBean, this)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1068,"wrong argument type"));
+		
+		code = patch(originalCode, 1068, ".new(TestBean, TestBean.init,.new(Int,Int.init,intValue),booleanValue,stringValue,runnable)", ".new(TestBean, TestBean.init,.new(Int,Int.init,intValue),booleanValue,stringValue, 5)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1068,"can not cast"));
+		
+		code = patch(originalCode, 1073, "new(Bool1Array, (Double)length)", "new(Bool1Array)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1073,"wrong number of arguments"));
+		
+		code = patch(originalCode, 1073, "new(Bool1Array, (Double)length)", "new(Bool1Array, 5,5)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1073,"wrong number of arguments"));
+		
+		code = patch(originalCode, 1073, "new(Bool1Array, (Double)length)", "new(Bool1Array, \"Hello\")");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1073,"can not cast"));
+		
+		code = patch(originalCode, 1083, "new(Bool2Array, (Double)length, length2)", "new(Bool2Array, (Double)length)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1083,"wrong number of arguments"));
+		
+		code = patch(originalCode, 1083, "new(Bool2Array, (Double)length, length2)", "new(Bool2Array, (Double)length, length2, 5)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1083,"wrong number of arguments"));
+		
+		code = patch(originalCode, 1083, "new(Bool2Array, (Double)length, length2)", "new(Bool2Array, (Double)length, \"hello\")");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1083,"can not cast"));
+		
+		
 		
 		
 	}
