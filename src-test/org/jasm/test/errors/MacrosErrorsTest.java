@@ -72,6 +72,48 @@ public class MacrosErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 68,"can not cast"));
 		
+		code = patch(originalCode, 73, "concat,this,.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8", "");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"wrong number"));
+		
+		code = patch(originalCode, 73, "concat,this,.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8",
+				"this,this,.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"wrong argument type"));
+		
+		code = patch(originalCode, 73, "concat,this,.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8",
+				"BuiltinMacros,this,.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"wrong argument type"));
+		
+		code = patch(originalCode, 73, "concat,this,.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8",
+				"concat,.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"wrong number of arguments"));
+		
+		code = patch(originalCode, 73, "concat,this,.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8",
+				"concat,.getfield(this, intArray),.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"can not cast"));
+		
+		code = patch(originalCode, 73, "concat,this,.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8",
+				"concat,this,.invokevirtual(toString,this),(Byte)arg1,(BuiltinMacros)this,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"can not cast"));
+		
+		code = patch(originalCode, 92, "IBuiltinMacros.concat", "concat");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 92,"wrong method type"));
+		
+		code = patch(originalCode, 73, "concat", "IBuiltinMacros.concat");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 73,"wrong method type"));
+		
+		code = patch(originalCode, 85, "concat3,", "concat3,this,");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 85,"wrong number"));
+		
+		
 		
 	}
 	
