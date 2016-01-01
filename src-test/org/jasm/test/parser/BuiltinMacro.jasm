@@ -1,7 +1,6 @@
 public class {
 	const classref java/lang/Object;
 	const classref org/jasm/test/testclass/BuiltinMacros;
-	const classref org/jasm/test/testclass/BuiltinMacros;
 	const methodref void <init>() from Object as Object.init; 
 	const classref java/lang/String;
 	const classref org/jasm/test/testclass/IBuiltinMacros;

@@ -975,11 +975,8 @@ public class ErrorsTest {
 		code = remove(originalCode,385);
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 467,"code verification error"));
-		
-		
-		
-		
 	}
+
 	
 	@Test
 	public void testConstructorAndInvokeSpecial() {
@@ -999,6 +996,15 @@ public class ErrorsTest {
 		Assert.assertTrue(checkForErrorMessage(listener, 106,"code verification error"));
 	}
 	
+	@Test
+	public void testBuiltinMacros() {
+		TestErrorsListener listener = new TestErrorsListener();
+		byte[] data = getData("org.jasm.test.parser.BuiltinMacro");
+		String originalCode = disassemble(data);
+		
+	}
+	
+	
 	private  byte [] getData(String name) {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		name = name.replace('.', '/')+".jasm";
@@ -1012,7 +1018,6 @@ public class ErrorsTest {
 		
 		return data;
 	}
-	
 	
 	
 	private static String disassemble(byte [] data) {
