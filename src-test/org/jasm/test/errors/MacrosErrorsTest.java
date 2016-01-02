@@ -193,6 +193,17 @@ public class MacrosErrorsTest {
 		assemble(code, listener);
 		Assert.assertTrue(checkForErrorMessage(listener, 1083,"can not cast"));
 		
+		code = patch(originalCode, 1100, "println(prefix, \" \",this,\": \", (byte)arg1, \", \", (boolean)arg2, \", \", (char)arg3, \", \", arg4, \", \", arg5, \", \", arg6, \", \", arg7, \", \", (short)arg8)","println()");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1100,"wrong number"));
+		
+		code = patch(originalCode, 1105, "sprintln(stream, prefix, \" \",this,\": \", (byte)arg1, \", \", (boolean)arg2, \", \", (char)arg3, \", \", arg4, \", \", arg5, \", \", arg6, \", \", arg7, \", \", (short)arg8)","sprintln(stream)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1105,"wrong number"));
+		
+		code = patch(originalCode, 1105, "sprintln(stream, prefix, \" \",this,\": \", (byte)arg1, \", \", (boolean)arg2, \", \", (char)arg3, \", \", arg4, \", \", arg5, \", \", arg6, \", \", arg7, \", \", (short)arg8)","sprintln(5,5)");
+		assemble(code, listener);
+		Assert.assertTrue(checkForErrorMessage(listener, 1105,"can not cast"));
 		
 		
 		

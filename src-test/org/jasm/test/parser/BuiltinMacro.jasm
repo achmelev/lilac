@@ -27,7 +27,7 @@ public class {
 	const classref boolean [] [] as Bool2Array;
 	const methodref void <init>() from BuiltinMacros as BuiltinMacros.init;
 	const intfmethodref String concat(String prefix, byte arg1, boolean arg2, char arg3, double arg4, float arg5, int arg6, long arg7, short arg8) from IBuiltinMacros 
-									as IBuiltinMacros.concat;
+									as IBuiltinMacros.concat;								
 	
 	
 	version 52.0;
@@ -1092,6 +1092,18 @@ public class {
 	private String toString2(){
 		ldc mystring;
 		areturn;
+	}
+	
+	const classref java/io/PrintStream;
+	
+	public void println(String prefix, byte arg1, boolean arg2, char arg3, double arg4, float arg5, int arg6, long arg7, short arg8) {
+		.println(prefix, " ",this,": ", (byte)arg1, ", ", (boolean)arg2, ", ", (char)arg3, ", ", arg4, ", ", arg5, ", ", arg6, ", ", arg7, ", ", (short)arg8);
+		return;
+	}
+	
+	public void sprintln(PrintStream stream, String prefix, byte arg1, boolean arg2, char arg3, double arg4, float arg5, int arg6, long arg7, short arg8) {
+		.sprintln(stream, prefix, " ",this,": ", (byte)arg1, ", ", (boolean)arg2, ", ", (char)arg3, ", ", arg4, ", ", arg5, ", ", arg6, ", ", arg7, ", ", (short)arg8);
+		return;
 	}
 	
 }
