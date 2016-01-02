@@ -1,5 +1,7 @@
 package org.jasm.test.testclass;
 
+import java.io.PrintStream;
+
 public interface IBuiltinMacros {
 	
 	public String concat(String prefix, byte arg1, boolean arg2, char arg3, double arg4, float arg5, int arg6, long arg7, short arg8);
@@ -441,4 +443,8 @@ public interface IBuiltinMacros {
 	public Runnable [] createRunnableArray(long length);
 	
 	public boolean [] [] createBooleanArray2(Double length, long length2);
+	
+	public void println(String prefix, byte arg1, boolean arg2, char arg3, double arg4, float arg5, int arg6, long arg7, short arg8);
+	
+	public void sprintln(PrintStream stream, String prefix, byte arg1, boolean arg2, char arg3, double arg4, float arg5, int arg6, long arg7, short arg8);
 }

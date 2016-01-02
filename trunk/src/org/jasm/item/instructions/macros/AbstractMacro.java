@@ -68,6 +68,7 @@ public abstract class AbstractMacro implements IMacro {
 
 	private Instructions instructions;
 	private MacroCall call;
+	private IMacro parentMacro;
 	
 	private boolean hasError = false;
 	
@@ -167,6 +168,26 @@ public abstract class AbstractMacro implements IMacro {
 		this.call = call;
 	}
 	
+	@Override
+	public void init_generated(List<IMacroArgument> arguments, IMacro parent) {
+		instructions = parent.getInstructions();
+		this.arguments = arguments;
+		this.call = parent.getCall();
+		this.parentMacro = parent;
+	}
+	
+	public Instructions getInstructions() {
+		return instructions;
+	}
+
+	public MacroCall getCall() {
+		return call;
+	}
+
+	public IMacro getParentMacro() {
+		return parentMacro;
+	}
+
 	protected void emitError(SourceLocation location, String message) {
 		instructions.emitErrorOnLocation((location != null)?location:call.getSourceLocation(), message);
 		hasError = true;
@@ -288,6 +309,10 @@ public abstract class AbstractMacro implements IMacro {
 	
 	protected IMacroArgument getArgument(int index) {
 		return arguments.get(index);
+	}
+	
+	protected List<IMacroArgument> getArguments() {
+		return arguments;
 	}
 	
 	protected TypeDescriptor getArgumentType(IMacroArgument arg) {

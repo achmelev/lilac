@@ -1,5 +1,8 @@
 package org.jasm.test.parser;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import junit.framework.Assert;
 
 import org.jasm.item.clazz.Clazz;
@@ -40,7 +43,13 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 			Assert.assertEquals("MyString MyString: 1, true, X, 1.0, 1.5, 10, 100, 25", result);
 			result = instance.concat5("Anfang", (byte)1, true, 'X', 1.0, 1.5f, 10, (long)100, (short)25);
 			Assert.assertEquals("MyString MyString: 1, true, X, 1.0, 1.5, 10, 100, 25", result);
-
+			
+			//Print
+			instance.println("Anfang", (byte)1, true, 'X', 1.0, 1.5f, 10, (long)100, (short)25);
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			PrintStream pstream = new PrintStream(stream);
+			instance.sprintln(pstream, "Anfang", (byte)1, true, 'X', 1.0, 1.5f, 10, (long)100, (short)25);
+			Assert.assertTrue(new String(stream.toByteArray()).startsWith("Anfang MyString: 1, true, X, 1.0, 1.5, 10, 100, 25"));
 			
 			//Primitive casts
 			Assert.assertEquals(1, instance.pconvert1(true));
