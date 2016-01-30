@@ -57,6 +57,22 @@ Here are some examples of a valid Java assembler identifier:
 	in_12
 	this$0
 	System.out
+
+####Binary Identifiers
+
+Besides of [java identifiers](https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.8) in a special case of directly referencing a class or interface so called **binary identifiers** may be used. The syntax of a binary identifier is as
+defined [in the JVM specification](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.2.1), however with a slight difference - in order for the assembler to be able to distinguish java identifiers and binary identifiers
+a binary identifier may start with a slash an must always contain one.
+
+Here are some examples of a valid Java assembler binary identifier:
+
+	:::lilac
+	java/lang/Thread
+	/java/lang/Thread
+	/Thread
+
+
+
 	
 ####Comments
 
@@ -76,13 +92,21 @@ Here are some examples of a comment:
 ####Names and labels
 
 On the syntactic level Java assembler has two different kinds of [identifiers](#identifiers): **names** and **labels**. Names identify an entity declared in a program, 
-in the context of Java assembler those entities can be [variables](#variable-statement) and [constants](#constant-statements).
+in the context of Java assembler those entities can be [variables](#variable-statement) and [constants](#constant-statements). 
 
 The following example shows two [constants](#constant-statements): a [string constant](#string-statement) referencing a [utf8 constant](#utf8-constant-statement) by it's name:
 
 	:::lilac
 	const utf8 helloword_content "Hello World";
 	const string helloword helloword_content;
+
+Additionally a assembler programm may contain names of external classes or interfaces, those have to be formatted as [binary identifiers](#binary-identifiers).
+The following example shows a [macro class reference statement](#TODO), referencing a class.
+
+	:::lilac
+	const classref java/lang/Object;
+
+
 
 Labels on the other hand identify a location inside the program to which, for example, the control flow of the program might be transferred. 
 This is illustrated in the following example where the [if_acmpne instruction](#branch-instructions) transfers the control to the [return instruction](#branch-instructions)
