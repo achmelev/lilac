@@ -119,7 +119,8 @@ This is illustrated in the following example where the [if_acmpne instruction](#
 
 ####Statements
 
-On the syntactic level a Java assembler program is a sequence of **statements**, which come in two flavors: **simple statements** and **block statements**. 
+On the syntactic level a Java assembler program is a sequence of **statements**, which come in three flavors: **simple statements** and **block statements** and **macros**.
+ 
 A block statement generally consists of some keywords followed by a sequence of **member statements** enclosed in curly brackets as illustrated in the following
 example:
 
@@ -144,11 +145,14 @@ Here are some examples of a simple statement:
 	line ir0, 532;
 	lookupswitch 1->ir36,3->ir41,100->ir46,default->ir53;
 	append else, {int};
+	const classref java/lang/Thread;
 
 Because block statements themselves contain another statements the whole syntactic structure of a Java assembler program can be in effect 
 seen as a [forest](http://en.wikipedia.org/wiki/Tree_%28graph_theory%29) of statements with **block statements** being parent nodes of their **member statements**. 
 Because on the semantic level there is an additional requirement, that a Java assembler source file contains exactly one [class statement](#class-statement), 
 this [forest](http://en.wikipedia.org/wiki/Tree_%28graph_theory%29) is in fact just a tree with the [class statement](#class-statement) at the root.
+
+The syntax of [macros](#macros) will be introduced below in an extra [chapter](#macros) on the topic.
 
 ##Language Statements
 
@@ -1662,6 +1666,98 @@ Example:
 
     ::lilac
     unknown attribute [UG9seWZvbiB6d2l0c2NoZXJuZCBhw59lbiBNw6R4Y2hlbnMgVsO2Z2VsIFLDvGJlbiwgSm9naHVydCB1bmQgUXVhcms=];
+
+##Macros
+
+The statements which have been described up until now of of the "low level" kind. The "low level" property in this context
+means especially two things:
+
+* There is a close correspondence between the low level statements and the structures of a the class file format as described in the [JVM specification](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html).
+* Assembler files consisting entirely of low level statements have the property of being (almost always) round-trip-proof, that is, if you assemble the file and disassemble it again you'll get the same sequence
+of the low level statements as in original file.
+
+In principle low level statements are  entirely sufficient for a programmer to write anything acceptable to the JVM. After having used the lilac assembler for a while for different reverse engineering purposes
+the author realized, that, unfortunately, "sufficient" doesn't means comfortable. Regard the simple task of logging the content of some variables to a system output, something you need time and time again, while
+trying to understand how a disassembled class works. To achieve the same result as with this simple java statement:
+
+	::java
+	System.out.println("The content of the variable a is: "+a);
+
+a being a local integer variable, you have to define a big plethora of **31** constants:
+
+	::lilac
+	const classref System System_name;
+  	const utf8 System_name "java/lang/System";
+    const utf8 out_name "out";
+    const utf8 out_desc "Ljava/io/PrintStream;";
+    const nameandtype System.out_nat out_name,out_desc;
+    const fieldref System.out System,System.out_nat;
+    const classref PrintStream PrintStream_name;
+    const utf8 PrintStream_name "java/io/PrintStream";
+    const utf8 println_name "println";
+    const utf8 println_desc "(Ljava/lang/String;)V";
+    const nameandtype PrintStream.println_nat println_name,println_desc;
+    const methodref PrintStream.println PrintStream,PrintStream.println_nat;
+    const utf_8 StringBuffer_name "java/lang/StringBuffer";
+    const classref StringBuffer StringBuffer_name;
+    const utf8 init0_name "<init>";
+  	const utf8 init0_desc "()V";
+  	const nameandtype StringBuffer.init0_nat init0_name, init0_desc;
+  	const methodref StringBuffer.init0 StringBuffer, StringBuffer.init0_nat;
+  	const utf8 append_name "append";
+  	const utf8 appendI_desc "(I)Ljava/lang/StringBuffer;";	
+  	const nameandtype StringBuffer.appendI_nat append_name, appendI_desc;
+  	const methodref StringBuffer.appendI StringBuffer, StringBuffer.appendI_nat;
+  	const utf8 appendS_desc "(Ljava/langString;)Ljava/lang/StringBuffer;";	
+  	const nameandtype StringBuffer.appendS_nat append_name, appendS_desc;
+  	const methodref StringBuffer.appendS StringBuffer, StringBuffer.appendS_nat;
+  	const utf8 toString_name "toString";
+  	const utf8 toString_desc "()Ljava/lang/String;";	
+  	const nameandtype StringBuffer.toString_nat toString_name, toString_desc;
+  	const methodref StringBuffer.toString StringBuffer, StringBuffer.toString_nat;
+  	const utf8 prefix_content "The content of the variable a is: ";
+  	const string prefix prefix_content;
+
+and **10** instructions:
+
+	::lilac
+	getstatic System.out;
+	new StringBuffer;
+	dup;
+	invokespecial StringBuffer.init0;
+	ldc
+	invokevirtual StringBuffer.appendS;
+	iload a;
+	invokevirtual StringBuffer.appendI;
+	invokevirtual StringBuffer.toString;
+	invokevirtual PrintStream.println;
+
+And that you have to do **every time** you need such a really trivial functionality. Of course, one may say, that that is what assembler programming is all about - much routine work, but programmers are lazy and 
+the author is a programmer and so, after having put himself through the ordeal of constant defining multiple times, he understood that shortcuts are urgently needed. 
+The idea of macros (which of course wasn't [something really new at all](https://en.wikipedia.org/wiki/Macro_instruction)) was born and after some months of work introduced in the version 1.1 
+of lilac.
+
+There are three different kinds of macros in lilac:
+
+* constant macros are just shortcuts to reduce the amount of type work necessary to define a constant.
+
+For example, the following macro class reference:
+
+	::lilac
+	const classref String java/Lang/String;
+
+is equivalent to the following two low level [constant statements](constant-statements):
+
+	::lilac
+	const utf8 String_name "java/Lang/String";
+	const classref String String_name;
+	
+	
+	
+	
+
+ 
+	
 
 
 
