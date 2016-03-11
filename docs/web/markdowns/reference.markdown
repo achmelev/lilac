@@ -62,7 +62,7 @@ Here are some examples of a valid Java assembler identifier:
 
 Besides of [java identifiers](https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.8) in a special case of directly referencing a class or interface so called **binary identifiers** may be used. The syntax of a binary identifier is as
 defined [in the JVM specification](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.2.1), however with a slight difference - in order for the assembler to be able to distinguish java identifiers and binary identifiers
-a binary identifier may start with a slash an must always contain one.
+a binary identifier must always contain a slash and so may start with one.
 
 Here are some examples of a valid Java assembler binary identifier:
 
@@ -156,7 +156,7 @@ The syntax of [macros](#macros) will be introduced below in an extra [chapter](#
 
 ##Language Statements
 
-Having described above the general lexical and syntactic structure of a Java assembler program, the rest of this reference will cover the syntax and semantics of the particular statements used in Java assembler.
+Having described above the general lexical and syntactic structure of a Java assembler program, the following chapters will cover the syntax and semantics of the particular statements used in Java assembler.
 
 ###Class statement
 
@@ -1669,15 +1669,15 @@ Example:
 
 ##Macros
 
-The statements which have been described up until now of of the "low level" kind. The "low level" property in this context
+The statements which have been described up until now are of the "low level" kind. The "low level" property in this context
 means especially two things:
 
 * There is a close correspondence between the low level statements and the structures of a the class file format as described in the [JVM specification](http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html).
 * Assembler files consisting entirely of low level statements have the property of being (almost always) round-trip-proof, that is, if you assemble the file and disassemble it again you'll get the same sequence
 of the low level statements as in original file.
 
-In principle low level statements are  entirely sufficient for a programmer to write anything acceptable to the JVM. After having used the lilac assembler for a while for different reverse engineering purposes
-the author realized, that, unfortunately, "sufficient" doesn't means comfortable. Regard the simple task of logging the content of some variables to a system output, something you need time and time again, while
+In principle low level statements are  entirely sufficient to produce anything acceptable to the JVM. However, after having used the lilac assembler for a while for different reverse engineering purposes
+the author realized, that, unfortunately, "sufficient" doesn't means comfortable. Regard the simple task of logging the content of some variable to a system output, something you need time and time again while
 trying to understand how a disassembled class works. To achieve the same result as with this simple java statement:
 
 	::java
@@ -1732,14 +1732,16 @@ and **10** instructions:
 	invokevirtual StringBuffer.toString;
 	invokevirtual PrintStream.println;
 
-And that you have to do **every time** you need such a really trivial functionality. Of course, one may say, that that is what assembler programming is all about - much routine work, but programmers are lazy and 
+And all that you have to do **every time** you need such a really trivial feature. Of course, one may say, that that is what assembler programming is all about - much routine work, but programmers are lazy and 
 the author is a programmer and so, after having put himself through the ordeal of constant defining multiple times, he understood that shortcuts are urgently needed. 
-The idea of macros (which of course wasn't [something really new at all](https://en.wikipedia.org/wiki/Macro_instruction)) was born and after some months of work introduced in the version 1.1 
+The idea of macro statement or, for short, macros (which of course wasn't [something really new at all](https://en.wikipedia.org/wiki/Macro_instruction)) was born and after some months of work introduced in the version 1.1 
 of lilac.
 
 There are three different kinds of macros in lilac:
 
-* constant macros are just shortcuts to reduce the amount of type work necessary to define a constant.
+**Constant macros**
+
+Those are just shortcuts to reduce the amount of type work necessary to define a constant.
 
 For example, the following macro class reference:
 
@@ -1751,6 +1753,27 @@ is equivalent to the following two low level [constant statements](constant-stat
 	::lilac
 	const utf8 String_name "java/Lang/String";
 	const classref String String_name;
+
+**Macro variants of field and method statements**
+
+For example the following macro field statement declares a string array field, just like in Java itself. 
+
+	::lilac
+	public java/lang/String [] string_array_field;
+
+On encountering this declaration the assembler will generate all constants needed by a [non-macro field statement](#field-statement)
+
+**Macro instructions**
+
+Macro instructions are extensions to the original java assembler which provide the means to generate a commonly used instruction sequence together with necessary constant declarations.
+For example the following macro instruction  [.invokevirtual](#TODO):
+
+	::lilac
+	.invokevirtual(toString, ref);
+
+calls the method toString (toString is the name of a method reference, which is defined elsewhere) on the local variable ref.
+
+The rest of this chapter covers the synax and semantics of various macro statements in more detail.
 	
 	
 	
