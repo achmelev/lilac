@@ -1803,6 +1803,30 @@ Examples:
 If a **java type** contains a reference to a class type, this reference can be expressed either as an identifier specifying a [class constant](#class-reference-statement) 
 or a [binary identifier](#binary-identifiers) which directly specifies the class.
 
+####Macro class reference statement
+
+A macro class reference statement instructs the assembler to create all constants which are necessary to declare a [class reference](#class-reference-statement).
+
+The syntax of the statement is as follows:
+
+	::ebnf
+	macro class reference statement = 'const', 'classref', (binary identifier|array type), ['as' name] ;
+	
+If **'as' name** part is present, which is required if a reference to an array type is being declared, then the defined [class constant](#class-reference-statement) will have the name.
+Otherwise the last part of the [binary identifier](#binary-identifiers) will be used as name. 
+	
+Examples:
+	
+	::lilac
+	const classref java/lang/String
+	
+The above statement declares a [class constant](#class-reference-statement) **String** which specifies a reference to the class **java.lang.String**
+
+	::lilac
+	const classref int[] as int_array;
+	
+The above statement declares a [class constant](#class-reference-statement) **int_array** which specifies a reference to the array type **[I**
+
 	
 	
 	
