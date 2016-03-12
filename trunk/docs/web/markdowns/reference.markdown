@@ -64,7 +64,12 @@ Besides of [java identifiers](https://docs.oracle.com/javase/specs/jls/se8/html/
 defined [in the JVM specification](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.2.1), however with a slight difference - in order for the assembler to be able to distinguish java identifiers and binary identifiers
 a binary identifier must always contain a slash and so may start with one.
 
-Here are some examples of a valid Java assembler binary identifier:
+Here is the corresponding EBNF expression:
+
+	:::ebnf
+	binary identifier = ['/'], javaidentifier, {'/' javaidentifier} ;
+
+And here are some examples of a valid Java assembler binary identifier:
 
 	:::lilac
 	java/lang/Thread
@@ -1773,8 +1778,31 @@ For example the following macro instruction  [.invokevirtual](#TODO):
 
 calls the method toString (toString is the name of a method reference, which is defined elsewhere) on the local variable ref.
 
-The rest of this chapter covers the synax and semantics of various macro statements in more detail.
-	
+The rest of this chapter covers the syntax and semantics of various macro statements in more detail.
+
+###Java type 
+
+The following descriptions of the various macro statements make use of the subconstruct **java type** which is very similar to the type construct in Java as shown in the following EBNF expression:
+
+	::ebnf
+	java type = primitive type|class type|array type ;
+	primitive type = 'byte'|'boolean'|'char'|'double'|'float'|'int'|'long'|'short' ;
+	class type = identifier|binary identifier ;
+	array type = (primitive type|class type), '[', ']', {'[', ']'} ;
+
+Examples:
+
+	::lilac
+	int 
+	boolean [] []
+	String 
+	String []
+	java/lang/Object
+	java/lang/Runtime [] []
+
+If a **java type** contains a reference to a class type, this reference can be expressed either as an identifier specifying a [class constant](#class-reference-statement) 
+or a [binary identifier](#binary-identifiers) which directly specifies the class.
+
 	
 	
 	
