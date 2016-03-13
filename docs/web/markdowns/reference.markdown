@@ -372,7 +372,7 @@ for literals like in high level program languages but also to hold dynamic linki
 An utf8 constant statement declares an utf8 string constant. In has as a single argument a [string literal](#literals), which specifies the value of the constant. The syntax of the statement is as follows:
 
 	:::ebnf
-	utf8 constant statement = 'const utf8',name, string literal, ';' ;
+	utf8 constant statement = 'const', 'utf8', name, string literal, ';' ;
 
 Example
 
@@ -387,7 +387,7 @@ or a [valid array type descriptor](http://docs.oracle.com/javase/specs/jvms/se8/
 
 
 	:::ebnf
-	class reference constant statement = 'const classref',name, utf8 constant, ';' ;
+	class reference constant statement = 'const', 'classref',name, utf8 constant, ';' ;
 
 Example
 	
@@ -401,7 +401,7 @@ as arguments. The first utf8 constant contains a valid field or method name, the
 The syntax of the statement is as follows:
 	
 	:::ebnf
-	name and type constant statement = 'const nameandtype',name, utf8 constant, utf8 constant, ';' ;
+	name and type constant statement = 'const', 'nameandtype',name, utf8 constant, utf8 constant, ';' ;
 
 Example:
 
@@ -414,7 +414,7 @@ A field reference statement declares a field reference constant. It has two argu
 The syntax of the statement is as follows:
 
 	:::ebnf
-	field reference statement = 'const fieldref',name, class reference constant, name and type constant, ';' ;
+	field reference statement = 'const', 'fieldref', name, class reference constant, name and type constant, ';' ;
 	
 Example:
 
@@ -429,7 +429,7 @@ The statement has two arguments: the first argument specifies the name or a [cla
 The syntax of the statement is as follows:
 
 	:::ebnf
-	method reference statement = 'const methodref',name, class reference constant, name and type constant, ';' ;
+	method reference statement = 'const', 'methodref',name, class reference constant, name and type constant, ';' ;
 	
 Example:
 
@@ -444,7 +444,7 @@ The statement has two arguments: the first argument specifies the name or a [cla
 The syntax of the statement is as follows:
 
 	:::ebnf
-	interface method reference statement = 'const intfmethodref',name, class reference constant, name and type constant, ';' ;
+	interface method reference statement = 'const',  'intfmethodref', name, class reference constant, name and type constant, ';' ;
 	
 Example:
 
@@ -458,7 +458,7 @@ which specifies the actual string content.
 The syntax of the statement is as follows:
 
     :::ebnf
-	string statement = 'const string', name, utf8 constant ';' ;
+	string statement = 'const', 'string', name, utf8 constant ';' ;
     
 Example:
 
@@ -471,7 +471,7 @@ An integer value statement declares an integer constant. It has as a single argu
 The syntax of the statement is as follows:
 
     :::ebnf
-	integer statement = 'const int', name, integer literal, ';' ;
+	integer statement = 'const', 'int', name, integer literal, ';' ;
 
 Example:
 
@@ -484,7 +484,7 @@ A long integer value statement declares a long integer constant. It has as a sin
 The syntax of the statement is as follows:
 
     :::ebnf
-	long integer statement = 'const long', name, integer literal, ';' ;
+	long integer statement = 'const', 'long', name, integer literal, ';' ;
 
 Example:
 
@@ -497,7 +497,7 @@ A floating point value statement declares a floating point constant. It has as a
 The syntax of the statement is as follows:
 
     :::ebnf
-	floating point value statement = 'const float', name, floating point literal, ';' ;
+	floating point value statement = 'const', 'float', name, floating point literal, ';' ;
 
 Example:
 
@@ -510,7 +510,7 @@ A double-precision floating point value statement declares a double-precision fl
 The syntax of the statement is as follows:
 
     :::ebnf
-	double-precision floating point value statement = 'const double', name, floating point literal, ';' ;
+	double-precision floating point value statement = 'const', 'double', name, floating point literal, ';' ;
 
 Example:
 
@@ -523,7 +523,7 @@ A method type statement declares a method type constant. It has as a single argu
 The syntax of the statement is as follows:
 
     :::ebnf
-	method type statement = 'const methodtype', name, utf8 constant, ';' ;
+	method type statement = 'const', 'methodtype', name, utf8 constant, ';' ;
     
 Example:
 
@@ -558,7 +558,7 @@ Read more about the exact meaning of these two arguments in the [JVM specificati
 The syntax of the statement is as follows:
 
     :::ebnf
-    dynamic method reference statement = 'const dynref',name,bootstrapmethod,',',name and type constant,';' ;
+    dynamic method reference statement = 'const', 'dynref', name, bootstrapmethod,',',name and type constant,';' ;
 
 Example:
 
@@ -1812,9 +1812,9 @@ A macro class reference statement instructs the assembler to create all constant
 The syntax of the statement is as follows:
 
 	::ebnf
-	macro class reference statement = 'const', 'classref', (binary identifier|array type), ['as' name] ;
+	macro class reference statement = 'const', 'classref', (binary identifier|array type), ['as', class reference name] ;
 	
-If **'as' name** part is present, which is required if a reference to an array type is being declared, then the defined [class reference constant](#class-reference-statement) will have the name.
+If **'as' class reference name** part is present, which is required if a reference to an array type is being declared, then the defined [class reference constant](#class-reference-statement) will have the name.
 Otherwise the last part of the [binary identifier](#binary-identifiers) will be used as name. 
 	
 Examples:
@@ -1836,7 +1836,7 @@ A macro field reference statement instructs the assembler to create all constant
 The syntax of the statement is as follows:
 
 	::ebnf
-	macro field reference statement = 'const', 'fieldref', java type, field name, 'from', (class constant name|binary identifier), ['as' field reference name] 
+	macro field reference statement = 'const', 'fieldref', java type, field name, 'from', (class reference constant name|binary identifier), ['as', field reference name] ; 
 	
 The name of the generated [field reference constant](#field-reference-statement) by which it can be accessed in the rest of the source code is specified in the **'as' field reference name** if available.
 If  **'as' field reference name**  clause is not available, then the name will be generated as  a concatenation of the **class constant name**, a point, and the **field name**, if the
@@ -1862,6 +1862,35 @@ This time, however, the class  **com/example/Car** has been specified by a [bina
 
 This third variant of the two statements above declares again a field reference constant which specifies a reference to the string field **name** from the (invented) class **com/example/Car**,
 However, the name of the resulting [field reference constant](#field-reference-statement) has been, this time, specified explicitly as **car_weight**.
+
+####Macro method reference statement
+
+A macro method reference statement instructs the assembler to create all constants needed to declare a [method reference constant](#method-reference-statement) or an [interface method reference constant](#interface-method-reference-statement).
+
+The syntax of the statement is as follows:
+
+	::ebnf
+	macro method reference statement = const, ('methodref'|'intfmethodref'), method return type, method name, '(', method parameters,')', 'from', (class reference constant name|binary identifier),['as', method reference name] ;
+	method return type = java type|'void' ;
+	method parameters = method parameter, {',', method parameter} ;
+	method parameter = java type, parameter name
+
+The above ebnf expressions describe essentially a syntax which is very similar to the definition of the method signature in the Java language. The name of the method reference generated is specified
+in the same fashion as has been described above in the specification of the [macro field reference statement](#macro-field-reference-statement).
+
+Examples:
+
+	::lilac
+	const intfmethodref void run() from java/lang/Runnable;
+
+The above statement declares an [interface method reference constant](#interface-method-reference-constant) named **Runnable.run** which specifies a reference to the method **run** in the class **java/lang/Runnable**.
+
+	::lilac
+	const methodref java/io/Writer append(CharSequence s, int start, int end) from  java/io/Writer as writer_append;
+
+The above statement declares an [method reference constant](#method-reference-constant) named **writer_append** which specifies a reference to one of several methods **append** 
+in the class **java/io/Writer**. Note that the references to the class **java/io/Writer** have been specified using a [binary identifier](#binary-identifiers) while for the
+reference to the interface **java/lang/CharSequence** a [class reference constant](#class-reference-statement) has beed used.
 
 	
 	
