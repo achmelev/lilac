@@ -30,7 +30,8 @@ The words of a Java Assembler program fall, like in other programming languages,
 ####Literals
 
 There are four different different literal types: integer literals, floating point literals, string literals and base64 literals. The syntax of the first three is the same as [in the Java language](https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.10).
-A base64 literal is just a [base64 encoded byte sequence](https://de.wikipedia.org/wiki/Base64) enclosed in square brackets.
+A base64 literal is just a [base64 encoded byte sequence](https://de.wikipedia.org/wiki/Base64) enclosed in square brackets. Additionally, there is, like, again, in the Java language, a special **null** - literal, 
+which, when used, stands for a reference pointing to nowhere. 
 
 Here are some examples of a Java assembler literal:
 
@@ -39,6 +40,7 @@ Here are some examples of a Java assembler literal:
 	1234
 	1235.56
     [UG9seWZvbiB6d2l0c2NoZXJuZCBhw59lbiBNw6R4Y2hlbnMgVsO2Z2VsIFLDvGJlbiwgSm9naHVydCB1bmQgUXVhcms=]
+    null
 
 ####Identifiers
 
@@ -408,7 +410,7 @@ Example:
 
 ####Field reference statement
 
-A field reference statement declares a field rerefence constant. It has two arguments. The first argument specifies the name of a [class reference constant](#class-reference-statement) which in turn specifies the actual class or interface owning the field. The second argument specifies the name of a  [name and type constant](#name-and-type-statement) which in turn specifies the name an the type of the field.
+A field reference statement declares a field reference constant. It has two arguments. The first argument specifies the name of a [class reference constant](#class-reference-statement) which in turn specifies the actual class or interface owning the field. The second argument specifies the name of a  [name and type constant](#name-and-type-statement) which in turn specifies the name an the type of the field.
 The syntax of the statement is as follows:
 
 	:::ebnf
@@ -1744,11 +1746,11 @@ of lilac.
 
 There are three different kinds of macros in lilac:
 
-**Constant macros**
+**Macro constant statements**
 
-Those are just shortcuts to reduce the amount of type work necessary to define a constant.
+Those are just shortcuts to reduce the amount of type work necessary to define a [constant](#constant-statements).
 
-For example, the following macro class reference:
+For example, the following macro class reference statement:
 
 	::lilac
 	const classref String java/Lang/String;
@@ -1805,14 +1807,14 @@ or a [binary identifier](#binary-identifiers) which directly specifies the class
 
 ####Macro class reference statement
 
-A macro class reference statement instructs the assembler to create all constants which are necessary to declare a [class reference](#class-reference-statement).
+A macro class reference statement instructs the assembler to create all constants needed to declare a [class reference constant](#class-reference-statement).
 
 The syntax of the statement is as follows:
 
 	::ebnf
 	macro class reference statement = 'const', 'classref', (binary identifier|array type), ['as' name] ;
 	
-If **'as' name** part is present, which is required if a reference to an array type is being declared, then the defined [class constant](#class-reference-statement) will have the name.
+If **'as' name** part is present, which is required if a reference to an array type is being declared, then the defined [class reference constant](#class-reference-statement) will have the name.
 Otherwise the last part of the [binary identifier](#binary-identifiers) will be used as name. 
 	
 Examples:
@@ -1820,12 +1822,46 @@ Examples:
 	::lilac
 	const classref java/lang/String
 	
-The above statement declares a [class constant](#class-reference-statement) **String** which specifies a reference to the class **java.lang.String**
+The above statement declares a [class reference constant](#class-reference-statement) named **String** which specifies a reference to the class **java.lang.String**
 
 	::lilac
 	const classref int[] as int_array;
 	
-The above statement declares a [class constant](#class-reference-statement) **int_array** which specifies a reference to the array type **[I**
+The above statement declares a [class reference constant](#class-reference-statement) named **int_array** which specifies a reference to the array type **[I**
+
+####Macro field reference statement
+
+A macro field reference statement instructs the assembler to create all constants needed to declare a [field reference constant](#field-reference-statement).
+
+The syntax of the statement is as follows:
+
+	::ebnf
+	macro field reference statement = 'const', 'fieldref', java type, field name, 'from', (class constant name|binary identifier), ['as' field reference name] 
+	
+The name of the generated [field reference constant](#field-reference-statement) by which it can be accessed in the rest of the source code is specified in the **'as' field reference name** if available.
+If  **'as' field reference name**  clause is not available, then the name will be generated as  a concatenation of the **class constant name**, a point, and the **field name**, if the
+declaring class of the field is specified by the name of a  [class reference constant](#class-reference-statement). If the declaring class is defined by a  [binary identifier](#binary-identifiers)
+then the last part of this identifier is taken instead and concatenated with a point followed by the **field name**.
+
+Examples:
+
+	::lilac
+	const fieldref String weight from Car;
+	
+The above statement declares a field reference constant named **Car.weight** which specifies a reference to the string field **name** from the (invented) class **com/example/Car**.
+Both the class **java/lang/String** and the class  **com/example/Car** have been specified by [class reference constants](#class-reference-statement).
+
+	::lilac
+	const fieldref String weight from com/example/Car;
+
+The above statement declares again a field reference constant named **Car.weight** which specifies a reference to the string field **name** from the (invented) class **com/example/Car**,
+This time, however, the class  **com/example/Car** has been specified by a [binary identifier](#binary-identifiers).
+
+	::lilac
+	const fieldref String name from com/example/Car as car_weight;
+
+This third variant of the two statements above declares again a field reference constant which specifies a reference to the string field **name** from the (invented) class **com/example/Car**,
+However, the name of the resulting [field reference constant](#field-reference-statement) has been, this time, specified explicitly as **car_weight**.
 
 	
 	
