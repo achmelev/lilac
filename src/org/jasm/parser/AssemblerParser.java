@@ -627,12 +627,9 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	@Override
 	public void enterMacrostringinfo(MacrostringinfoContext ctx) {
 		StringInfoConstantMacro macro = new StringInfoConstantMacro();
-		macro.setName(createSymbolReference(ctx.label(0)));
+		macro.setName(createSymbolReference(ctx.label()));
 		macro.setValue(createStringLiteral(ctx.StringLiteral()));
-		if (ctx.label().size() > 1) {
-			macro.setLabel(createLabel(ctx.label(1).Identifier()));
-		}
-		macro.setSourceLocation(createSourceLocation(ctx.label(0).Identifier()));
+		macro.setSourceLocation(createSourceLocation(ctx.label().Identifier()));
 		addConstantMacro(macro);
 	}
 
