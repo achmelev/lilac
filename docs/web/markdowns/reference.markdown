@@ -571,8 +571,8 @@ A field statement declares a field within a class type. It is a [block statement
 and then by some [field member statements](#field-members) enclosed in curly brackets as defined in the following EBNF expression:
 
     :::ebnf
-	field statement = {field modifier}, 'class', '{',{class member},'}' ;
-	field modifier = 'public'|'final'|'abstract'|'super'|'interface'|'synthetic'|'annotation'|'enum' ;
+	field statement = {field modifier}, 'field', '{',{field member},'}' ;
+	field modifier = 'public'|'private'|'protected'|'static'|'final'|'volatile'|'transient'|'synthetic'|'enum' ;
 	field member = name|descriptor|constant value|signature|synthetic|deprecated|annotation|type annotation|unknown attribute ;
 
 ####Field modifiers
@@ -1784,7 +1784,7 @@ The rest of this chapter covers the syntax and semantics of various macro statem
 
 ###Java type 
 
-The following descriptions of the various macro statements make use of the subconstruct **java type** which is very similar to the type construct in Java as shown in the following EBNF expression:
+The following descriptions of the various macro statements make use of the construct **java type** which is very similar to the type construct in Java itself as specified in the following EBNF expression:
 
 	::ebnf
 	java type = primitive type|class type|array type ;
@@ -1805,14 +1805,28 @@ Examples:
 If a **java type** contains a reference to a class type, this reference can be expressed either as an identifier specifying a [class constant](#class-reference-statement) 
 or a [binary identifier](#binary-identifiers) which directly specifies the class.
 
-####Macro class reference statement
+###Macro string statement
+
+A macro string statement instructs the assembler to create two constants needed to declare a [string constant](#string-statement)
+
+The syntax of the statement is as follows:
+
+	::ebnf
+	macro string statement = 'const', 'string', name, string literal, ';' ;
+
+Example:
+
+	::lilac
+	const string hello_world_str "Hello world!";
+
+###Macro class reference statement
 
 A macro class reference statement instructs the assembler to create all constants needed to declare a [class reference constant](#class-reference-statement).
 
 The syntax of the statement is as follows:
 
 	::ebnf
-	macro class reference statement = 'const', 'classref', (binary identifier|array type), ['as', class reference name] ;
+	macro class reference statement = 'const', 'classref', (binary identifier|array type), ['as', class reference name], ';' ;
 	
 If **'as' class reference name** part is present, which is required if a reference to an array type is being declared, then the defined [class reference constant](#class-reference-statement) will have the name.
 Otherwise the last part of the [binary identifier](#binary-identifiers) will be used as name. 
@@ -1829,14 +1843,14 @@ The above statement declares a [class reference constant](#class-reference-state
 	
 The above statement declares a [class reference constant](#class-reference-statement) named **int_array** which specifies a reference to the array type **[I**
 
-####Macro field reference statement
+###Macro field reference statement
 
 A macro field reference statement instructs the assembler to create all constants needed to declare a [field reference constant](#field-reference-statement).
 
 The syntax of the statement is as follows:
 
 	::ebnf
-	macro field reference statement = 'const', 'fieldref', java type, field name, 'from', (class reference constant name|binary identifier), ['as', field reference name] ; 
+	macro field reference statement = 'const', 'fieldref', java type, field name, 'from', (class reference constant name|binary identifier), ['as', field reference name], ';' ; 
 	
 The name of the generated [field reference constant](#field-reference-statement) by which it can be accessed in the rest of the source code is specified in the **'as' field reference name** if available.
 If  **'as' field reference name**  clause is not available, then the name will be generated as  a concatenation of the **class constant name**, a point, and the **field name**, if the
@@ -1863,14 +1877,14 @@ This time, however, the class  **com/example/Car** has been specified by a [bina
 This third variant of the two statements above declares again a field reference constant which specifies a reference to the string field **name** from the (invented) class **com/example/Car**,
 However, the name of the resulting [field reference constant](#field-reference-statement) has been, this time, specified explicitly as **car_weight**.
 
-####Macro method reference statement
+###Macro method reference statement
 
 A macro method reference statement instructs the assembler to create all constants needed to declare a [method reference constant](#method-reference-statement) or an [interface method reference constant](#interface-method-reference-statement).
 
 The syntax of the statement is as follows:
 
 	::ebnf
-	macro method reference statement = const, ('methodref'|'intfmethodref'), method return type, method name, '(', method parameters,')', 'from', (class reference constant name|binary identifier),['as', method reference name] ;
+	macro method reference statement = const, ('methodref'|'intfmethodref'), method return type, method name, '(', method parameters,')', 'from', (class reference constant name|binary identifier),['as', method reference name], ';' ;
 	method return type = java type|'void' ;
 	method parameters = method parameter, {',', method parameter} ;
 	method parameter = java type, parameter name
@@ -1891,6 +1905,30 @@ The above statement declares an [interface method reference constant](#interface
 The above statement declares an [method reference constant](#method-reference-constant) named **writer_append** which specifies a reference to one of several methods **append** 
 in the class **java/io/Writer**. Note that the references to the class **java/io/Writer** have been specified using a [binary identifier](#binary-identifiers) while for the
 reference to the interface **java/lang/CharSequence** a [class reference constant](#class-reference-statement) has beed used.
+
+###Macro field statement
+
+A macro field statement is a high-level variant of the [field statement](#field-statement) which instructs the assembler to create automatically all constants needed to specify the name and the signature of the field to be declared.
+
+The syntax of the statement is as follows:
+
+	:::ebnf
+	macro field statement = {field modifier}, java type, name , ('{',{field member},'}'|';') ;
+	field modifier = 'public'|'private'|'protected'|'static'|'final'|'volatile'|'transient'|'synthetic'|'enum' ;
+	field member = constant value|signature|synthetic|deprecated|annotation|type annotation|unknown attribute ;
+
+The syntax is a modification of the original [field statement](#field-statement) which replaces the header with a java-like field declaration (omitting the keyword **field**) and allows to terminate the statement
+with **;** when no field members are there. The [field modifiers](#field-modifiers) and [field members](#field-members) are the same as in the original [statement](#field-statement) 
+except for the [name statement](#name-statement) as well as  [descriptor statement](#descriptor-statement) which aren't allowed as members anymore because the name and the descriptor of the field are derived
+from the statement header.
+
+Examples:
+
+	::lilac
+	public int size;
+	private String title {
+		deprecated;
+	}
 
 	
 	
