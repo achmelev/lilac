@@ -48,6 +48,7 @@ public super class {
   public java/lang/String [] string_array_field;
   public String string_field2;
   public String [] string_array_field2;
+  public String 'name';
   
   
    //Methods

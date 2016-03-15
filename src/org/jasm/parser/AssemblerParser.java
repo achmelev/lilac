@@ -2790,24 +2790,24 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 	}
 	
 	private SymbolReference createSymbolReference(TerminalNode node) {
-		return new SymbolReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+		return new SymbolReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), extractId(extractId(node.getText())));
 	}
 	
 	private SymbolReference createSymbolReference(ParserRuleContext context) {
-		return new SymbolReference(context.start.getLine(), context.start.getCharPositionInLine(), context.start.getText());
+		return new SymbolReference(context.start.getLine(), context.start.getCharPositionInLine(), extractId(context.start.getText()));
 	}
 	
 	private SymbolReference createSymbolReference(LabeledIdentifierContext lic) {
 		TerminalNode node = lic.Identifier();
-		SymbolReference result =  new SymbolReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+		SymbolReference result =  new SymbolReference(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), extractId(node.getText()));
 		if (lic.label() != null) {
-			result.setReferenceLabel(lic.label().getText());
+			result.setReferenceLabel(extractId(lic.label().getText()));
 		}
 		return result;
 	}
 	
 	private Label createLabel(TerminalNode node) {
-		return new Label(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), node.getText());
+		return new Label(node.getSymbol().getLine(), node.getSymbol().getCharPositionInLine(), extractId(node.getText()));
 	}
 	
 	private StringLiteral createStringLiteral(TerminalNode node) {
@@ -2850,6 +2850,15 @@ public class AssemblerParser  extends JavaAssemblerBaseListener {
 		JavaTypeLiteral result = new JavaTypeLiteral(context.getStart().getLine(), context.getStart().getCharPositionInLine(), context.getText());
 		result.setParent(parent);
 		return result;
+	}
+	
+	private String extractId(String id) {
+		id = id.trim();
+		if (id.startsWith("'")) {
+			return id.substring(1, id.length()-1);
+		} else {
+			return id;
+		}
 	}
 	
 	

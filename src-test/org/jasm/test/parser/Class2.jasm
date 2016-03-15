@@ -6,7 +6,7 @@ public super abstract class {
   const classref classref_0 utf8_1; // org/jasm/test/testclass/Class2
   const utf8 utf8_1 "org/jasm/test/testclass/Class2";
   const classref classref_2 utf8_3; // java/lang/Object
-  const utf8 utf8_3 "java/lang/Object";
+  const utf8 'utf8_3' "java/lang/Object";
   const utf8 utf8_4 "staticString";
   const utf8 utf8_5 "Ljava/lang/String;";
   const utf8 utf8_6 "finalIntField";
@@ -16,7 +16,7 @@ public super abstract class {
   const utf8 utf8_10 "transientField";
   const utf8 utf8_11 "Ljava/lang/Boolean;";
   const utf8 utf8_12 "constInt";
-  const int int_13 1;
+  const int 'int_13' 1;
   const utf8 utf8_14 "<clinit>";
   const utf8 utf8_15 "()V";
   const utf8 utf8_16 "Code";
@@ -27,7 +27,7 @@ public super abstract class {
   const utf8 utf8_21 "LineNumberTable";
   const utf8 utf8_22 "LocalVariableTable";
   const utf8 utf8_23 "<init>";
-  const methodref methodref_24 classref_2, nameandtype_25; // class=java/lang/Object, name=<init>, descriptor=()V
+  const methodref 'methodref_24' 'classref_2', nameandtype_25; // class=java/lang/Object, name=<init>, descriptor=()V
   const nameandtype nameandtype_25 utf8_23, utf8_15; // name=<init> type=()V
   const fieldref fieldref_26 classref_0, nameandtype_27; // class=org/jasm/test/testclass/Class2, name=finalIntField, descriptor=I
   const nameandtype nameandtype_27 utf8_6, utf8_7; // name=finalIntField type=I
@@ -135,18 +135,18 @@ public super abstract class {
     inner classref_56; // org/jasm/test/testclass/Class2$1
   }
   private inner class {
-    inner classref_125; // org/jasm/test/testclass/Class2$InnerClass
+    inner 'classref_125'; // org/jasm/test/testclass/Class2$InnerClass
     outer classref_0; // org/jasm/test/testclass/Class2
     name utf8_127; // InnerClass
   }
    //Fields
   public static field {
-    name utf8_4; // staticString
+    name 'utf8_4'; // staticString
     descriptor utf8_5; // Ljava/lang/String;
   }
   private final field {
     name utf8_6; // finalIntField
-    descriptor utf8_7; // I
+    descriptor 'utf8_7'; // I
     constant value int_9; // 0
   }
   protected transient field {
@@ -169,7 +169,7 @@ public super abstract class {
     maxstack 1;
     maxlocals 0;
     //Instructions
-    ir0: ldc string_17; // "HELLO \n \u00C4 WORLD"
+    ir0: ldc 'string_17'; // "HELLO \n \u00C4 WORLD"
     putstatic fieldref_19; // class=org/jasm/test/testclass/Class2, name=staticString, descriptor=Ljava/lang/String;
     ir5: return;
   }
@@ -177,13 +177,13 @@ public super abstract class {
     name utf8_23; // <init>
     descriptor utf8_15; // ()V
     line numbers {
-      line ir0, 3;
+      line 'ir0', 3;
       line ir4, 7;
       line ir9, 9;
       line ir17, 3;
     }
     debug vars {
-      var a_0, ir0, utf8_36, utf8_37; // name=this,  descriptor=Lorg/jasm/test/testclass/Class2;
+      var a_0, ir0, utf8_36, 'utf8_37'; // name=this,  descriptor=Lorg/jasm/test/testclass/Class2;
     }
     maxstack 2;
     maxlocals 1;

@@ -1568,6 +1568,7 @@ class LilacLexer(RegexLexer):
 			(r'(aaload|aastore|aconst_null|aload|anewarray|areturn|arraylength|astore|athrow|baload|bastore|bipush|caload|castore|checkcast|d2f|d2i|d2l|dadd|daload|dastore|dcmpg|dcmpl|dconst_0|dconst_1|ddiv|dload|dmul|dneg|drem|dreturn|dstore|dsub|dup|dup2|dup2_x1|dup2_x2|dup_x1|dup_x2|f2d|f2i|f2l|fadd|faload|fastore|fcmpg|fcmpl|fconst_0|fconst_1|fconst_2|fdiv|fload|fmul|fneg|frem|freturn|fstore|fsub|getfield|getstatic|goto|goto_w|i2b|i2c|i2d|i2f|i2l|i2s|iadd|iaload|iand|iastore|iconst_0|iconst_1|iconst_2|iconst_3|iconst_4|iconst_5|iconst_m1|idiv|if_acmpeq|if_acmpne|if_icmpeq|if_icmpge|if_icmpgt|if_icmple|if_icmplt|if_icmpne|ifeq|ifge|ifgt|ifle|iflt|ifne|ifnonnull|ifnull|iinc|iload|imul|ineg|instanceof|invokedynamic|invokeinterface|invokespecial|invokestatic|invokevirtual|ior|irem|ireturn|ishl|ishr|istore|isub|iushr|ixor|jsr|jsr_w|l2d|l2f|l2i|ladd|laload|land|lastore|lcmp|lconst_0|lconst_1|ldc|ldc2|ldc2_w|ldiv|lload|lmul|lneg|lookupswitch|lor|lrem|lreturn|lshl|lshr|lstore|lsub|lushr|lxor|monitorenter|monitorexit|multianewarray|new|newarray|nop|pop|pop2|putfield|putstatic|ret|return|saload|sastore|sipush|swap|tableswitch|wide)\b',Name.Function),
 			(r'([a-zA-Z_\$][a-zA-Z0-9_\$]*)(\.[a-zA-Z_\$][a-zA-Z0-9_\$]*)*', Name.Variable),
 			(r'([a-zA-Z_\$][a-zA-Z0-9_\$]*)(\/[a-zA-Z_\$][a-zA-Z0-9_\$]*)*', Name.Variable),
+			(r'(\'[a-zA-Z_\$][a-zA-Z0-9_\$]*)\'', Name.Variable),
 			(r'"(\\\\|\\"|[^"])*"', String),
 			(r'[0-9][0-9]*\.[0-9]+([eE][0-9]+)?[fd]?', Number.Float),
             (r'0x[0-9a-fA-F]+', Number.Hex),

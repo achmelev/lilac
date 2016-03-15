@@ -929,7 +929,9 @@ RSQUAREBRACE     : ']';
 
 // Identifiers
 
-Identifier: SimpleIdentifier ('.' SimpleIdentifier)*;
+Identifier: QuotedIdentifier|UnquotedIdentifier;
+QuotedIdentifier: '\'' SimpleIdentifier '\'';
+UnquotedIdentifier: SimpleIdentifier ('.' SimpleIdentifier)*;
 
 BuiltInMacroIdentifier: '.' SimpleIdentifier;
 
