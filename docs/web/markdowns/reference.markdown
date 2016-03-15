@@ -1935,8 +1935,48 @@ Examples:
 		deprecated;
 	}
 
+###Macro method statement	
+
+A macro method statement is a high-level variant of the [method statement](#method-statement) which instructs the assembler to create automatically all constants needed to specify the name and the signature of the method to be declared.
+
+
+
+	:::ebnf
+	macro method statement = {method modifier}, method name, '(', method parameters,')', ('{',{method member},'}' | ';' ) ;
+	method return type = java type|'void' ;
+	method parameters = method parameter, {',', method parameter} ;
+	method parameter = java type, parameter name ;
+	method modifier = 'public'|'private'|'protected'|'static'|'final'|'synchronized'|'bridge'|'varargs'|'native'|'abstract'|'strict'|'synthetic' ;
+	method member = exception|signature|synthetic|deprecated|annotation|parameter annotation|type annotation|annotation default|stack map|unknown attribute|variable|instruction|exception handler|line number table|variable table|variable type table|max stack|max locals;
+
+The syntax is a modification of the original [method statement](#method-statement) which replaces the header with a java-like method declaration (omitting the keyword **method**) and allows to terminate the statement
+with **;** when no method members are there. The [method modifiers](#method-modifiers) and [method members](#method-members) are the same as in the original [statement](#method-statement) 
+except for the [name statement](#name-statement) as well as  [descriptor statement](#descriptor-statement) which aren't allowed as members anymore because the name and the descriptor of the field are derived
+from the statement header.	Note that additionally to valid [java identifiers](https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.8) special words **<init>** and **<clinit>** can be used as
+**method name** to declare constructors and static initializers.
+
+Examples:
+
+	::lilac
+	static <clinit>() {
+        line numbers {
+          line ir0, 129;
+          line ir7, 1171;
+        }
+        maxstack 3;
+        //Instructions
+        ir0: iconst_0;
+        anewarray ObjectStreamField;
+        putstatic serialPersistentFields;
+        ir7: new String$CaseInsensitiveComparator;
+        dup;
+        aconst_null;
+        invokespecial String$CaseInsensitiveComparator.init0;
+        putstatic CASE_INSENSITIVE_ORDER;
+        return;
+    }
 	
-	
+	public abstract void init(String title);
 	
 
  
