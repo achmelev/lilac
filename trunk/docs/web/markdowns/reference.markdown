@@ -47,6 +47,8 @@ Here are some examples of a Java assembler literal:
 The syntax of a Java assembler identifier is defined as follows:
 
 	:::ebnf
+	identifier = quoted_identifier|unquoted_identifier;
+	quoted_identifier = "'", javaidentifier, "'";
 	identifier = javaidentifier, {'.' javaidentifier} ;
 
 A **javaidentifier** from the definition above is a Java language identifier [as defined in the Java Language specification](https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.8).
@@ -55,10 +57,13 @@ Here are some examples of a valid Java assembler identifier:
 
 	:::lilac
 	this
+	'name'
 	out
 	in_12
 	this$0
 	System.out
+
+**Note:** to avoid conflict with assembler keywords (which aren't the same as in java) it's possible to use single quotes around an identifier. 
 
 ####Binary Identifiers
 
@@ -1860,22 +1865,22 @@ then the last part of this identifier is taken instead and concatenated with a p
 Examples:
 
 	::lilac
-	const fieldref String weight from Car;
+	const fieldref String 'name' from Car;
 	
-The above statement declares a field reference constant named **Car.weight** which specifies a reference to the string field **name** from the (invented) class **com/example/Car**.
+The above statement declares a field reference constant named **Car.name** which specifies a reference to the string field **name** from the (invented) class **com/example/Car**.
 Both the class **java/lang/String** and the class  **com/example/Car** have been specified by [class reference constants](#class-reference-statement).
 
 	::lilac
-	const fieldref String weight from com/example/Car;
+	const fieldref String 'name' from com/example/Car;
 
-The above statement declares again a field reference constant named **Car.weight** which specifies a reference to the string field **name** from the (invented) class **com/example/Car**,
+The above statement declares again a field reference constant named **Car.name** which specifies a reference to the string field **name** from the (invented) class **com/example/Car**,
 This time, however, the class  **com/example/Car** has been specified by a [binary identifier](#binary-identifiers).
 
 	::lilac
-	const fieldref String name from com/example/Car as car_weight;
+	const fieldref String 'name' from com/example/Car as car_name;
 
 This third variant of the two statements above declares again a field reference constant which specifies a reference to the string field **name** from the (invented) class **com/example/Car**,
-However, the name of the resulting [field reference constant](#field-reference-statement) has been, this time, specified explicitly as **car_weight**.
+However, the name of the resulting [field reference constant](#field-reference-statement) has been, this time, specified explicitly as **car_name**.
 
 ###Macro method reference statement
 
