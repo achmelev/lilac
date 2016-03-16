@@ -131,7 +131,7 @@ This is illustrated in the following example where the [if_acmpne instruction](#
 
 ####Statements
 
-On the syntactic level a Java assembler program is a sequence of **statements**, which come in three flavors: **simple statements** and **block statements** and **macros**.
+On the syntactic level a Java assembler program is a sequence of **statements**, which come in three flavors: **simple statements** and **block statements** and **macro instructions**.
  
 A block statement generally consists of some keywords followed by a sequence of **member statements** enclosed in curly brackets as illustrated in the following
 example:
@@ -164,7 +164,7 @@ seen as a [forest](http://en.wikipedia.org/wiki/Tree_%28graph_theory%29) of stat
 Because on the semantic level there is an additional requirement, that a Java assembler source file contains exactly one [class statement](#class-statement), 
 this [forest](http://en.wikipedia.org/wiki/Tree_%28graph_theory%29) is in fact just a tree with the [class statement](#class-statement) at the root.
 
-The syntax of [macros](#macros) will be introduced below in an extra [chapter](#macros) on the topic.
+The syntax of [macro instructions](#macro-instructions) will be introduced below in an extra [chapter](#macros) on the topic.
 
 ##Language Statements
 
@@ -1938,7 +1938,8 @@ Examples:
 ###Macro method statement	
 
 A macro method statement is a high-level variant of the [method statement](#method-statement) which instructs the assembler to create automatically all constants needed to specify the name and the signature of the method to be declared.
-
+Additionally the statement generates local variables corresponding to method parameters as well as the special variable **this** which can then be used as parameters in subsequent instructions just like 
+ordinary [variables](#variable-statement).
 
 
 	:::ebnf
@@ -1954,6 +1955,7 @@ with **;** when no method members are there. The [method modifiers](#method-modi
 except for the [name statement](#name-statement) as well as  [descriptor statement](#descriptor-statement) which aren't allowed as members anymore because the name and the descriptor of the field are derived
 from the statement header.	Note that additionally to valid [java identifiers](https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.8) special words **<init>** and **<clinit>** can be used as
 **method name** to declare constructors and static initializers.
+
 
 Examples:
 
@@ -1977,6 +1979,54 @@ Examples:
     }
 	
 	public abstract void init(String title);
+
+###Macro instructions
+
+Macro instructions tell the assembler to create a particular sequence of instructions together with possibly needed constants to perform an operation. The syntax and the semantics of a [macro instruction call](#macro-instruction-statement)
+are similar to a call of a function/method in other program languages. 
+
+A macro instruction usually expects some parameters of a particular type, which are specified in the [macro instruction call](#macro-instruction-statement), 
+and may return after it's execution a value which is pushed on the stack of JVM and may be used by subsequent instructions.
+
+At the moment only [built-in macro instructions](#TODO) can be used as there is no way to extend the assembler with own macro instructions (apart from extending the source code of lilac itself).
+
+####Macro instruction statement
+
+A macro instruction statement instructs the assembler to generate a sequence of instructions and the constants as defined by a particular [built-in macro instruction](#TODO). 
+
+The syntax of a macro instruction statement is as follows:
+
+	::ebnf
+	macro instruction statement = macro instruction identifier, '(',[macro instruction parameters], ')' ;
+	macro instruction parameters = macro instruction parameter, {macro instruction parameter} ;
+	macro instruction parameter = [cast expression], (constant name|field name|variable name|literal|macro instruction statement)
+
+Some important remarks to the above definition:
+
+* Different from a [simple statement](#statements) a macro instruction statement uses parentheses to group parameters together, just like in Java.
+* A macro instruction identifier starts (by convention) with a point.
+* The following entities may be used as parameters of a macro instruction statement: literals, local variables, constants (including field and method references), local field names, macro instructions
+* Macro instruction statements (or rather their return values) may used in a recursive fashion as parameters of another macro instruction statements.
+* As macro instructions may (and usually do) expect parameters of a particular type cast expressions may be used to tell the assembler to generate the necessary [type conversion](#macro-parameter-type-conversions) instructions.
+
+Examples
+	
+	::lilac
+	.invokevirtual(concat,this,.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8);
+	
+####Macro parameter type conversions
+
+While generating the sequence of instructions for a macro instruction the assembler tries to perform the necessary type conversions of parameters, such as boxing and unboxing, numerical conversions, string conversions
+etc. on the fly. Additionally it is possible to state a type conversion explicitly via a cast expression ( see [above](#macro-instruction-statement) ). 
+Note however that the assembler doesn't check if the specified conversion is really possible, so that generated instructions my still be rejected later in the verification phase either by the assembler itself 
+or by the JVM. 
+A further important point to note is that the assembler **doesn't** derive the type of the local variables corresponding to the current method parameters from the method signature, because the variable's 
+content can always be changed while the method executes.
+
+	
+
+
+
 	
 
  
