@@ -7,6 +7,7 @@ import java.util.Properties;
 import org.apache.commons.io.IOUtils;
 import org.jasm.environment.Environment;
 import org.jasm.item.clazz.Clazz;
+import org.jasm.item.instructions.macros.builtin.BuiltinMacroFactory;
 import org.jasm.loader.AssemblerClassLoaderException;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.parser.IParserErrorListener;
@@ -66,6 +67,7 @@ public class AssemblerTask implements Task, IParserErrorListener {
 			
 			parser = new AssemblerParser();
 			parser.addErrorListener(this);
+			parser.setMacroFactory(new BuiltinMacroFactory());
 			Clazz clazz =  parser.parse(this.resource.createInputStream());
 			if (parser.getErrorCounter() > 0) {
 				parser.flushErrors();

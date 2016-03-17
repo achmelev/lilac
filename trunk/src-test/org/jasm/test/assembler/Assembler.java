@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import org.jasm.bytebuffer.ByteArrayByteBuffer;
 import org.jasm.item.clazz.Clazz;
+import org.jasm.item.instructions.macros.builtin.BuiltinMacroFactory;
 import org.jasm.loader.AssemblerClassLoaderException;
 import org.jasm.parser.AssemblerParser;
 import org.jasm.parser.SimpleParserErrorListener;
@@ -55,6 +56,7 @@ public class Assembler {
 	protected static byte[] assemble(InputStream inp,  String rName) {
 		AssemblerParser parser = new AssemblerParser();
 		parser.addErrorListener(new SimpleParserErrorListener());
+		parser.setMacroFactory(new BuiltinMacroFactory());
 		Clazz clazz =  parser.parse(inp);
 		if (parser.getErrorCounter() > 0) {
 			parser.flushErrors();
