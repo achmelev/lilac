@@ -1992,9 +1992,11 @@ At the moment only [built-in macro instructions](#TODO) can be used as there is 
 
 ####Macro instruction statement
 
-A macro instruction statement instructs the assembler to generate a sequence of instructions and the constants as defined by a particular [built-in macro instruction](#TODO). 
+A macro instruction statement instructs the assembler to generate a sequence of instructions and the constants as defined by a particular [built-in macro instruction](#built-in-macro-instructions). 
+Per convention this sequence of instructions will never change the values on the JVM stack except for pushing the result (a.k.a return value) of the macro instruction on the top of it.
+Some macro instructions don't have a return value and so don't change the JVM stack at all.   
 
-The syntax of a macro instruction statement is as follows:
+The general syntax of a macro instruction statement is as follows:
 
 	::ebnf
 	macro instruction statement = macro instruction identifier, '(',[macro instruction parameters], ')' ;
@@ -2022,6 +2024,35 @@ Note however that the assembler doesn't check if the specified conversion is rea
 or by the JVM. 
 A further important point to note is that the assembler **doesn't** derive the type of the local variables corresponding to the current method parameters from the method signature, because the variable's 
 content can always be changed while the method executes.
+
+###Built-in macro instructions
+
+This following sections describe one after another lilac's built-in macro instructions: their purpose, parameters and, where appropriate, return value. As already said above the return value of a
+macro instruction will be pushed onto the JVM stack.
+
+####.getfield
+
+**Syntax:**
+
+_.getfield(instance?, field reference)_
+
+**Purpose:**
+
+Obtains the value from a field.
+
+**Parameters:**
+
+_instance_ - the object to which the field to obtain belongs. This parameter is omitted if the field is static  
+_field reference_ - the field reference or a local field name which specfies the field to to obtain.
+
+**Returns:**
+
+The field's value.
+
+**Example:**
+
+	::lilac
+	.getfield(System.out);
 
 	
 
