@@ -1988,7 +1988,7 @@ are similar to a call of a function/method in other program languages.
 A macro instruction usually expects some parameters of a particular type, which are specified in the [macro instruction call](#macro-instruction-statement), 
 and may return after it's execution a value which is pushed on the stack of JVM and may be used by subsequent instructions.
 
-At the moment only [built-in macro instructions](#TODO) can be used as there is no way to extend the assembler with own macro instructions (apart from extending the source code of lilac itself).
+At the moment only [built-in macro instructions](#built-in-macro-instructions) can be used as there is no way to extend the assembler with own macro instructions (apart from extending the source code of lilac itself).
 
 ####Macro instruction statement
 
@@ -2007,15 +2007,19 @@ Some important remarks to the above definition:
 
 * Different from a [simple statement](#statements) a macro instruction statement uses parentheses to group parameters together, just like in Java.
 * A macro instruction identifier starts (by convention) with a point.
-* The following entities may be used as parameters of a macro instruction statement: literals, local variables, constants (including field and method references), local field names, macro instructions
+* The following entities may be used as parameters of a macro instruction statement: literals, local variables, constants (including field and method references), local fields  (referred to by their names), results of other macro instructions
 * Macro instruction statements (or rather their return values) may used in a recursive fashion as parameters of another macro instruction statements.
 * As macro instructions may (and usually do) expect parameters of a particular type cast expressions may be used to tell the assembler to generate the necessary [type conversion](#macro-parameter-type-conversions) instructions.
+
+**Note:** [field references](#field-reference-statement) and local fields as parameters of a macro instruction don't refer to the field's current value but to the field itself. To use a field's value as a macro instruction
+parameter you have to use the built-in macro instruction [.getfield](#getfield) 
 
 Examples
 	
 	::lilac
 	.invokevirtual(concat,this,.invokevirtual(toString,this),(Byte)arg1,(Boolean)arg2,(Char)arg3,(Double)arg4,(Float)arg5,(Int)arg6,(Long)arg7,(Short)arg8);
-	
+
+
 ####Macro parameter type conversions
 
 While generating the sequence of instructions for a macro instruction the assembler tries to perform the necessary type conversions of parameters, such as boxing and unboxing, numerical conversions, string conversions
@@ -2042,8 +2046,8 @@ Obtains the value from a field.
 
 **Parameters:**
 
-_instance_ - the object to which the field to obtain belongs. This parameter is omitted if the field is static  
-_field reference_ - the field reference or a local field name which specfies the field to to obtain.
+_instance_ - the object to which the field to obtain belongs. This parameter is omitted if the field is static.  
+_field reference_ - the field reference or a local field name which specfies the field to obtain.
 
 **Returns:**
 
@@ -2053,6 +2057,31 @@ The field's value.
 
 	::lilac
 	.getfield(System.out);
+
+####.putfield
+
+**Syntax:**
+
+_.putfield(instance?, field reference, value)_
+
+**Purpose:**
+
+Sets the value of a field.
+
+**Parameters:**
+
+_instance_ - the object to which the field to set belongs. This parameter is omitted if the field is static.  
+_field reference_ - the field reference or a local field name which specfies the field to to set.
+_value_ - value to which the field should be set.
+
+**Returns:**
+
+The field's value.
+
+**Example:**
+
+	::lilac
+	.putfield(this, name, "Max");
 
 	
 
