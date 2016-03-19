@@ -2071,7 +2071,7 @@ Sets the value of a field.
 **Parameters:**
 
 _instance_ - the object to which the field to set belongs. This parameter is omitted if the field is static.  
-_field reference_ - the field reference or a local field name which specfies the field to to set.
+_field reference_ - the field reference or a local field name which specfies the field to set.
 _value_ - value to which the field should be set.
 
 **Returns:**
@@ -2082,6 +2082,107 @@ The field's value.
 
 	::lilac
 	.putfield(this, name, "Max");
+
+####.invokevirtual
+
+**Syntax:**
+
+_.invokevirtual(method reference, instance?, ...parameters)_
+
+**Purpose:**
+
+Invokes a non-static, non-private method on a class instance.
+
+**Parameters:**
+
+_method reference_ - the method reference or a local method name which specfies the method to invoke.  
+_instance_ - the instance on which to invoke the method.  
+_parameters_ - parameters to pass to the method.
+
+**Returns:**
+
+The result of the invocation or nothing if the method is **void**
+
+**Example:**
+
+	::lilac
+	.invokevirtual(Object.equals, this, object2);
+
+####.invokeinterface
+
+**Syntax:**
+
+_.invokeinterface(interface method reference, instance?, ...parameters)_
+
+**Purpose:**
+
+Invokes an interface method on an interface instance.
+
+**Parameters:**
+
+_interface method reference_ - the interface method reference which specfies the method to invoke.  
+_instance_ - the instance on which to invoke the method.  
+_parameters_ - parameters to pass to the method
+
+**Returns:**
+
+The result of the invocation or nothing if the method is **void**
+
+**Example:**
+
+	::lilac
+	.invokeinterface(Comparable.compareTo, this, object2);
+
+
+####.invokespecial
+
+**Syntax:**
+
+_.invokespecial(method reference, instance?, ...parameters)_
+
+**Purpose:**
+
+Invokes a private non-static method on a class instance.
+
+**Parameters:**
+
+_method reference_ - the method reference or local method name which specfies the method to invoke.  
+_instance_ - the instance on which to invoke the method.  
+_parameters_ - parameters to pass to the method
+
+**Returns:**
+
+The result of the invocation or nothing if the method is **void**
+
+**Example:**
+
+	::lilac
+	.invokespecial(initialize, this, 1,2,"Max");
+
+####.invokestatic
+
+**Syntax:**
+
+_.invokestatic(method reference, ...parameters)_
+
+**Purpose:**
+
+Invokes a static method.
+
+**Parameters:**
+
+_method reference_ - the method reference or local method name which specfies the method to invoke.  
+_parameters_ - parameters to pass to the method
+
+**Returns:**
+
+The result of the invocation or nothing if the method is **void**
+
+**Example:**
+
+	::lilac
+	.invokestatic(Integer.parseInt, "12",10);
+
 
 	
 
