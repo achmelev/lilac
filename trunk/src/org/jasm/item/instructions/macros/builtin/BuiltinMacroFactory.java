@@ -19,8 +19,6 @@ public class BuiltinMacroFactory implements IMacroFactory {
 		} else if (name.equals(".invokevirtual")) {
 			return new InvokeMacro(OpCodes.invokevirtual);
 		} else if (name.equals(".invokeinterface")) {
-			return new InvokeMacro(OpCodes.invokeinterface);	
-		} else if (name.equals(".invokeinterface")) {
 			return new InvokeMacro(OpCodes.invokeinterface);
 		} else if (name.equals(".invokespecial")) {
 			return new InvokeMacro(OpCodes.invokespecial);
