@@ -2,8 +2,8 @@
 
 Lilac Version 1.1 available for download from [http://sourceforge.net/projects/lilac/files/Release1.1](http://sourceforge.net/projects/lilac/files/Release1.1/)
 
-* A major new feature inttriduced - [macros](reference.html#macros). See also a [code example](example_helloworld_macros.html).
-* [Identifiers](reference.html#identifiers) can now bew quoted to avoid conflicts with assembler keywords.
+* A major new feature introduced - [macros](reference.html#macros). See also a [code example](example_helloworld_macros.html).
+* [Identifiers](reference.html#identifiers) can now be quoted to avoid conflicts with assembler keywords.
 
 
 
