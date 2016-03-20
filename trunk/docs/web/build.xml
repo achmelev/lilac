@@ -93,6 +93,13 @@
 			<param name="description" value="A java assembler programm which calculates a sum of numbers" />
 		 </antcall>
 		
+		<antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_dummy"/>
+			<param name="markdownFile" value="markdowns/example_helloworld_macros.markdown"/>
+			<param name="title" value="Lilac - Code example - Hello world with macros"/>
+			<param name="description" value="A 'Hello World' java assembler programm with macros"/>
+		 </antcall>
+		
 	</target>
 	
 	<target name="generate-markdown">
