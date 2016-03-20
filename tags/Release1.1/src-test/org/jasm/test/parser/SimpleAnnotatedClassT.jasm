@@ -1,0 +1,121 @@
+public super class {
+  version 52.0;
+  name classref_0; // org/jasm/test/testclass/SimpleAnnotatedClassT
+  extends classref_2; // java/lang/Object
+  implements impl:classref_4; // org/jasm/test/testclass/SimpleAnnotatedInterface
+   //Constants
+  const classref classref_0 utf8_1; // org/jasm/test/testclass/SimpleAnnotatedClassT
+  const utf8 utf8_1 "org/jasm/test/testclass/SimpleAnnotatedClassT";
+  const classref classref_2 utf8_3; // java/lang/Object
+  const utf8 utf8_3 "java/lang/Object";
+  const classref classref_4 utf8_5; // org/jasm/test/testclass/SimpleAnnotatedInterface
+  const utf8 utf8_5 "org/jasm/test/testclass/SimpleAnnotatedInterface";
+  const utf8 utf8_6 "<init>";
+  const utf8 utf8_7 "()V";
+  const utf8 utf8_8 "Code";
+  const methodref methodref_9 classref_2, nameandtype_10; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype nameandtype_10 utf8_6, utf8_7; // name=<init> type=()V
+  const utf8 utf8_11 "LineNumberTable";
+  const utf8 utf8_12 "LocalVariableTable";
+  const utf8 utf8_13 "this";
+  const utf8 utf8_14 "Lorg/jasm/test/testclass/SimpleAnnotatedClassT;";
+  const utf8 utf8_15 "annotatedMethod";
+  const utf8 utf8_16 "(I)V";
+  const utf8 utf8_17 "a";
+  const utf8 utf8_18 "I";
+  const utf8 utf8_19 "annotatedMethodWithParameters";
+  const utf8 utf8_20 "(IDF)V";
+  const utf8 utf8_21 "b";
+  const utf8 utf8_22 "D";
+  const utf8 utf8_23 "c";
+  const utf8 utf8_24 "F";
+  const utf8 utf8_25 "simpleMethod";
+  const utf8 utf8_26 "Exceptions";
+  const classref classref_27 utf8_28; // java/lang/RuntimeException
+  const utf8 utf8_28 "java/lang/RuntimeException";
+  const utf8 utf8_29 "SourceFile";
+  const utf8 utf8_30 "SimpleAnnotatedClassT.java";
+  const utf8 utf8_31 "RuntimeVisibleAnnotations";
+  const utf8 utf8_32 "Lorg/jasm/test/testclass/EmptyAnnotation;";
+  source file utf8_30; // SimpleAnnotatedClassT.java
+  annotation {
+    type utf8_32; // Lorg/jasm/test/testclass/EmptyAnnotation;
+  }
+   //Fields
+   //Methods
+  public method {
+    name utf8_6; // <init>
+    descriptor utf8_7; // ()V
+    line numbers {
+      line ir0, 4;
+    }
+    debug vars {
+      var a_0, ir0, utf8_13, utf8_14; // name=this,  descriptor=Lorg/jasm/test/testclass/SimpleAnnotatedClassT;
+    }
+    maxstack 1;
+    maxlocals 1;
+    //Variables
+    var object a_0;
+    //Instructions
+    ir0: aload a_0;
+    invokespecial methodref_9; // class=java/lang/Object, name=<init>, descriptor=()V
+    return;
+  }
+  public method {
+    name utf8_15; // annotatedMethod
+    descriptor utf8_16; // (I)V
+    line numbers {
+      line ir0, 10;
+    }
+    debug vars {
+      var a_0, ir0, utf8_13, utf8_14; // name=this,  descriptor=Lorg/jasm/test/testclass/SimpleAnnotatedClassT;
+      var i_1, ir0, utf8_17, utf8_18; // name=a,  descriptor=I
+    }
+    maxstack 0;
+    maxlocals 2;
+    //Variables
+    var object a_0;
+    var int i_1;
+    //Instructions
+    ir0: return;
+  }
+  public method {
+    name utf8_19; // annotatedMethodWithParameters
+    descriptor utf8_20; // (IDF)V
+    line numbers {
+      line ir0, 16;
+    }
+    debug vars {
+      var a_0, ir0, utf8_13, utf8_14; // name=this,  descriptor=Lorg/jasm/test/testclass/SimpleAnnotatedClassT;
+      var i_1, ir0, utf8_17, utf8_18; // name=a,  descriptor=I
+      var d_2, ir0, utf8_21, utf8_22; // name=b,  descriptor=D
+      var f_4, ir0, utf8_23, utf8_24; // name=c,  descriptor=F
+    }
+    maxstack 0;
+    maxlocals 5;
+    //Variables
+    var object a_0;
+    var int i_1;
+    var double d_2;
+    var float f_4;
+    //Instructions
+    ir0: return;
+  }
+  public method {
+    name utf8_25; // simpleMethod
+    descriptor utf8_7; // ()V
+    throws thr1: classref_27, classref_27; // java/lang/RuntimeException
+    line numbers {
+      line ir0, 20;
+    }
+    debug vars {
+      var a_0, ir0, utf8_13, utf8_14; // name=this,  descriptor=Lorg/jasm/test/testclass/SimpleAnnotatedClassT;
+    }
+    maxstack 0;
+    maxlocals 1;
+    //Variables
+    var object a_0;
+    //Instructions
+    ir0: return;
+  }
+}

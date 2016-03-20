@@ -1,0 +1,57 @@
+super class {
+  version 51.0;
+  name classref_0; // org/jasm/test/testclass/Class2$1
+  extends classref_2; // java/lang/Object
+  implements classref_4; // java/lang/Runnable
+   //Constants
+  const classref classref_0 utf8_1; // org/jasm/test/testclass/Class2$1
+  const utf8 utf8_1 "org/jasm/test/testclass/Class2$1";
+  const classref classref_2 utf8_3; // java/lang/Object
+  const utf8 utf8_3 "java/lang/Object";
+  const classref classref_4 utf8_5; // java/lang/Runnable
+  const utf8 utf8_5 "java/lang/Runnable";
+  const utf8 utf8_6 "this$0";
+  const utf8 utf8_7 "Lorg/jasm/test/testclass/Class2;";
+  const utf8 utf8_8 "<init>";
+  const utf8 utf8_9 "(Lorg/jasm/test/testclass/Class2;)V";
+  const utf8 utf8_10 "Code";
+  const fieldref fieldref_11 classref_0, nameandtype_12; // class=org/jasm/test/testclass/Class2$1, name=this$0, descriptor=Lorg/jasm/test/testclass/Class2;
+  const nameandtype nameandtype_12 utf8_6, utf8_7; // name=this$0 type=Lorg/jasm/test/testclass/Class2;
+  const methodref methodref_13 classref_2, nameandtype_14; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype nameandtype_14 utf8_8, utf8_15; // name=<init> type=()V
+  const utf8 utf8_15 "()V";
+  const utf8 utf8_16 "LineNumberTable";
+  const utf8 utf8_17 "LocalVariableTable";
+  const utf8 utf8_18 "this";
+  const utf8 utf8_19 "Lorg/jasm/test/testclass/Class2$1;";
+  const utf8 utf8_20 "run";
+  const utf8 utf8_21 "SourceFile";
+  const utf8 utf8_22 "Class2.java";
+  const utf8 utf8_23 "EnclosingMethod";
+  const classref classref_24 utf8_25; // org/jasm/test/testclass/Class2
+  const utf8 utf8_25 "org/jasm/test/testclass/Class2";
+  const nameandtype nameandtype_26 utf8_27, utf8_15; // name=methodWithAnonymousClass type=()V
+  const utf8 utf8_27 "methodWithAnonymousClass";
+  const utf8 utf8_28 "InnerClasses";
+  source file utf8_22; // Class2.java
+  enclosing method classref_24, nameandtype_26; // org/jasm/test/testclass/Class2, methodWithAnonymousClass ()V
+  inner class {
+    inner classref_0; // org/jasm/test/testclass/Class2$1
+  }
+   //Fields
+  final synthetic field {
+    name utf8_6; // this$0
+    descriptor utf8_7; // Lorg/jasm/test/testclass/Class2;
+  }
+   //Methods
+  method {
+    name utf8_8; // <init>
+    descriptor utf8_9; // (Lorg/jasm/test/testclass/Class2;)V
+    
+    
+  }
+  public method {
+    name utf8_20; // run
+    descriptor utf8_15; // ()V
+  }
+}

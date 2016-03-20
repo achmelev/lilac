@@ -1,0 +1,116 @@
+public super class {
+  version 50.0;
+  name StackmapExecutable; // org/jasm/test/playground/StackmapExecutable
+  extends Object; // java/lang/Object
+  implements IExecutable; // org/jasm/test/playground/IExecutable
+   //Constants
+  const classref StackmapExecutable StackmapExecutable_name; 
+  const utf8 StackmapExecutable_name "org/jasm/test/playground/StackmapExecutable";
+  const classref Object Object_name; 
+  const utf8 Object_name "java/lang/Object";
+  const classref IExecutable IExecutable_name; 
+  const utf8 IExecutable_name "org/jasm/test/playground/IExecutable";
+  const utf8 init0_name "<init>";
+  const utf8 method_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref init0 Object, init0_nat; 
+  const nameandtype init0_nat init0_name, method_desc; 
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/StackmapExecutable;";
+  const utf8 execute_name "execute";
+  const fieldref out System, out_nat; 
+  const classref System System_name; 
+  const utf8 System_name "java/lang/System";
+  const nameandtype out_nat out_name, out_desc; 
+  const utf8 out_name "out";
+  const utf8 out_desc "Ljava/io/PrintStream;";
+  const methodref println PrintStream, println_nat; 
+  const classref PrintStream PrintStream_name;
+  const utf8 PrintStream_name "java/io/PrintStream";
+  const nameandtype println_nat println_name, println_desc; 
+  const utf8 println_name "println";
+  const utf8 println_desc "(Ljava/lang/String;)V";
+  const utf8 i_name "i";
+  const utf8 i_desc "I";
+  const utf8 StackMapTable_utf8 "StackMapTable";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "StackmapExecutable.java";
+  source file source_file_name; 
+  
+  const string ret1String ret1Utf8; 
+  const utf8 ret1Utf8 "RETURN1";
+  
+  const string ret2String ret2Utf8;
+  const utf8 ret2Utf8 "RETURN2";
+  
+  const string ret3String ret3Utf8;
+  const utf8 ret3Utf8 "RETURN3";
+  
+   //Fields
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor method_desc; // ()V
+    
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial init0; // class=java/lang/Object, name=<init>, descriptor=()V
+    return;
+  }
+  
+  public method {
+    name execute_name; // execute
+    descriptor method_desc; // ()V
+   
+    stackmap {
+      append else, {int};
+      same ende;
+    }
+    maxstack 2;
+    
+    //Variables
+    
+    var object this;
+    var int i;
+    var returnadress retAdress;
+    
+    //Instructions
+    
+    
+    iconst_0;
+    istore i;
+    iload i;
+    ifne else;
+    jsr subroutine;
+    getstatic out; 
+    ldc ret1String; 
+    invokevirtual println; 
+    
+    goto ende;
+    
+    else:
+    
+    getstatic out; 
+    ldc ret2String; 
+    invokevirtual println; 
+    
+    ende: 
+    
+    return;
+    
+    subroutine:
+    
+    astore retAdress;
+    getstatic out; 
+    ldc ret3String; 
+    invokevirtual println; 
+    ret retAdress;
+    
+    
+  }
+  
+ 
+}

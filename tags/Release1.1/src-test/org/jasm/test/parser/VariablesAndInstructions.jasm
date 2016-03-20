@@ -1,0 +1,148 @@
+public super abstract class {
+  version 51.0;
+  name classref_0; // org/jasm/test/testclass/AbstractGenericClass
+  extends classref_2; // java/lang/Object
+   //Constants
+  const classref classref_0 utf8_1; // org/jasm/test/testclass/AbstractGenericClass
+  const utf8 utf8_1 "org/jasm/test/testclass/AbstractGenericClass";
+  const classref classref_2 utf8_3; // java/lang/Object
+  const utf8 utf8_3 "java/lang/Object";
+  const utf8 utf8_4 "field";
+  const utf8 utf8_5 "Ljava/lang/Object;";
+  const utf8 utf8_6 "Signature";
+  const utf8 utf8_7 "TT;";
+  const utf8 utf8_8 "<init>";
+  const utf8 utf8_9 "()V";
+  const utf8 utf8_10 "Code";
+  const methodref methodref_11 classref_2, nameandtype_12; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype nameandtype_12 utf8_8, utf8_9; // name=<init> type=()V
+  const fieldref fieldref_13 classref_0, nameandtype_14; // class=org/jasm/test/testclass/AbstractGenericClass, name=field, descriptor=Ljava/lang/Object;
+  const nameandtype nameandtype_14 utf8_4, utf8_5; // name=field type=Ljava/lang/Object;
+  const utf8 utf8_15 "LineNumberTable";
+  const utf8 utf8_16 "LocalVariableTable";
+  const utf8 utf8_17 "this";
+  const utf8 utf8_18 "Lorg/jasm/test/testclass/AbstractGenericClass;";
+  const utf8 utf8_19 "LocalVariableTypeTable";
+  const utf8 utf8_20 "Lorg/jasm/test/testclass/AbstractGenericClass<TT;>;";
+  const utf8 utf8_21 "method";
+  const utf8 utf8_22 "()Ljava/lang/Object;";
+  const utf8 utf8_23 "()TT;";
+  const utf8 utf8_24 "SourceFile";
+  const utf8 utf8_25 "AbstractGenericClass.java";
+  const utf8 utf8_26 "<T:Ljava/lang/Object;>Ljava/lang/Object;";
+  const intfmethodref intfmethodref_92 classref_93, nameandtype_95; // class=org/jasm/test/testclass/Interface1, name=testMethod, descriptor=(I)V
+  const classref classref_93 utf8_94; // org/jasm/test/testclass/Interface1
+  const utf8 utf8_94 "org/jasm/test/testclass/Interface1";
+  const nameandtype nameandtype_95 utf8_96, utf8_39; // name=testMethod type=(I)V
+  const utf8 utf8_96 "testMethod";
+  const utf8 utf8_39 "(I)V";
+  const utf8 utf_ex  "java/lang/RuntimeException";
+  const classref classref_ex utf_ex; // java/lang/RuntimeException
+  const utf8 myattr  "MyAttr";
+  const utf8 STACKMAP  "StackMapTable";
+  const utf8 double_name  "doubleVar";
+  const utf8 double_type  "D";
+   //Attributes
+  source file utf8_25; // AbstractGenericClass.java
+  signature utf8_26; // <T:Ljava/lang/Object;>Ljava/lang/Object;
+   //Fields
+  private field {
+    name utf8_4; // field
+    descriptor utf8_5; // Ljava/lang/Object;
+     //Attributes
+    signature utf8_7; // TT;
+  }
+  
+  public method {
+    name utf8_21; // method
+    descriptor utf8_22; // ()Ljava/lang/Object;
+    
+    //Method Attributes
+    
+    unknown attribute myattr,[TWVpbiBBdHRyaWJ1dA==];
+    signature utf8_23; // ()TT;
+    
+    //Code attributes
+    unknown code attribute myattr,[TWVpbiBBdHRyaWJ1dA==];
+    
+    line numbers {
+    	line label1, 10;
+    	line label2, 20;
+    }
+    
+    debug vars {
+    	var  o1, label1, utf8_17, utf8_18;
+    	var  d1, label1->label7, double_name, double_type;
+    }
+    
+    //Variables
+	var object o1;
+    var double d1;
+    var float  f1 at 2;
+    var int i1;
+    var long l1 at i1+2;
+    var returnadress r1;
+  	//Instructions
+  	label1: nop;
+  	nop;
+  	label2: ldc classref_0;
+  	pop;
+  	getfield fieldref_13;
+  	pop;
+  	invokeinterface intfmethodref_92;
+  	label2_1: aload o1;
+  	astore o1;
+  	normal dload  d1;
+  	normal dstore d1;
+  	wide fload f1;
+  	wide fstore f1;
+  	lload l1;
+    lstore l1;
+  	bipush 100;
+  	sipush -260;
+  	pop;
+  	pop;
+  	iinc i1,100;
+  	wide iinc i1,-260;
+  	label3: bipush 10;
+  	label4: newarray boolean;
+  	bipush 10;
+  	newarray byte;
+  	bipush 10;
+  	newarray char;
+  	bipush 10;
+  	newarray double;
+  	bipush 10;
+  	newarray float;
+  	bipush 10;
+  	newarray int;
+  	bipush 10;
+  	newarray long;
+  	bipush 10;
+  	newarray short;
+  	pop;
+  	pop;
+  	pop;
+  	pop;
+  	pop;
+  	pop;
+  	pop;
+  	label5: multianewarray classref_2, 3;
+  	lookupswitch -1->label2_1, 
+  				  10->label4,
+  				  3->label5, 
+  				  default->labelt;
+  	labelt: tableswitch -1->label2_1, 
+  				  1->label5,
+  				  0->label4, 
+  				  default->labelg; 
+  	labelg: goto label7;
+  	label6: nop;
+  	aload o1;
+  	label7: areturn;
+  	
+  	//Exception handlers
+  	try label2->label3 catch classref_ex go to label6;
+  	try label1->label6 catch all go to label7;
+  }
+}

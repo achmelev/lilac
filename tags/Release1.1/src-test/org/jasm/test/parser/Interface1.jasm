@@ -1,0 +1,24 @@
+/*
+Interface class
+*/
+public interface abstract class {
+  version 51.0;
+  name cp0; // org/jasm/test/testclass/Interface1
+  extends cp2; // java/lang/Object
+   //Constants
+  const classref cp0 cp1; // org/jasm/test/testclass/Interface1
+  const utf8 cp1 "org/jasm/test/testclass/Interface1";
+  const classref cp2 cp3; // java/lang/Object
+  const utf8 cp3 "java/lang/Object";
+  const utf8 cp4 "testMethod";
+  const utf8 cp5 "(I)V";
+  const utf8 cp6 "SourceFile";
+  const utf8 cp7 "Interface1.java";
+   //Attributes
+  source file cp7; // Interface1.java
+   //Methods
+  public abstract method {
+    name cp4; // testMethod
+    descriptor cp5; // (I)V
+  }
+}

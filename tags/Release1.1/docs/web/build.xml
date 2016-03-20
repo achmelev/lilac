@@ -1,0 +1,148 @@
+<project name="jasm-doc" default="build">
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
+	<target name="clean">
+		 <delete dir="dist"/>
+	</target>
+	
+	<target name="prepare">
+		 <mkdir dir="dist"/>
+	</target>
+	
+	<target name="generate">
+		 <copy todir="dist/css">
+			<fileset dir="css"/>
+		</copy>
+		 
+		<copy todir="dist/images">
+			<fileset dir="images"/>
+		</copy>
+		
+		<copy todir="dist/codeexamples">
+			<fileset dir="codeexamples"/>
+		</copy>
+		
+		 <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_index"/>
+			<param name="markdownFile" value="markdowns/index.markdown"/>
+			<param name="title" value="Lilac - a Java assembler"/>
+			<param name="description" value="Lilac - a Java assembler"/>
+		 </antcall>
+		
+		 <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_reference"/>
+			<param name="markdownFile" value="markdowns/reference.markdown"/>
+			<param name="title" value="Java assembler language reference"/>
+			<param name="description" value="Java assembler language reference - Lilac version"/>
+		 </antcall>
+		 
+		 <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_qanda"/>
+			<param name="markdownFile" value="markdowns/qanda.markdown"/>
+			<param name="title" value="Lilac - Q&amp;ampA"/>
+			<param name="description" value="Lilac - Questions and answers"/>
+		 </antcall>
+		 
+		  <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_news"/>
+			<param name="markdownFile" value="markdowns/news.markdown"/>
+			<param name="title" value="Lilac - News"/>
+			<param name="description" value="News about Lilac"/>
+		 </antcall>
+		  
+		 <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_instconf"/>
+			<param name="markdownFile" value="markdowns/instconf.markdown"/>
+			<param name="title" value="Lilac - Installation/Configuration"/>
+			<param name="description" value="How to install and configure Lilac"/>
+		 </antcall>
+		 
+		 <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_usage"/>
+			<param name="markdownFile" value="markdowns/usage.markdown"/>
+			<param name="title" value="Lilac - Usage"/>
+			<param name="description" value="How to use Lilac"/>
+		 </antcall>
+		 
+		 <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_sysprops"/>
+			<param name="markdownFile" value="markdowns/sysprops.markdown"/>
+			<param name="title" value="Lilac - System properties"/>
+			<param name="description" value="Lilac-specific system properties and their meaning"/>
+		 </antcall>
+		 
+		  <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_examples"/>
+			<param name="markdownFile" value="markdowns/examples.markdown"/>
+			<param name="title" value="Lilac - Code examples"/>
+			<param name="description" value="Code examples"/>
+		 </antcall>
+		 
+		  <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_dummy"/>
+			<param name="markdownFile" value="markdowns/example_helloworld.markdown"/>
+			<param name="title" value="Lilac - Code example - Hello world"/>
+			<param name="description" value="A 'Hello World' java assembler programm"/>
+		 </antcall>
+		 
+		  <antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_dummy"/>
+			<param name="markdownFile" value="markdowns/example_calculatesum.markdown"/>
+			<param name="title" value="Lilac - Code example - Calculate sum of numbers"/>
+			<param name="description" value="A java assembler programm which calculates a sum of numbers" />
+		 </antcall>
+		
+		<antcall target="generate-markdown">
+			<param name="menuid" value="MENUID_dummy"/>
+			<param name="markdownFile" value="markdowns/example_helloworld_macros.markdown"/>
+			<param name="title" value="Lilac - Code example - Hello world with macros"/>
+			<param name="description" value="A 'Hello World' java assembler programm with macros"/>
+		 </antcall>
+		
+	</target>
+	
+	<target name="generate-markdown">
+		<propertyregex property="targetFile.tmp"
+				input="${markdownFile}"
+               regexp="markdowns"
+               replace="dist"
+               global="true" />
+		<propertyregex property="targetFile"
+				input="${targetFile.tmp}"
+               regexp="markdown"
+               replace="html"
+               global="true" />
+		<echo message="${markdownFile} to ${targetFile}"/>
+		<exec  executable="/usr/local/bin/markdown_py">
+			<arg line="-f content.tmp"/>
+			<arg line="-o html"/>
+			<arg line="-x markdown.extensions.codehilite" />
+			<arg line="-x markdown.extensions.toc" />
+			<arg line="-x markdown.extensions.tables" />
+			<arg line="${markdownFile}" />
+		</exec>
+		<!--<exec  executable="c:\Python27\python.exe">
+			<arg line="c:\Python27\Scripts\markdown_py"/>
+			<arg line="-f content.tmp"/>
+			<arg line="-o html"/>
+			<arg line="-x markdown.extensions.codehilite" />
+			<arg line="-x markdown.extensions.toc" />
+			<arg line="-x markdown.extensions.tables" />
+			<arg line="${markdownFile}" />
+		</exec>-->
+		<loadfile property="content" srcFile="content.tmp"/>
+	
+		<copy file="template.html" tofile="${targetFile}"/>
+		
+		<replace file="${targetFile}" token="CONTENT" value="${content}"/>
+		<replace file="${targetFile}" token="TITLE" value="${title}"/>
+		<replace file="${targetFile}" token="DESCRIPTION" value="${description}"/>
+		<replace file="${targetFile}" token="${menuid}" value="MENUID_active"/>
+	</target>
+	
+	
+	
+	<target name="build" depends="prepare,generate"/>
+    
+</project>

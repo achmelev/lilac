@@ -1,0 +1,132 @@
+public super class {
+  version 52.0;
+  name ThisClass; // org/jasm/test/verify/ConstrConcat
+  extends Object; // java/lang/Object
+  implements IConstrConcat; // org/jasm/test/verify/IConstrConcat
+   //Constants
+  const classref ThisClass ThisClass_name; // org/jasm/test/verify/ConstrConcat
+  const utf8 ThisClass_name "org/jasm/test/verify/ConstrConcat";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const classref IConstrConcat IConstrConcat_name; // org/jasm/test/verify/IConstrConcat
+  const utf8 IConstrConcat_name "org/jasm/test/verify/IConstrConcat";
+  const utf8 content_name "content";
+  const utf8 type_desc "Ljava/lang/String;";
+  const utf8 init0_name "<init>";
+  const utf8 method_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref Object.init0 Object, Object.init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype Object.init0_nat init0_name, method_desc; // name=<init> type=()V
+  const fieldref content ThisClass, content_nat; // class=org/jasm/test/verify/ConstrConcat, name=content, descriptor=Ljava/lang/String;
+  const nameandtype content_nat content_name, type_desc; // name=content type=Ljava/lang/String;
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/verify/ConstrConcat;";
+  const utf8 setContent_name "setContent";
+  const string string_20 utf8_21; // "world!"
+  const utf8 utf8_21 "world!";
+  const classref StringBuilder StringBuilder_name; // java/lang/StringBuilder
+  const utf8 StringBuilder_name "java/lang/StringBuilder";
+  const string string_24 utf8_25; // "Hello "
+  const utf8 utf8_25 "Helllo ";
+  const methodref StringBuilder.init0 StringBuilder, StringBuilder.init0_nat; // class=java/lang/StringBuilder, name=<init>, descriptor=(Ljava/lang/String;)V
+  const nameandtype StringBuilder.init0_nat init0_name, init0_desc; // name=<init> type=(Ljava/lang/String;)V
+  const utf8 init0_desc "(Ljava/lang/String;)V";
+  const methodref StringBuilder.append StringBuilder, StringBuilder.append_nat; // class=java/lang/StringBuilder, name=append, descriptor=(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  const nameandtype StringBuilder.append_nat append_name, append_desc; // name=append type=(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  const utf8 append_name "append";
+  const utf8 append_desc "(Ljava/lang/String;)Ljava/lang/StringBuilder;";
+  const string string_33 utf8_34; // " : "
+  const utf8 utf8_34 " : ";
+  const methodref StringBuilder.append$0 StringBuilder, StringBuilder.append$0_nat; // class=java/lang/StringBuilder, name=append, descriptor=(I)Ljava/lang/StringBuilder;
+  const nameandtype StringBuilder.append$0_nat append_name, append_desc$0; // name=append type=(I)Ljava/lang/StringBuilder;
+  const utf8 append_desc$0 "(I)Ljava/lang/StringBuilder;";
+  const methodref StringBuilder.toString StringBuilder, StringBuilder.toString_nat; // class=java/lang/StringBuilder, name=toString, descriptor=()Ljava/lang/String;
+  const nameandtype StringBuilder.toString_nat toString_name, method_desc$0; // name=toString type=()Ljava/lang/String;
+  const utf8 toString_name "toString";
+  const utf8 method_desc$0 "()Ljava/lang/String;";
+  const utf8 a_name "a";
+  const utf8 a_desc "I";
+  const utf8 s_name "s";
+  const utf8 getContent_name "getContent";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "ConstrConcat.java";
+  source file source_file_name; // ConstrConcat.java
+   //Fields
+  private field {
+    name content_name; // content
+    descriptor type_desc; // Ljava/lang/String;
+  }
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor method_desc; // ()V
+    maxstack 2;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial Object.init0;
+    ir4: aload this;
+    aconst_null;
+    putfield content;
+    ir9: return;
+  }
+  public method {
+    name setContent_name; // setContent
+    descriptor method_desc; // ()V
+    line numbers {
+      line ir0, 13;
+      line ir2, 14;
+      line ir5, 15;
+      line ir34, 16;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/verify/ConstrConcat;
+      var a, ir2, a_name, a_desc; // name=a,  descriptor=I
+      var s, ir5, s_name, type_desc; // name=s,  descriptor=Ljava/lang/String;
+    }
+    maxstack 4;
+    //Variables
+    var object this;
+    var int a;
+    var object s;
+    //Instructions
+    ir0: iconst_0;
+    istore a;
+    ir2: ldc string_20; // "world!"
+    astore s;
+    ir5: aload this;
+    new StringBuilder;
+    dup;
+    ldc string_24; // "Hello "
+    invokespecial StringBuilder.init0;
+    aload s;
+    invokevirtual StringBuilder.append;
+    ldc string_33; // " : "
+    invokevirtual StringBuilder.append;
+    iload a;
+    invokevirtual StringBuilder.append$0;
+    invokevirtual StringBuilder.toString;
+    putfield content;
+    ir34: return;
+  }
+  public method {
+    name getContent_name; // getContent
+    descriptor method_desc$0; // ()Ljava/lang/String;
+    line numbers {
+      line ir0, 23;
+    }
+    debug vars {
+      var this, ir0, this_name, this_desc; // name=this,  descriptor=Lorg/jasm/test/verify/ConstrConcat;
+    }
+    maxstack 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    getfield content;
+    areturn;
+  }
+}

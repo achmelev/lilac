@@ -1,0 +1,131 @@
+public super class {
+  version 52.0;
+  name ThisClass; 
+  extends Object;
+  implements Runnable;
+   //Constants
+  const classref java/lang/Runnable;
+  const classref ThisClass ThisClass_name; // org/jasm/test/playground/FieldContainer
+  const utf8 ThisClass_name "org/jasm/test/playground/MethodContainer2";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const utf8 text_name "text";
+  const utf8 text_desc "Ljava/lang/String;";
+  const utf8 Code_utf8 "Code";
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/FieldContainer;";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "FieldContainer.java";
+  
+  const classref java/lang/String;
+  const classref java/lang/String as MyString;
+  
+  const utf8 iValue_name "iValue";
+  const utf8 iValue_type "I";
+  const nameandtype iValue_nt iValue_name, iValue_type;
+  const fieldref iValue_ref ThisClass, iValue_nt;
+  
+  
+  source file source_file_name; // FieldContainer.java
+  public static int iValue;
+  
+  
+  const methodref void <init>() from Object as Object.init;
+  const methodref void <init>(String s) from ThisClass as ThisClass.init1;
+  const intfmethodref void run() from Runnable;
+  const methodref String returnString(java/lang/String s) from ThisClass;
+  const string hello_world source_file_name;
+  
+   //Methods
+   
+  public static void <clinit>() {
+  	 bipush 5;
+  	 putstatic iValue_ref;
+  	 return;
+  }
+   
+  public void <init>() {
+
+    //Instructions
+    aload this;
+    ldc hello_world;
+    invokespecial ThisClass.init1;
+    return;
+  }
+
+  public void <init>(String n) {
+
+    //Instructions
+    aload this;
+    invokespecial Object.init;
+    aload n;
+    invokestatic ThisClass.returnString;
+    pop;
+    aload this;
+    invokeinterface Runnable.run;
+    return;
+  }
+  
+  protected abstract void method1 (byte bValue, boolean zValue, float fValue, double dValue, short shValue, int iValue, long lValue, int[] iaValue, java/lang/String sValue);
+  
+  public ThisClass method2 (byte bValue, boolean zValue, float fValue, double dValue, short shValue, int iValue, long lValue, int[] iaValue, String sValue) {
+  	 aload this;
+  	 iload bValue;
+  	 iload zValue;
+  	 iload shValue;
+  	 iload iValue;
+  	 fload fValue;
+  	 dload dValue;
+  	 lload lValue;
+  	 aload iaValue;
+  	 aload sValue;
+  	 pop;
+  	 pop;
+  	 pop2;
+  	 pop2;
+  	 pop;
+  	 pop;
+  	 pop;
+  	 pop;
+  	 pop;
+  	 areturn;
+  	 
+  }
+  
+  public static MyString [] method3 (byte bValue, boolean zValue, float fValue, double dValue, short shValue, int iValue, long lValue, String[] saValue, String sValue) {
+  	 aload saValue;
+	 iload bValue;
+  	 iload zValue;
+  	 iload shValue;
+  	 iload iValue;
+  	 fload fValue;
+  	 dload dValue;
+  	 lload lValue;
+  	 aload sValue;
+  	 pop;
+  	 pop2;
+  	 pop2;
+  	 pop;
+  	 pop;
+  	 pop;
+  	 pop;
+  	 pop;
+  	 areturn;
+  }
+  
+  public void run() {
+  	return;
+  }
+  
+  public void run2() {
+  	return;
+  }
+  
+  private static String returnString(String s) {
+  	aload s;
+  	areturn;
+  }
+  
+}
