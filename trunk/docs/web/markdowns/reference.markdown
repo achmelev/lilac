@@ -2183,6 +2183,127 @@ The result of the invocation or nothing if the method is **void**
 	::lilac
 	.invokestatic(Integer.parseInt, "12",10);
 
+####.new - creating a class instance
+
+**Syntax:**
+
+_.new(class reference, constructor reference,...parameters)_
+
+**Purpose:**
+
+Creates an instance of a class and initializes is using the passed constructor method.
+
+**Parameters:**
+
+_class reference_ - the class to which the instance to create belongs.  
+_constructor reference_ - the constructor to initialize the new instance  
+_parameters_ - parameters to pass to the constructor
+
+**Returns:**
+
+The new initialized instance
+
+**Example:**
+
+	::lilac
+	.new(Integer,Integer.init,5);
+
+####.new - creating an array instance
+
+**Syntax:**
+
+_.new(array reference, size)_
+
+**Purpose:**
+
+Creates an instance of an arraytype of passed size.
+
+**Parameters:**
+
+_array reference_ - the array type to which the instance to create belongs.  
+_size_ - the size of the array to create
+
+**Returns:**
+
+The new initialized array instance
+
+**Example:**
+
+	::lilac
+	.new(IntegerArray,10);
+
+####.concat
+
+**Syntax:**
+
+_.concat(parameters)_
+
+**Purpose:**
+
+Creates a string representation of every parameter and concats the resulting strings together.
+
+**Parameters:**
+
+_parameters_ - parameters to concat
+
+**Returns:**
+
+The resulting string
+
+**Example:**
+
+	::lilac
+	.concat("Name = ",name,", size = ", 5);
+
+####.println
+
+**Syntax:**
+
+_.println(parameters)_
+
+**Purpose:**
+
+Creates a string representation of every parameter concats the resulting strings together and prints the resulting line to the console.
+
+**Parameters:**
+
+_parameters_ - parameters to concat and print.
+
+**Returns:**
+
+no result
+
+**Example:**
+
+	::lilac
+	.println("Name = ",name,", size = ", 5);
+
+####.sprintln
+
+**Syntax:**
+
+_.sprintln(out, parameters)_
+
+**Purpose:**
+
+Creates a string representation of every parameter concats the resulting strings together and prints the resulting line to the stream passed with the first parameter.
+
+**Parameters:**
+_out_ - the stream  
+_parameters_ - parameters to concat and print.‚
+
+**Returns:**
+
+no result
+
+**Example:**
+
+	::lilac
+	.sprintln(.getfield(System.out), "Name = ",name,", size = ", 5);
+
+
+
+
 
 	
 
