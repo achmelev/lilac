@@ -278,11 +278,13 @@ Example:
 ###Name statement
 
 A name statement specifies the name of a [class](#class-statement), a [method](#method-statement), [field](#field-statement),[inner class](#inner-class-statement) or [annotation element](#annotation-element-statement). 
-It is a [simple statement](#statements) which has as a single argument the [name](#names-and-labels) of an [utf8 constant](#utf8-constant-statement) which in turn
+It is a [simple statement](#statements) which has as a single argument the [name](#names-and-labels) of an [utf8 constant](#utf8-constant-statement) or [class reference constant](#class-statement) which in turn
 specifies the actual name as defined in the following EBNF expression:
 
 	:::ebnf
-	name statement = 'name', utf8 constant, ';' ;
+	name statement = 'name', (utf8 constant|class reference constant), ';' ;
+
+**Note:** for the name of a class the argument must be a [class reference constant](#class-statement)
 
 Example:
 
