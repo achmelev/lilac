@@ -1,3 +1,12 @@
+####März 20, 2016 - Lilac Version 1.1 released
+
+Lilac Version 1.1 available for download from [http://sourceforge.net/projects/lilac/files/Release1.1](http://sourceforge.net/projects/lilac/files/Release1.1/)
+
+* A major new feature inttriduced - [macros](reference.html#macros). See also a [code example](example_helloworld_macros.html).
+* [Identifiers](reference.html#identifiers) can now bew quoted to avoid conflicts with assembler keywords.
+
+
+
 ####October 24, 2015 - Lilac Version 1.0.2 released
 
 Lilac Version 1.0.2 available for download from [http://sourceforge.net/projects/lilac/files/Release1.0.2](http://sourceforge.net/projects/lilac/files/Release1.0.2/)
