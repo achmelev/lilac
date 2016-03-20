@@ -1,0 +1,60 @@
+public super class {
+
+   //Constants
+   
+  const classref org/jasm/examples/HelloWorld;
+  const classref java/lang/Object;
+  const classref java/lang/System;
+  const classref java/io/PrintStream;
+  const classref java/lang/String;
+  const fieldref PrintStream out from System;
+  const methodref void println(java/lang/String text) from PrintStream;
+  const methodref void <init>() from Object as Object.init;
+  
+  const classref java/text/SimpleDateFormat;
+  const classref java/text/DateFormat;
+  const classref java/util/Date;
+  const methodref void <init>(String format) from SimpleDateFormat as SimpleDateFormat.init;
+  const methodref String format(Date d) from DateFormat;
+  const classref java/util/Calendar;
+  const methodref Calendar getInstance() from Calendar;
+  const methodref Date getTime() from Calendar;
+  
+   
+  version 52.0;
+  name HelloWorld; 
+  extends Object; 
+  
+  //Methods
+    
+  //Constructor
+  public void <init>() {
+    //Instructions
+    aload this;
+    invokespecial Object.init;
+    return;
+  }
+ 
+  //Main Method
+  public static void main (String [] args) {
+    
+    //Instructions
+    var object format;
+    var object date;
+    
+    //creating format instance and saving it into the local variable format
+    .new(SimpleDateFormat, SimpleDateFormat.init,"dd.MM.yyyy HH:mm:SS");
+    astore format;
+    
+    //Creating date instance and saving it into the local variable date
+    .invokevirtual(Calendar.getTime,.invokestatic(Calendar.getInstance));
+    astore date; 
+   	
+   	//Printing
+    .println("Hello world, the current datetime is: ", 
+    		.invokevirtual(DateFormat.format, (DateFormat)format,(Date)date)
+    		);
+    
+    return;
+  }
+}
