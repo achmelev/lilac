@@ -324,7 +324,7 @@ public class BuiltinParseAndLoadTest extends AbstractParseAndLoadTestCase {
 
 	@Override
 	protected boolean verify() {
-		return false;
+		return true;
 	}
 
 	@Override

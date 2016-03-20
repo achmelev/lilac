@@ -123,7 +123,7 @@ public abstract class AbstractClassMember<T extends AbstractClassMemberModifier>
 		}
 		if (this.descriptorReference != null) {
 			if (this.highLevelSyntax) {
-				emitError(nameReference, "unexpected descriptor statement");
+				emitError(descriptorReference, "unexpected descriptor statement");
 			} else {
 				this.descriptor = getConstantPool().checkAndLoadFromSymbolTable(this,Utf8Info.class, descriptorReference);
 				if (this.descriptor != null) {
