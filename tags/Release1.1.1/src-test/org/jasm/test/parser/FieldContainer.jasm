@@ -1,0 +1,79 @@
+public super class {
+  version 52.0;
+  name ThisClass; 
+  extends Object;
+   //Constants
+  const classref org/jasm/test/playground/FieldContainer2 as ThisClass;
+  const classref java/lang/Object;
+  const utf8 text_name "text";
+  const utf8 text_desc "Ljava/lang/String;";
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref Object.init0 Object, Object.init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype Object.init0_nat init0_name, init0_desc; // name=<init> type=()V
+  const utf8 LineNumberTable_utf8 "LineNumberTable";
+  const utf8 LocalVariableTable_utf8 "LocalVariableTable";
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/playground/FieldContainer;";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const utf8 source_file_name "FieldContainer.java";
+  
+  const classref java/lang/String;
+  const fieldref byte byte_field from ThisClass;
+  const fieldref byte[] byte_array_field from org/jasm/test/playground/FieldContainer2;
+  const fieldref char char_field from org/jasm/test/playground/FieldContainer2 as char_field;
+  
+  source file source_file_name; // FieldContainer.java
+   //Fields
+  public static final byte byte_field;
+  public byte[] byte_array_field {
+	deprecated;
+  }
+  protected boolean boolean_field;
+  public boolean [] boolean_array_field;
+  private transient char char_field;
+  public char [] [] char_array_field;
+  public int int_field;
+  public int [] int_array_field;
+  public long long_field;
+  public long [] long_array_field;
+  public float float_field;
+  public float [] float_array_field;
+  public double double_field;
+  public double [] double_array_field;
+  public short short_field;
+  public short [] short_array_field;
+  public java/lang/String string_field;
+  public java/lang/String [] string_array_field;
+  public String string_field2;
+  public String [] string_array_field2;
+  public String 'name';
+  
+  
+   //Methods
+
+  public method {
+    name init0_name; // <init>
+    descriptor init0_desc; // ()V
+
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial Object.init0;
+    return;
+  }
+  
+  public void fieldGetter() {
+    aload this;
+  	getstatic ThisClass.byte_field;
+  	pop;
+  	aload this;
+  	getfield FieldContainer2.byte_array_field;
+  	pop;
+  	aload this;
+  	getfield char_field;
+  	return;
+  }
+}

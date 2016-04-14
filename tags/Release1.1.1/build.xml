@@ -1,0 +1,202 @@
+<project name="jasm" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+    <!-- some variables used -->
+    <property name="lib.dir" value="lib" />
+	<property name="test.lib.dir" value="lib-test" />
+    <property name="build.dir" value="classes" />
+	<property name="test.build.dir" value="classes-test" />
+    <property name="src.dir" value="src" />
+	<property name="src.gen.dir" value="src-gen" />
+	<property name="test.src.dir" value="src-test" />
+	<property name="report.dir" value="report" />
+	<property name="test.report.dir" value="report-test" />
+	<property name="target.dir" value="target" />
+	<property name="dest.dir.relative" value="target/dist" />
+	<property name="dest.dir" location="${dest.dir.relative}" />
+	<property name="jasm.version" value="1.1.1" />
+    
+    <!-- paths used for compilation  -->
+    <path id="lib.path.id">
+        <fileset dir="${dest.dir}/lib" />
+	</path>
+    
+	<path id="dev.lib.path.id">
+	        <fileset dir="${lib.dir}" />
+		</path>
+	
+	<path id="test.lib.path.id">
+	        <fileset dir="${dest.dir}/lib" />
+			<pathelement path="${build.dir}"/>
+			<pathelement path="${test.build.dir}"/>
+	</path>
+    
+	<target name="clean-libs-devs"  description="deletes dependencies for development">
+    	<mkdir dir="${lib.dir}" />
+    	<mkdir dir="${report.dir}" />
+        <ivy:retrieve conf="build"/>
+    	<ivy:report todir="${report.dir}" />
+    </target>
+	
+    <target name="retrieve-dev"  description="retrieves dependencies for development">
+    	<mkdir dir="${lib.dir}" />
+    	<mkdir dir="${report.dir}" />
+        <ivy:retrieve pattern="${lib.dir}/[artifact]-[type].[ext]" conf="dev"/>
+    	<ivy:report todir="${report.dir}" />
+    </target> 
+	
+	<target name="retrieve"  description="retrieves dependencies for development">
+	    <mkdir dir="${dest.dir}/lib" />
+	    <ivy:retrieve pattern="${dest.dir}/lib/[artifact].[ext]" conf="build"/>
+	</target> 
+	
+	<target name="clean-grammar" depends="retrieve">
+		 <delete dir ="${src.gen.dir}/org"/>
+	</target>
+	
+	<target name="generate-grammar" depends="retrieve">
+		<mkdir dir="${src.gen.dir}"/>
+		<java classname="org.antlr.v4.Tool" classpathref="lib.path.id">
+			<arg value="-lib"/>
+			<arg value="grammar"/>
+			<arg value="-o"/>
+			<arg value="${src.gen.dir}/org/jasm/parser"/>
+			<arg value="-package"/>
+			<arg value="org.jasm.parser"/>
+			<arg value="-listener"/>
+			<arg value="-visitor"/>
+			<arg value="${basedir}/grammar/JavaAssembler.g4"/>
+        </java>
+	</target>
+	
+	<target name="generate-grammar-dev" depends="clean-grammar">
+			<mkdir dir="${src.gen.dir}"/>
+			<java classname="org.antlr.v4.Tool" classpathref="dev.lib.path.id">
+				<arg value="-lib"/>
+				<arg value="grammar"/>
+				<arg value="-o"/>
+				<arg value="${src.gen.dir}/org/jasm/parser"/>
+				<arg value="-package"/>
+				<arg value="org.jasm.parser"/>
+				<arg value="-listener"/>
+				<arg value="-visitor"/>
+				<arg value="${basedir}/grammar/JavaAssembler.g4"/>
+	        </java>
+		</target>
+
+    
+	<target name="test" unless="skipTests">
+		<!-- Compile tests -->
+			<javac srcdir="${test.src.dir}" encoding="UTF-8" debug="on" debuglevel="lines,source" destdir="${test.build.dir}" classpathref="test.lib.path.id" includeAntRuntime="false"/>
+			<copy todir="${test.build.dir}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*.properties"/>
+					<include name="**/*.xml"/>
+					<include name="**/*.txt"/>
+					<include name="**/*.jasm"/>
+				</fileset>
+			</copy>
+			<!-- Junit tests -->
+			<junit printsummary="yes" haltonfailure="true">
+
+				<classpath id="classpath" refid="test.lib.path.id"/>
+				
+				<formatter type="plain"/>
+				<formatter type="xml"/>
+				
+				<batchtest fork="false" todir="${test.report.dir}">
+					<fileset dir="${test.src.dir}">
+					  <include name="**/*Test.java"/>
+	  
+					</fileset>
+				 </batchtest>
+			</junit>
+		
+	</target>
+	
+    <target name="build" depends="generate-grammar" description="build the project">
+    	<!-- create dirs -->
+        <mkdir dir="${build.dir}" />
+    	<mkdir dir="${test.build.dir}" />
+    	<mkdir dir="${dest.dir}" />
+    	<mkdir dir="${report.dir}" />
+    	<mkdir dir="${test.report.dir}" />
+    	<!-- Compile src-gen -->
+    	<javac encoding="UTF-8" srcdir="${src.gen.dir}" debug="on" debuglevel="lines,source" destdir="${build.dir}" classpathref="lib.path.id" includeAntRuntime="false"/>
+    	<copy todir="${build.dir}">
+    	    <fileset dir="${src.gen.dir}">
+    	    	<include name="**/*.properties"/>
+    	    	<include name="**/*.xml"/>
+    	    	<include name="**/*.tokens"/>
+    	    </fileset>
+    	</copy>
+    	<!-- Compile -->
+        <javac srcdir="${src.dir}" debug="on" debuglevel="lines,source" destdir="${build.dir}" classpathref="lib.path.id" includeAntRuntime="false" encoding="UTF-8"/>
+    	<copy todir="${build.dir}">
+    	    <fileset dir="${src.dir}">
+    	    	<include name="**/*.properties"/>
+    	    	<include name="**/*.xml"/>
+				<include name="**/*.conf"/>
+    	    </fileset>
+    	</copy>
+		
+		<antcall target="test"/>
+			
+    	<!--Build Jar -->
+    	<pathconvert property="jar.class.path" dirsep="/" pathsep=" " refid="lib.path.id">
+    	    
+    		<map from="${dest.dir}/lib" to="lib" />
+    	</pathconvert>
+    	
+    	
+    	
+    	<jar destfile="${dest.dir}/jasm.jar"
+    	     basedir="${build.dir}">
+    		<manifest>
+    			<attribute name="Main-Class"  value="org.jasm.main.Main"/>
+    			<attribute name="Class-Path" value="${jar.class.path}" />
+    		</manifest>
+    	</jar>
+    	
+    	<!-- Copy the rest -->
+    	<copy todir="${dest.dir}">
+    	    <fileset dir="scripts"/>
+    	</copy>
+		<copy file="src/org/jasm/environment/default.conf" tofile="${dest.dir}/conf/jasm.conf"/>
+		<mkdir dir="${dest.dir}/docs"/>
+    	<copy todir="${dest.dir}/docs">
+    	    <fileset dir="docs">
+				<exclude name="reference/**"/>
+			</fileset>
+    	</copy>
+    	
+    	
+    	<!-- Create zip-File for Win -->
+    	<zip destfile="${target.dir}/jasm-${jasm.version}.zip">
+    		<zipfileset dir="${dest.dir}" prefix="jasm"/>
+    	</zip>
+    	
+    	<!-- Create tar-File for Unix/Linux -->
+    	<tar destfile="${target.dir}/jasm-${jasm.version}.tar.gz" compression="gzip">
+    	  <tarfileset dir="${dest.dir}" prefix="jasm" dirmode="755" filemode="644">
+    	  	 <exclude name="**/jasm.sh"/> 
+    	  </tarfileset>
+    	  <tarfileset dir="${dest.dir}" prefix="jasm" dirmode="755" filemode="755">
+	    	  	<include name="**/jasm.sh"/> 
+	      </tarfileset>
+    	</tar>
+    	
+    </target>
+
+  
+    <target name="clean" description="clean the project" depends="clean-grammar">
+    	<delete dir="${build.dir}"/>
+    	<delete dir="${test.build.dir}"/>
+    	<delete dir="${report.dir}"/>
+    	<delete dir="${test.report.dir}"/>
+    	<delete dir="${target.dir}"/>
+    </target>
+	
+    
+	<target name="clean-cache" description="clean the ivy cache">
+		<ivy:cleancache />
+	</target>
+</project>

@@ -1,0 +1,81 @@
+public super class {
+  version 52.0;
+  name InvokeDynamicClassT; // org/jasm/test/testclass/InvokeDynamicClassT
+  extends Object; // java/lang/Object
+  implements ICalculator; // org/jasm/test/testclass/ICalculator
+   //Constants
+  const classref InvokeDynamicClassT InvokeDynamicClassT_name; // org/jasm/test/testclass/InvokeDynamicClassT
+  const utf8 InvokeDynamicClassT_name "org/jasm/test/testclass/InvokeDynamicClassT";
+  const classref InvokeDynamicClass InvokeDynamicClass_name; // org/jasm/test/testclass/InvokeDynamicClassT
+  const utf8 InvokeDynamicClass_name "org/jasm/test/testclass/InvokeDynamicClass";
+  const classref Object Object_name; // java/lang/Object
+  const utf8 Object_name "java/lang/Object";
+  const utf8 init0_name "<init>";
+  const utf8 init0_desc "()V";
+  const utf8 Code_utf8 "Code";
+  const methodref init0 Object, init0_nat; // class=java/lang/Object, name=<init>, descriptor=()V
+  const nameandtype init0_nat init0_name, init0_desc; // name=<init> type=()V
+  const utf8 this_name "this";
+  const utf8 this_desc "Lorg/jasm/test/testclass/InvokeDynamicClassT;";
+  const utf8 bootstrapMethod_name "bootstrapMethod";
+  const utf8 bootstrapMethod_desc "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;)Ljava/lang/invoke/CallSite;";
+  const utf8 calculate_name "calculate";
+  const utf8 calculate_desc "()I";
+  const utf8 SourceFile_utf8 "SourceFile";
+  const string string_source SourceFile_utf8;
+  const utf8 source_file_name "InvokeDynamicClassT.java";
+  source file source_file_name; // InvokeDynamicClassT.java
+  const classref ICalculator ICalculator_name; // org/jasm/test/testclass/ICalculator
+  const utf8 ICalculator_name "org/jasm/test/testclass/ICalculator";
+  const utf8 BootstrapMethods_utf8 "BootstrapMethods";
+  
+  const nameandtype bootstrapMethod_nat bootstrapMethod_name, bootstrapMethod_desc;
+  const methodref bootstrapMethod InvokeDynamicClass, bootstrapMethod_nat;
+  const invokestatic methodhandle bootstrapMethod_handle bootstrapMethod;
+  
+  const nameandtype add_nat add_name, method_desc; // name=add type=(II)I
+  const nameandtype sub_nat sub_name, method_desc; // name=add type=(II)I
+  const utf8 add_name "add";
+  const utf8 sub_name "sub";
+  const utf8 method_desc "(II)I";
+  
+  const dynref add_dyn bootstrap_bootstrapMethod,add_nat;
+  const dynref sub_dyn bootstrap_bootstrapMethod,sub_nat;
+  
+  bootstrap method bootstrap_bootstrapMethod bootstrapMethod_handle, string_source;
+  
+  //Fields
+   //Methods
+  public method {
+    name init0_name; // <init>
+    descriptor init0_desc; // ()V
+    maxstack 1;
+    maxlocals 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    invokespecial init0; // class=java/lang/Object, name=<init>, descriptor=()V
+    return;
+  }
+  
+  
+  
+  public method {
+    name calculate_name; // calculate
+    descriptor calculate_desc; // ()I
+    maxstack 4;
+    maxlocals 1;
+    //Variables
+    var object this;
+    //Instructions
+    ir0: aload this;
+    aload this;
+    bipush 10;
+    bipush 100;
+    invokedynamic add_dyn; // class=org/jasm/test/testclass/InvokeDynamicClassT, name=add, descriptor=(II)I
+    bipush 30;
+    invokedynamic sub_dyn; // class=org/jasm/test/testclass/InvokeDynamicClassT, name=sub, descriptor=(II)I
+    ireturn;
+  }
+}
