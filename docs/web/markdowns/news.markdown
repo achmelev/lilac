@@ -1,3 +1,10 @@
+####April 14, 2016 - Lilac Version 1.1.1 released
+
+Lilac Version 1.1.1 available for download from [http://sourceforge.net/projects/lilac/files/Release1.1.1](http://sourceforge.net/projects/lilac/files/Release1.1.1/)
+
+* Emergency fix - disassembler works again.
+
+
 ####März 20, 2016 - Lilac Version 1.1 released
 
 Lilac Version 1.1 available for download from [http://sourceforge.net/projects/lilac/files/Release1.1](http://sourceforge.net/projects/lilac/files/Release1.1/)
@@ -15,7 +22,6 @@ Lilac Version 1.0.2 available for download from [http://sourceforge.net/projects
 * Fixed a NullpointerException by ldc instructions in debug mode
 * A performance improvement by switch (lookupswitch and tableswitch) instructions with many hundreds of targets.
 * Fixed an error in the routine verifying the size of the local variable array.  
-
 
 
 ####October 09, 2015 - Lilac Version 1.0.1 released
